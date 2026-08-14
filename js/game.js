@@ -411,6 +411,15 @@ function flash(kind, text){
   flashEl.className = "flash " + kind;
   flashEl.textContent = text;
 }
+// 正解したことばを、表記・読み・意味つきでしばらく残す
+function flashAnswer(a, note){
+  const reading = (a.display && a.display !== a.word) ? `<span class="rd">${esc(a.word)}</span>` : "";
+  flashEl.className = "flash good";
+  flashEl.innerHTML =
+    `<span class="fw">${esc(answerDisplay(a))}</span>${reading}` +
+    (note ? `<span class="fn">${esc(note)}</span>` : "") +
+    `<span class="fm">${esc(a.meaning)}</span>`;
+}
 
 /* ------------------------------------------------------------- 5) 演出 */
 let actx = null;
@@ -489,12 +498,13 @@ function shake(){
 }
 
 let burstTimer = 0;
-function showBurst({mark, word, sub, bonus, dim, gold, long, ms = 900}){
+function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, ms = 900}){
   const box = $("#burst");
   clearTimeout(burstTimer);
   $("#burstMark").textContent = mark || "";
   $("#burstWord").textContent = word || "";
   $("#burstSub").textContent = sub || "";
+  $("#burstMeaning").textContent = meaning || "";
   $("#burstBonus").textContent = bonus || "";
   box.className = "burst" + (dim ? " dim" : "") + (gold ? " gold" : "");
   $("#burstInner").className = "burstInner" + (long ? " long" : "");
@@ -671,13 +681,16 @@ function guess(kana){
     $("#pattern").classList.remove("hit"); void $("#pattern").offsetWidth; $("#pattern").classList.add("hit");
     sfxCorrect(combo);
     buzz(18);
-    flash("good", `${answerDisplay(a)} — ${pick(GOOD_MSGS)}`);
+    flashAnswer(a, pick(GOOD_MSGS));
 
     const willPerfect = state().discovered.size >= total;
     if (!state().cleared && state().discovered.size >= clearTarget()) finishRound(willPerfect);
-    // 合体演出があるので、全画面バーストは3連続以上のごほうびに絞る
-    else if (!willPerfect && combo >= 3) showBurst({mark: `COMBO ×${combo}`, word: answerDisplay(a),
-      sub: a.display && a.display !== a.word ? a.word : "", ms: 780});
+    else if (!willPerfect) showBurst({
+      mark: combo >= 2 ? `COMBO ×${combo}` : "CORRECT",
+      word: answerDisplay(a),
+      sub: (a.display && a.display !== a.word) ? a.word : "",
+      long: true, ms: 1400
+    });
     if (willPerfect && !state().perfect) perfectRound();
 
   } else {
