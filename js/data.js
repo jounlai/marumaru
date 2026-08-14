@@ -932,7 +932,10 @@ const WORD_ROUNDS = [
       { word: "まんき", display: "満期", meaning: "定めた期限に達すること。" },
       { word: "りんき", display: "悋気", meaning: "やきもち。嫉妬。" },
       { word: "だんき", display: "暖気", meaning: "あたたかい空気。「暖気運転」。" },
-      { word: "さんき", display: "産気／三期", meaning: "出産が始まりそうな兆し。「産気づく」／三つに分けた期間の三番目。" }
+      { word: "さんき", display: "産気／三期", meaning: "出産が始まりそうな兆し。「産気づく」／三つに分けた期間の三番目。" },
+      { word: "ぺんき", display: "ペンキ", meaning: "塗料。オランダ語 pek に由来する語。" },
+      { word: "ぐんき", display: "軍記／軍旗", meaning: "合戦を描いた物語（軍記物語）／軍隊の旗。" },
+      { word: "れんき", display: "連記", meaning: "複数の名前を並べて書くこと。「連記投票」。" }
     ]
   },
   {
@@ -968,7 +971,11 @@ const WORD_ROUNDS = [
       { word: "まんせい", display: "慢性", meaning: "急激ではなく、長く続くこと。" },
       { word: "みんせい", display: "民生", meaning: "国民の生活。「民生用機器」。" },
       { word: "れんせい", display: "錬成", meaning: "心身や技を鍛え上げること。" },
-      { word: "くんせい", display: "燻製", meaning: "煙でいぶして保存性と風味をつけた食品。" }
+      { word: "くんせい", display: "燻製", meaning: "煙でいぶして保存性と風味をつけた食品。" },
+      { word: "ぎんせい", display: "銀製／吟声", meaning: "銀で作られていること／詩歌を吟じる声。" },
+      { word: "がんせい", display: "眼精", meaning: "目の働き。「眼精疲労」。" },
+      { word: "ねんせい", display: "粘性", meaning: "どろりと粘る性質。粘り気。" },
+      { word: "ひんせい", display: "品性", meaning: "人としての品格。「品性を疑う」。" }
     ]
   },
   {
@@ -1000,7 +1007,9 @@ const WORD_ROUNDS = [
       { word: "めんどう", display: "面倒", meaning: "手間がかかってわずらわしいこと／世話。" },
       { word: "もんどう", display: "問答", meaning: "問いと答え。議論。" },
       { word: "りんどう", display: "竜胆／林道", meaning: "秋に紫の花を咲かせる草／山林を通る道。" },
-      { word: "れんどう", display: "連動", meaning: "一方の動きに合わせて他方も動くこと。" }
+      { word: "れんどう", display: "連動", meaning: "一方の動きに合わせて他方も動くこと。" },
+      { word: "ずんどう", display: "寸胴", meaning: "上から下まで太さが同じで、くびれのない形。「寸胴鍋」。" },
+      { word: "おんどう", display: "音頭（おんどう）", meaning: "雅楽で、各楽器の首席奏者。一般には「音頭（おんど）」と読み、大勢の先頭で歌い出すこと・その歌。" }
     ]
   },
   {
@@ -1060,7 +1069,8 @@ const WORD_ROUNDS = [
       { word: "へんたい", display: "変態／編隊", meaning: "形を変えること・異常な性癖／隊形を組むこと。" },
       { word: "ほんたい", display: "本体", meaning: "中心となる部分。" },
       { word: "めんたい", display: "明太", meaning: "スケトウダラ。「明太子」。" },
-      { word: "れんたい", display: "連帯／連隊", meaning: "共に責任を負うこと／軍の編制単位。" }
+      { word: "れんたい", display: "連帯／連隊", meaning: "共に責任を負うこと／軍の編制単位。" },
+      { word: "がんたい", display: "眼帯", meaning: "目を保護するために当てる布や器具。" }
     ]
   },
   {
@@ -1090,7 +1100,12 @@ const WORD_ROUNDS = [
       { word: "ほんしん", display: "本心", meaning: "本当の気持ち。" },
       { word: "まんしん", display: "慢心", meaning: "おごり高ぶること。" },
       { word: "みんしん", display: "民心", meaning: "民衆の心。" },
-      { word: "もんしん", display: "問診", meaning: "医師が患者に質問して状態を調べること。" }
+      { word: "もんしん", display: "問診", meaning: "医師が患者に質問して状態を調べること。" },
+      { word: "ざんしん", display: "斬新", meaning: "発想や手法が際立って新しいこと。" },
+      { word: "めんしん", display: "免震", meaning: "建物に地震の揺れを伝わりにくくする構造。" },
+      { word: "ぐんしん", display: "軍神", meaning: "戦いの神／武勲をたたえられた軍人。" },
+      { word: "ふんしん", display: "分針", meaning: "時計の分を示す針。長針。" },
+      { word: "くんしん", display: "君臣", meaning: "主君と家来。" }
     ]
   },
   {
@@ -1206,7 +1221,8 @@ const WORD_ROUNDS = [
       { word: "しれい", display: "司令／指令", meaning: "軍などを指揮すること／指図・命令。" },
       { word: "しろい", display: "白い", meaning: "雪のような色である。" },
       { word: "しんい", display: "真意", meaning: "本当の気持ち・意図。" },
-      { word: "してい", display: "指定／師弟／子弟", meaning: "それと指し定めること／師と弟子／年若い者。" }
+      { word: "してい", display: "指定／師弟／子弟", meaning: "それと指し定めること／師と弟子／年若い者。" },
+      { word: "しぜい", display: "市税", meaning: "市が課す地方税。" }
     ]
   },
   {
