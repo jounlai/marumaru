@@ -3,739 +3,217 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
 <title>〇〇ことば — かな穴埋めサバイバル</title>
-<style>
-:root{--bg:#000;--fg:#fff;--muted:#9a9a9a;--line:#333;--panel:#0a0a0a;--danger:#ff3b3b;}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--fg);font-family:"Hiragino Sans","Yu Gothic UI","Yu Gothic",system-ui,sans-serif;min-height:100%;}
-button{font:inherit}
-body{min-height:100vh;display:flex;justify-content:center}
-.app{width:min(1080px,100%);padding:12px 18px 36px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--line);padding-bottom:8px}
-.brand{font-weight:900;letter-spacing:.08em;font-size:clamp(19px,3vw,28px)}
-.brand small{font-size:.42em;color:var(--muted);margin-left:8px;font-weight:700}
-.topBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.iconBtn{background:#000;color:#fff;border:1px solid #444;border-radius:999px;padding:8px 12px;cursor:pointer}
-.status{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:9px 0}
-.round{font-variant-numeric:tabular-nums;font-weight:800}
-.stars{text-align:center;white-space:nowrap;font-size:clamp(18px,4vw,28px);letter-spacing:.04em}
-.score{text-align:right;color:var(--muted);font-size:14px}
-.hero{text-align:center;padding:8px 8px 8px}
-.kicker{color:var(--muted);font-size:13px;letter-spacing:.12em}
-.pattern{font-weight:950;font-size:clamp(46px,8vw,76px);letter-spacing:.07em;line-height:1.02;margin:4px 0 5px}
-.pattern .hole{display:inline-block;min-width:.75em}
-.sub{color:#bcbcbc;font-size:14px}
-.meter{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:5px}
-.meter strong{font-size:20px}
-.flash{min-height:22px;text-align:center;font-weight:900;margin:4px 0 2px;font-size:14px}
-.flash.good{color:#fff}
-.flash.bad{text-decoration:line-through;text-decoration-thickness:2px}
-.gridWrap{border:1px solid var(--line);border-radius:14px;padding:9px 10px;background:var(--panel)}
-.gridLabel{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px;margin-bottom:5px}
-.kanaGrid{display:grid;grid-template-columns:repeat(2,minmax(0,300px));justify-content:center;align-items:start;gap:14px}
-.kanaSection{display:flex;flex-direction:column;gap:3px}.kanaSectionLabel{font-size:10px;color:#777;letter-spacing:.12em;margin:0 0 2px;text-align:center}
-.kanaRow{display:grid;grid-template-columns:repeat(5,minmax(28px,42px));justify-content:center;gap:4px}
-.kanaSpacer{height:30px;min-height:0}
-.kana{height:30px;min-height:0;border:1px solid #444;background:#000;color:#fff;border-radius:7px;font-size:20px;font-weight:400;line-height:1;cursor:pointer;transition:.1s transform,.1s background,.1s color;font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;padding:0}
-.kana:hover{background:#fff;color:#000;transform:translateY(-1px)}
-.kana:active{transform:translateY(1px)}
-.kana.invalid{color:#2d2d2d;border-color:#181818;background:#050505;cursor:not-allowed;opacity:.42}
-.kana.invalid:hover{color:#2d2d2d;border-color:#181818;background:#050505;transform:none}
-.kana.used{color:#555;border-color:#222;background:#080808;cursor:default}
-.kana.correct{background:#fff;color:#000;border-color:#fff}
-.kana.missedCorrect{color:var(--danger);border-color:#5a2020;background:#100606;font-weight:700;text-shadow:0 0 9px rgba(255,59,59,.35)}
-.kana.remainingFlash{animation:remainingFlash .46s ease-out}
-@keyframes remainingFlash{
-  0%,100%{background:#000;color:#fff;border-color:#444;box-shadow:none}
-  38%{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 0 2px #fff,0 0 18px rgba(255,255,255,.95)}
-  65%{background:#111;color:#fff;border-color:#aaa;box-shadow:0 0 8px rgba(255,255,255,.55)}
-}
-.bottomGrid{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;margin-top:9px}
-.panel{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--panel)}
-.panel h2{font-size:14px;margin:0 0 6px;letter-spacing:.05em}
-.found{display:flex;flex-direction:column;gap:4px;max-height:300px;overflow:auto}
-.foundRow{display:grid;grid-template-columns:minmax(190px,240px) minmax(0,1fr);gap:12px;padding:5px 0;border-top:1px dashed #262626;align-items:center}
-.foundRow:first-child{border-top:0}
-.word{font-size:18px;font-weight:900}.foundRow .word,.clearAnswerRow .word,.debugAnswer .word{white-space:nowrap;word-break:keep-all}.reading{font-size:11px;font-weight:500;color:#8c8c8c;display:block;margin-top:1px;white-space:nowrap;word-break:keep-all}
-.meaning{font-size:12px;color:#c8c8c8;line-height:1.4}
-.empty{color:#666;font-size:13px;padding:18px 0;text-align:center}
-.rules{font-size:13px;color:#bbb;line-height:1.75}
-.rules b{color:#fff}
-.actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.btn{border:1px solid #555;background:#000;color:#fff;border-radius:11px;padding:10px 14px;font-weight:800;cursor:pointer}
-.btn.primary{background:#fff;color:#000;border-color:#fff}
-.btn:disabled{opacity:.35;cursor:not-allowed}
-.clearCard{display:none;margin-top:16px;border:2px solid #fff;border-radius:18px;padding:18px;text-align:center}
-.clearCard.show{display:block}
-.clearTitle{font-size:26px;font-weight:950}
-.clearText{color:#bbb;margin:6px 0 14px}
-.clearAnswers{margin:12px auto 14px;max-height:230px;overflow:auto;text-align:left;border-top:1px dashed #333;border-bottom:1px dashed #333;padding:5px 0}
-.clearAnswerRow{display:grid;grid-template-columns:minmax(220px,270px) minmax(0,1fr);gap:12px;align-items:center;padding:6px 4px;border-top:1px solid #171717}
-.clearAnswerRow:first-child{border-top:0}
-.clearAnswerRow.missed .word::after{content:"見逃し";display:inline-block;white-space:nowrap;word-break:keep-all;font-size:9px;font-weight:700;color:#888;border:1px solid #444;border-radius:999px;padding:1px 5px;margin-left:5px;vertical-align:2px;line-height:1.4}
-.clearAnswersTitle{font-size:11px;color:#888;letter-spacing:.1em;text-align:left;margin-top:8px}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;place-items:center;padding:24px;z-index:20}
-.overlay.show{display:grid}
-.gameover{width:min(520px,100%);border:1px solid #fff;border-radius:22px;padding:28px;text-align:center;background:#000}
-.gameover h1{font-size:42px;margin:0 0 4px}
-.gameover p{color:#aaa;line-height:1.7}
-.debugHint{display:none;margin-top:12px;border-top:1px dashed #2a2a2a;padding-top:12px}
-.debugHint.show{display:block}
-.debugHintTitle{font-size:11px;color:#777;letter-spacing:.1em;margin-bottom:8px}
-.debugAnswer{display:grid;grid-template-columns:minmax(190px,240px) minmax(0,1fr);gap:12px;padding:7px 0;border-top:1px solid #191919}
-.debugAnswer:first-of-type{border-top:0}
-.debugAnswer .word{font-size:17px}
-.tiny{font-size:11px;color:#666;margin-top:14px;line-height:1.5}
-.roundOverlay{position:fixed;inset:0;background:rgba(0,0,0,.96);display:none;z-index:30;overflow:auto;padding:22px}
-.roundOverlay.show{display:block}
-.roundPicker{width:min(940px,100%);margin:0 auto;border:1px solid #444;border-radius:20px;background:#050505;padding:16px}
-.roundPickerHead{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid #222}
-.roundPickerTitle{font-size:22px;font-weight:950}
-.roundPickerSub{font-size:12px;color:#888;margin-top:3px}
-.roundList{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
-.specialHeader{grid-column:1/-1;margin-top:8px;padding:12px 2px 5px;border-top:1px solid #2d2d2d;font-size:12px;font-weight:900;letter-spacing:.14em;color:#aaa}
-.specialHeader small{display:block;margin-top:4px;font-size:10px;font-weight:500;letter-spacing:.02em;color:#666}
-.roundChoice.special{border-color:#4a4a4a;background:#070707}
-.specialBadge{display:inline-block;border:1px solid #777;border-radius:999px;padding:2px 7px;color:#ddd;font-size:9px;font-weight:900;letter-spacing:.06em}
-.kanaGrid.single{grid-template-columns:minmax(0,300px)}
-.roundChoice{position:relative;border:1px solid #333;background:#000;color:#fff;border-radius:12px;padding:10px 11px;text-align:left;cursor:pointer;min-height:82px;overflow:hidden}
-.roundChoice:hover{border-color:#888;background:#0b0b0b}
-.roundChoice.cleared{background:#f2f2f2;color:#000;border:2px solid #fff;box-shadow:inset 0 0 0 1px #000,0 0 0 1px #555}
-.roundChoice.cleared:hover{background:#fff;border-color:#fff}
-.roundChoice.cleared .roundChoiceTop,.roundChoice.cleared .roundChoiceMeta{color:#333}
-.roundChoice.cleared .roundChoicePattern{color:#000}
-.roundChoice.cleared .clearBadge{background:#000;color:#fff;border-color:#000}
-.roundChoice.cleared::after{content:"✓";position:absolute;right:8px;bottom:-18px;font-size:74px;font-weight:950;color:rgba(0,0,0,.08);line-height:1;pointer-events:none}
-.roundChoice.current{border-color:#fff}
-.roundChoiceTop{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:#888}
-.roundChoicePattern{font-size:24px;font-weight:900;letter-spacing:.05em;margin:5px 0 2px}
-.roundChoiceMeta{font-size:11px;color:#777}
-.clearBadge{display:inline-block;white-space:nowrap;word-break:keep-all;border:1px solid #fff;border-radius:999px;padding:2px 7px;color:#fff;font-size:10px;font-weight:900;letter-spacing:.04em}
-.progressBadge{display:inline-block;white-space:nowrap;word-break:keep-all;border:1px solid #333;border-radius:999px;padding:2px 7px;color:#777;font-size:10px;font-weight:800}
-
-.correctBurst{position:fixed;inset:0;display:none;place-items:center;pointer-events:none;z-index:60;background:radial-gradient(circle at center,rgba(255,255,255,.08),transparent 36%)}
-.correctBurst.show{display:grid}
-.correctBurstInner{text-align:center;transform-origin:center;animation:correctPop .82s cubic-bezier(.16,.9,.28,1) both;text-shadow:0 0 28px rgba(255,255,255,.25)}
-.correctBurstWord{font-size:clamp(54px,11vw,118px);font-weight:950;letter-spacing:.06em;line-height:1}
-.correctBurstReading{font-size:clamp(14px,2.3vw,24px);font-weight:700;color:#aaa;margin-top:10px;letter-spacing:.08em}
-.correctBurstMark{font-size:12px;letter-spacing:.28em;color:#999;margin-bottom:10px}
-@keyframes correctPop{0%{opacity:0;transform:scale(.52) rotate(-2deg);filter:blur(8px)}35%{opacity:1;transform:scale(1.09) rotate(.5deg);filter:blur(0)}55%{transform:scale(.97)}72%{transform:scale(1.02)}100%{opacity:0;transform:scale(.96) translateY(-14px)}}
-.clearBurst{position:fixed;inset:0;display:none;place-items:center;pointer-events:none;z-index:80;background:rgba(0,0,0,.82)}
-.clearBurst.show{display:grid}
-.clearBurstInner{text-align:center;animation:clearPop 1.25s cubic-bezier(.16,.9,.28,1) both}
-.clearBurstRound{font-size:clamp(12px,2vw,18px);letter-spacing:.3em;color:#aaa;font-weight:800;margin-bottom:10px}
-.clearBurstTitle{font-size:clamp(54px,11vw,118px);font-weight:950;line-height:.95;letter-spacing:.03em;text-shadow:0 0 34px rgba(255,255,255,.25)}
-.clearBurstBonus{margin-top:14px;font-size:clamp(18px,3vw,30px);font-weight:900}
-@keyframes clearPop{0%{opacity:0;transform:scale(.58);filter:blur(10px)}24%{opacity:1;transform:scale(1.08);filter:blur(0)}43%{transform:scale(.97)}58%{transform:scale(1.02)}78%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.96) translateY(-10px)}}
-.clearAnswerRow.missed .missedKana{color:var(--danger);font-weight:950;text-shadow:0 0 10px rgba(255,59,59,.25)}
-.resetBtn{border-color:#5b2424;color:#ffb0b0}
-.resetBtn:hover{border-color:#ff6666;color:#fff}
-
-@media(max-width:760px){
- .app{padding:9px 10px 28px}
- .brand small{display:none}
- .status{grid-template-columns:auto 1fr auto}
- .stars{font-size:19px}
- .bottomGrid{grid-template-columns:1fr}
- .kanaGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- .kanaRow{grid-template-columns:repeat(5,minmax(24px,1fr));gap:3px}
- .kana,.kanaSpacer{height:28px;min-height:0}
- .kana{font-size:18px;font-weight:400}
- .gridLabel span:last-child{display:none}
- .foundRow{grid-template-columns:minmax(170px,44%) minmax(0,1fr)}
- .clearAnswerRow{grid-template-columns:minmax(190px,52%) minmax(0,1fr);gap:8px}
- .debugAnswer{grid-template-columns:minmax(170px,44%) minmax(0,1fr)}
- .roundList{grid-template-columns:repeat(2,minmax(0,1fr))}
- .roundOverlay{padding:10px}
- .roundPicker{padding:12px}
-}
-</style>
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<div class="app">
+
+<div class="app" id="app">
+
+  <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand">〇〇ことば <small>かな穴埋めサバイバル</small></div>
+    <div class="brand">〇〇ことば</div>
+    <div class="hud">
+      <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
+      <div class="hudScore" id="hudScore">
+        <b id="scoreValue">0</b>
+        <small id="rankLabel">見習い</small>
+      </div>
+    </div>
     <div class="topBtns">
-      <button class="iconBtn" id="roundListBtn">ラウンド一覧</button>
-      <button class="iconBtn" id="soundBtn" aria-label="効果音">♪ ON</button>
-      <button class="iconBtn resetBtn" id="restartBtn">リセット</button>
+      <button class="iconBtn" id="roundListBtn">☰ 一覧</button>
+      <button class="iconBtn" id="menuBtn" aria-label="メニュー">⚙</button>
     </div>
   </header>
 
-  <section class="status">
-    <div class="round" id="roundLabel">ROUND 01 / 30</div>
-    <div class="stars" id="stars">★★★★★</div>
-    <div class="score" id="score">正解 0</div>
-  </section>
+  <div class="layout">
+    <main class="main">
 
-  <main>
-    <section class="hero">
-      <div class="kicker" id="difficulty">WARM-UP</div>
-      <div class="pattern" id="pattern"></div>
-      <div class="sub" id="instruction">〇に同じ仮名を入れて、成立する4文字ことばを全部見つけろ。</div>
-      <div class="meter"><strong id="foundCount">0 / 0</strong><span class="sub">発見</span></div>
-      <div class="flash" id="flash" aria-live="polite"></div>
-    </section>
+      <!-- お題と進捗 -->
+      <section class="stage">
+        <div class="stageChips">
+          <span class="chipTag" id="roundLabel">ROUND 01</span>
+          <span class="chipTag ghost" id="difficulty">WARM-UP</span>
+          <span class="comboTag" id="comboTag"></span>
+        </div>
+        <div class="pattern" id="pattern"></div>
+        <div class="progress">
+          <!-- ひらがな棒人間。バーの上を歩き、ゴール旗（クリア地点）を目指す -->
+          <div class="track" id="track">
+            <div class="goal" id="goal"></div>
+            <div class="mBubble" id="mBubble"></div>
+            <!-- mascot=横位置 / mRig=ジャンプ・転倒などの姿勢 / mBob=歩行の上下動と呼吸 -->
+            <div class="mascot" id="mascot">
+              <div class="mRig" id="mRig">
+                <!-- 描画順＝重なり順。腕は最後に置いて頭・胴より手前に出す -->
+                <div class="mBob">
+                  <span class="mLeg mLegL">し</span>
+                  <span class="mLeg mLegR">し</span>
+                  <span class="mTorso"></span>
+                  <span class="mHead" id="mHead">の</span>
+                  <span class="mArm mArmL">く</span>
+                  <span class="mArm mArmR">く</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bar" id="bar"><i id="barFill"></i><b id="barTarget"></b></div>
+          <div class="progressText">
+            <span id="foundCount">0 / 0</span>
+            <span id="toClear"></span>
+          </div>
+        </div>
+        <div class="flash" id="flash" aria-live="polite"></div>
+      </section>
 
-    <section class="gridWrap">
-      <div class="gridLabel"><span id="gridModeLabel">五十音＋濁音・半濁音</span><span id="gridModeNote">押せるものは全部押したくなる。それが罠。</span></div>
-      <div class="kanaGrid" id="kanaGrid"></div>
-    </section>
+      <!-- 五十音パネル -->
+      <section class="gridWrap">
+        <div class="kanaGrid" id="kanaGrid">
+          <!-- 清音／濁音セクションは JS が描画。右下の空きスペースをポケットとして使う -->
+          <div class="pocket" id="pocket">
+            <div class="pocketTitle" id="pocketTitle">見つけたことば</div>
+            <div class="chips" id="foundChips"></div>
+            <div class="pocketBtns">
+              <button class="btn" id="hintBtnM">ヒント −300</button>
+              <button class="btn" id="giveupBtnM">降参</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
-    <section class="clearCard" id="clearCard">
-      <div class="clearTitle">ROUND CLEAR ★+1</div>
-      <div class="clearText" id="clearText">辞書の神様もだいたい満足しています。</div>
-      <div class="clearAnswersTitle">正解一覧（見逃したことばも表示）</div>
-      <div class="clearAnswers" id="clearAnswers"></div>
-      <button class="btn primary" id="nextBtn">次のラウンドへ →</button>
-    </section>
-
-    <section class="bottomGrid">
-      <div class="panel">
-        <h2>見つけたことば</h2>
-        <div class="found" id="foundList"><div class="empty">まだゼロ。〇だけがこちらを見ている。</div></div>
+    <!-- デスクトップ用サイドパネル -->
+    <aside class="aside">
+      <div class="panel panelFound">
+        <h2>見つけたことば <span id="foundTally"></span></h2>
+        <div class="found" id="foundList"></div>
       </div>
       <div class="panel">
         <h2>ルール</h2>
         <div class="rules">
-          ★は<b>5個</b>から開始。間違えるたびに★−1。<br>
-          そのラウンドの正解を<b>60％以上</b>見つけるとクリア＆<b>★＋1</b>。<br>
-          ★が0になった瞬間、容赦なくゲームオーバー。<br>
-          同じ仮名の再入力はノーダメージ。慎重派にも人権はある。<br>
-          <b>SPECIAL</b>では清音だけを選択。後半の「〇」は自動で濁音になる。
+          ★は<b>5個</b>から。はずすたびに<b class="key">★−1</b>、0でゲームオーバー。<br>
+          正解の<b>60％</b>を見つけたらクリア＆<b class="key">★＋1</b>。<br>
+          そこで止めても、<b class="key">全問正解（PERFECT）</b>を狙って続けてもいい。<br>
+          連続正解で<b class="key">コンボ</b>、5連続で<b class="key">FEVER（スコア2倍）</b>。
         </div>
         <div class="actions">
-          <button class="btn" id="hintBtn">ヒント（デバッグ）</button>
+          <button class="btn" id="hintBtn">ヒント −300</button>
           <button class="btn" id="giveupBtn">降参して答えを見る</button>
         </div>
-        <div class="debugHint" id="debugHint"></div>
-        <div class="tiny">
-          内蔵語彙は辞書語に加え、擬音語・擬態語・口語・俗語・ネット表現・定着した流行語・著名な固有名詞の用法まで広めに収録しています。
-          表記ゆれや新語は増え続けるため完全列挙はできませんが、ゲームとして「普通に通じるのに不正解」を減らす方針で更新しています。
-        </div>
       </div>
-    </section>
-  </main>
-</div>
+    </aside>
+  </div>
 
-<div class="correctBurst" id="correctBurst" aria-hidden="true">
-  <div class="correctBurstInner">
-    <div class="correctBurstMark">CORRECT</div>
-    <div class="correctBurstWord" id="correctBurstWord"></div>
-    <div class="correctBurstReading" id="correctBurstReading"></div>
+  <!-- クリア後に出る操作バー -->
+  <div class="doneBar" id="doneBar" hidden>
+    <div class="doneMsg" id="doneMsg"></div>
+    <div class="doneBtns">
+      <button class="btn primary" id="reviveBarBtn">★5で再開</button>
+      <button class="btn" id="retryBtn">やり直す</button>
+      <button class="btn" id="revealBtn">答えを見る</button>
+      <button class="btn primary" id="nextBtn">次のラウンドへ →</button>
+    </div>
   </div>
 </div>
 
-<div class="clearBurst" id="clearBurst" aria-hidden="true">
-  <div class="clearBurstInner">
-    <div class="clearBurstRound" id="clearBurstRound">ROUND 01</div>
-    <div class="clearBurstTitle">ROUND CLEAR</div>
-    <div class="clearBurstBonus">★ +1</div>
+<!-- ============================== 演出レイヤー ============================== -->
+<div id="fx" aria-hidden="true"></div>
+<div id="damage" aria-hidden="true"></div>
+
+<div class="burst" id="burst" aria-hidden="true">
+  <div class="burstInner" id="burstInner">
+    <div class="burstMark" id="burstMark">CORRECT</div>
+    <div class="burstWord" id="burstWord"></div>
+    <div class="burstSub" id="burstSub"></div>
+    <div class="burstBonus" id="burstBonus"></div>
   </div>
 </div>
 
-<div class="roundOverlay" id="roundOverlay">
-  <div class="roundPicker">
-    <div class="roundPickerHead">
+<!-- ============================== モーダル ============================== -->
+<div class="modal" id="roundModal">
+  <div class="modalCard">
+    <div class="modalHead">
       <div>
-        <div class="roundPickerTitle">ラウンド一覧</div>
-        <div class="roundPickerSub">好きなラウンドを選択できます。各ラウンドは正解の60％でクリア。</div>
+        <div class="modalTitle">ラウンド一覧</div>
+        <div class="modalSub">好きなラウンドから挑戦できます。正解の60％でクリア、全問正解でPERFECT。</div>
       </div>
-      <div class="topBtns"><button class="iconBtn resetBtn" id="resetProgressBtn">記録をリセット</button><button class="iconBtn" id="closeRoundListBtn">閉じる</button></div>
+      <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
     </div>
     <div class="roundList" id="roundList"></div>
   </div>
 </div>
 
-<div class="overlay" id="overlay">
-  <div class="gameover">
-    <div style="font-size:56px">☆</div>
-    <h1>GAME OVER</h1>
-    <p id="gameoverText">日本語は広かった。</p>
-    <div class="clearAnswersTitle">このラウンドの正解</div>
-    <div class="clearAnswers" id="gameoverAnswers"></div>
-    <button class="btn primary" id="retryBtn">もう一回やる</button>
+<div class="modal" id="answerModal">
+  <div class="modalCard">
+    <div class="modalHead">
+      <div>
+        <div class="modalTitle" id="answerTitle">正解一覧</div>
+        <div class="modalSub" id="answerSub"></div>
+      </div>
+      <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
+    </div>
+    <div id="answerList"></div>
   </div>
 </div>
 
-<script>
-const ROUND_DATA = [{"template":"○ん○ん","answers":[{"word":"あんあん","meaning":"泣き声・うめき声などを表す擬声語。／「anan（アンアン）」はマガジンハウスの女性誌。","display":"anan（アンアン）"},{"word":"いんいん","display":"殷々","meaning":"音が大きく響き渡るさま。"},{"word":"うんうん","meaning":"同意して何度もうなずくさま／苦しそうにうなる声。"},{"word":"えんえん","display":"延々","meaning":"長く途切れず続くさま。"},{"word":"おんおん","meaning":"声を上げて激しく泣くさま。"},{"word":"かんかん","meaning":"激しく怒るさま／硬い物が響く音。"},{"word":"がんがん","meaning":"強く響く音・痛み／勢いよく物事をするさま。／「ガンガン」は『月刊少年ガンガン』の通称としても使われる。","display":"ガンガン"},{"word":"きんきん","meaning":"高く鋭い音／非常によく冷えたさま。"},{"word":"ぎんぎん","meaning":"目が冴える・強い刺激で感覚が鋭いさま。"},{"word":"くんくん","meaning":"鼻を動かして繰り返し匂いを嗅ぐさま。"},{"word":"ぐんぐん","meaning":"勢いよく伸びたり進んだりするさま。"},{"word":"けんけん","meaning":"片足跳びをするさま・遊びの呼び名。"},{"word":"こんこん","meaning":"軽く続けて叩く音／咳などが続く音。"},{"word":"ごんごん","meaning":"鐘や硬い物などを続けて打つ鈍い音。"},{"word":"さんさん","meaning":"日光などが盛んに降り注ぐさま。"},{"word":"しんしん","meaning":"雪が静かに降るさま／冷えが深まるさま。"},{"word":"じんじん","meaning":"しびれや痛みが脈打つように続くさま。"},{"word":"すんすん","meaning":"鼻を小刻みに鳴らして匂いを嗅ぐ・泣くさま。"},{"word":"ずんずん","meaning":"ためらわず勢いよく進むさま。"},{"word":"せんせん","meaning":"おそれてびくびくするさま。『戦々恐々』の戦々。"},{"word":"ぜんぜん","display":"全然","meaning":"まったく。否定を伴うほか、口語では強い肯定にも使う。"},{"word":"たんたん","meaning":"感情を強く表さず、あっさり平静なさま。"},{"word":"だんだん","display":"段々","meaning":"少しずつ変化するさま／階段状になっているさま。"},{"word":"ちんちん","meaning":"非常に熱いさま（口語・地域差あり）／小さな金属音。"},{"word":"つんつん","meaning":"先がとがるさま／無愛想にするさま。"},{"word":"てんてん","meaning":"あちこち移るさま／点が散らばるさま。"},{"word":"でんでん","meaning":"『でんでん虫』などに現れる幼児語・俗称的な形。"},{"word":"とんとん","meaning":"軽く叩く音／物事が順調に進むさま。"},{"word":"どんどん","meaning":"勢いよく次々に進むさま／太鼓などの音。"},{"word":"なんなん","meaning":"『何なの』を強めた口語表現。"},{"word":"にんにん","meaning":"忍者の掛け声として慣用的に使われる戯画的な表現。"},{"word":"ねんねん","display":"年々","meaning":"年を追うごとに。"},{"word":"はんはん","display":"半々","meaning":"二つを同じ割合に分けること。"},{"word":"ばんばん","meaning":"勢いよく次々に行うさま／強く叩く音。"},{"word":"ぱんぱん","meaning":"いっぱいに張っているさま／手などを繰り返し打つ音。"},{"word":"ひんひん","meaning":"馬などが高く鳴く声。"},{"word":"びんびん","meaning":"刺激・音・勢いなどが強く伝わるさま。"},{"word":"ぴんぴん","meaning":"元気で生き生きしているさま／張っているさま。"},{"word":"ふんふん","meaning":"鼻歌や鼻息の音／軽い相づち。"},{"word":"ぶんぶん","meaning":"虫の羽音／物を勢いよく振り回す音。"},{"word":"ぷんぷん","meaning":"怒っているさま／においが強く漂うさま。"},{"word":"へんへん","meaning":"相手を軽くあしらったり、得意げに反発したりする際の口語的な声。"},{"word":"ぺんぺん","meaning":"平たい物などを軽く繰り返し叩く音。「尻をぺんぺん」など。"},{"word":"ぼんぼん","meaning":"裕福な家で甘く育った若い男性をいう口語。／「ボンボン」は『コミックボンボン』の通称としても知られる。","display":"ボンボン"},{"word":"ぽんぽん","meaning":"軽く叩く音／物事が勢いよく次々進むさま。"},{"word":"まんまん","meaning":"満ちあふれているさま。『自信満々』など。"},{"word":"みんみん","meaning":"セミの鳴き声を表す擬声語。"},{"word":"むんむん","meaning":"熱気・湿気・においなどがこもるさま。"},{"word":"めんめん","display":"面々","meaning":"一人一人、それぞれの人。"},{"word":"もんもん","display":"悶々","meaning":"思い悩んで苦しむさま。"},{"word":"らんらん","meaning":"目などが鋭く、強く輝くさま。"},{"word":"りんりん","meaning":"鈴や虫などの澄んだ音。"},{"word":"るんるん","meaning":"気分が浮き立ち、楽しいさま。"},{"word":"れんれん","meaning":"未練がましく執着するさま。『恋々』。"},{"word":"わんわん","meaning":"犬の鳴き声／大声で泣くさま。"}]},{"template":"○ら○ら","answers":[{"word":"からから","meaning":"乾ききったさま／軽い物が転がる音。"},{"word":"がらがら","meaning":"物が崩れたり鳴ったりする大きな音／空いているさま。"},{"word":"きらきら","meaning":"光が小刻みに美しく輝くさま。"},{"word":"ぎらぎら","meaning":"強烈に照り輝くさま／欲望が露骨なさま。"},{"word":"くらくら","meaning":"めまいがするさま／強い刺激でぼうっとするさま。"},{"word":"ぐらぐら","meaning":"大きく揺れるさま／気持ちが定まらないさま。"},{"word":"さらさら","meaning":"軽く滑らかな感触／水などが軽やかに流れる音。"},{"word":"すらすら","meaning":"文章を読んだり話したり、物事を進めたりするのが、つかえず滑らかなさま。"},{"word":"ざらざら","meaning":"表面が粗く滑らかでないさま。"},{"word":"ちらちら","meaning":"小さく見え隠れするさま／雪などがまばらに降るさま。"},{"word":"ばらばら","meaning":"まとまりがなく分散しているさま。"},{"word":"ぱらぱら","meaning":"まばらに落ちる・散るさま／軽くページをめくる音。"},{"word":"ひらひら","meaning":"薄く軽い物が揺れ動くさま。"},{"word":"びらびら","meaning":"薄い物が何枚も垂れ下がるさま。"},{"word":"ふらふら","meaning":"足元や気持ちが定まらないさま。"},{"word":"ぶらぶら","meaning":"目的なく歩くさま／物が垂れて揺れるさま。"},{"word":"ぺらぺら","meaning":"薄いさま／よどみなく軽快に話すさま。"},{"word":"むらむら","meaning":"感情や欲求が急にわき上がるさま。"},{"word":"ゆらゆら","meaning":"ゆっくり大きく揺れるさま。"},{"word":"けらけら","meaning":"甲高い声で屈託なく笑うさま。"},{"word":"げらげら","meaning":"大声で無遠慮に笑うさま。"},{"word":"たらたら","meaning":"液体が続けて垂れるさま／不平などを長々言うさま。"},{"word":"だらだら","meaning":"締まりなく長引くさま／液体が流れ続けるさま。"},{"word":"はらはら","meaning":"成り行きを心配して落ち着かないさま／花びらなどが散るさま。"},{"word":"へらへら","meaning":"締まりなく笑うさま／軽薄な態度。"},{"word":"べらべら","meaning":"よどみなく、または軽々しくしゃべるさま。"},{"word":"ほらほら","meaning":"相手の注意を促したり急かしたりする呼びかけ。"},{"word":"めらめら","meaning":"炎が勢いよく燃え上がるさま／感情が燃え立つさま。"},{"word":"わらわら","meaning":"大勢が一斉に寄り集まったり動いたりするさま。"},{"word":"いらいら","meaning":"思いどおりにならず、気持ちが落ち着かないさま。"},{"word":"ぷらぷら","meaning":"軽い物がぶら下がって揺れるさま／目的なく歩いたり過ごしたりするさま。"},{"word":"うらうら","meaning":"日が明るく穏やかに照り、のどかなさま。"},{"word":"おらおら","display":"オラオラ","meaning":"相手を威圧したり勢いづけたりするときに繰り返す荒っぽい掛け声。漫画・ネットでも定着した表現。"},{"word":"つらつら","meaning":"物事を念入りに見たり考えたりするさま。つくづく、よくよく。","display":"倩々／つらつら"}]},{"template":"○り○り","answers":[{"word":"ありあり","meaning":"はっきりと目に見えるようなさま。"},{"word":"きりきり","meaning":"鋭く痛むさま／忙しく立ち働くさま。"},{"word":"ぎりぎり","meaning":"限界すれすれで余裕がないさま。"},{"word":"こりこり","meaning":"硬く歯ごたえがあるさま／凝って硬いさま。"},{"word":"ごりごり","meaning":"硬い物をこする音／強引に押し進めるさま。"},{"word":"じりじり","meaning":"少しずつ迫るさま／日差しが焼きつけるさま。"},{"word":"すりすり","meaning":"こすりつける動作を繰り返すさま。"},{"word":"ずりずり","meaning":"引きずりながら動くさま。"},{"word":"ちりちり","meaning":"縮れて細かく波打つさま／焼けるような刺激。"},{"word":"てりてり","meaning":"表面がつやつやと照っているさま。"},{"word":"のりのり","meaning":"気分が高揚し、調子がよいさま。"},{"word":"ばりばり","meaning":"硬い物を割る音／精力的に働くさま。"},{"word":"びりびり","meaning":"紙などが裂ける音／電気的な刺激。"},{"word":"ぶりぶり","meaning":"不機嫌にふくれるさま／勢いのあるさま。"},{"word":"ぷりぷり","meaning":"怒って頬をふくらませるさま／弾力のあるさま。"},{"word":"めりめり","meaning":"木などが裂けたり壊れたりする低い音。"},{"word":"もりもり","meaning":"勢いよく食べる・元気が増すさま。"},{"word":"おりおり","display":"折々","meaning":"その時々。時折。"},{"word":"かりかり","meaning":"硬く軽快な食感／いら立っているさま。"},{"word":"がりがり","meaning":"非常にやせているさま／硬い物を削る音。"},{"word":"ぱりぱり","meaning":"薄く硬く、歯切れのよい食感。"},{"word":"ひりひり","meaning":"焼けるような軽い痛みが続くさま。"},{"word":"ぴりぴり","meaning":"細かく刺激する痛み／緊張した空気。"},{"word":"ふりふり","meaning":"小さく繰り返し振るさま（口語）。"},{"word":"ぺりぺり","meaning":"薄い物を連続してはがす音・感触（口語）。"},{"word":"くりくり","meaning":"目などが丸く大きく、よく動くさま。"},{"word":"むりむり","display":"無理無理","meaning":"「無理だ」を重ねて強く否定する口語・ネット表現。辞書には物が裂け砕ける音の用法もある。"},{"word":"よりより","display":"よりより（麻花兒）","meaning":"長崎で親しまれる、ねじった生地を揚げた中華菓子「麻花兒（マファール）」の愛称。"},{"word":"しりしり","meaning":"沖縄で「すりおろす・細くおろす」動作や音を表す語。郷土料理「にんじんしりしり」の名で広く知られる。","display":"しりしり／人参シリシリー"}]},{"template":"○く○く","answers":[{"word":"がくがく","meaning":"震えて小刻みに動くさま。"},{"word":"さくさく","meaning":"軽く歯切れのよい食感／物事が軽快に進むさま。"},{"word":"ざくざく","meaning":"粗く刻む音／大量にあるさま。"},{"word":"しくしく","meaning":"弱々しく泣くさま／鈍く痛むさま。"},{"word":"ちくちく","meaning":"針で刺すように細かく痛むさま。"},{"word":"てくてく","meaning":"一定の調子で歩き続けるさま。"},{"word":"どくどく","meaning":"血や液体などが勢いよく流れ出るさま。"},{"word":"ばくばく","meaning":"激しく食べるさま／心臓が大きく鼓動するさま。"},{"word":"ぱくぱく","meaning":"口を繰り返し開閉するさま／勢いよく食べるさま。"},{"word":"びくびく","meaning":"恐れて小さく震えるさま。"},{"word":"ぴくぴく","meaning":"筋肉などが小刻みに動くさま。"},{"word":"もくもく","meaning":"煙などが次々と湧くさま／黙々の口語的表記。"},{"word":"わくわく","meaning":"期待で胸が弾むさま。"},{"word":"ぞくぞく","meaning":"寒気で震えるさま／次々と続くさま。"},{"word":"かくかく","meaning":"角張っているさま／事情を省略して示す『かくかくしかじか』の形。"},{"word":"こくこく","meaning":"何度もうなずくさま／時々刻々の『刻々』。"},{"word":"ごくごく","meaning":"飲み物を勢いよく飲む音・さま。"},{"word":"すくすく","meaning":"子どもや植物が健康に順調に育つさま。"},{"word":"とくとく","meaning":"液体を注ぐ音／得意そうなさま『得々』。"},{"word":"ぬくぬく","meaning":"暖かく心地よいさま／苦労せず安楽にしているさま。"},{"word":"ひくひく","meaning":"筋肉や顔の一部が小刻みに引きつるさま。"},{"word":"ぶくぶく","meaning":"泡が盛んに立つさま／太っているさま。"},{"word":"ぷくぷく","meaning":"ふっくら膨らむさま／小さな泡が出るさま。"},{"word":"ほくほく","meaning":"温かくほぐれた食感／うれしく満足しているさま。"},{"word":"ぽくぽく","meaning":"木魚・下駄などの軽く乾いた音。"},{"word":"らくらく","display":"楽々","meaning":"苦労せず、たやすく物事を行うさま。"},{"word":"むくむく","meaning":"雲・煙・感情などが次々と盛り上がるさま／体を起こすさま。"},{"word":"よくよく","meaning":"十分に念を入れて。つくづく。"},{"word":"ゆくゆく","meaning":"将来。行く末には。"},{"word":"ふくふく","display":"福々／ふくふく","meaning":"柔らかくふっくらしたさま／豊かで幸福感にあふれるさま。"}]},{"template":"○た○た","answers":[{"word":"かたかた","meaning":"硬い物が小刻みに触れ合う音。"},{"word":"がたがた","meaning":"物が激しく揺れる音／状態がひどく悪いさま。"},{"word":"くたくた","meaning":"ひどく疲れたさま／柔らかく煮崩れたさま。"},{"word":"ぐたぐた","meaning":"締まりがなく、だらしないさま。"},{"word":"ばたばた","meaning":"慌ただしく動くさま／大きく羽ばたく音。"},{"word":"ぱたぱた","meaning":"軽い物を続けて打つ音／軽い足音。"},{"word":"べたべた","meaning":"粘りつくさま／必要以上になれなれしいさま。"},{"word":"ぺたぺた","meaning":"平たい物を軽く貼る・触る音。"},{"word":"もたもた","meaning":"動作が遅く、手際が悪いさま。"},{"word":"わたわた","meaning":"慌てふためき落ち着かないさま（口語）。"},{"word":"どたどた","meaning":"重い足音を立てて慌ただしく歩くさま。"},{"word":"はたはた","meaning":"薄い物が風などで連続してはためく音。"},{"word":"へたへた","meaning":"力が抜けてその場に座り込むさま。"},{"word":"ぼたぼた","meaning":"大きめの滴が続けて落ちるさま。"},{"word":"ぽたぽた","meaning":"滴が一滴ずつ続けて落ちるさま。"},{"word":"ぴたぴた","meaning":"軽く密着する・続けて触れる音やさま。"},{"word":"すたすた","meaning":"ためらわず、軽快な足取りで歩くさま。"},{"word":"ひたひた","meaning":"水などが静かに満ち寄せるさま／足音を忍ばせて近づくさま。"},{"word":"よたよた","meaning":"足元がおぼつかず、危なげに歩くさま。"},{"word":"またまた","display":"またまた／又々","meaning":"再び。またしても。相手の話を軽く疑う相づちにも使う。"},{"word":"おたおた","meaning":"不意の出来事などに慌て、どうしてよいか分からないさま。"}]},{"template":"○ろ○ろ","answers":[{"word":"うろうろ","meaning":"当てもなく行ったり来たりするさま。"},{"word":"ころころ","meaning":"小さく丸い物が転がるさま／よく変わるさま。／「コロコロ」は『月刊コロコロコミック』の通称としても有名。","display":"コロコロ"},{"word":"ごろごろ","meaning":"大きな物が転がる音／何もせず過ごすさま。"},{"word":"そろそろ","meaning":"もう間もなく／静かにゆっくり行動するさま。"},{"word":"ぞろぞろ","meaning":"多くの人や物が列になって続くさま。"},{"word":"どろどろ","meaning":"粘り気の強いさま／人間関係などが醜くもつれるさま。"},{"word":"へろへろ","meaning":"ひどく疲れて力が抜けたさま。"},{"word":"ぼろぼろ","meaning":"ひどく傷んださま／涙などが次々こぼれるさま。"},{"word":"ぽろぽろ","meaning":"小さな物や涙が次々こぼれ落ちるさま。"},{"word":"もろもろ","display":"諸々","meaning":"いろいろなもの。"},{"word":"よろよろ","meaning":"足元が定まらず危なげに歩くさま。"},{"word":"おろおろ","meaning":"どうしてよいか分からず慌てるさま。"},{"word":"とろとろ","meaning":"ゆっくり流れる・溶けるさま／浅く眠るさま。"},{"word":"のろのろ","meaning":"動きが非常に遅いさま。"},{"word":"ほろほろ","meaning":"涙や花などが静かにこぼれるさま／柔らかく崩れる食感。"},{"word":"めろめろ","meaning":"夢中になって正常な判断ができないほど心を奪われるさま。","display":"メロメロ"},{"word":"じろじろ","meaning":"失礼なほど、遠慮なく何度も見つめるさま。"},{"word":"べろべろ","display":"ベロベロ","meaning":"しきりになめるさま／ひどく酔って正体がないさま。"},{"word":"ぺろぺろ","display":"ペロペロ","meaning":"舌先などで軽く何度もなめるさま。"},{"word":"けろけろ","display":"ケロケロ","meaning":"カエルの鳴き声を表す擬声語／平然としているさま。"},{"word":"ぎろぎろ","meaning":"目玉などが気味悪いほど鋭く動き、光るさま。"}]},{"template":"○ち○ち","answers":[{"word":"かちかち","meaning":"非常に硬いさま／時計などの規則的な音。"},{"word":"がちがち","meaning":"緊張などで硬くなるさま／非常に堅固なさま。"},{"word":"ぱちぱち","meaning":"はじける音／拍手する音。"},{"word":"ぴちぴち","meaning":"若々しく元気なさま／魚などが跳ねるさま。"},{"word":"ぷちぷち","meaning":"小さな粒がつぶれる音・感触。"},{"word":"ぶちぶち","meaning":"細かく不平を言うさま／ちぎれる音。"},{"word":"ぽちぽち","meaning":"少しずつ・ぼつぼつ。"},{"word":"むちむち","meaning":"肉付きがよく弾力があるさま。"},{"word":"もちもち","meaning":"柔らかく粘りと弾力がある食感。"},{"word":"いちいち","meaning":"一つ一つ。何かにつけて。"},{"word":"こちこち","meaning":"非常に硬いさま／ひどく緊張しているさま。"},{"word":"ねちねち","meaning":"しつこく執念深いさま。"},{"word":"ぺちぺち","meaning":"手などで軽く繰り返し叩く音。"},{"word":"ぼちぼち","meaning":"少しずつ、そろそろ。関西を中心に広く使われる表現。"},{"word":"よちよち","meaning":"幼児などが不安定な足取りで歩くさま。"},{"word":"みちみち","meaning":"目的地へ向かう途中。道すがら。","display":"道々"},{"word":"けちけち","display":"ケチケチ","meaning":"わずかな金銭や労力を惜しみ、細かく出し渋るさま。"},{"word":"ばちばち","display":"バチバチ","meaning":"火花などが激しくはぜる音・さま／ライバル同士が激しく対立するさま。若者語では「強烈に・完璧に」の強調にも使う。"},{"word":"まちまち","display":"まちまち／区々","meaning":"物事がそれぞれ異なり、統一されていないさま。"}]},{"template":"○こ○こ","answers":[{"word":"せこせこ","meaning":"目先のことにこだわり、せわしないさま。"},{"word":"そこそこ","meaning":"十分ではないが、ある程度。"},{"word":"とことこ","meaning":"小さな足取りで軽く歩くさま。"},{"word":"にこにこ","meaning":"うれしそうに微笑み続けるさま。／「ニコニコ」は動画・配信サービスの名称としても知られる。","display":"ニコニコ"},{"word":"のこのこ","meaning":"場違いなのに平然と出てくるさま。"},{"word":"ぼこぼこ","meaning":"表面に多くの凹凸があるさま／激しく殴る音。"},{"word":"ぽこぽこ","meaning":"小さく膨らむ・湧く音やさま。"},{"word":"しこしこ","meaning":"弾力があり歯ごたえのあるさま／こする動作の俗な表現。"},{"word":"へこへこ","meaning":"何度も頭を下げ、卑屈にへつらうさま。"},{"word":"べこべこ","meaning":"薄い物がへこんだり戻ったりするさま。"},{"word":"ぺこぺこ","meaning":"腹が非常に減ったさま／何度も頭を下げるさま。"},{"word":"ほこほこ","meaning":"温かく柔らかなさま（口語・地域差あり）。"},{"word":"きこきこ","meaning":"機械や関節などがこすれて繰り返し鳴る軽い音。"},{"word":"ぎこぎこ","meaning":"物がきしんで繰り返し鳴る音／動きが滑らかでないさま。"},{"word":"もこもこ","display":"モコモコ","meaning":"衣類などが厚くふくらんださま／柔らかいものが次々盛り上がるさま。"},{"word":"すこすこ","meaning":"「すこ（好き）」を重ね、強い好意を表すネット・若者表現。"}]},{"template":"○っくり","answers":[{"word":"がっくり","meaning":"急に力を落とす・ひどく落胆するさま。"},{"word":"ぎっくり","meaning":"不意を突かれて驚いたり、急に体をひねって痛めたりするさま。「ぎっくり腰」など。"},{"word":"こっくり","meaning":"うなずくさま／居眠りで頭が前に落ちるさま。"},{"word":"ざっくり","meaning":"大まかに／粗く切るさま。"},{"word":"じっくり","meaning":"時間をかけ、落ち着いて行うさま。"},{"word":"しっくり","meaning":"よく調和し、違和感がないさま。"},{"word":"そっくり","meaning":"非常によく似ているさま／全部そのまま。"},{"word":"とっくり","display":"とっくり／徳利","meaning":"念入りに、十分に、よく。／徳利：日本酒などを入れて注ぐ、首の細い容器。"},{"word":"びっくり","meaning":"突然のことに驚くさま。"},{"word":"ぽっくり","meaning":"突然あっけなく死ぬさま／軽く折れるさま。"},{"word":"むっくり","meaning":"横たわった状態から急に起き上がるさま。"},{"word":"ゆっくり","meaning":"急がず時間をかけるさま。"},{"word":"ぱっくり","meaning":"口や傷などが大きく開くさま。"},{"word":"ほっくり","meaning":"ふくよかで穏やかなさま／物が軽く折れるさまなどを表す古くからの語。"},{"word":"ごっくり","meaning":"液体を喉を鳴らして一息に飲み込む音・さま。"},{"word":"ぞっくり","meaning":"余すところなく全部のさま／不快でぞっとするようなさま。"},{"word":"ぷっくり","meaning":"丸くふくらんでいるさま。"},{"word":"でっくり","meaning":"太っているさま。でっぷり。"},{"word":"つっくり","meaning":"ひとりじっとして、何もせず、または思いに沈んでたたずむさま。"}]},{"template":"○き○き","answers":[{"word":"いきいき","meaning":"活気があり、生気に満ちているさま。"},{"word":"うきうき","meaning":"楽しく心が浮き立つさま。"},{"word":"どきどき","meaning":"緊張や期待で胸が強く打つさま。"},{"word":"ばきばき","meaning":"硬い物が次々折れる音／非常に張っているさま。"},{"word":"ぱきぱき","meaning":"乾いた硬い物が軽く折れる音。"},{"word":"むきむき","meaning":"筋肉がよく発達しているさま。"},{"word":"めきめき","meaning":"目に見えて急速に上達・進歩するさま。"},{"word":"こきこき","meaning":"関節などを曲げて乾いた音を立てるさま。"},{"word":"すきすき","meaning":"とても好きだと繰り返して表す口語。"},{"word":"ぴきぴき","meaning":"筋や血管などが浮いたり、怒りが走るさま（漫画的表現）。"},{"word":"ずきずき","meaning":"脈打つような痛みが繰り返し続くさま。"},{"word":"はきはき","meaning":"言動が明快で、元気よくきびきびしているさま。"},{"word":"ちきちき","meaning":"金属的な細かな音／「チキチキ○○」の形で競争・企画名を戯画的に表す俗な言い方。","display":"チキチキ"}]},{"template":"○る○る","answers":[{"word":"くるくる","meaning":"連続して回るさま／よく働き動くさま。"},{"word":"ぐるぐる","meaning":"何度も回るさま／巻き付けるさま。"},{"word":"するする","meaning":"滑らかに滞りなく進むさま。"},{"word":"つるつる","meaning":"表面が滑らかなさま。"},{"word":"ぬるぬる","meaning":"粘液などで滑るさま。"},{"word":"ぶるぶる","meaning":"寒さや恐怖で震えるさま。"},{"word":"ぷるぷる","meaning":"柔らかい物が小刻みに震えるさま。"},{"word":"ゆるゆる","meaning":"締まりが弱いさま／ゆっくりしたさま。"},{"word":"ずるずる","meaning":"引きずるさま／麺などをすすり込む音。"},{"word":"だるだる","meaning":"だるく締まりがないさま（口語）。"},{"word":"たるたる","meaning":"たるんで締まりがないさま（口語）。"},{"word":"まるまる","meaning":"全体が丸いさま／全部、そっくりそのまま。","display":"丸々"},{"word":"うるうる","meaning":"涙があふれそうなさま／肌や髪などが潤っているさま。"}]},{"template":"○つ○つ","answers":[{"word":"かつかつ","meaning":"必要なだけで余裕がほとんどないさま。"},{"word":"きつきつ","meaning":"余裕がなく、締め付けが強いさま。"},{"word":"こつこつ","meaning":"地道に少しずつ続けるさま／硬い物を軽く叩く音。"},{"word":"ごつごつ","meaning":"表面が硬くでこぼこしているさま。"},{"word":"ぶつぶつ","meaning":"小声で不平を言うさま／粒状のものがあるさま。"},{"word":"ぷつぷつ","meaning":"小さな点や泡が次々現れるさま。"},{"word":"ぽつぽつ","meaning":"少しずつ、まばらに現れるさま。"},{"word":"ぼつぼつ","meaning":"少しずつ始める・進むさま／点々とあるさま。"},{"word":"ぱつぱつ","meaning":"衣服などがきつく張りつめているさま。"},{"word":"あつあつ","meaning":"非常に熱いさま／男女が熱愛しているさま。","display":"熱々"},{"word":"がつがつ","meaning":"欲深く、勢いよく食べたり求めたりするさま。"},{"word":"ぐつぐつ","meaning":"煮立つ液体が盛んに泡立つ音・さま。"},{"word":"ふつふつ","meaning":"液体が小さく煮立つさま／感情などが内側から次第に湧き上がるさま。"}]},{"template":"○さ○さ","answers":[{"word":"かさかさ","meaning":"乾燥して水分がないさま。"},{"word":"がさがさ","meaning":"紙や草などがこすれる音／粗雑なさま。"},{"word":"くさくさ","meaning":"気分が晴れず、むしゃくしゃするさま。"},{"word":"ぱさぱさ","meaning":"水分や油分が少なく乾いたさま。"},{"word":"ふさふさ","meaning":"毛などが豊かに密生しているさま。"},{"word":"もさもさ","meaning":"毛などが多く、重たくまとまっているさま。"},{"word":"わさわさ","meaning":"大勢が落ち着きなく動くさま／葉などが揺れるさま。"},{"word":"どさどさ","meaning":"重い物が続けて落ちる音／大勢が一度に入るさま。"},{"word":"ばさばさ","meaning":"紙・翼・乾いた髪などが荒く動く音・さま。"},{"word":"ぼさぼさ","meaning":"髪などが乱れているさま／ぼんやりしているさま。"},{"word":"ゆさゆさ","meaning":"大きく、ゆっくり繰り返し揺れるさま。"},{"word":"ぐさぐさ","meaning":"刃物などが何度も深く刺さるさま／言葉が容赦なく心に刺さるさま。"}]},{"template":"○か○か","answers":[{"word":"すかすか","meaning":"中身が少なく隙間が多いさま。"},{"word":"てかてか","meaning":"表面が油などで不自然に光るさま。"},{"word":"ぴかぴか","meaning":"光り輝いているさま／新品同様にきれいなさま。"},{"word":"ふかふか","meaning":"柔らかく厚みがあるさま。"},{"word":"ほかほか","meaning":"温かさが残っているさま。"},{"word":"ぽかぽか","meaning":"心地よく暖かいさま。"},{"word":"あかあか","meaning":"明るく照り輝くさま。『赤々』。"},{"word":"ぱかぱか","meaning":"馬のひづめの軽快な音／物が繰り返し開くさま。"},{"word":"むかむか","meaning":"吐き気がするさま／腹立たしく不快なさま。"},{"word":"ぶかぶか","meaning":"衣服などが大きすぎて、だぶついているさま。"},{"word":"ぷかぷか","meaning":"水面や空中に軽く浮かぶさま／煙をふかすさま。"},{"word":"ちかちか","display":"チカチカ","meaning":"強い光が目を刺激したり、小さな光が繰り返し点滅したりするさま。"},{"word":"たかたか","meaning":"子どもなどが足音高く走るさまを表す語。"}]},{"template":"○わ○わ","answers":[{"word":"ごわごわ","meaning":"硬くて柔軟性がない手触り。"},{"word":"ざわざわ","meaning":"大勢の話し声や葉擦れなどの落ち着かない音。"},{"word":"じわじわ","meaning":"少しずつ、ゆっくり効いたり広がったりするさま。"},{"word":"しわしわ","meaning":"しわが多く寄っているさま。"},{"word":"そわそわ","meaning":"気持ちが落ち着かないさま。"},{"word":"ふわふわ","meaning":"軽く柔らかいさま／宙に漂うさま。"},{"word":"あわあわ","meaning":"慌ててうろたえるさま（口語）。"},{"word":"ぞわぞわ","meaning":"寒気や嫌悪で肌が粟立つようなさま。"},{"word":"ほわほわ","meaning":"柔らかく暖かい感じがするさま（口語）。"},{"word":"さわさわ","meaning":"薄い物などが軽く触れ合って立てる音／落ち着かず騒がしいさま。"},{"word":"よわよわ","meaning":"いかにも弱そうなさま。力なく、かろうじて動くさま。","display":"弱々"}]},{"template":"○っかり","answers":[{"word":"うっかり","meaning":"不注意で、つい何かをしてしまうさま。"},{"word":"がっかり","meaning":"期待が外れて落胆するさま。"},{"word":"しっかり","meaning":"堅実で頼りになるさま／確実に。"},{"word":"すっかり","meaning":"残らず全部／完全に。"},{"word":"ぽっかり","meaning":"穴などが大きく開くさま／軽く浮かぶさま。"},{"word":"ばっかり","meaning":"『ばかり』のくだけた形。〜だけ、〜してばかり。"},{"word":"どっかり","meaning":"重い物を勢いよく置くさま／腰を据えて大きく座るさま。"},{"word":"きっかり","meaning":"数量・時刻などが正確で、端数なく一致するさま。"},{"word":"てっかり","meaning":"表面などが光り輝くさま。てかてか。転じて、はげ頭を指す用法もある。"},{"word":"ごっかり","meaning":"ひどく疲れ、力が抜けたさま。がっくり。"}]},{"template":"○っぱり","answers":[{"word":"きっぱり","meaning":"態度や言い方が明確で迷いがないさま。"},{"word":"さっぱり","meaning":"すっきりしているさま／まったく〜ない。"},{"word":"すっぱり","meaning":"思い切りよく完全に切る・やめるさま。"},{"word":"つっぱり","meaning":"突っ張ること／不良風の若者をいう俗語。"},{"word":"でっぱり","meaning":"外側へ突き出している部分。"},{"word":"ひっぱり","meaning":"引っ張ること。『引っ張り』。"},{"word":"やっぱり","meaning":"予想や判断どおり。『やはり』の口語。"}]},{"template":"○ったり","answers":[{"word":"ぐったり","meaning":"疲れ切って力が抜けたさま。"},{"word":"ばったり","meaning":"突然倒れるさま／偶然出会うさま。"},{"word":"ぴったり","meaning":"隙間なく合うさま／非常によく一致するさま。"},{"word":"べったり","meaning":"粘りつくさま／強く依存・密着するさま。"},{"word":"まったり","meaning":"穏やかでゆったりしたさま。"},{"word":"ゆったり","meaning":"余裕があり、窮屈でないさま。"},{"word":"もったり","meaning":"粘り気があり重い感触のさま／動作が鈍いさま。"},{"word":"ぱったり","meaning":"「ばったり」よりやや軽い感じで、急に倒れる・出会う・途絶えるさま。"}]},{"template":"○や○や","answers":[{"word":"おやおや","meaning":"意外なことに気づいたときの、軽い驚き・疑い・困惑などを表す間投詞。"},{"word":"いやいや","meaning":"嫌がりながら／仕方なく。"},{"word":"つやつや","meaning":"表面に美しい光沢があるさま。"},{"word":"にやにや","meaning":"声を出さず、意味ありげに笑うさま。"},{"word":"ひやひや","meaning":"危険を感じ、気が気でないさま。"},{"word":"もやもや","meaning":"気分や視界が晴れず、すっきりしないさま。"},{"word":"がやがや","meaning":"多くの人が騒がしく話す声。"},{"word":"すやすや","meaning":"気持ちよさそうに静かに眠るさま。"},{"word":"ほやほや","meaning":"できたばかり・なったばかりで新鮮なさま／柔らかく温かいさま。"},{"word":"さやさや","meaning":"葉や衣などが触れ合って、静かに軽く音を立てるさま。"},{"word":"ぼやぼや","meaning":"注意が散漫でぼんやりしているさま／ぐずぐずしているさま。"},{"word":"どやどや","meaning":"大勢の人が騒がしく一度に入ったり出たりするさま。"},{"word":"はやはや","meaning":"人を促して「早く早く」と急がせる語。","display":"早々（はやはや）"}]},{"template":"○そ○そ","answers":[{"word":"こそこそ","meaning":"人目を避け、隠れるように行動するさま。"},{"word":"ごそごそ","meaning":"物を探る・動かすときのやや大きな音。"},{"word":"ひそひそ","meaning":"声をひそめて話すさま。"},{"word":"もそもそ","meaning":"鈍くゆっくり動くさま／口の中でものを動かすさま。"},{"word":"ぼそぼそ","meaning":"小声でつぶやくさま／水分が少なく食感が悪いさま。"},{"word":"ぽそぽそ","meaning":"乾いてほぐれ、まとまりにくいさま。"},{"word":"めそめそ","meaning":"弱々しく、いつまでも泣いたり気弱に振る舞ったりするさま。"},{"word":"よそよそ","meaning":"親しみを見せず、他人行儀で隔てがあるさま。"},{"word":"いそいそ","meaning":"うれしいことを前に、心が弾んで動作が軽やかなさま。"}]},{"template":"○っそり","answers":[{"word":"こっそり","meaning":"人に気づかれないようにするさま。"},{"word":"げっそり","meaning":"急にやせたり、気力を失ったりしたさま。"},{"word":"ごっそり","meaning":"一度にほとんど全部なくなる・取るさま。"},{"word":"ひっそり","meaning":"静かで人けがなく目立たないさま。"},{"word":"ほっそり","meaning":"細くすらりとしているさま。"},{"word":"うっそり","meaning":"心を奪われてぼうっとしているさま。古風な語。"},{"word":"もっそり","meaning":"動作が鈍く、ぼうっとしているさま／あか抜けないさま。"}]},{"template":"○っきり","answers":[{"word":"すっきり","meaning":"余計なものがなく爽快なさま。"},{"word":"てっきり","meaning":"疑いなくそうだと思い込むさま。"},{"word":"はっきり","meaning":"明確であいまいでないさま。"},{"word":"ぽっきり","meaning":"それだけきり／物が簡単に折れる音。"},{"word":"めっきり","meaning":"以前と比べて目立って変化したさま。"},{"word":"かっきり","meaning":"数量・時刻などに端数がなく、ぴったりしているさま。"},{"word":"くっきり","meaning":"姿・輪郭・色などが際立って、非常にはっきりしているさま。"},{"word":"ごっきり","meaning":"物どうしが強くぶつかって立てる音。"},{"word":"がっきり","meaning":"重い物がしっかり合わさったり、固定されたりするさま。"},{"word":"こっきり","meaning":"それだけで終わるさま／残らず全部。数詞に付いて「ちょうどそれだけ」の意味にも使う。"}]},{"template":"○っさり","answers":[{"word":"あっさり","meaning":"しつこくなく淡泊なさま／簡単に。"},{"word":"ぐっさり","meaning":"刃物などが深く刺さるさま／言葉が深く刺さるさま。"},{"word":"どっさり","meaning":"一度に大量にあるさま。"},{"word":"ばっさり","meaning":"思い切りよく切り落とすさま。"},{"word":"もっさり","meaning":"野暮ったくあか抜けないさま／髪などが多く重たいさま。"},{"word":"こっさり","meaning":"「こってり」と「あっさり」の中間を表す、ラーメンなどで使われる俗な表現。"}]},{"template":"○け○け","answers":[{"word":"いけいけ","meaning":"勢いに乗って強気に進むさま。"},{"word":"すけすけ","meaning":"透けて向こうが見えるさま。"},{"word":"ぬけぬけ","meaning":"恥じる様子もなく平然としているさま。"},{"word":"ぼけぼけ","meaning":"ぼんやりしているさま／画像などがひどくぼけたさま。"},{"word":"てけてけ","meaning":"軽く素早い足音などを表す音。都市伝説「テケテケ」の名としても有名。","display":"テケテケ"},{"word":"でけでけ","meaning":"ドラムや弦楽器などを勢いよく刻むような音を表す擬音。","display":"デケデケ"},{"word":"おけおけ","display":"オケオケ／OK OK","meaning":"「OK、OK」をくだけて繰り返す口語・チャット表現。"},{"word":"ぽけぽけ","meaning":"『Pokémon Trading Card Game Pocket』の公式略称。","display":"ポケポケ"}]},{"template":"○ば○ば","answers":[{"word":"けばけば","meaning":"派手すぎて品がないさま。"},{"word":"さばさば","meaning":"性格や態度があっさりしているさま。"},{"word":"ねばねば","meaning":"粘り気が強く糸を引くさま。"},{"word":"ずばずば","meaning":"遠慮せず、率直に次々と言うさま。"},{"word":"がばがば","display":"ガバガバ","meaning":"衣服などが大きすぎてゆるいさま／水などが勢いよく流れるさま。ネットでは基準や設定が緩すぎる意味にも使う。"},{"word":"やばやば","display":"ヤバヤバ","meaning":"「やばい」を重ねて、危険・すごい・最高などの程度を強く表す若者・ネット表現。"},{"word":"しばしば","meaning":"何度も繰り返し。たびたび。／目をしきりに瞬くさま。"},{"word":"どばどば","display":"ドバドバ","meaning":"液体など大量のものが勢いよく続けざまに出るさま。"},{"word":"ざばざば","display":"ザバザバ","meaning":"水などを勢いよく流したり、かき分けたりする音・さま。"}]},{"template":"○っぷり","answers":[{"word":"たっぷり","meaning":"量や時間に十分な余裕があるさま。"},{"word":"どっぷり","meaning":"深く浸るさま／ある状態にはまり込むさま。"},{"word":"がっぷり","meaning":"相撲などで互いにしっかり組み合うさま。「がっぷり四つ」。"},{"word":"でっぷり","meaning":"体つきが太って、腹などが大きく出ているさま。"}]},{"template":"○め○め","answers":[{"word":"じめじめ","meaning":"湿気が多く不快なさま／陰気で執念深いさま。"},{"word":"ぬめぬめ","meaning":"粘液などで滑りやすいさま。"},{"word":"だめだめ","meaning":"全然だめであることを強調する口語・ネット表現。","display":"ダメダメ"},{"word":"ゆめゆめ","display":"努々（ゆめゆめ）","meaning":"決して。少しも。特に禁止・注意を強く促すときに使う。"},{"word":"きめきめ","display":"キメキメ","meaning":"服装・髪型・ポーズなどを隙なく格好よく決めたさまをいう口語・若者表現。"},{"word":"おめおめ","meaning":"恥ずべきことと知りながら平気でいるさま。「おめおめと帰れない」など。"},{"word":"のめのめ","meaning":"すべきことをせず漫然としているさま／恥じる様子もなく平然としているさま。"}]},{"template":"○ず○ず","answers":[{"word":"うずうず","meaning":"何かをしたくて落ち着かないさま。"},{"word":"むずむず","meaning":"かゆいような刺激／何かしたくて落ち着かないさま。"},{"word":"ぐずぐず","meaning":"決断や行動が遅く、はっきりしないさま／不平を言い続けるさま。"},{"word":"おずおず","display":"怖ず怖ず","meaning":"恐れたり自信がなかったりして、ためらいながら行動するさま。"},{"word":"しずしず","display":"静々","meaning":"静かに、ゆっくりと落ち着いて動作するさま。"}]},{"template":"○んやり","answers":[{"word":"ひんやり","meaning":"冷たく感じられるさま。"},{"word":"ぼんやり","meaning":"はっきりしないさま／注意が散漫なさま。"}]},{"template":"○んぐり","answers":[{"word":"ずんぐり","meaning":"背が低く、太く丸みのあるさま。"},{"word":"どんぐり","meaning":"ブナ科の木になる、硬い殻の木の実。"}]}];
+<div class="modal" id="menuModal">
+  <div class="modalCard narrow">
+    <div class="modalHead">
+      <div>
+        <div class="modalTitle">メニュー</div>
+        <div class="modalSub" id="menuRank"></div>
+      </div>
+      <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
+    </div>
 
-// 通常30ラウンドは正解数の多い順。旧版の保存データ移行用に元順も保持。
-const MAIN_ROUND_COUNT = ROUND_DATA.length;
-const ROUND_DATA_LEGACY_ORDER = ROUND_DATA.map(r=>r.template);
-ROUND_DATA.sort((a,b)=>{
-  const d=b.answers.length-a.answers.length;
-  return d || ROUND_DATA_LEGACY_ORDER.indexOf(a.template)-ROUND_DATA_LEGACY_ORDER.indexOf(b.template);
-});
+    <div class="statGrid">
+      <div class="stat"><small>SCORE</small><b id="mScore">0</b></div>
+      <div class="stat"><small>MAX COMBO</small><b id="mCombo">0</b></div>
+      <div class="stat"><small>発見したことば</small><b id="mFound">0</b></div>
+      <div class="stat"><small>クリア</small><b id="mCleared">0</b></div>
+    </div>
 
-// SPECIAL：前半は清音、後半の「〇」は同じ仮名を自動で濁音化する連濁型。
-const SPECIAL_ROUNDS = [{"template":"○き〇き","mode":"dakutenSecond","answers":[{"word":"ときどき","display":"時々","meaning":"たまに。折にふれて。"},{"word":"さきざき","display":"先々","meaning":"将来。これから先／行く先々。"},{"word":"つきづき","display":"月々","meaning":"毎月。月ごと。"}]},{"template":"○ね〇ね","mode":"dakutenSecond","answers":[{"word":"かねがね","display":"予々／兼ね兼ね","meaning":"以前から。かねて。"},{"word":"つねづね","display":"常々","meaning":"いつも。日ごろから。"}]},{"template":"○り〇り","mode":"dakutenSecond","answers":[{"word":"ちりぢり","display":"散り散り","meaning":"まとまっていたものが、ばらばらに離れるさま。"}]},{"template":"○ま〇ま","mode":"dakutenSecond","answers":[{"word":"さまざま","display":"様々","meaning":"種類・形・様子などがいろいろであること。"},{"word":"しまじま","display":"島々","meaning":"多くの島。あちらこちらの島。"}]},{"template":"○し〇し","mode":"dakutenSecond","answers":[{"word":"ふしぶし","display":"節々","meaning":"体の各関節／物事のいろいろな箇所・点。"},{"word":"はしばし","display":"端々","meaning":"物事のあちこちの端や部分。言葉・態度などのちょっとした部分。"}]},{"template":"○く〇く","mode":"dakutenSecond","answers":[{"word":"つくづく","display":"熟々／つくづく","meaning":"深く心に感じるさま／よくよく、じっくり。"}]},{"template":"○た〇た","mode":"dakutenSecond","answers":[{"word":"かたがた","display":"方々／旁","meaning":"人々を敬っていう語／あちらこちら／兼ねて・ついでに。"}]},{"template":"○れ〇れ","mode":"dakutenSecond","answers":[{"word":"それぞれ","display":"其れ其れ／それぞれ","meaning":"一つ一つ、一人一人。各自・各々。"},{"word":"くれぐれ","meaning":"繰り返し念を入れて。心を込めて、よくよく。通常は「くれぐれも」の形でも使う。"},{"word":"つれづれ","display":"徒然","meaning":"することがなく退屈なさま／物思いにふけるさま。"},{"word":"はればれ","display":"晴れ晴れ","meaning":"空がすっかり晴れたさま／心のわだかまりが取れて爽快なさま。"},{"word":"ほれぼれ","display":"惚れ惚れ","meaning":"すっかり心を奪われ、うっとりするさま。"}]},{"template":"○や〇や","mode":"dakutenSecond","answers":[{"word":"はやばや","display":"早々（はやばや）","meaning":"予定や予想より早く。早い時期に。"},{"word":"つやづや","display":"艶々（つやづや）","meaning":"「つやつや」の連濁形。古い実例が確認される珍しい形。"}]},{"template":"○み〇み","mode":"dakutenSecond","answers":[{"word":"しみじみ","display":"染み染み／しみじみ","meaning":"心の底から深く感じるさま／心を開いてしんみり向き合うさま。"}]},{"template":"○か〇か","mode":"dakutenSecond","answers":[{"word":"たかだか","display":"高々","meaning":"高く上げるさま／数量・程度がせいぜいその程度であるさま。"}]},{"template":"○と〇と","mode":"dakutenSecond","answers":[{"word":"ひとびと","display":"人々","meaning":"多くの人たち。皆さん。"}]},{"template":"○に〇に","mode":"dakutenSecond","answers":[{"word":"くにぐに","display":"国々","meaning":"あの国、この国。諸国、各国。"}]}];
-ROUND_DATA.push(...SPECIAL_ROUNDS);
-const SPECIAL_ROUND_COUNT = SPECIAL_ROUNDS.length;
+    <div class="menuList">
+      <button class="btn" id="mHintBtn">ヒント（スコア −300）</button>
+      <button class="btn" id="mGiveupBtn">降参して答えを見る</button>
+      <button class="btn" id="mRetryBtn">このラウンドをやり直す</button>
+      <button class="btn" id="soundBtn">♪ 効果音 ON</button>
+      <button class="btn danger" id="resetBtn">記録をすべてリセット</button>
+    </div>
 
-const KANA_ROWS = [
-  ["あ","い","う","え","お"],
-  ["か","き","く","け","こ"],
-  ["さ","し","す","せ","そ"],
-  ["た","ち","つ","て","と"],
-  ["な","に","ぬ","ね","の"],
-  ["は","ひ","ふ","へ","ほ"],
-  ["ま","み","む","め","も"],
-  ["や",null,"ゆ",null,"よ"],
-  ["ら","り","る","れ","ろ"],
-  ["わ",null,null,null,"を"],
-  ["ん",null,null,null,null]
-];
-const VOICED_ROWS = [
-  ["が","ぎ","ぐ","げ","ご"],
-  ["ざ","じ","ず","ぜ","ぞ"],
-  ["だ","ぢ","づ","で","ど"],
-  ["ば","び","ぶ","べ","ぼ"],
-  ["ぱ","ぴ","ぷ","ぺ","ぽ"],
-  ["ゔ",null,null,null,null]
-];
-const PLAIN_KANA = KANA_ROWS.flat().filter(Boolean);
-const ALL_KANA = [...PLAIN_KANA, ...VOICED_ROWS.flat()].filter(Boolean);
-const DAKUTEN_MAP = {"か":"が","き":"ぎ","く":"ぐ","け":"げ","こ":"ご","さ":"ざ","し":"じ","す":"ず","せ":"ぜ","そ":"ぞ","た":"だ","ち":"ぢ","つ":"づ","て":"で","と":"ど","は":"ば","ひ":"び","ふ":"ぶ","へ":"べ","ほ":"ぼ"};
-const DAKUTEN_BASE_KANA = new Set(Object.keys(DAKUTEN_MAP));
+    <div class="rules" style="margin-top:12px">
+      ★は<b>5個</b>から。はずすたびに<b class="key">★−1</b>、0でゲームオーバー。<br>
+      正解の<b>60％</b>でクリア＆<b class="key">★＋1</b>。全問正解の<b class="key">PERFECT</b>で<b class="key">★＋2</b>。<br>
+      連続正解でコンボ、5連続で<b class="key">FEVER（スコア2倍）</b>。<br>
+      <b>SPECIAL</b>は清音だけを選択。後半の「〇」は自動で濁音になります。<br>
+      <b>WORD</b>は穴が1つだけ。擬音語ではない、ふつうの3〜4文字ことばを探します。
+    </div>
+    <div class="tiny">
+      内蔵語彙は辞書語に加え、擬音語・擬態語・口語・俗語・ネット表現・定着した流行語・著名な固有名詞まで広めに収録しています。
+      表記ゆれや新語は増え続けるため完全列挙はできませんが、「普通に通じるのに不正解」を減らす方針で更新しています。
+    </div>
+  </div>
+</div>
 
-const SAVE_KEY = "maruanagame-progress-v4";
-let roundIndex = 0;
-let stars = 5;
-let soundOn = true;
-let hintVisible = false;
-const roundStates = ROUND_DATA.map(()=>({found:new Set(), discovered:new Set(), used:new Set(), cleared:false, rewarded:false, gaveUp:false}));
+<div class="modal" id="gameoverModal" data-persistent>
+  <div class="modalCard narrow" style="text-align:center">
+    <div style="font-size:46px;line-height:1">☆</div>
+    <div class="modalTitle" style="font-size:32px">GAME OVER</div>
+    <div class="modalSub" id="gameoverText" style="margin:6px 0 12px"></div>
+    <div class="statGrid">
+      <div class="stat"><small>SCORE</small><b id="gScore">0</b></div>
+      <div class="stat"><small>MAX COMBO</small><b id="gCombo">0</b></div>
+    </div>
+    <div class="menuList">
+      <button class="btn primary" id="reviveBtn">★5で再挑戦（記録は保持）</button>
+      <button class="btn" id="gAnswerBtn">このラウンドの答えを見る</button>
+      <button class="btn danger" id="gResetBtn">最初からやり直す</button>
+    </div>
+  </div>
+</div>
 
-function serializeProgress(){
-  return {
-    roundIndex,
-    roundTemplate:ROUND_DATA[roundIndex]?.template,
-    stars,soundOn,
-    rounds:roundStates.map((s,i)=>({template:ROUND_DATA[i].template,found:[...s.found],discovered:[...s.discovered],used:[...s.used],cleared:s.cleared,rewarded:s.rewarded,gaveUp:s.gaveUp}))
-  };
-}
-function saveProgress(){
-  try{ localStorage.setItem(SAVE_KEY,JSON.stringify(serializeProgress())); }catch(e){}
-}
-function loadProgress(){
-  try{
-    const raw=localStorage.getItem(SAVE_KEY); if(!raw) return;
-    const x=JSON.parse(raw);
-    const hasTemplateKeys=Array.isArray(x.rounds) && x.rounds.some(r=>r && typeof r.template==="string");
-
-    if(Array.isArray(x.rounds)){
-      x.rounds.forEach((r,oldIndex)=>{
-        if(!r) return;
-        const template=(typeof r.template==="string") ? r.template : ROUND_DATA_LEGACY_ORDER[oldIndex];
-        const i=ROUND_DATA.findIndex(rr=>rr.template===template);
-        if(i<0) return;
-        const s=roundStates[i];
-        s.found=new Set(Array.isArray(r.found)?r.found:[]);
-        s.discovered=new Set(Array.isArray(r.discovered)?r.discovered:[]);
-        s.used=new Set(Array.isArray(r.used)?r.used:[]);
-        s.cleared=!!r.cleared; s.rewarded=!!r.rewarded; s.gaveUp=!!r.gaveUp;
-      });
-    }
-
-    let selectedTemplate=(typeof x.roundTemplate==="string") ? x.roundTemplate : null;
-    if(!selectedTemplate && Number.isInteger(x.roundIndex)){
-      selectedTemplate=hasTemplateKeys ? x.rounds?.[x.roundIndex]?.template : ROUND_DATA_LEGACY_ORDER[x.roundIndex];
-    }
-    if(selectedTemplate){
-      const i=ROUND_DATA.findIndex(r=>r.template===selectedTemplate);
-      if(i>=0) roundIndex=i;
-    }
-    if(Number.isFinite(x.stars) && x.stars>=0) stars=x.stars;
-    if(typeof x.soundOn==="boolean") soundOn=x.soundOn;
-  }catch(e){}
-}
-function clearSavedProgress(){ try{localStorage.removeItem(SAVE_KEY)}catch(e){} }
-
-function state(){ return roundStates[roundIndex]; }
-function clearTarget(round=current()){ return Math.max(1, Math.ceil(round.answers.length * 0.6)); }
-function totalCorrectCount(){ return roundStates.reduce((n,s)=>n+s.discovered.size,0); }
-function clearedCount(){ return roundStates.filter(s=>s.cleared).length; }
-function mainClearedCount(){ return roundStates.slice(0,MAIN_ROUND_COUNT).filter(s=>s.cleared).length; }
-function specialClearedCount(){ return roundStates.slice(MAIN_ROUND_COUNT).filter(s=>s.cleared).length; }
-
-const $ = s => document.querySelector(s);
-const patternEl = $("#pattern"), gridEl = $("#kanaGrid"), foundList = $("#foundList"),
-      flashEl = $("#flash"), clearCard = $("#clearCard"), overlay = $("#overlay");
-
-function current(){ return ROUND_DATA[roundIndex]; }
-function isSpecial(round=current()){ return round.mode === "dakutenSecond"; }
-function voicedKana(kana){ return DAKUTEN_MAP[kana] || (kana + "゙"); }
-function inputKanasForRound(round=current()){ return isSpecial(round) ? PLAIN_KANA : ALL_KANA; }
-function fillWord(source,kana){
-  const round = typeof source === "string" ? {template:source} : source;
-  if(round.mode === "dakutenSecond"){
-    const first = round.template.replace("○",kana);
-    return first.replace("〇",voicedKana(kana));
-  }
-  return round.template.replaceAll("○",kana);
-}
-function answerMap(){ return new Map(current().answers.map(x=>[x.word,x])); }
-function answerDisplay(a){ return a.display || a.word; }
-function esc(v){ return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
-
-function difficultyLabel(idx){
-  if(idx >= MAIN_ROUND_COUNT) return "SPECIAL — 後半だけ濁る、連濁トラップ";
-  if(idx < 5) return "WARM-UP — まずは景気よく";
-  if(idx < 12) return "NORMAL — 日本語、増えてきた";
-  if(idx < 20) return "HARD — 〇が牙をむく";
-  if(idx < 26) return "VERY HARD — 辞書の森";
-  return "HELL — 知ってる人だけ帰れる";
-}
-
-function templateHTML(template, withHoleClass=true){
-  const token = "__DAKUTEN_HOLE__";
-  let t = esc(template).replaceAll("〇", token);
-  if(withHoleClass) t = t.replaceAll("○", '<span class="hole">〇</span>');
-  else t = t.replaceAll("○", '〇');
-  // SPECIAL内部では2つ目の穴を「〇」で保持し、表示時だけ結合濁点を重ねる。
-  const dakuten = withHoleClass ? '<span class="hole">〇゙</span>' : '〇゙';
-  return t.replaceAll(token, dakuten);
-}
-
-function renderPattern(){
-  if(isSpecial()) patternEl.innerHTML = templateHTML(current().template, true);
-  else patternEl.innerHTML = [...current().template].map(ch=>ch==="○" ? '<span class="hole">〇</span>' : ch).join("");
-}
-
-function renderStars(){
-  const shown = Math.min(stars, 12);
-  $("#stars").textContent = "★".repeat(shown) + (stars>12 ? ` ×${stars}` : "");
-  $("#stars").setAttribute("aria-label", `星 ${stars} 個`);
-}
-
-function renderGrid(){
-  gridEl.innerHTML = "";
-  gridEl.classList.toggle("single", isSpecial());
-  $("#gridModeLabel").textContent = isSpecial() ? "五十音のみ" : "五十音＋濁音・半濁音";
-  $("#gridModeNote").textContent = isSpecial() ? "後半の〇゙は自動で濁る。濁点を付けられる「か・さ・た・は行」だけ押せます。" : "押せるものは全部押したくなる。それが罠。";
-
-  const addSection = (label, rows) => {
-    const sectionEl = document.createElement("div");
-    sectionEl.className = "kanaSection";
-    const labelEl = document.createElement("div");
-    labelEl.className = "kanaSectionLabel";
-    labelEl.textContent = label;
-    sectionEl.appendChild(labelEl);
-
-    rows.forEach(row=>{
-      const rowEl = document.createElement("div");
-      rowEl.className = "kanaRow";
-      row.forEach(k=>{
-        if(!k){
-          const spacer = document.createElement("span");
-          spacer.className = "kanaSpacer";
-          spacer.setAttribute("aria-hidden","true");
-          rowEl.appendChild(spacer);
-          return;
-        }
-        const b = document.createElement("button");
-        b.className = "kana";
-        b.textContent = k;
-        b.dataset.kana = k;
-        const invalidForSpecial = isSpecial() && !DAKUTEN_BASE_KANA.has(k);
-        if(invalidForSpecial) b.classList.add("invalid");
-        if(state().used.has(k)) b.classList.add("used");
-        const word = fillWord(current(),k);
-        if(state().found.has(word)) b.classList.add("correct");
-        if(state().cleared && answerMap().has(word) && !state().discovered.has(word)) b.classList.add("missedCorrect");
-        b.disabled = invalidForSpecial || state().cleared || state().gaveUp || state().used.has(k);
-        b.addEventListener("click",()=>guess(k));
-        rowEl.appendChild(b);
-      });
-      sectionEl.appendChild(rowEl);
-    });
-    gridEl.appendChild(sectionEl);
-  };
-
-  if(isSpecial()){
-    addSection("清音（後半は自動で濁音）", KANA_ROWS);
-  }else{
-    addSection("清音", KANA_ROWS);
-    addSection("濁音・半濁音", VOICED_ROWS);
-  }
-}
-
-function renderFound(){
-  const amap = answerMap();
-  const ordered = Array.from(state().found).reverse().map(word=>amap.get(word)).filter(Boolean);
-  if(!ordered.length){
-    foundList.innerHTML = '<div class="empty">まだゼロ。〇だけがこちらを見ている。</div>';
-    return;
-  }
-  foundList.innerHTML = ordered.map(a=>`
-    <div class="foundRow">
-      <div class="word">${answerDisplay(a)}${a.display && a.display !== a.word ? `<span class="reading">かな：${a.word}</span>` : ""}</div>
-      <div class="meaning">${a.meaning}</div>
-    </div>`).join("");
-}
-
-
-function renderAnswerReveal(targetSelector){
-  const target = $(targetSelector);
-  if(!target) return;
-  target.innerHTML = current().answers.map(a=>{
-    const missed = !state().discovered.has(a.word);
-    const hasDisplay = a.display && a.display !== a.word;
-    let wordHtml;
-    if(missed){
-      wordHtml = hasDisplay
-        ? `${esc(answerDisplay(a))}<span class="reading missedKana">かな：${esc(a.word)}</span>`
-        : `<span class="missedKana">${esc(a.word)}</span>`;
-    }else{
-      wordHtml = `${esc(answerDisplay(a))}${hasDisplay ? `<span class="reading">かな：${esc(a.word)}</span>` : ""}`;
-    }
-    return `<div class="clearAnswerRow ${missed?'missed':''}">
-      <div class="word">${wordHtml}</div>
-      <div class="meaning">${esc(a.meaning)}</div>
-    </div>`;
-  }).join("");
-}
-
-function renderHint(){
-  const box = $("#debugHint");
-  const btn = $("#hintBtn");
-  box.classList.toggle("show", hintVisible);
-  btn.textContent = hintVisible ? "ヒントを隠す" : "ヒント（デバッグ）";
-  if(!hintVisible){
-    box.innerHTML = "";
-    return;
-  }
-  box.innerHTML = `<div class="debugHintTitle">DEBUG / このラウンドの全正解 ${current().answers.length}語</div>` +
-    current().answers.map(a=>`<div class="debugAnswer"><div class="word">${answerDisplay(a)}</div><div class="meaning">${a.meaning}</div></div>`).join("");
-}
-
-function render(){
-  const special = isSpecial();
-  const label = special
-    ? `SPECIAL ${String(roundIndex-MAIN_ROUND_COUNT+1).padStart(2,"0")} / ${SPECIAL_ROUND_COUNT}`
-    : `ROUND ${String(roundIndex+1).padStart(2,"0")} / ${MAIN_ROUND_COUNT}`;
-  $("#roundLabel").textContent = label + (state().cleared ? "  クリア" : "");
-  $("#score").textContent = `正解 ${totalCorrectCount()} ・ クリア ${mainClearedCount()}/${MAIN_ROUND_COUNT} ・ SPECIAL ${specialClearedCount()}/${SPECIAL_ROUND_COUNT}`;
-  $("#difficulty").textContent = difficultyLabel(roundIndex);
-  $("#instruction").textContent = special
-    ? "前半の〇に清音を入れろ。後半の〇゙は同じ仮名が自動で濁る。"
-    : "〇に同じ仮名を入れて、成立する4文字ことばを全部見つけろ。";
-  $("#foundCount").textContent = `${state().discovered.size} / ${current().answers.length}（${clearTarget()}語でクリア）`;
-  renderStars(); renderPattern(); renderGrid(); renderFound(); renderHint();
-  clearCard.classList.toggle("show",state().cleared);
-  if(state().cleared){
-    $("#clearText").textContent = `${state().discovered.size} / ${current().answers.length} 語発見。60％達成でクリア！ ★ボーナス獲得済み。`;
-    renderAnswerReveal("#clearAnswers");
-  }
-  $("#giveupBtn").disabled = state().cleared || state().gaveUp;
-}
-
-function renderRoundList(){
-  const list = $("#roundList");
-  let html = "";
-  ROUND_DATA.forEach((r,i)=>{
-    if(i===MAIN_ROUND_COUNT){
-      html += `<div class="specialHeader">SPECIAL — 連濁ラウンド<small>清音を1つ選ぶと、後半の「〇゙」が自動で濁音になります。</small></div>`;
-    }
-    const st = roundStates[i];
-    const target = clearTarget(r);
-    const badge = st.cleared ? '<span class="clearBadge">✓ クリア</span>' : (st.gaveUp ? '<span class="progressBadge">降参</span>' : `<span class="progressBadge">${st.discovered.size}/${target}</span>`);
-    const isSp = i>=MAIN_ROUND_COUNT;
-    const num = isSp ? `SPECIAL ${String(i-MAIN_ROUND_COUNT+1).padStart(2,'0')}` : `ROUND ${String(i+1).padStart(2,'0')}`;
-    html += `<button class="roundChoice ${isSp?'special ':''}${st.cleared?'cleared ':''}${i===roundIndex?'current':''}" data-round="${i}">
-      <div class="roundChoiceTop"><span>${num}</span>${isSp?(st.cleared?'<span class="clearBadge">✓ クリア</span>':'<span class="specialBadge">連濁</span>'):badge}</div>
-      <div class="roundChoicePattern">${templateHTML(r.template, false)}</div>
-      <div class="roundChoiceMeta">全${r.answers.length}語 ・ ${target}語でクリア ${isSp ? (st.cleared?'・ クリア':'') : ''}</div>
-    </button>`;
-  });
-  list.innerHTML = html;
-  list.querySelectorAll('.roundChoice').forEach(btn=>btn.addEventListener('click',()=>selectRound(Number(btn.dataset.round))));
-}
-function openRoundList(){ renderRoundList(); $("#roundOverlay").classList.add("show"); }
-function closeRoundList(){ $("#roundOverlay").classList.remove("show"); }
-function selectRound(i){
-  if(i<0 || i>=ROUND_DATA.length) return;
-  roundIndex=i; hintVisible=false; flashEl.textContent=""; saveProgress(); closeRoundList(); render();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-let audioCtx;
-function beep(ok){
-  if(!soundOn) return;
-  try{
-    audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
-    const osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
-    osc.type="square"; osc.frequency.value=ok?660:110;
-    gain.gain.setValueAtTime(.035,audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.11);
-    osc.connect(gain).connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime+.12);
-  }catch(e){}
-}
-
-const goodMsgs = ["いた。日本語にいた。","正解。辞書がうなずいた。","発見！〇が仕事をした。","それ、あります。","語彙力が静かに暴れている。"];
-const badMsgs = ["ない。★をいただきます。","惜しい顔をしても、ないものはない。","辞書：『存じません』","その日本語、今回は未確認。","〇に無茶をさせましたね。"];
-function msg(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-function flashRemainingCorrect(){
-  const amap = answerMap();
-  const remainingKana = new Set();
-  inputKanasForRound().forEach(k=>{
-    const word = fillWord(current(),k);
-    if(amap.has(word) && !state().discovered.has(word) && !state().used.has(k)) remainingKana.add(k);
-  });
-  document.querySelectorAll(".kana").forEach(btn=>{
-    if(remainingKana.has(btn.dataset.kana)){
-      btn.classList.remove("remainingFlash");
-      void btn.offsetWidth;
-      btn.classList.add("remainingFlash");
-      setTimeout(()=>btn.classList.remove("remainingFlash"), 500);
-    }
-  });
-}
-
-let correctBurstTimer;
-function showCorrectBurst(a){
-  const box=$("#correctBurst"), word=$("#correctBurstWord"), reading=$("#correctBurstReading");
-  if(!box) return;
-  clearTimeout(correctBurstTimer);
-  word.textContent=answerDisplay(a);
-  reading.textContent=(a.display && a.display!==a.word) ? `かな：${a.word}` : "";
-  box.classList.remove("show");
-  void box.offsetWidth;
-  box.classList.add("show");
-  correctBurstTimer=setTimeout(()=>box.classList.remove("show"),820);
-}
-
-let clearBurstTimer;
-function showClearBurst(){
-  const box=$("#clearBurst"), label=$("#clearBurstRound");
-  if(!box) return;
-  clearTimeout(clearBurstTimer);
-  label.textContent=isSpecial()
-    ? `SPECIAL ${String(roundIndex-MAIN_ROUND_COUNT+1).padStart(2,"0")}`
-    : `ROUND ${String(roundIndex+1).padStart(2,"0")}`;
-  setTimeout(()=>{
-    $("#correctBurst")?.classList.remove("show");
-    box.classList.remove("show");
-    void box.offsetWidth;
-    box.classList.add("show");
-    clearBurstTimer=setTimeout(()=>{
-      box.classList.remove("show");
-      $("#clearCard")?.scrollIntoView({behavior:"smooth",block:"start"});
-    },1250);
-  },360);
-}
-
-function guess(kana){
-  if(isSpecial() && !DAKUTEN_BASE_KANA.has(kana)) return;
-  if(state().cleared || state().gaveUp || stars<=0 || state().used.has(kana)) return;
-  state().used.add(kana);
-  const word = fillWord(current(),kana);
-  const amap = answerMap();
-  let wasWrong = false;
-  let died = false;
-  if(amap.has(word)){
-    state().found.add(word);
-    state().discovered.add(word);
-    flashEl.className="flash good";
-    flashEl.textContent=`${word} — ${msg(goodMsgs)}`;
-    beep(true);
-    showCorrectBurst(amap.get(word));
-    if(state().discovered.size >= clearTarget()) finishRound(true);
-  } else {
-    stars--;
-    wasWrong = true;
-    died = stars<=0;
-    flashEl.className="flash bad";
-    flashEl.textContent=`${word} — ${msg(badMsgs)}`;
-    beep(false);
-  }
-  saveProgress();
-  render();
-  if(wasWrong){
-    requestAnimationFrame(()=>flashRemainingCorrect());
-    if(died) setTimeout(gameOver, 520);
-  }
-}
-
-function finishRound(bonus){
-  if(state().cleared) return;
-  state().cleared=true;
-  if(bonus && !state().rewarded){
-    state().rewarded=true;
-    stars++;
-    $("#clearText").textContent = `${state().discovered.size} / ${current().answers.length} 語発見。60％達成でクリア！ ★が1個戻ってきた。`;
-  }
-  beep(true);
-  saveProgress();
-  showClearBurst();
-}
-
-function giveUp(){
-  if(state().cleared) return;
-  state().gaveUp=true;
-  current().answers.forEach(a=>state().found.add(a.word));
-  inputKanasForRound().forEach(k=>state().used.add(k));
-  $("#clearText").textContent = "答えを開示しました。降参はクリア扱いにならず、★ボーナスもなし。";
-  flashEl.className="flash";
-  flashEl.textContent="全回答を公開。ラウンド一覧から別の問題へどうぞ。";
-  saveProgress();
-  render();
-}
-
-function nextRound(){
-  if(roundIndex >= ROUND_DATA.length-1){
-    if(clearedCount()===ROUND_DATA.length){
-      overlay.classList.add("show");
-      $("#gameoverText").innerHTML = `通常30ラウンド＋SPECIAL ${SPECIAL_ROUND_COUNT}問を全クリア。<br>残り★ <b>${stars}</b> ／ 発見 <b>${totalCorrectCount()}</b>語。<br>あなたはもう〇側の人間です。`;
-    }else{
-      openRoundList();
-    }
-    return;
-  }
-  roundIndex++; hintVisible=false;
-  flashEl.textContent=""; saveProgress(); render();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function gameOver(){
-  renderStars();
-  renderAnswerReveal("#gameoverAnswers");
-  overlay.classList.add("show");
-  const where = isSpecial() ? `SPECIAL ${roundIndex-MAIN_ROUND_COUNT+1}` : `ROUND ${roundIndex+1}`;
-  $("#gameoverText").innerHTML = `${where} で★が尽きました。<br>発見したことば：<b>${totalCorrectCount()}</b>語。<br>日本語は広かった。`;
-}
-
-function restart(skipConfirm=false){
-  if(!skipConfirm && !confirm("★・発見語・クリア履歴をすべてリセットしますか？")) return;
-  roundIndex=0; stars=5; hintVisible=false; soundOn=true;
-  roundStates.forEach(s=>{s.found.clear();s.discovered.clear();s.used.clear();s.cleared=false;s.rewarded=false;s.gaveUp=false;});
-  clearSavedProgress();
-  overlay.classList.remove("show"); flashEl.textContent="";
-  $("#soundBtn").textContent="♪ ON";
-  render(); openRoundList();
-}
-
-$("#nextBtn").addEventListener("click",nextRound);
-$("#roundListBtn").addEventListener("click",openRoundList);
-$("#closeRoundListBtn").addEventListener("click",closeRoundList);
-$("#resetProgressBtn").addEventListener("click",()=>restart(false));
-$("#hintBtn").addEventListener("click",()=>{ hintVisible=!hintVisible; renderHint(); });
-$("#giveupBtn").addEventListener("click",giveUp);
-$("#restartBtn").addEventListener("click",restart);
-$("#retryBtn").addEventListener("click",restart);
-$("#soundBtn").addEventListener("click",()=>{soundOn=!soundOn;$("#soundBtn").textContent=soundOn?"♪ ON":"♪ OFF";saveProgress();});
-
-document.addEventListener("keydown",e=>{
-  if(inputKanasForRound().includes(e.key)) guess(e.key);
-  if(e.key==="Enter" && state().cleared) nextRound();
-});
-
-loadProgress();
-$("#soundBtn").textContent=soundOn?"♪ ON":"♪ OFF";
-render();
-openRoundList();
-</script>
+<script src="js/data.js"></script>
+<script src="js/game.js"></script>
 </body>
 </html>

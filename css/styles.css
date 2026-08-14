@@ -1,0 +1,590 @@
+/* ===========================================================================
+ * styles.css — 〇〇ことば
+ *  1) 変数・土台
+ *  2) ヘッダー / HUD
+ *  3) ステージ（お題・進捗・メッセージ）
+ *  4) かなグリッド
+ *  5) 見つけたことば
+ *  6) ボトムバー / モーダル
+ *  7) 演出（バースト・粒子・ダメージ）
+ *  8) レスポンシブ（モバイルは1画面完結・スクロールなし）
+ * =========================================================================== */
+
+/* --------------------------------------------------------------- 1) 土台 */
+:root{
+  --bg:#050505;
+  --fg:#fff;
+  --muted:#8f8f8f;
+  --line:#2a2a2a;
+  --panel:#0b0b0b;
+  --danger:#ff3b3b;
+  --gold:#ffd34d;
+  --fever:#7ef9d0;
+  --gap:8px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:"Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+  display:flex;justify-content:center;
+  overflow:hidden;
+  -webkit-text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent;
+}
+button{font:inherit;color:inherit}
+h1,h2{margin:0}
+
+.app{
+  width:min(1160px,100%);
+  height:100vh;height:100dvh;
+  padding:calc(6px + env(safe-area-inset-top)) 12px calc(6px + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;gap:var(--gap);
+  overflow:hidden;
+}
+
+/* フィーバー時は画面全体がうっすら発光する */
+body.fever .app{box-shadow:inset 0 0 0 2px rgba(126,249,208,.35),inset 0 0 60px rgba(126,249,208,.12)}
+body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
+
+/* ------------------------------------------------------ 2) ヘッダー/HUD */
+.top{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border-bottom:1px solid var(--line);padding-bottom:6px;flex:none;
+}
+.brand{font-weight:900;letter-spacing:.06em;font-size:clamp(15px,2.4vw,22px);white-space:nowrap}
+.hud{display:flex;align-items:center;gap:12px;min-width:0;flex:1;justify-content:center}
+.hudStars{
+  font-size:clamp(15px,2.6vw,22px);letter-spacing:.02em;white-space:nowrap;color:var(--gold);
+  display:flex;align-items:center;gap:1px;
+}
+.hudStars .st{display:inline-block;transition:transform .18s}
+.hudStars .stGain{animation:starGain .55s cubic-bezier(.2,1.4,.4,1) both}
+.hudStars .stLost{animation:starLost .6s ease-out both;color:var(--danger);position:absolute;pointer-events:none}
+.hudStars .more{font-size:.62em;color:var(--muted);font-weight:800;margin-left:3px}
+.hudStarsWrap{position:relative;display:flex;align-items:center}
+@keyframes starGain{0%{transform:scale(0) rotate(-120deg);opacity:0}60%{transform:scale(1.5) rotate(10deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes starLost{0%{transform:scale(1);opacity:1}30%{transform:scale(1.6) rotate(18deg)}100%{transform:scale(.4) translateY(26px) rotate(70deg);opacity:0}}
+
+.hudScore{display:flex;flex-direction:column;align-items:flex-end;line-height:1.1;white-space:nowrap}
+.hudScore b{font-size:clamp(14px,2.3vw,20px);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.hudScore small{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.08em}
+.hudScore.bump b{animation:scoreBump .35s ease-out}
+@keyframes scoreBump{0%{transform:scale(1)}40%{transform:scale(1.22);color:var(--gold)}100%{transform:scale(1)}}
+
+.topBtns{display:flex;gap:6px;flex:none}
+.iconBtn{
+  background:#000;border:1px solid #3a3a3a;border-radius:999px;
+  padding:6px 11px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;
+}
+.iconBtn:hover{border-color:#8a8a8a;background:#131313}
+.iconBtn.danger{border-color:#5b2424;color:#ffb0b0}
+
+/* ------------------------------------------------------------ 3) ステージ */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:12px;flex:1;min-height:0}
+.main{display:flex;flex-direction:column;gap:6px;min-height:0}
+
+.stage{text-align:center;flex:none}
+.stageChips{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;min-height:18px}
+.chipTag{
+  font-size:10px;font-weight:900;letter-spacing:.1em;color:#ccc;
+  border:1px solid #333;border-radius:999px;padding:2px 8px;white-space:nowrap;
+}
+.chipTag.ghost{color:var(--muted);border-color:#242424}
+.chipTag.special{color:#000;background:var(--gold);border-color:var(--gold)}
+.comboTag{
+  font-size:11px;font-weight:900;letter-spacing:.06em;padding:2px 9px;border-radius:999px;
+  background:#fff;color:#000;opacity:0;transform:scale(.7);transition:.16s;white-space:nowrap;
+}
+.comboTag.show{opacity:1;transform:scale(1)}
+.comboTag.fever{background:var(--fever);box-shadow:0 0 16px rgba(126,249,208,.7)}
+
+.pattern{
+  font-weight:950;font-size:clamp(38px,8.2vw,72px);letter-spacing:.06em;line-height:1.05;
+  margin:2px 0 4px;user-select:none;
+}
+.pattern .hole{display:inline-block;min-width:.75em;color:#666;transition:color .12s}
+.pattern .hole.filled{color:#fff;text-shadow:0 0 24px rgba(255,255,255,.5)}
+.pattern.hit{animation:patternHit .5s cubic-bezier(.2,1.2,.3,1)}
+@keyframes patternHit{0%{transform:scale(1)}35%{transform:scale(1.07)}100%{transform:scale(1)}}
+
+.progress{display:flex;flex-direction:column;gap:3px;max-width:520px;margin:0 auto}
+.bar{position:relative;height:7px;border-radius:999px;background:#161616;overflow:hidden;border:1px solid #232323}
+.bar i{
+  display:block;height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,#8a8a8a,#fff);transition:width .32s cubic-bezier(.2,.9,.3,1);
+}
+.bar.done i{background:linear-gradient(90deg,var(--gold),#fff6c8);box-shadow:0 0 14px rgba(255,211,77,.6)}
+.bar b{position:absolute;top:-2px;bottom:-2px;width:2px;background:#666;border-radius:2px}
+.bar.reach{animation:reachPulse .9s ease-in-out infinite}
+@keyframes reachPulse{0%,100%{box-shadow:0 0 0 rgba(255,255,255,0)}50%{box-shadow:0 0 12px rgba(255,255,255,.55)}}
+/* --- ひらがな棒人間（頭＝〇 / 腕＝く / 脚＝へ）がバーの上を歩く --- */
+.track{position:relative;height:40px;margin-bottom:1px}
+/* ゴール旗はCSSで描く（絵文字だと環境によって出ないため） */
+.goal{
+  position:absolute;bottom:0;left:0;width:1.5px;height:19px;background:#666;
+  transform:translateX(-50%);transform-origin:bottom center;transition:left .3s,background .3s;
+}
+.goal::after{
+  content:"";position:absolute;left:1.5px;top:0;
+  border:5px solid transparent;border-left-color:#666;border-top-color:#666;
+}
+.goal.reached{background:var(--gold);animation:flagWave .7s ease-in-out infinite alternate}
+.goal.reached::after{border-left-color:var(--gold);border-top-color:var(--gold)}
+@keyframes flagWave{
+  from{transform:translateX(-50%) rotate(-5deg)}
+  to{transform:translateX(-50%) rotate(5deg)}
+}
+
+.mascot{
+  position:absolute;bottom:0;left:0;width:26px;height:36px;
+  transform:translateX(-50%) scale(1.12);transform-origin:bottom center;
+  transition:left .5s linear;color:#fff;user-select:none;
+}
+.mascot.noAnim{transition:none}
+.mRig{position:absolute;inset:0;transform-origin:50% 92%}
+.mBob{position:absolute;inset:0;transform-origin:50% 100%}
+
+.mHead{
+  position:absolute;left:50%;top:0;transform:translateX(-50%);
+  width:15px;height:15px;border:1.5px solid #fff;border-radius:50%;background:#000;
+  font-size:10px;font-weight:800;display:grid;place-items:center;line-height:1;
+}
+/* 頭の中身は常にひらがな。待機中は「の」、狙っているときはそのかな */
+.mHead{transition:transform .12s}
+.mHead.aim{transform:translateX(-50%) scale(1.12);text-shadow:0 0 7px rgba(255,255,255,.65)}
+.mTorso{
+  position:absolute;left:50%;top:13px;width:2px;height:11px;
+  background:#fff;border-radius:1px;transform:translateX(-50%);
+}
+/* 腕＝く / 脚＝し。付け根を軸に振る */
+.mArm{position:absolute;top:18px;left:50%;font-size:11px;line-height:1;transform-origin:50% 0}
+.mArmL{margin-left:-9px}
+.mArmR{margin-left:-2px}
+.mLeg{position:absolute;top:23px;left:50%;font-size:12px;line-height:1;transform-origin:50% 0}
+.mLegL{margin-left:-6px}
+.mLegR{margin-left:0}
+
+/* --- 立ち姿：ゆっくり呼吸する --- */
+.mBob{animation:breathe 3.4s ease-in-out infinite}
+.mArmL{transform:rotate(9deg)}
+.mArmR{transform:scaleX(-1) rotate(9deg)}
+.mLegL{transform:scaleX(-1) rotate(-7deg)}
+.mLegR{transform:rotate(-7deg)}
+@keyframes breathe{
+  0%,100%{transform:translateY(0) scaleY(1)}
+  50%{transform:translateY(-.6px) scaleY(1.025)}
+}
+
+/* --- 歩行：4足分を1サイクルに。腕は脚と逆位相、胴は1歩ごとに沈む --- */
+.mascot.walking .mBob{animation:walkBob .46s ease-in-out infinite}
+.mascot.walking .mLegL{animation:strideL .92s ease-in-out infinite}
+.mascot.walking .mLegR{animation:strideR .92s ease-in-out infinite}
+.mascot.walking .mArmL{animation:swingL .92s ease-in-out infinite}
+.mascot.walking .mArmR{animation:swingR .92s ease-in-out infinite}
+@keyframes walkBob{
+  0%,100%{transform:translateY(0) rotate(2.5deg)}
+  50%{transform:translateY(-1.6px) rotate(3.5deg)}
+}
+@keyframes strideL{
+  0%,100%{transform:scaleX(-1) rotate(30deg)}
+  25%{transform:scaleX(-1) rotate(2deg)}
+  50%{transform:scaleX(-1) rotate(-28deg)}
+  75%{transform:scaleX(-1) rotate(0deg)}
+}
+@keyframes strideR{
+  0%,100%{transform:rotate(-28deg)}
+  25%{transform:rotate(0deg)}
+  50%{transform:rotate(30deg)}
+  75%{transform:rotate(2deg)}
+}
+@keyframes swingL{
+  0%,100%{transform:rotate(26deg)}
+  50%{transform:rotate(-16deg)}
+}
+@keyframes swingR{
+  0%,100%{transform:scaleX(-1) rotate(-16deg)}
+  50%{transform:scaleX(-1) rotate(26deg)}
+}
+
+/* --- 正解：しゃがんで溜め、跳んで、着地でつぶれる --- */
+.mRig.cheer{animation:mJump .8s cubic-bezier(.25,.9,.35,1)}
+.mRig.cheer .mArmL{animation:cheerArmL .8s cubic-bezier(.25,.9,.35,1)}
+.mRig.cheer .mArmR{animation:cheerArmR .8s cubic-bezier(.25,.9,.35,1)}
+.mRig.cheer .mLegL{animation:cheerLegL .8s cubic-bezier(.25,.9,.35,1)}
+.mRig.cheer .mLegR{animation:cheerLegR .8s cubic-bezier(.25,.9,.35,1)}
+@keyframes mJump{
+  0%{transform:translateY(0) scaleY(1)}
+  14%{transform:translateY(1.5px) scaleY(.88) scaleX(1.09)}   /* 溜め */
+  40%{transform:translateY(-15px) scaleY(1.12) scaleX(.92)}   /* 伸び上がり */
+  62%{transform:translateY(-13px) scaleY(1)}
+  82%{transform:translateY(0) scaleY(.9) scaleX(1.07)}        /* 着地でつぶれる */
+  100%{transform:translateY(0) scaleY(1)}
+}
+/* 万歳は頭に重ならないよう、外へ逃がしながら上げる */
+@keyframes cheerArmL{
+  0%{transform:rotate(9deg)}
+  14%{transform:rotate(46deg)}
+  45%{transform:translate(-1px,-1px) rotate(-88deg)}
+  72%{transform:rotate(-72deg)}
+  100%{transform:rotate(9deg)}
+}
+@keyframes cheerArmR{
+  0%{transform:scaleX(-1) rotate(9deg)}
+  14%{transform:scaleX(-1) rotate(46deg)}
+  45%{transform:scaleX(-1) translate(-1px,-1px) rotate(-88deg)}
+  72%{transform:scaleX(-1) rotate(-72deg)}
+  100%{transform:scaleX(-1) rotate(9deg)}
+}
+@keyframes cheerLegL{
+  0%,100%{transform:scaleX(-1) rotate(-7deg)} 14%{transform:scaleX(-1) rotate(22deg)} 45%{transform:scaleX(-1) rotate(-24deg)}
+}
+@keyframes cheerLegR{
+  0%,100%{transform:rotate(-7deg)} 14%{transform:rotate(22deg)} 45%{transform:rotate(-24deg)}
+}
+
+/* --- 不正解：のけぞって尻もちをつき、自力で起き上がる --- */
+.mRig.down{animation:mFall 1.5s cubic-bezier(.3,.7,.4,1)}
+.mRig.down .mHead{border-color:var(--danger);color:var(--danger)}
+.mRig.down .mArmL{animation:fallArmL 1.5s ease-out}
+.mRig.down .mArmR{animation:fallArmR 1.5s ease-out}
+.mRig.down .mLegL{animation:fallLegL 1.5s ease-out}
+.mRig.down .mLegR{animation:fallLegR 1.5s ease-out}
+@keyframes mFall{
+  0%{transform:translate(0,0) rotate(0)}
+  10%{transform:translate(2px,-1px) rotate(-14deg)}    /* のけぞる */
+  30%{transform:translate(8px,1px) rotate(62deg)}      /* 倒れる */
+  42%{transform:translate(10px,3px) rotate(84deg)}     /* 尻もち＋バウンド */
+  50%{transform:translate(10px,2px) rotate(78deg)}
+  70%{transform:translate(10px,3px) rotate(84deg)}     /* しばらく伸びている */
+  88%{transform:translate(4px,0) rotate(18deg)}        /* 起き上がる */
+  96%{transform:translate(0,0) rotate(-5deg)}
+  100%{transform:translate(0,0) rotate(0)}
+}
+@keyframes fallArmL{
+  0%{transform:rotate(9deg)} 12%{transform:rotate(-70deg)} 40%{transform:rotate(-30deg)}
+  70%{transform:rotate(-40deg)} 100%{transform:rotate(9deg)}
+}
+@keyframes fallArmR{
+  0%{transform:scaleX(-1) rotate(9deg)} 12%{transform:scaleX(-1) rotate(-70deg)} 40%{transform:scaleX(-1) rotate(-30deg)}
+  70%{transform:scaleX(-1) rotate(-40deg)} 100%{transform:scaleX(-1) rotate(9deg)}
+}
+@keyframes fallLegL{
+  0%{transform:scaleX(-1) rotate(-7deg)} 30%{transform:scaleX(-1) rotate(38deg)} 70%{transform:scaleX(-1) rotate(30deg)} 100%{transform:scaleX(-1) rotate(-7deg)}
+}
+@keyframes fallLegR{
+  0%{transform:rotate(-7deg)} 30%{transform:rotate(20deg)} 70%{transform:rotate(14deg)} 100%{transform:rotate(-7deg)}
+}
+
+/* --- PERFECT：踏み切って前方宙返り、着地でためる --- */
+.mRig.spin{animation:mSpin 1.3s cubic-bezier(.25,.8,.3,1)}
+.mRig.spin .mArmL{animation:tuckArmL 1.3s ease-in-out}
+.mRig.spin .mArmR{animation:tuckArmR 1.3s ease-in-out}
+.mRig.spin .mLegL{animation:tuckLegL 1.3s ease-in-out}
+.mRig.spin .mLegR{animation:tuckLegR 1.3s ease-in-out}
+@keyframes mSpin{
+  0%{transform:translateY(0) scaleY(1) rotate(0)}
+  12%{transform:translateY(2px) scaleY(.82) rotate(0)}
+  45%{transform:translateY(-24px) scaleY(1.05) rotate(360deg)}
+  75%{transform:translateY(-8px) rotate(680deg)}
+  90%{transform:translateY(0) scaleY(.86) rotate(720deg)}
+  100%{transform:translateY(0) scaleY(1) rotate(720deg)}
+}
+@keyframes tuckArmL{0%,100%{transform:rotate(9deg)}45%{transform:rotate(-120deg)}}
+@keyframes tuckArmR{0%,100%{transform:scaleX(-1) rotate(9deg)}45%{transform:scaleX(-1) rotate(-120deg)}}
+@keyframes tuckLegL{0%,100%{transform:scaleX(-1) rotate(-7deg)}45%{transform:scaleX(-1) rotate(56deg)}}
+@keyframes tuckLegR{0%,100%{transform:rotate(-7deg)}45%{transform:rotate(56deg)}}
+
+.mascot.fever .mHead{border-color:var(--fever);color:var(--fever);box-shadow:0 0 9px rgba(126,249,208,.8)}
+.mascot.fever .mTorso{background:var(--fever)}
+.mascot.fever .mArm,.mascot.fever .mLeg{color:var(--fever)}
+
+.mBubble{
+  position:absolute;bottom:23px;left:0;transform:translateX(-50%) scale(.6);
+  background:#fff;color:#000;border-radius:9px;padding:1px 6px;
+  font-size:9px;font-weight:900;white-space:nowrap;opacity:0;pointer-events:none;
+  transition:left .55s cubic-bezier(.3,.85,.4,1),opacity .18s,transform .18s;z-index:2;
+}
+.mBubble.show{opacity:1;transform:translateX(-50%) scale(1)}
+.mBubble.bad{background:var(--danger);color:#fff}
+.mBubble.gold{background:var(--gold)}
+
+/* --- 投げられたかな：正解なら〇に合体、不正解なら弾かれる --- */
+.thrown{
+  position:fixed;z-index:78;pointer-events:none;font-weight:950;
+  font-size:clamp(26px,5vw,42px);line-height:1;transform:translate(-50%,-50%);
+  text-shadow:0 0 18px rgba(255,255,255,.55);
+}
+.thrown.ng{color:var(--danger);text-shadow:0 0 18px rgba(255,59,59,.6)}
+.ring{
+  position:fixed;z-index:77;pointer-events:none;border-radius:50%;
+  width:14px;height:14px;transform:translate(-50%,-50%);
+  border:2px solid #fff;animation:ringOut .5s ease-out both;
+}
+.ring.ng{border-color:var(--danger)}
+@keyframes ringOut{
+  0%{opacity:.95;transform:translate(-50%,-50%) scale(.5)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(6)}
+}
+.pattern .hole.merge{animation:holeMerge .5s cubic-bezier(.2,1.3,.3,1)}
+@keyframes holeMerge{
+  0%{transform:scale(1.7);color:#fff;text-shadow:0 0 30px #fff}
+  55%{transform:scale(.92)}
+  100%{transform:scale(1)}
+}
+.pattern .hole.reject{animation:holeReject .42s ease-out;color:var(--danger)}
+@keyframes holeReject{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-7px) rotate(-6deg)}
+  55%{transform:translateX(7px) rotate(6deg)}
+  80%{transform:translateX(-3px)}
+}
+
+.progressText{
+  display:flex;justify-content:space-between;gap:10px;
+  font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;
+}
+.progressText b{color:#fff}
+.progressText .reachText{color:var(--gold);font-weight:900}
+
+.flash{min-height:17px;font-size:12px;font-weight:800;line-height:1.35;margin-top:2px}
+.flash.good{color:#fff}
+.flash.bad{color:#ff8f8f}
+.flash.info{color:var(--muted);font-weight:600}
+
+/* -------------------------------------------------------- 4) かなグリッド */
+.gridWrap{
+  flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:8px;overflow:auto;
+}
+/* 1枚のグリッドに清音5列＋濁音5列を並べ、行の高さを共有して余白なく敷き詰める。
+   各行は JS が grid-row / grid-column を明示して配置する。 */
+.kanaGrid{
+  display:grid;gap:4px 10px;justify-self:center;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  grid-template-rows:auto repeat(11,minmax(0,1fr));
+  width:100%;max-width:620px;height:100%;max-height:540px;
+}
+.kanaGrid.single{grid-template-columns:minmax(0,320px)}
+.kanaSection{display:contents}
+.pocket{grid-column:2;grid-row:8/-1;display:none;min-width:0;min-height:0;padding-top:4px}
+.kanaGrid.single .pocket{grid-row:2/-1}
+
+.kanaSectionLabel{
+  grid-row:1;align-self:end;font-size:9px;color:#6a6a6a;letter-spacing:.12em;text-align:center;
+}
+.kanaRow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;min-height:0}
+.kanaSpacer{min-height:0}
+.kana{
+  height:100%;min-height:0;border:1px solid #3f3f3f;background:#000;color:#fff;border-radius:7px;
+  font-size:clamp(16px,3.1vh,26px);line-height:1;cursor:pointer;padding:0;
+  font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;
+  transition:transform .09s,background .12s,color .12s,border-color .12s;
+  position:relative;
+}
+.kana:hover:not(:disabled){background:#fff;color:#000;transform:translateY(-1px)}
+.kana:active:not(:disabled){transform:scale(.92)}
+.kana.invalid{color:#232323;border-color:#141414;background:#050505;cursor:not-allowed}
+.kana.used{color:#4a4a4a;border-color:#1e1e1e;background:#0a0a0a;cursor:default}
+.kana.correct{background:#fff;color:#000;border-color:#fff;font-weight:900}
+.kana.missedCorrect{color:var(--danger);border-color:#5a2020;background:#100606;font-weight:800}
+.kana.pop{animation:kanaPop .45s cubic-bezier(.2,1.5,.4,1)}
+@keyframes kanaPop{0%{transform:scale(1)}40%{transform:scale(1.45);box-shadow:0 0 0 3px #fff,0 0 22px rgba(255,255,255,.9)}100%{transform:scale(1)}}
+.kana.shakeNo{animation:kanaNo .34s ease-out}
+@keyframes kanaNo{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.kana.hintGlow{animation:hintGlow 1.6s ease-out 3}
+@keyframes hintGlow{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 2px var(--gold),0 0 20px rgba(255,211,77,.85)}}
+.kana.flashLeft{animation:flashLeft .5s ease-out}
+@keyframes flashLeft{
+  0%,100%{background:#000;color:#fff}
+  40%{background:#fff;color:#000;box-shadow:0 0 0 2px #fff,0 0 16px rgba(255,255,255,.9)}
+}
+
+/* ------------------------------------------------- 5) 見つけたことば */
+.aside{display:flex;flex-direction:column;gap:10px;min-height:0}
+.panel{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--panel);min-height:0;display:flex;flex-direction:column}
+.panel h2{font-size:12px;letter-spacing:.06em;margin-bottom:6px;display:flex;justify-content:space-between;align-items:baseline}
+.panel h2 span{font-size:10px;color:var(--muted);font-weight:700}
+.panelFound{flex:1;min-height:0}
+.found{overflow:auto;display:flex;flex-direction:column;gap:2px}
+.foundRow{padding:5px 0;border-top:1px dashed #232323}
+.foundRow:first-child{border-top:0}
+.foundRow.isNew{animation:foundIn .45s ease-out}
+@keyframes foundIn{0%{opacity:0;transform:translateX(-10px);background:rgba(255,255,255,.14)}100%{opacity:1;transform:none;background:transparent}}
+.word{font-size:15px;font-weight:900;white-space:nowrap;word-break:keep-all}
+.reading{font-size:10px;font-weight:600;color:#7d7d7d;margin-left:6px;white-space:nowrap}
+.meaning{font-size:11px;color:#b4b4b4;line-height:1.45;margin-top:1px}
+.empty{color:#5a5a5a;font-size:12px;padding:12px 0;text-align:center;line-height:1.6}
+
+.rules{font-size:11.5px;color:#b0b0b0;line-height:1.75}
+.rules b{color:#fff}
+.rules .key{color:var(--gold)}
+.actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.btn{
+  border:1px solid #4d4d4d;background:#000;border-radius:10px;padding:8px 12px;
+  font-weight:800;font-size:12px;cursor:pointer;flex:1;white-space:nowrap;
+}
+.btn:hover:not(:disabled){border-color:#9a9a9a;background:#141414}
+.btn.primary{background:#fff;color:#000;border-color:#fff}
+.btn.primary:hover{background:#e2e2e2}
+.btn.danger{border-color:#5b2424;color:#ffb0b0}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+
+/* モバイル用：かなグリッド右下のポケットに入るチップ表示 */
+.pocketTitle{font-size:9px;color:#6a6a6a;letter-spacing:.12em;margin-bottom:4px;text-align:center}
+.chips{display:flex;flex-wrap:wrap;gap:4px;overflow:auto;align-content:flex-start;flex:1;min-height:0}
+.chip{
+  border:1px solid #333;background:#111;border-radius:999px;padding:3px 8px;
+  font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;
+}
+.chip.isNew{animation:chipIn .4s cubic-bezier(.2,1.4,.4,1)}
+@keyframes chipIn{0%{transform:scale(.4);opacity:0;background:#fff;color:#000}100%{transform:scale(1);opacity:1}}
+.pocketBtns{display:flex;gap:5px;margin-top:6px}
+.pocketBtns .btn{padding:6px 8px;font-size:11px}
+
+/* ------------------------------------------------ 6) ボトムバー/モーダル */
+.doneBar{
+  flex:none;display:flex;align-items:center;gap:10px;justify-content:space-between;
+  border:1px solid var(--gold);border-radius:12px;background:linear-gradient(180deg,#151206,#0a0a0a);
+  padding:8px 10px;animation:doneIn .4s cubic-bezier(.2,1.2,.3,1);
+}
+.doneBar[hidden]{display:none}
+@keyframes doneIn{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:none}}
+.doneMsg{font-size:11.5px;line-height:1.5;color:#e9e2c6;min-width:0}
+.doneMsg b{color:var(--gold)}
+.doneBtns{display:flex;gap:6px;flex:none}
+.doneBtns .btn{flex:none}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:40;display:none;padding:14px;overflow:auto}
+.modal.show{display:grid;place-items:center}
+.modalCard{
+  --cardPad:14px;
+  width:min(940px,100%);max-height:92vh;max-height:92dvh;overflow:auto;
+  border:1px solid #3a3a3a;border-radius:18px;background:#070707;padding:var(--cardPad);
+}
+.modalCard.narrow{width:min(520px,100%)}
+/* 見出しは上に貼り付く。カード内の他要素（position:relative）に隠れないよう z-index を持たせる */
+.modalHead{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  position:sticky;top:0;z-index:2;background:#070707;border-bottom:1px solid #222;
+  margin:calc(var(--cardPad) * -1) calc(var(--cardPad) * -1) 10px;
+  padding:var(--cardPad) var(--cardPad) 10px;
+}
+.modalTitle{font-size:17px;font-weight:950}
+.modalSub{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+
+.roundList{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.specialHeader{grid-column:1/-1;margin-top:6px;padding:10px 2px 4px;border-top:1px solid #262626;font-size:11px;font-weight:900;letter-spacing:.14em;color:#bbb}
+.specialHeader small{display:block;margin-top:3px;font-size:10px;font-weight:500;letter-spacing:.02em;color:#666}
+.roundChoice{
+  position:relative;border:1px solid #2e2e2e;background:#000;border-radius:12px;
+  padding:8px 9px;text-align:left;cursor:pointer;overflow:hidden;
+}
+.roundChoice:hover{border-color:#888;background:#0d0d0d}
+.roundChoice.current{border-color:#fff}
+.roundChoice.cleared{background:#f2f2f2;color:#000;border-color:#fff}
+.roundChoice.cleared .rcTop,.roundChoice.cleared .rcMeta{color:#3a3a3a}
+.roundChoice.perfect{background:linear-gradient(160deg,#ffe9a8,#fff);border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.rcTop{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:10px;color:#888;font-weight:800}
+.rcPattern{font-size:21px;font-weight:900;letter-spacing:.04em;margin:3px 0 2px}
+.rcMeta{font-size:10px;color:#777}
+.rcBar{height:3px;border-radius:2px;background:#1e1e1e;margin-top:5px;overflow:hidden}
+.roundChoice.cleared .rcBar{background:rgba(0,0,0,.15)}
+.rcBar i{display:block;height:100%;background:#888}
+.roundChoice.cleared .rcBar i{background:#000}
+.badge{border:1px solid currentColor;border-radius:999px;padding:1px 6px;font-size:9px;font-weight:900;white-space:nowrap}
+.badge.gold{color:#7a5c00;background:var(--gold);border-color:var(--gold)}
+
+.answerRow{display:grid;grid-template-columns:minmax(150px,32%) minmax(0,1fr);gap:10px;padding:6px 2px;border-top:1px solid #171717;align-items:baseline}
+.answerRow:first-child{border-top:0}
+.answerRow.missed .word{color:var(--danger)}
+.answerRow.missed .word::after{
+  content:"見逃し";font-size:9px;font-weight:700;color:#888;border:1px solid #444;
+  border-radius:999px;padding:1px 5px;margin-left:5px;vertical-align:2px;white-space:nowrap;
+}
+.statGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:6px 0 10px}
+.stat{border:1px solid #242424;border-radius:10px;padding:7px 9px;background:#0b0b0b}
+.stat small{display:block;font-size:9px;color:var(--muted);letter-spacing:.1em;font-weight:800}
+.stat b{font-size:17px;font-variant-numeric:tabular-nums}
+.menuList{display:flex;flex-direction:column;gap:6px}
+.menuList .btn{flex:none;text-align:left;padding:11px 13px;font-size:13px}
+.tiny{font-size:10px;color:#5f5f5f;margin-top:10px;line-height:1.6}
+
+/* ----------------------------------------------------------- 7) 演出 */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+.floatText{
+  position:fixed;transform:translate(-50%,-50%);font-weight:950;font-size:17px;
+  pointer-events:none;z-index:75;animation:floatUp .95s cubic-bezier(.2,.8,.3,1) both;white-space:nowrap;
+}
+.floatText.gold{color:var(--gold);text-shadow:0 0 14px rgba(255,211,77,.7)}
+.floatText.bad{color:var(--danger)}
+@keyframes floatUp{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}25%{opacity:1;transform:translate(-50%,-90%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-230%) scale(1)}}
+
+.particle{position:absolute;width:7px;height:7px;border-radius:2px;background:#fff;animation:particleFly var(--dur,.9s) cubic-bezier(.15,.7,.3,1) both}
+@keyframes particleFly{
+  0%{opacity:1;transform:translate(0,0) rotate(0) scale(1)}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(.4)}
+}
+
+.burst{position:fixed;inset:0;display:none;place-items:center;pointer-events:none;z-index:60;padding:16px}
+.burst.show{display:grid}
+.burst.dim{background:rgba(0,0,0,.82)}
+.burstInner{text-align:center;animation:burstPop .9s cubic-bezier(.16,.9,.28,1) both}
+.burstInner.long{animation-duration:1.35s}
+.burstMark{font-size:11px;letter-spacing:.3em;color:#9a9a9a;font-weight:900;margin-bottom:8px}
+.burstWord{font-size:clamp(46px,11vw,112px);font-weight:950;line-height:1;letter-spacing:.04em;text-shadow:0 0 30px rgba(255,255,255,.3)}
+.burstSub{font-size:clamp(12px,2.2vw,20px);color:#a8a8a8;font-weight:700;margin-top:8px;letter-spacing:.06em}
+.burstBonus{margin-top:10px;font-size:clamp(16px,3vw,28px);font-weight:950;color:var(--gold)}
+.burst.gold .burstWord{color:var(--gold);text-shadow:0 0 40px rgba(255,211,77,.6)}
+@keyframes burstPop{
+  0%{opacity:0;transform:scale(.55) rotate(-2deg);filter:blur(9px)}
+  28%{opacity:1;transform:scale(1.09) rotate(.5deg);filter:blur(0)}
+  48%{transform:scale(.97)}64%{transform:scale(1.02)}
+  80%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(.96) translateY(-12px)}
+}
+
+#damage{position:fixed;inset:0;pointer-events:none;z-index:65;opacity:0;
+  background:radial-gradient(ellipse at center,transparent 42%,rgba(255,59,59,.55) 100%)}
+#damage.hit{animation:damageFlash .45s ease-out}
+@keyframes damageFlash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+.app.shake{animation:shake .38s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shake{
+  10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}
+  30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}
+}
+
+/* ------------------------------------------------------- 8) レスポンシブ */
+@media(max-width:960px){
+  :root{--gap:6px}
+  .app{padding:calc(5px + env(safe-area-inset-top)) 8px calc(5px + env(safe-area-inset-bottom))}
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .aside{display:none}
+  .pocket{display:flex;flex-direction:column;min-height:0}
+  .kanaGrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3px 7px;max-height:none}
+  .kanaGrid.single{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .kanaRow{gap:3px}
+  .gridWrap{padding:6px;border-radius:12px}
+  .brand{font-size:14px}
+  .hud{gap:8px}
+  .roundList{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .modalCard{--cardPad:11px;border-radius:14px}
+  .answerRow{grid-template-columns:minmax(120px,42%) minmax(0,1fr);gap:8px}
+  .doneBar{flex-direction:column;align-items:stretch;gap:6px;padding:7px 9px}
+  .doneBtns .btn{flex:1}
+  .floatText{font-size:15px}
+}
+@media(max-width:420px){
+  .brand{font-size:12.5px;letter-spacing:0}
+  .iconBtn{padding:5px 8px;font-size:11px}
+  .chip{font-size:10px;padding:2px 6px}
+}
+/* 縦に余裕がない端末では文字と余白をさらに詰める */
+@media(max-height:680px){
+  .pattern{font-size:clamp(30px,7vw,48px);margin:0 0 2px}
+  .flash{min-height:15px;font-size:11px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+}
