@@ -1748,7 +1748,7 @@ const WORD_ROUNDS = [
       { word: "せんとう", display: "先頭／戦闘／銭湯", meaning: "いちばん前／戦うこと／公衆浴場。" },
       { word: "かんとう", display: "関東／敢闘", meaning: "東京を中心とする地方／勇敢に戦うこと。" },
       { word: "しんとう", display: "浸透／神道", meaning: "しみ通ること／日本古来の民族信仰。" },
-      { word: "たんとう", display: "担当／短刀", meaning: "その仕事を受け持つこと／短い刀。" },
+      { word: "たんとう", display: "担当／短刀／単刀", meaning: "その仕事を受け持つこと／短い刀／「単刀直入」の単刀。" },
       { word: "だんとう", display: "暖冬／弾頭", meaning: "例年より暖かい冬／ミサイルなどの先端部。" },
       { word: "はんとう", display: "半島", meaning: "三方が海に突き出た陸地。" },
       { word: "ばんとう", display: "番頭", meaning: "商家や旅館で使用人を束ねる人。" },
@@ -2705,7 +2705,9 @@ const WORD_ROUNDS = [
       { word: "かんぱく", display: "関白", meaning: "天皇を補佐した最高位の職。「亭主関白」。" },
       { word: "はんぱく", display: "半白", meaning: "半ば白髪であること。ごま塩頭。" },
       { word: "せんぱく", display: "船舶", meaning: "ふね。「船舶免許」。" },
-      { word: "しんぱく", display: "心拍", meaning: "心臓の打つ動き。「心拍数」。" }
+      { word: "しんぱく", display: "心拍", meaning: "心臓の打つ動き。「心拍数」。" },
+      { word: "わんぱく", display: "腕白", meaning: "子どもが元気にいたずらをするさま。" },
+      { word: "ばんぱく", display: "万博", meaning: "万国博覧会の略。" }
     ]
   },
   {
