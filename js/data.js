@@ -1530,7 +1530,8 @@ const WORD_ROUNDS = [
       { word: "びんご", display: "ビンゴ", meaning: "数字を並べて当てるゲーム／「まさにそれだ」と言い当てたときの語。" },
       { word: "けんご", display: "堅固", meaning: "つくりや守りががんじょうで、しっかりしていること。「堅固な守り」。" },
       { word: "なんご", display: "喃語", meaning: "乳児が発する、意味をなさない声。「あーうー」など。" },
-      { word: "てんご", display: "てんご", meaning: "関西で、いたずら・ふざけること。「てんごをする」。" }
+      { word: "てんご", display: "てんご", meaning: "関西で、いたずら・ふざけること。「てんごをする」。" },
+      { word: "ばんご", display: "番碁", meaning: "囲碁で、何番勝負と決めて打つ対局。「十番碁」。" }
     ]
   },
   {
@@ -2358,7 +2359,7 @@ const WORD_ROUNDS = [
     answers: [
       { word: "いんしょう", display: "印象", meaning: "心に残る感じ。" },
       { word: "ぶんしょう", display: "文章", meaning: "考えを文字で書き表したもの。" },
-      { word: "かんしょう", display: "鑑賞／干渉／感傷", meaning: "味わい楽しむこと／立ち入ること／もの悲しくなること。" },
+      { word: "かんしょう", display: "鑑賞／干渉／緩衝", meaning: "味わい楽しむこと／立ち入ること／衝撃をやわらげること。「緩衝材」。" },
       { word: "げんしょう", display: "現象／減少", meaning: "目に見える出来事／量が減ること。" },
       { word: "えんしょう", display: "炎症／延焼", meaning: "赤く腫れて痛む症状／火が燃え広がること。" },
       { word: "さんしょう", display: "参照／山椒／三唱", meaning: "照らし合わせること／辛みのある香辛料／三度唱えること。" },
@@ -2377,13 +2378,18 @@ const WORD_ROUNDS = [
       { word: "てんしょう", display: "天正", meaning: "安土桃山期の元号（1573〜1592）。" },
       { word: "へんしょう", display: "返照", meaning: "夕日が照り返すこと。" },
       { word: "きんしょう", display: "僅少", meaning: "ごくわずかであること。「僅少差」。" },
-      { word: "たんしょう", display: "嘆賞", meaning: "感心してほめること。" },
+      { word: "たんしょう", display: "嘆賞／単勝", meaning: "感心してほめること／競馬で一着を当てる賭け式。" },
       { word: "ちんしょう", display: "珍称", meaning: "風変わりな呼び名。" },
       { word: "ぐんしょう", display: "群小", meaning: "多くの小さなもの。「群小勢力」。" },
       { word: "こんしょう", display: "混声", meaning: "男声と女声を合わせること。「混声合唱」。" },
       { word: "うんしょう", display: "雲上", meaning: "雲の上。宮中。「雲上人」。" },
       { word: "けんしょう", display: "検証／懸賞／肩章", meaning: "実際に調べて確かめること／賞金を懸けること／肩につける記章。" },
-      { word: "ぼんしょう", display: "梵鐘", meaning: "寺のつりがね。" }
+      { word: "ぼんしょう", display: "梵鐘", meaning: "寺のつりがね。" },
+      { word: "べんしょう", display: "弁償／弁証", meaning: "損害を金品で償うこと／論証すること。「弁証法」。" },
+      { word: "わんしょう", display: "腕章", meaning: "腕に巻いてしるしとする布。" },
+      { word: "がんしょう", display: "岩礁", meaning: "海面近くに隠れている岩。" },
+      { word: "びんしょう", display: "敏捷", meaning: "動きがすばやいこと。" },
+      { word: "らんしょう", display: "濫觴", meaning: "物事の起こり。始まり。" }
     ]
   },
   {
@@ -2412,7 +2418,8 @@ const WORD_ROUNDS = [
       { word: "きんちょう", display: "緊張", meaning: "心や体が張りつめること。" },
       { word: "ろんちょう", display: "論調", meaning: "議論の調子・傾向。「論調が厳しい」。" },
       { word: "はんちょう", display: "班長", meaning: "班のかしら。" },
-      { word: "めんちょう", display: "面疔", meaning: "顔にできる悪性のはれもの。" }
+      { word: "めんちょう", display: "面疔", meaning: "顔にできる悪性のはれもの。" },
+      { word: "どんちょう", display: "緞帳", meaning: "劇場の、巻き上げ式の幕。" }
     ]
   },
   {
@@ -2434,7 +2441,8 @@ const WORD_ROUNDS = [
       { word: "てんきゅう", display: "天球", meaning: "星を張りつけたと考える仮想の球面。「天球儀」。" },
       { word: "さんきゅう", display: "産休／サンキュー", meaning: "出産のための休暇／感謝を表す語。" },
       { word: "はんきゅう", display: "半球／阪急", meaning: "球を半分にした形。「北半球」／関西の鉄道会社。" },
-      { word: "だんきゅう", display: "段丘", meaning: "階段状の地形。「河岸段丘」。" }
+      { word: "だんきゅう", display: "段丘", meaning: "階段状の地形。「河岸段丘」。" },
+      { word: "なんきゅう", display: "軟球", meaning: "軟式野球やテニスで使うやわらかいボール。" }
     ]
   },
   {
@@ -2456,7 +2464,10 @@ const WORD_ROUNDS = [
       { word: "ろんしゅう", display: "論集", meaning: "論文を集めた本。" },
       { word: "しんしゅう", display: "信州／真宗", meaning: "長野県の古い呼び名／浄土真宗。" },
       { word: "げんしゅう", display: "厳修", meaning: "儀式をおごそかに行うこと。" },
-      { word: "きんしゅう", display: "錦秋", meaning: "紅葉が錦のように美しい秋。" }
+      { word: "きんしゅう", display: "錦秋", meaning: "紅葉が錦のように美しい秋。" },
+      { word: "みんしゅう", display: "民衆", meaning: "世の中の一般の人々。" },
+      { word: "ぐんしゅう", display: "群衆／群集", meaning: "多くの人の集まり／集まり群れること。" },
+      { word: "まんしゅう", display: "満州", meaning: "中国東北部の旧称。" }
     ]
   },
   {
@@ -2540,7 +2551,8 @@ const WORD_ROUNDS = [
       { word: "れんちゅう", display: "連中", meaning: "仲間たち。「あの連中」。" },
       { word: "きんちゅう", display: "禁中", meaning: "皇居の中。宮中。" },
       { word: "がんちゅう", display: "眼中", meaning: "目の中／関心の範囲。「眼中にない」。" },
-      { word: "あんちゅう", display: "暗中", meaning: "暗闇の中。「暗中模索」。" }
+      { word: "あんちゅう", display: "暗中", meaning: "暗闇の中。「暗中模索」。" },
+      { word: "らんちゅう", display: "蘭鋳", meaning: "背びれがなく頭にこぶのある金魚の品種。" }
     ]
   },
   {
@@ -2555,7 +2567,11 @@ const WORD_ROUNDS = [
       { word: "ばんじゅう", display: "番重", meaning: "パンや惣菜を運ぶ、浅い箱形の容器。" },
       { word: "かんじゅう", display: "甘受", meaning: "やむを得ないものとして受け入れること。" },
       { word: "きんじゅう", display: "禽獣", meaning: "鳥とけもの。" },
-      { word: "ぐんじゅう", display: "軍需", meaning: "軍事に必要な物資。「軍需産業」。" }
+      { word: "ぐんじゅう", display: "軍需", meaning: "軍事に必要な物資。「軍需産業」。" },
+      { word: "しんじゅう", display: "心中", meaning: "二人以上が合意して共に死ぬこと。" },
+      { word: "さんじゅう", display: "三重", meaning: "三つ重なること。「三重奏」／三重県。" },
+      { word: "ちんじゅう", display: "珍獣", meaning: "めったに見られない珍しい動物。" },
+      { word: "ねんじゅう", display: "年中", meaning: "一年じゅう。「年中行事」。「ねんちゅう」とも。" }
     ]
   },
   {
