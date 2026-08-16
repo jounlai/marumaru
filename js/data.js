@@ -1826,7 +1826,9 @@ const WORD_ROUNDS = [
       { word: "ふんけい", display: "刎頸", meaning: "首を切ること。「刎頸の交わり（生死を共にする友情）」。" },
       { word: "いんけい", display: "陰茎", meaning: "雄の外生殖器。" },
       { word: "おんけい", display: "恩恵", meaning: "めぐみ。「自然の恩恵」。" },
-      { word: "うんけい", display: "運慶", meaning: "鎌倉時代の仏師。東大寺南大門の金剛力士像で知られる。" }
+      { word: "うんけい", display: "運慶", meaning: "鎌倉時代の仏師。東大寺南大門の金剛力士像で知られる。" },
+      { word: "けんけい", display: "県警", meaning: "県警察本部の略。" },
+      { word: "ぼんけい", display: "盆景", meaning: "盆の上に石や草木で風景を作る趣味。" }
     ]
   },
   {
@@ -3358,7 +3360,7 @@ const WORD_ROUNDS = [
       { word: "ふらい", display: "フライ", meaning: "揚げ物／野球の飛球。" },
       { word: "ふくい", display: "福井", meaning: "北陸地方の県。" },
       { word: "ふさい", display: "夫妻／負債", meaning: "夫と妻／借金。" },
-      { word: "ふけい", display: "父兄", meaning: "児童生徒の保護者。" },
+      { word: "ふけい", display: "父兄／府警", meaning: "児童生徒の保護者／府警察本部の略。「大阪府警」。" },
       { word: "ふはい", display: "腐敗／不敗", meaning: "腐ること。堕落すること／一度も負けないこと。" },
       { word: "ふてい", display: "不定／不貞", meaning: "定まらないこと／配偶者を裏切ること。" },
       { word: "ふたい", display: "付帯", meaning: "主となるものに付き従うこと。「付帯条件」。" },
