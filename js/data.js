@@ -1978,5 +1978,81 @@ const WORD_ROUNDS = [
       { word: "げんぼ", display: "原簿", meaning: "もとになる帳簿。" },
       { word: "ぜんぼ", display: "全貌", meaning: "全体のありさま。「事件の全貌」。" }
     ]
+  },
+  {
+    template: "○んぽう",
+    answers: [
+      { word: "けんぽう", display: "憲法／拳法", meaning: "国の最高法規／こぶしを使う武術。" },
+      { word: "すんぽう", display: "寸法", meaning: "物の長さ・大きさ。「寸法を測る」。" },
+      { word: "ぶんぽう", display: "文法", meaning: "ことばの決まり・組み立てのきまり。" },
+      { word: "でんぽう", display: "電報", meaning: "電信を使って文を送る通信。「祝電」。" },
+      { word: "みんぽう", display: "民法／民放", meaning: "私人間の権利義務を定めた法律／民間放送。" },
+      { word: "らんぽう", display: "乱暴", meaning: "荒々しくふるまうこと。" },
+      { word: "れんぽう", display: "連邦／連峰", meaning: "複数の州や国が結びついた国家／連なる山々。" },
+      { word: "ろんぽう", display: "論法", meaning: "議論の進め方。「三段論法」。" },
+      { word: "かんぽう", display: "漢方／官報", meaning: "中国由来の医術／政府が出す公示の文書。" },
+      { word: "しんぽう", display: "信奉／新法", meaning: "教えを固く信じ従うこと／新しい法律。" },
+      { word: "こんぽう", display: "梱包", meaning: "荷物を包んで縛ること。" },
+      { word: "たんぽう", display: "探訪", meaning: "実際に出向いて探り訪ねること。" },
+      { word: "せんぽう", display: "先方／戦法", meaning: "相手方／戦いのやり方。" },
+      { word: "ぜんぽう", display: "前方", meaning: "前の方。「前方後円墳」。" },
+      { word: "なんぽう", display: "南方", meaning: "南の方角・地方。" },
+      { word: "にんぽう", display: "忍法", meaning: "忍者の使う術。" },
+      { word: "ぐんぽう", display: "軍法", meaning: "軍隊の規律・法。「軍法会議」。" },
+      { word: "さんぽう", display: "三方／算法", meaning: "神事で供物をのせる台／計算のやり方。" },
+      { word: "ほんぽう", display: "本邦／奔放", meaning: "わが国／思うままにふるまうこと。「自由奔放」。" },
+      { word: "てんぽう", display: "天保", meaning: "江戸後期の元号（1830〜1844）。「天保の改革」。" },
+      { word: "まんぽう", display: "マンボウ", meaning: "体が円盤形の大きな海水魚。" },
+      { word: "げんぽう", display: "減法／現報", meaning: "引き算のこと／現世で受ける報い。" }
+    ]
+  },
+  {
+    template: "○んそく",
+    answers: [
+      { word: "えんそく", display: "遠足", meaning: "学校の行事で、歩いて出かけること。" },
+      { word: "はんそく", display: "反則", meaning: "決まりに反すること。「反則負け」。" },
+      { word: "げんそく", display: "原則／減速", meaning: "基本となるきまり／速度を落とすこと。" },
+      { word: "かんそく", display: "観測", meaning: "自然現象を観察し測ること。「気象観測」。" },
+      { word: "ぜんそく", display: "喘息", meaning: "発作的に息苦しくなる病気。" },
+      { word: "じんそく", display: "迅速", meaning: "きわめて速いこと。「迅速な対応」。" },
+      { word: "へんそく", display: "変則／変速", meaning: "通常のやり方と違うこと／速度を変えること。" },
+      { word: "たんそく", display: "嘆息／短足", meaning: "なげいてため息をつくこと／足が短いこと。" },
+      { word: "とんそく", display: "豚足", meaning: "食用にする豚の足。" },
+      { word: "てんそく", display: "纏足", meaning: "昔の中国で、女性の足を布で縛り小さくした風習。" },
+      { word: "きんそく", display: "禁則", meaning: "してはならない決まり。「禁則処理」。" },
+      { word: "しんそく", display: "神速", meaning: "人間わざとは思えないほど速いこと。" }
+    ]
+  },
+  {
+    template: "は○い",
+    answers: [
+      { word: "はやい", display: "早い／速い", meaning: "時期がまだ先である／スピードがある。" },
+      { word: "はかい", display: "破壊", meaning: "こわすこと。" },
+      { word: "はんい", display: "範囲", meaning: "およぶ限り。「行動範囲」。" },
+      { word: "はらい", display: "払い", meaning: "代金を支払うこと／書道の筆づかいの一つ。" },
+      { word: "はわい", display: "ハワイ", meaning: "太平洋にあるアメリカの州。常夏の観光地。" },
+      { word: "はくい", display: "白衣", meaning: "医師や研究者が着る白い上着。" },
+      { word: "はせい", display: "派生", meaning: "もとから分かれて生じること。" },
+      { word: "はさい", display: "破砕", meaning: "打ち砕くこと。" },
+      { word: "はすい", display: "撥水", meaning: "水をはじくこと。「撥水加工」。" },
+      { word: "はけい", display: "波形", meaning: "波のような形。「波形を観察する」。" },
+      { word: "はへい", display: "派兵", meaning: "軍隊を送り出すこと。" },
+      { word: "はがい", display: "羽交い", meaning: "鳥の左右の翼が交わる所。「羽交い締め」。" },
+      { word: "はずい", display: "はずい", meaning: "「恥ずかしい」を縮めた若者語。" }
+    ]
+  },
+  {
+    template: "○んけつ",
+    answers: [
+      { word: "だんけつ", display: "団結", meaning: "多くの人が心を合わせてまとまること。" },
+      { word: "けんけつ", display: "献血", meaning: "輸血用の血液を無償で提供すること。" },
+      { word: "かんけつ", display: "完結／簡潔／間欠", meaning: "すっかり終わること／短くまとまっていること／一定間隔で起きること。" },
+      { word: "ひんけつ", display: "貧血", meaning: "血液中の赤血球やヘモグロビンが不足した状態。" },
+      { word: "こんけつ", display: "混血", meaning: "異なる人種の血が混じること。" },
+      { word: "れんけつ", display: "連結", meaning: "つなぎ合わせること。「連結器」。" },
+      { word: "せんけつ", display: "先決／鮮血", meaning: "先に決めるべきこと／流れ出たばかりの赤い血。" },
+      { word: "しんけつ", display: "心血", meaning: "心と力のすべて。「心血を注ぐ」。" },
+      { word: "さんけつ", display: "酸欠／三傑", meaning: "酸素が不足すること／その分野でとくに優れた三人。" }
+    ]
   }
 ];
