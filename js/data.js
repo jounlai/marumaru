@@ -1887,14 +1887,19 @@ const WORD_ROUNDS = [
       { word: "かんぱい", display: "乾杯／完敗", meaning: "杯を上げて祝うこと／まったく歯が立たず負けること。" },
       { word: "まんぱい", display: "満杯", meaning: "いっぱいで、それ以上入らないこと。" },
       { word: "ねんぱい", display: "年配", meaning: "かなり年をとっていること。「年配の方」。" },
-      { word: "さんぱい", display: "参拝／産廃／惨敗", meaning: "社寺にお参りすること／産業廃棄物／ひどく負けること。" },
+      { word: "さんぱい", display: "参拝／産廃", meaning: "社寺にお参りすること／産業廃棄物の略。" },
       { word: "ぜんぱい", display: "全廃／全敗", meaning: "すべてやめること／全部負けること。" },
       { word: "れんぱい", display: "連敗", meaning: "続けて負けること。" },
       { word: "てんぱい", display: "聴牌", meaning: "麻雀で、あと一枚でそろう状態。「テンパる」の語源。" },
       { word: "ぶんぱい", display: "分配", meaning: "分けて配ること。" },
       { word: "こんぱい", display: "困憊", meaning: "疲れ果てること。「疲労困憊」。" },
       { word: "じんぱい", display: "塵肺", meaning: "粉じんを吸い込んで起こる肺の病気。" },
-      { word: "きんぱい", display: "金牌", meaning: "金製のメダル。" }
+      { word: "きんぱい", display: "金牌", meaning: "金製のメダル。" },
+      { word: "あんぱい", display: "安牌／安パイ", meaning: "麻雀で振り込む心配のない牌。転じて、無難な選択・相手。" },
+      { word: "ざんぱい", display: "惨敗", meaning: "みじめなほどひどく負けること。" },
+      { word: "けんぱい", display: "献杯", meaning: "相手に杯をさし出すこと。弔事で故人に杯をささげること。" },
+      { word: "ぎんぱい", display: "銀牌", meaning: "銀製のメダル。" },
+      { word: "げんぱい", display: "減配", meaning: "配当や配給を減らすこと。" }
     ]
   },
   {
@@ -1924,7 +1929,8 @@ const WORD_ROUNDS = [
       { word: "まだい", display: "真鯛", meaning: "祝いの席にも使われる、代表的なタイ。" },
       { word: "まとい", display: "纏", meaning: "江戸時代、火消しが組の目印に掲げた道具。" },
       { word: "ますい", display: "麻酔", meaning: "薬で感覚を失わせること。" },
-      { word: "まつい", display: "松井", meaning: "日本に多い姓。「松井秀喜」など。" }
+      { word: "まつい", display: "松井", meaning: "日本に多い姓。「松井秀喜」など。" },
+      { word: "まさい", display: "マサイ", meaning: "ケニアやタンザニアに暮らす牧畜民族。「マサイ族」。" }
     ]
   },
   {
@@ -1936,7 +1942,13 @@ const WORD_ROUNDS = [
       { word: "たんぽ", display: "担保", meaning: "借金の保証として差し出すもの。" },
       { word: "かんぽ", display: "簡保", meaning: "簡易生命保険。「かんぽ生命」。" },
       { word: "ほんぽ", display: "本舗", meaning: "その商品を作る大もとの店。「元祖本舗」。" },
-      { word: "まんぽ", display: "万歩", meaning: "一万歩。「万歩計」。" }
+      { word: "まんぽ", display: "万歩", meaning: "一万歩。「万歩計」。" },
+      { word: "ちんぽ", display: "ちんぽ", meaning: "男性器を指す俗な言い方。" },
+      { word: "けんぽ", display: "健保", meaning: "健康保険の略。「健保組合」。" },
+      { word: "あんぽ", display: "安保", meaning: "安全保障の略。「日米安保」。" },
+      { word: "そんぽ", display: "損保", meaning: "損害保険の略。" },
+      { word: "らんぽ", display: "乱歩", meaning: "推理作家、江戸川乱歩。「乱歩賞」。" },
+      { word: "いんぽ", display: "インポ", meaning: "インポテンツ（勃起不全）の略。俗な言い方。" }
     ]
   },
   {
@@ -2897,7 +2909,7 @@ const WORD_ROUNDS = [
       { word: "ばんか", display: "晩夏／挽歌", meaning: "夏の終わり／死者を悼む歌。" },
       { word: "もんか", display: "門下", meaning: "その師に教えを受ける立場。「門下生」。" },
       { word: "けんか", display: "喧嘩", meaning: "言い争いや殴り合い。「夫婦喧嘩」。" },
-      { word: "いんか", display: "引火／印可", meaning: "火が燃え移ること／師が弟子に免許を与えること。" },
+      { word: "いんか", display: "引火／印可／インカ", meaning: "火が燃え移ること／師が弟子に免許を与えること／南米にあった帝国。「インカ帝国」。" },
       { word: "がんか", display: "眼科／眼下", meaning: "目を診る診療科／見下ろした下の方。" },
       { word: "にんか", display: "認可", meaning: "申請を認め許すこと。" },
       { word: "なんか", display: "軟化", meaning: "やわらかくなること／態度がやわらぐこと。" },
