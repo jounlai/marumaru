@@ -1101,7 +1101,7 @@ const SPECIAL_ROUNDS = [
   }
 ];
 
-// WORD ラウンド：穴は1つだけ。擬音語・擬態語以外の、ふつうの3〜4文字ことば。
+// WORD ラウンド：穴は1つだけ。擬音語・擬態語以外の、ふつうの3〜5文字ことば。
 const WORD_ROUNDS = [
   {
     template: "○んき",
@@ -2252,6 +2252,909 @@ const WORD_ROUNDS = [
       { word: "てんぱん", display: "天板", meaning: "机やオーブンの、上面の板。" },
       { word: "ふんぱん", display: "噴飯", meaning: "おかしくてこらえきれないこと。「噴飯もの」。" },
       { word: "まんぱん", display: "満帆", meaning: "帆いっぱいに風を受けること。「順風満帆」。" }
+    ]
+  },
+  {
+    template: "○んじょう",
+    answers: [
+      { word: "かんじょう", display: "勘定／感情／環状", meaning: "代金の計算／気持ち／輪の形。「環状線」。" },
+      { word: "たんじょう", display: "誕生", meaning: "生まれること。" },
+      { word: "こんじょう", display: "根性／今生", meaning: "やり抜く気力／この世に生きている間。" },
+      { word: "がんじょう", display: "頑丈", meaning: "つくりが丈夫なこと。" },
+      { word: "はんじょう", display: "繁盛", meaning: "商売などが栄えること。「商売繁盛」。" },
+      { word: "えんじょう", display: "炎上", meaning: "燃え上がること／ネットで批判が殺到すること。" },
+      { word: "てんじょう", display: "天井／天上", meaning: "部屋の上の面／空の上。「天井知らず」。" },
+      { word: "にんじょう", display: "人情／刃傷", meaning: "人としての思いやり／刃物で人を傷つけること。" },
+      { word: "しんじょう", display: "心情／信条／身上", meaning: "心の中の思い／固く信じる事柄／身の上・持ち味。" },
+      { word: "せんじょう", display: "洗浄／戦場", meaning: "洗い清めること／戦いの場。" },
+      { word: "げんじょう", display: "現状／原状", meaning: "今のありさま／もとの状態。" },
+      { word: "じんじょう", display: "尋常", meaning: "ふつうであること。「尋常でない」「尋常小学校」。" },
+      { word: "ぶんじょう", display: "分譲", meaning: "土地や住宅を分けて売ること。「分譲マンション」。" },
+      { word: "ぐんじょう", display: "群青", meaning: "あざやかな濃い青色。" },
+      { word: "ぎんじょう", display: "吟醸", meaning: "よく精米した米で丁寧に醸すこと。「吟醸酒」。" },
+      { word: "びんじょう", display: "便乗", meaning: "ついでに乗ること／機会を利用すること。「便乗値上げ」。" },
+      { word: "まんじょう", display: "満場", meaning: "会場にいる全員。「満場一致」。" },
+      { word: "りんじょう", display: "臨場", meaning: "その場に居合わせること。「臨場感」。" },
+      { word: "だんじょう", display: "壇上", meaning: "演壇の上。「壇上に立つ」。" },
+      { word: "ちんじょう", display: "陳情", meaning: "実情を訴えて対応を求めること。" },
+      { word: "へんじょう", display: "返上", meaning: "いただいたものを返すこと。「休日返上」。" },
+      { word: "めんじょう", display: "免状", meaning: "資格を認める書きつけ。免許状。" },
+      { word: "さんじょう", display: "参上", meaning: "目上の所へ行くことをへりくだっていう語。" },
+      { word: "おんじょう", display: "温情", meaning: "思いやりのある心。「温情ある処置」。" },
+      { word: "でんじょう", display: "殿上", meaning: "宮中の清涼殿の上。「殿上人（てんじょうびと）」。" },
+      { word: "れんじょう", display: "恋情", meaning: "恋しく思う気持ち。" },
+      { word: "ぜんじょう", display: "禅譲", meaning: "位を、争わずに譲ること。" },
+      { word: "うんじょう", display: "運上", meaning: "江戸時代、商工業者に課した税。" },
+      { word: "ほんじょう", display: "本状／本城", meaning: "この手紙／中心となる城。" },
+      { word: "あんじょう", display: "あんじょう", meaning: "関西で「うまく・首尾よく」。「あんじょう頼んます」。" }
+    ]
+  },
+  {
+    template: "○んしょう",
+    answers: [
+      { word: "いんしょう", display: "印象", meaning: "心に残る感じ。" },
+      { word: "ぶんしょう", display: "文章", meaning: "考えを文字で書き表したもの。" },
+      { word: "かんしょう", display: "鑑賞／干渉／感傷", meaning: "味わい楽しむこと／立ち入ること／もの悲しくなること。" },
+      { word: "げんしょう", display: "現象／減少", meaning: "目に見える出来事／量が減ること。" },
+      { word: "えんしょう", display: "炎症／延焼", meaning: "赤く腫れて痛む症状／火が燃え広がること。" },
+      { word: "さんしょう", display: "参照／山椒／三唱", meaning: "照らし合わせること／辛みのある香辛料／三度唱えること。" },
+      { word: "ぜんしょう", display: "全勝／全焼", meaning: "すべて勝つこと／建物がすっかり焼けること。" },
+      { word: "せんしょう", display: "戦勝／選奨", meaning: "戦いに勝つこと／選んですすめること。" },
+      { word: "しんしょう", display: "心証／身上／辛勝", meaning: "心に受けた印象／身の上／かろうじて勝つこと。" },
+      { word: "にんしょう", display: "認証", meaning: "正当であると認めること。「二段階認証」。" },
+      { word: "りんしょう", display: "臨床", meaning: "実際に患者に接して行う医療。「臨床試験」。" },
+      { word: "れんしょう", display: "連勝", meaning: "続けて勝つこと。" },
+      { word: "ろんしょう", display: "論証", meaning: "根拠を示して証明すること。" },
+      { word: "もんしょう", display: "紋章", meaning: "家や団体を表すしるし。" },
+      { word: "だんしょう", display: "談笑", meaning: "打ち解けて笑いながら話すこと。" },
+      { word: "ばんしょう", display: "晩鐘／万障", meaning: "夕暮れに鳴る鐘／さまざまな差し支え。「万障お繰り合わせ」。" },
+      { word: "おんしょう", display: "恩賞／温床", meaning: "手柄への褒美／悪いものが育ちやすい環境。" },
+      { word: "ほんしょう", display: "本性", meaning: "本来の性質。「本性を現す」。" },
+      { word: "てんしょう", display: "天正", meaning: "安土桃山期の元号（1573〜1592）。" },
+      { word: "へんしょう", display: "返照", meaning: "夕日が照り返すこと。" },
+      { word: "きんしょう", display: "僅少", meaning: "ごくわずかであること。「僅少差」。" },
+      { word: "たんしょう", display: "嘆賞", meaning: "感心してほめること。" },
+      { word: "ちんしょう", display: "珍称", meaning: "風変わりな呼び名。" }
+    ]
+  },
+  {
+    template: "○んちょう",
+    answers: [
+      { word: "しんちょう", display: "身長／慎重／新調", meaning: "背の高さ／注意深いこと／新しくあつらえること。" },
+      { word: "せんちょう", display: "船長", meaning: "船の責任者。" },
+      { word: "てんちょう", display: "店長", meaning: "店の責任者。" },
+      { word: "えんちょう", display: "延長／園長", meaning: "長くのばすこと／幼稚園などの長。" },
+      { word: "そんちょう", display: "尊重／村長", meaning: "大切に扱うこと／村の長。" },
+      { word: "だんちょう", display: "団長／断腸", meaning: "団体の長／はらわたがちぎれるほどの悲しみ。「断腸の思い」。" },
+      { word: "ぜんちょう", display: "前兆／全長", meaning: "前ぶれ／全体の長さ。" },
+      { word: "かんちょう", display: "館長／干潮／艦長", meaning: "図書館などの長／潮が引ききること／軍艦の長。" },
+      { word: "なんちょう", display: "難聴", meaning: "耳が聞こえにくいこと。" },
+      { word: "ばんちょう", display: "番長", meaning: "不良仲間の頭。" },
+      { word: "ぶんちょう", display: "文鳥", meaning: "小型の飼い鳥。" },
+      { word: "まんちょう", display: "満潮", meaning: "潮が最も満ちること。" },
+      { word: "たんちょう", display: "単調／丹頂", meaning: "変化がなく退屈なこと／頭が赤いツル。「丹頂鶴」。" },
+      { word: "へんちょう", display: "偏重／変調", meaning: "一方だけを重んじること／調子が変わること。" },
+      { word: "ほんちょう", display: "本庁／本朝", meaning: "中心となる官庁／わが国。" },
+      { word: "さんちょう", display: "山頂", meaning: "山のいただき。" },
+      { word: "げんちょう", display: "幻聴", meaning: "実際にない音が聞こえること。" },
+      { word: "おんちょう", display: "恩寵", meaning: "神や君主からの深い恵み。" },
+      { word: "ちんちょう", display: "珍重", meaning: "珍しいものとして大切にすること。" },
+      { word: "いんちょう", display: "院長", meaning: "病院などの長。" },
+      { word: "きんちょう", display: "緊張", meaning: "心や体が張りつめること。" }
+    ]
+  },
+  {
+    template: "○んきゅう",
+    answers: [
+      { word: "けんきゅう", display: "研究", meaning: "深く調べて明らかにすること。" },
+      { word: "きんきゅう", display: "緊急", meaning: "差し迫っていて急を要すること。" },
+      { word: "れんきゅう", display: "連休", meaning: "休みが続くこと。「大型連休」。" },
+      { word: "しんきゅう", display: "進級／新旧／鍼灸", meaning: "学年が上がること／新しいものと古いもの／はりときゅう。" },
+      { word: "こんきゅう", display: "困窮", meaning: "ひどく困り苦しむこと。" },
+      { word: "げんきゅう", display: "言及／減給", meaning: "話が及ぶこと／給料を減らすこと。" },
+      { word: "たんきゅう", display: "探究／探求", meaning: "深く調べ究めること／さがし求めること。" },
+      { word: "ふんきゅう", display: "紛糾", meaning: "もつれて混乱すること。「議論が紛糾する」。" },
+      { word: "かんきゅう", display: "緩急", meaning: "ゆるやかなことと急なこと。「緩急をつける」。" },
+      { word: "ろんきゅう", display: "論及", meaning: "議論がそこまで及ぶこと。" },
+      { word: "おんきゅう", display: "恩給", meaning: "もと官吏などに支給された年金。" },
+      { word: "ぶんきゅう", display: "文久", meaning: "江戸末期の元号（1861〜1864）。" },
+      { word: "ほんきゅう", display: "本給", meaning: "手当を除いた基本の給与。" },
+      { word: "てんきゅう", display: "天球", meaning: "星を張りつけたと考える仮想の球面。「天球儀」。" }
+    ]
+  },
+  {
+    template: "○んしゅう",
+    answers: [
+      { word: "れんしゅう", display: "練習", meaning: "繰り返して習い覚えること。" },
+      { word: "へんしゅう", display: "編集", meaning: "材料を集めて本や番組にまとめること。" },
+      { word: "ほんしゅう", display: "本州", meaning: "日本列島の中心となる島。" },
+      { word: "けんしゅう", display: "研修", meaning: "知識や技能を学び修めること。" },
+      { word: "こんしゅう", display: "今週", meaning: "この週。いまの週。" },
+      { word: "えんしゅう", display: "円周／演習", meaning: "円のまわりの長さ／実地に近い形での訓練。" },
+      { word: "かんしゅう", display: "慣習／観衆／監修", meaning: "ならわし／見物人／編集を監督すること。" },
+      { word: "ぶんしゅう", display: "文集", meaning: "文章を集めた本。「卒業文集」。" },
+      { word: "ぜんしゅう", display: "禅宗／全集", meaning: "座禅を重んじる仏教の宗派／ある人の著作すべて。" },
+      { word: "せんしゅう", display: "専修／千秋", meaning: "一つを専門に修めること／千年。「千秋楽」。" },
+      { word: "ばんしゅう", display: "晩秋／播州", meaning: "秋の終わりごろ／兵庫県南西部の旧国名。" },
+      { word: "いんしゅう", display: "因習", meaning: "古くから続く、好ましくないしきたり。" },
+      { word: "おんしゅう", display: "恩讐", meaning: "恩と恨み。「恩讐の彼方に」。" },
+      { word: "ろんしゅう", display: "論集", meaning: "論文を集めた本。" }
+    ]
+  },
+  {
+    template: "○んきょう",
+    answers: [
+      { word: "かんきょう", display: "環境", meaning: "まわりを取り巻く状況。" },
+      { word: "おんきょう", display: "音響", meaning: "音の響き。「音響効果」。" },
+      { word: "きんきょう", display: "近況", meaning: "このごろの様子。" },
+      { word: "はんきょう", display: "反響", meaning: "音がはね返ること／世間の反応。" },
+      { word: "しんきょう", display: "心境／信教", meaning: "そのときの心の状態／宗教を信じること。" },
+      { word: "げんきょう", display: "元凶／現況", meaning: "悪事の張本人／現在の状況。" },
+      { word: "ざんきょう", display: "残響", meaning: "音が鳴りやんだあとも残る響き。" },
+      { word: "へんきょう", display: "辺境", meaning: "中央から遠く離れた地。" },
+      { word: "ぶんきょう", display: "文教／文京", meaning: "教育や文化に関すること／東京都の区名。" },
+      { word: "せんきょう", display: "宣教／仙境", meaning: "宗教を広めること／俗世を離れた地。" }
+    ]
+  },
+  {
+    template: "○んぎょう",
+    answers: [
+      { word: "さんぎょう", display: "産業／三行", meaning: "生産に関わる事業／三つの行。「三行半」。" },
+      { word: "にんぎょう", display: "人形", meaning: "人の形をかたどった玩具・工芸品。" },
+      { word: "りんぎょう", display: "林業", meaning: "森林を育て木材を得る産業。" },
+      { word: "ほんぎょう", display: "本業", meaning: "おもな職業。" },
+      { word: "ぶんぎょう", display: "分業", meaning: "仕事を分けて受け持つこと。" },
+      { word: "せんぎょう", display: "専業", meaning: "その仕事だけを行うこと。「専業農家」。" },
+      { word: "なんぎょう", display: "難行", meaning: "苦しい修行。「難行苦行」。" },
+      { word: "かんぎょう", display: "勧業／寒行", meaning: "産業をすすめ励ますこと／寒中に行う修行。" },
+      { word: "れんぎょう", display: "連翹", meaning: "春に黄色い花をつける低木。" },
+      { word: "しんぎょう", display: "心経", meaning: "「般若心経」の略。" }
+    ]
+  },
+  {
+    template: "○んしゃ",
+    answers: [
+      { word: "でんしゃ", display: "電車", meaning: "電気で走る鉄道車両。" },
+      { word: "かんしゃ", display: "感謝", meaning: "ありがたく思うこと。" },
+      { word: "せんしゃ", display: "戦車／洗車", meaning: "装甲された戦闘車両／車を洗うこと。" },
+      { word: "はんしゃ", display: "反射", meaning: "光や音がはね返ること／条件反射。" },
+      { word: "ほんしゃ", display: "本社", meaning: "会社の中心となる事業所。" },
+      { word: "おんしゃ", display: "御社／恩赦", meaning: "相手の会社を敬っていう語／刑を許すこと。" },
+      { word: "しんしゃ", display: "新車", meaning: "新品の自動車。" },
+      { word: "ぜんしゃ", display: "前者／前車", meaning: "先に挙げたほう／前を行く車。「前車の轍を踏む」。" },
+      { word: "てんしゃ", display: "転写", meaning: "写し取ること。" },
+      { word: "たんしゃ", display: "単車", meaning: "オートバイ。" },
+      { word: "ちんしゃ", display: "陳謝", meaning: "事情を述べてわびること。" },
+      { word: "さんしゃ", display: "三者", meaning: "三人・三つの立場。「三者面談」。" },
+      { word: "へんしゃ", display: "編者", meaning: "本を編集した人。" },
+      { word: "ばんしゃ", display: "晩夏", meaning: "夏の終わりごろ。" }
+    ]
+  },
+  {
+    template: "○んじゃ",
+    answers: [
+      { word: "かんじゃ", display: "患者", meaning: "病気やけがで治療を受ける人。" },
+      { word: "にんじゃ", display: "忍者", meaning: "忍術を使って諜報などを行った者。" },
+      { word: "しんじゃ", display: "信者", meaning: "その宗教を信じる人／熱心な支持者。" },
+      { word: "もんじゃ", display: "もんじゃ", meaning: "ゆるい生地を鉄板で焼く東京下町の料理。「もんじゃ焼き」。" },
+      { word: "えんじゃ", display: "縁者", meaning: "血縁や姻戚のある人。「親類縁者」。" },
+      { word: "さんじゃ", display: "三社", meaning: "三つの神社。「三社祭」。" },
+      { word: "げんじゃ", display: "験者", meaning: "修験道の行者。「げんざ」とも。" }
+    ]
+  },
+  {
+    template: "○んちゅう",
+    answers: [
+      { word: "こんちゅう", display: "昆虫", meaning: "体が頭・胸・腹に分かれ、六本の足をもつ虫。" },
+      { word: "でんちゅう", display: "電柱", meaning: "電線を支える柱。" },
+      { word: "しんちゅう", display: "心中／真鍮", meaning: "心の中／銅と亜鉛の合金。" },
+      { word: "ねんちゅう", display: "年中", meaning: "一年じゅう。「年中無休」。" },
+      { word: "さんちゅう", display: "山中", meaning: "山の中。「山中の一軒家」。" },
+      { word: "せんちゅう", display: "戦中／船中", meaning: "戦争のさなか／船の中。" },
+      { word: "じんちゅう", display: "陣中", meaning: "陣の中。「陣中見舞い」。" },
+      { word: "かんちゅう", display: "寒中", meaning: "寒の内。「寒中見舞い」。" },
+      { word: "れんちゅう", display: "連中", meaning: "仲間たち。「あの連中」。" }
+    ]
+  },
+  {
+    template: "○んじゅう",
+    answers: [
+      { word: "まんじゅう", display: "饅頭", meaning: "あんを包んで蒸した菓子。" },
+      { word: "げんじゅう", display: "厳重", meaning: "少しも手を抜かず厳しいこと。「厳重注意」。" },
+      { word: "りんじゅう", display: "臨終", meaning: "死に際。命の終わるとき。" },
+      { word: "れんじゅう", display: "連中", meaning: "仲間たち。「れんちゅう」とも。" },
+      { word: "せんじゅう", display: "先住／専従", meaning: "先に住んでいたこと／その仕事だけに従事すること。" },
+      { word: "たんじゅう", display: "胆汁", meaning: "肝臓が作り、脂肪の消化を助ける液。" },
+      { word: "ばんじゅう", display: "番重", meaning: "パンや惣菜を運ぶ、浅い箱形の容器。" }
+    ]
+  },
+  {
+    template: "○んりゅう",
+    answers: [
+      { word: "せんりゅう", display: "川柳", meaning: "五・七・五で世相や人情を詠む句。" },
+      { word: "げんりゅう", display: "源流", meaning: "川の水源／物事の起こり。" },
+      { word: "ほんりゅう", display: "本流／奔流", meaning: "川の主な流れ／激しい流れ。" },
+      { word: "かんりゅう", display: "寒流／還流", meaning: "冷たい海流／めぐって元に戻る流れ。" },
+      { word: "ぶんりゅう", display: "分流／分留", meaning: "本流から分かれた流れ／沸点の差で分ける操作。" },
+      { word: "さんりゅう", display: "三流", meaning: "程度が低い部類。" },
+      { word: "てんりゅう", display: "天竜", meaning: "長野から静岡へ流れる川。「天竜川」。" }
+    ]
+  },
+  {
+    template: "○んびょう",
+    answers: [
+      { word: "かんびょう", display: "看病", meaning: "病人の世話をすること。" },
+      { word: "なんびょう", display: "難病", meaning: "治りにくい病気。" },
+      { word: "まんびょう", display: "万病", meaning: "あらゆる病気。「風邪は万病のもと」。" },
+      { word: "さんびょう", display: "三秒", meaning: "秒の三つ分。" },
+      { word: "てんびょう", display: "天平", meaning: "奈良時代の元号（729〜749）。「天平文化」。" }
+    ]
+  },
+  {
+    template: "○んしょ",
+    answers: [
+      { word: "ぶんしょ", display: "文書", meaning: "文字で書かれた書類。" },
+      { word: "しんしょ", display: "新書／親書", meaning: "小型の叢書。「新書判」／本人が自ら書いた手紙。" },
+      { word: "げんしょ", display: "原書", meaning: "翻訳のもとになった書物。" },
+      { word: "きんしょ", display: "禁書", meaning: "出版や所持を禁じられた本。" },
+      { word: "ぜんしょ", display: "善処", meaning: "うまく取り計らうこと。" },
+      { word: "ほんしょ", display: "本書", meaning: "この書物。いま扱っている本。" },
+      { word: "てんしょ", display: "篆書", meaning: "印章などに使う、古い漢字の書体。" },
+      { word: "かんしょ", display: "甘藷／寒暑", meaning: "サツマイモ／寒さと暑さ。" }
+    ]
+  },
+  {
+    template: "○んじょ",
+    answers: [
+      { word: "きんじょ", display: "近所", meaning: "近くの家々。「ご近所づきあい」。" },
+      { word: "べんじょ", display: "便所", meaning: "用を足すための場所。手洗い。" },
+      { word: "えんじょ", display: "援助", meaning: "力を貸して助けること。" },
+      { word: "ばんじょ", display: "番所", meaning: "見張りのために設けた詰め所。" },
+      { word: "かんじょ", display: "官女", meaning: "宮中に仕える女性。「三人官女」。" }
+    ]
+  },
+  {
+    template: "○んせつ",
+    answers: [
+      { word: "しんせつ", display: "親切／新設", meaning: "思いやりがあること／新しく設けること。" },
+      { word: "かんせつ", display: "関節／間接", meaning: "骨と骨のつなぎ目／じかでないこと。" },
+      { word: "えんせつ", display: "演説", meaning: "大勢の前で自分の意見を述べること。" },
+      { word: "けんせつ", display: "建設", meaning: "建物や組織をつくり上げること。" },
+      { word: "げんせつ", display: "言説", meaning: "言葉で述べた意見。" },
+      { word: "ぜんせつ", display: "前説", meaning: "前に述べた説／番組収録前の場内あたため。" },
+      { word: "ろんせつ", display: "論説", meaning: "筋道を立てて述べた意見。「論説委員」。" },
+      { word: "れんせつ", display: "連接", meaning: "つらなり続くこと。「連接バス」。" },
+      { word: "へんせつ", display: "変節", meaning: "主義や主張を変えること。" },
+      { word: "ふんせつ", display: "粉雪", meaning: "さらさらした細かい雪。「こなゆき」とも。" },
+      { word: "はんせつ", display: "半切", meaning: "半分に切ること。書道用の細長い紙。" },
+      { word: "りんせつ", display: "隣接", meaning: "となり合っていること。" },
+      { word: "きんせつ", display: "近接", meaning: "近く接していること。" },
+      { word: "こんせつ", display: "懇切", meaning: "心がこもって行き届いていること。「懇切丁寧」。" }
+    ]
+  },
+  {
+    template: "○んたく",
+    answers: [
+      { word: "せんたく", display: "洗濯／選択", meaning: "衣類を洗うこと／選び取ること。" },
+      { word: "かんたく", display: "干拓", meaning: "遠浅の海や湖を干して田畑にすること。" },
+      { word: "りんたく", display: "輪タク", meaning: "自転車で客車を引く乗り物。戦後に使われた。" }
+    ]
+  },
+  {
+    template: "○んてん",
+    answers: [
+      { word: "うんてん", display: "運転", meaning: "機械や車を動かすこと。" },
+      { word: "げんてん", display: "原点／減点／原典", meaning: "物事の出発点／点を減らすこと／もとになる文献。" },
+      { word: "かんてん", display: "寒天／観点", meaning: "海藻から作るゼリー状の食品／物事を見る立場。" },
+      { word: "しんてん", display: "進展／親展", meaning: "物事が進むこと／本人が開封してほしい旨の表示。" },
+      { word: "はんてん", display: "斑点／半纏", meaning: "まだらの点／羽織に似た上着。" },
+      { word: "まんてん", display: "満点／満天", meaning: "点数がすべて取れること／空いっぱい。「満天の星」。" },
+      { word: "りんてん", display: "輪転", meaning: "回転すること。「輪転機」。" },
+      { word: "ぜんてん", display: "全店／全点", meaning: "すべての店／すべての品目。" },
+      { word: "さんてん", display: "三点", meaning: "三つの点。「三点セット」。" },
+      { word: "へんてん", display: "変転", meaning: "移り変わること。「変転きわまりない」。" }
+    ]
+  },
+  {
+    template: "○んとく",
+    answers: [
+      { word: "かんとく", display: "監督", meaning: "取り締まり指導する人。「映画監督」。" },
+      { word: "じんとく", display: "人徳", meaning: "その人にそなわる徳。「人徳がある」。" },
+      { word: "あんとく", display: "安徳", meaning: "平家とともに海に沈んだとされる幼帝。「安徳天皇」。" },
+      { word: "ぶんとく", display: "文徳", meaning: "平安前期の天皇。「文徳天皇」。" }
+    ]
+  },
+  {
+    template: "○んぱく",
+    answers: [
+      { word: "こんぱく", display: "魂魄", meaning: "たましい。「魂魄この世にとどまりて」。" },
+      { word: "たんぱく", display: "淡泊／蛋白", meaning: "あっさりしていること／たんぱく質。" },
+      { word: "かんぱく", display: "関白", meaning: "天皇を補佐した最高位の職。「亭主関白」。" },
+      { word: "はんぱく", display: "半白", meaning: "半ば白髪であること。ごま塩頭。" }
+    ]
+  },
+  {
+    template: "○んばく",
+    answers: [
+      { word: "げんばく", display: "原爆", meaning: "原子爆弾。核分裂を利用した爆弾。" },
+      { word: "きんばく", display: "緊縛", meaning: "きつく縛りつけること。" },
+      { word: "はんばく", display: "反駁", meaning: "相手の意見に反論すること。「はんぱく」とも。" },
+      { word: "えんばく", display: "燕麦", meaning: "オートムギ。オートミールの原料。" }
+    ]
+  },
+  {
+    template: "○んだい",
+    answers: [
+      { word: "もんだい", display: "問題", meaning: "解答を求める問い／取り組むべき事柄。" },
+      { word: "げんだい", display: "現代", meaning: "いまの時代。" },
+      { word: "きんだい", display: "近代", meaning: "現代に近い時代。「近代化」。" },
+      { word: "しんだい", display: "寝台", meaning: "ねどこ。ベッド。「寝台列車」。" },
+      { word: "かんだい", display: "寛大", meaning: "心が広く、思いやりがあること。" },
+      { word: "そんだい", display: "尊大", meaning: "いばって偉そうにすること。「尊大な態度」。" },
+      { word: "ほんだい", display: "本題", meaning: "中心となる話題。「本題に入る」。" },
+      { word: "ばんだい", display: "番台／万代", meaning: "銭湯の見張り台／永遠の世。「万代不易」。" },
+      { word: "ぜんだい", display: "前代", meaning: "前の時代。「前代未聞」。" },
+      { word: "じんだい", display: "甚大／神代", meaning: "程度がはなはだしいこと／神々の時代。" },
+      { word: "たんだい", display: "短大", meaning: "短期大学の略。" },
+      { word: "てんだい", display: "天台", meaning: "仏教の宗派。「天台宗」。" },
+      { word: "えんだい", display: "演台／縁台", meaning: "演説者の前に置く台／夕涼みに使う細長い腰かけ。" },
+      { word: "さんだい", display: "参内／三大", meaning: "宮中へ参上すること／三つの大きなもの。" }
+    ]
+  },
+  {
+    template: "○んじん",
+    answers: [
+      { word: "かんじん", display: "肝心", meaning: "いちばん大切なこと。「肝心かなめ」。" },
+      { word: "ぼんじん", display: "凡人", meaning: "ふつうの人。" },
+      { word: "ぐんじん", display: "軍人", meaning: "軍務に就いている人。" },
+      { word: "おんじん", display: "恩人", meaning: "世話になった人。「命の恩人」。" },
+      { word: "しんじん", display: "信心／新人", meaning: "神仏を信じること／新しく加わった人。" },
+      { word: "りんじん", display: "隣人", meaning: "となり近所の人。" },
+      { word: "げんじん", display: "原人", meaning: "人類の古い段階。「北京原人」。" },
+      { word: "せんじん", display: "先人／戦陣", meaning: "昔の人。先達／戦いの陣。" },
+      { word: "てんじん", display: "天神", meaning: "菅原道真をまつる神。「天神様」。" },
+      { word: "ほんじん", display: "本陣", meaning: "大名が泊まった宿／軍の本営。" },
+      { word: "ぶんじん", display: "文人", meaning: "詩文や書画に親しむ人。「文人墨客」。" },
+      { word: "ぜんじん", display: "全人", meaning: "知・情・意のそろった人間。「全人教育」。" }
+    ]
+  },
+  {
+    template: "○んめい",
+    answers: [
+      { word: "うんめい", display: "運命", meaning: "人の身の上にめぐってくる定め。" },
+      { word: "けんめい", display: "懸命／賢明", meaning: "力の限りを尽くすこと／かしこく適切なこと。" },
+      { word: "じんめい", display: "人名／人命", meaning: "人の名前／人の命。「人命救助」。" },
+      { word: "ぶんめい", display: "文明", meaning: "人知が進み、生活が豊かになった状態。" },
+      { word: "ほんめい", display: "本命", meaning: "優勝や当選が有力とみられるもの。" },
+      { word: "れんめい", display: "連盟／連名", meaning: "共同の目的で結ぶ組織／複数人が名を連ねること。" },
+      { word: "かんめい", display: "感銘／簡明", meaning: "深く心に刻まれること／簡単で分かりやすいこと。" },
+      { word: "げんめい", display: "言明／厳命", meaning: "はっきり言い切ること／厳しく命じること。" },
+      { word: "せんめい", display: "鮮明", meaning: "あざやかではっきりしていること。" },
+      { word: "しんめい", display: "身命／神明", meaning: "体と命。「身命を賭す」／神。「天地神明に誓って」。" },
+      { word: "ひんめい", display: "品名", meaning: "品物の名前。" }
+    ]
+  },
+  {
+    template: "○んきん",
+    answers: [
+      { word: "げんきん", display: "現金／厳禁", meaning: "すぐ使えるお金／かたく禁じること。" },
+      { word: "ねんきん", display: "年金", meaning: "毎年支給されるお金。" },
+      { word: "てんきん", display: "転勤", meaning: "勤務地が変わること。" },
+      { word: "かんきん", display: "監禁", meaning: "閉じ込めて自由を奪うこと。" },
+      { word: "しんきん", display: "親近／心筋", meaning: "親しく近づくこと／心臓の筋肉。「心筋梗塞」。" },
+      { word: "さんきん", display: "参勤", meaning: "江戸時代、大名が江戸に出仕した制度。「参勤交代」。" },
+      { word: "ばんきん", display: "板金", meaning: "金属の板。「板金加工」。" },
+      { word: "れんきん", display: "錬金", meaning: "卑金属を金に変えようとした術。「錬金術」。" }
+    ]
+  },
+  {
+    template: "○んのう",
+    answers: [
+      { word: "ほんのう", display: "本能", meaning: "生まれつきそなわる行動の力。" },
+      { word: "ばんのう", display: "万能", meaning: "何でもできること。「万能選手」。" },
+      { word: "かんのう", display: "官能／堪能", meaning: "感覚のはたらき／十分に満足すること。" },
+      { word: "たんのう", display: "胆嚢／堪能", meaning: "胆汁をためる袋状の臓器／十分に味わうこと。" },
+      { word: "しんのう", display: "親王／神農", meaning: "天皇の男子／中国神話の農業と医薬の神。" },
+      { word: "ぜんのう", display: "全能／前納", meaning: "何でもできる力／前もって納めること。" },
+      { word: "きんのう", display: "勤王", meaning: "天皇に忠義を尽くすこと。「勤王の志士」。" },
+      { word: "えんのう", display: "延納", meaning: "納める期限を延ばすこと。" }
+    ]
+  },
+  {
+    template: "○んいん",
+    answers: [
+      { word: "げんいん", display: "原因", meaning: "物事を引き起こすもと。" },
+      { word: "ぜんいん", display: "全員", meaning: "そこにいる人すべて。" },
+      { word: "てんいん", display: "店員", meaning: "店で働く人。" },
+      { word: "まんいん", display: "満員", meaning: "定員がいっぱいになること。" },
+      { word: "せんいん", display: "船員", meaning: "船で働く人。" }
+    ]
+  },
+  {
+    template: "○んえん",
+    answers: [
+      { word: "きんえん", display: "禁煙", meaning: "たばこを吸わない・吸わせないこと。" },
+      { word: "まんえん", display: "蔓延", meaning: "よくないものが広がること。" },
+      { word: "かんえん", display: "肝炎", meaning: "肝臓の炎症。" },
+      { word: "はんえん", display: "半円", meaning: "円を半分にした形。" },
+      { word: "げんえん", display: "減塩", meaning: "塩分を減らすこと。" }
+    ]
+  },
+  {
+    template: "○んか",
+    answers: [
+      { word: "ぶんか", display: "文化／分化", meaning: "人が築いた生活様式や学問芸術／分かれること。" },
+      { word: "へんか", display: "変化", meaning: "様子が変わること。" },
+      { word: "さんか", display: "参加／酸化／賛歌", meaning: "仲間に加わること／酸素と結びつくこと／たたえる歌。" },
+      { word: "しんか", display: "進化／真価／深化", meaning: "生物が変化し発展すること／本当の値打ち／深まること。" },
+      { word: "てんか", display: "天下／点火／添加", meaning: "世の中すべて／火をつけること／付け加えること。" },
+      { word: "ふんか", display: "噴火", meaning: "火山が火や溶岩を噴き出すこと。" },
+      { word: "げんか", display: "原価／言下／喧嘩", meaning: "仕入れや製造にかかった値段／言い終わるやいなや／争い。" },
+      { word: "たんか", display: "短歌／担架／啖呵", meaning: "五・七・五・七・七の歌／病人を運ぶ道具／「啖呵を切る」。" },
+      { word: "でんか", display: "殿下／電化", meaning: "皇族への敬称／電気で動くようにすること。" },
+      { word: "えんか", display: "演歌／塩化", meaning: "日本的な節回しの歌謡／塩素と化合すること。" },
+      { word: "あんか", display: "安価／行火", meaning: "値段が安いこと／布団の中を温める道具。" },
+      { word: "きんか", display: "金貨", meaning: "金でつくった貨幣。" },
+      { word: "ぎんか", display: "銀貨", meaning: "銀でつくった貨幣。" },
+      { word: "ぐんか", display: "軍歌", meaning: "軍隊の士気を高める歌。" },
+      { word: "せんか", display: "戦火／戦果／専科", meaning: "戦争による火災／戦いの成果／専門の課程。" },
+      { word: "ぜんか", display: "前科", meaning: "以前に刑罰を受けた経歴。" },
+      { word: "みんか", display: "民家", meaning: "庶民の住む家。" },
+      { word: "じんか", display: "人家", meaning: "人の住む家。「人家がまばら」。" },
+      { word: "だんか", display: "檀家", meaning: "その寺に属し布施をする家。" },
+      { word: "りんか", display: "隣家／輪禍", meaning: "となりの家／交通事故。" },
+      { word: "れんか", display: "廉価／恋歌", meaning: "値段が安いこと／恋を詠んだ歌。" },
+      { word: "ばんか", display: "晩夏／挽歌", meaning: "夏の終わり／死者を悼む歌。" },
+      { word: "もんか", display: "門下", meaning: "その師に教えを受ける立場。「門下生」。" }
+    ]
+  },
+  {
+    template: "○んど",
+    answers: [
+      { word: "いんど", display: "インド", meaning: "南アジアの国。" },
+      { word: "こんど", display: "今度", meaning: "このたび／次の機会。" },
+      { word: "げんど", display: "限度", meaning: "それ以上は越えられない範囲。" },
+      { word: "ほんど", display: "本土", meaning: "その国の主となる国土。" },
+      { word: "おんど", display: "温度／音頭", meaning: "熱さ冷たさの度合い／みんなの先頭で歌い出すこと。" },
+      { word: "ばんど", display: "バンド", meaning: "楽団／帯・ベルト。" },
+      { word: "ぼんど", display: "ボンド", meaning: "接着剤。「木工用ボンド」。" },
+      { word: "ぽんど", display: "ポンド", meaning: "重さの単位／イギリスの通貨。" },
+      { word: "あんど", display: "安堵", meaning: "安心すること。「安堵の表情」。" },
+      { word: "かんど", display: "感度", meaning: "感じ取る度合い。「感度が高い」。" },
+      { word: "しんど", display: "震度／進度", meaning: "地震の揺れの強さ／進みぐあい。" },
+      { word: "ぜんど", display: "全土", meaning: "その地域すべての土地。" },
+      { word: "なんど", display: "納戸／何度", meaning: "物置に使う部屋／どれほどの度数。" },
+      { word: "さんど", display: "三度／サンド", meaning: "三回／サンドイッチの略。" },
+      { word: "ろんど", display: "ロンド", meaning: "主題が繰り返し現れる楽曲。輪舞曲。" }
+    ]
+  },
+  {
+    template: "○んり",
+    answers: [
+      { word: "かんり", display: "管理", meaning: "よい状態を保つよう取りしきること。" },
+      { word: "べんり", display: "便利", meaning: "都合がよく役に立つこと。" },
+      { word: "げんり", display: "原理", meaning: "物事の根本のしくみ。" },
+      { word: "しんり", display: "心理／真理", meaning: "心のはたらき／いつでも正しい道理。" },
+      { word: "ろんり", display: "論理", meaning: "筋道の立て方。" },
+      { word: "りんり", display: "倫理", meaning: "人として守るべき道。" },
+      { word: "ぶんり", display: "分離", meaning: "分かれて離れること。" },
+      { word: "きんり", display: "金利", meaning: "貸し借りしたお金にかかる利息。" },
+      { word: "せんり", display: "千里", meaning: "非常に遠い道のり。「千里の道も一歩から」。" },
+      { word: "ばんり", display: "万里", meaning: "きわめて遠い距離。「万里の長城」。" },
+      { word: "れんり", display: "連理", meaning: "枝が結びつくこと。深い契りのたとえ。「比翼連理」。" },
+      { word: "てんり", display: "天理", meaning: "自然の道理／奈良県の市の名。" },
+      { word: "さんり", display: "三里", meaning: "ひざ下にあるつぼの名。「足三里」。" }
+    ]
+  },
+  {
+    template: "○んこ",
+    answers: [
+      { word: "あんこ", display: "餡子", meaning: "小豆などを煮て練った甘い具。" },
+      { word: "ぶんこ", display: "文庫", meaning: "小型で安価な本／書物を収める所。" },
+      { word: "きんこ", display: "金庫／禁錮", meaning: "金品を保管する箱／刑務所に拘置する刑。" },
+      { word: "だんこ", display: "断固", meaning: "きっぱりと押し通すさま。「断固反対」。" },
+      { word: "めんこ", display: "面子", meaning: "絵の描かれた札を打ちつけて遊ぶ玩具。" },
+      { word: "げんこ", display: "拳固", meaning: "にぎりこぶし。げんこつ。" },
+      { word: "いんこ", display: "鸚哥", meaning: "色鮮やかな飼い鳥。" },
+      { word: "もんこ", display: "門戸", meaning: "門と戸／出入り口。「門戸を開く」。" },
+      { word: "さんこ", display: "三顧", meaning: "三度たずねて礼を尽くすこと。「三顧の礼」。" }
+    ]
+  },
+  {
+    template: "○んさ",
+    answers: [
+      { word: "けんさ", display: "検査", meaning: "基準に合うか調べること。" },
+      { word: "しんさ", display: "審査", meaning: "詳しく調べて優劣や合否を決めること。" },
+      { word: "かんさ", display: "監査／鑑査", meaning: "業務や会計を調べること／作品を審査すること。" },
+      { word: "れんさ", display: "連鎖", meaning: "くさりのようにつながること。「連鎖反応」。" },
+      { word: "へんさ", display: "偏差", meaning: "平均からのかたより。「偏差値」。" },
+      { word: "たんさ", display: "探査", meaning: "未知のものを探り調べること。「探査機」。" },
+      { word: "きんさ", display: "僅差", meaning: "ごくわずかな差。" },
+      { word: "おんさ", display: "音叉", meaning: "叩くと一定の高さで鳴るU字形の道具。" },
+      { word: "えんさ", display: "怨嗟", meaning: "うらみ嘆くこと。「怨嗟の声」。" }
+    ]
+  },
+  {
+    template: "○んや",
+    answers: [
+      { word: "こんや", display: "今夜", meaning: "きょうの夜。" },
+      { word: "しんや", display: "深夜", meaning: "夜ふけ。「深夜営業」。" },
+      { word: "ぶんや", display: "分野", meaning: "物事を分けたときの領域。" },
+      { word: "ほんや", display: "本屋", meaning: "書店。本を売る店。" },
+      { word: "ぜんや", display: "前夜", meaning: "前の日の夜。「前夜祭」。" },
+      { word: "さんや", display: "山野", meaning: "山と野原。自然のままの土地。" },
+      { word: "げんや", display: "原野", meaning: "手つかずの野原。" },
+      { word: "じんや", display: "陣屋", meaning: "武士の詰め所／代官の役所。" },
+      { word: "ばんや", display: "番屋", meaning: "見張りのための小屋。漁師の作業小屋。" }
+    ]
+  },
+  {
+    template: "○んざ",
+    answers: [
+      { word: "ぎんざ", display: "銀座", meaning: "東京の繁華街。江戸期の銀貨鋳造所に由来。" },
+      { word: "とんざ", display: "頓挫", meaning: "勢いがくじけて行き詰まること。" },
+      { word: "ちんざ", display: "鎮座", meaning: "神霊がその場に鎮まっていること。" },
+      { word: "れんざ", display: "連座", meaning: "他人の罪に巻き込まれて罰を受けること。" },
+      { word: "ぜんざ", display: "前座", meaning: "寄席で最初に出る若手／本番前の出し物。" },
+      { word: "まんざ", display: "満座", meaning: "その場にいる人すべて。「満座の中で」。" },
+      { word: "りんざ", display: "臨済", meaning: "禅宗の一派。「臨済宗」。" },
+      { word: "たんざ", display: "端座", meaning: "姿勢を正して座ること。" }
+    ]
+  },
+  {
+    template: "○んな",
+    answers: [
+      { word: "おんな", display: "女", meaning: "女性。おんなのひと。" },
+      { word: "みんな", display: "皆", meaning: "すべての人。全部。" },
+      { word: "こんな", display: "こんな", meaning: "このような。" },
+      { word: "そんな", display: "そんな", meaning: "そのような。" },
+      { word: "どんな", display: "どんな", meaning: "どのような。" },
+      { word: "あんな", display: "あんな", meaning: "あのような。" },
+      { word: "だんな", display: "旦那", meaning: "夫／商家の主人。" },
+      { word: "かんな", display: "鉋／カンナ", meaning: "木材の面を削る道具／夏に咲く赤や黄の花。" }
+    ]
+  },
+  {
+    template: "○んば",
+    answers: [
+      { word: "げんば", display: "現場", meaning: "物事が実際に行われている場所。" },
+      { word: "ほんば", display: "本場", meaning: "そのものの本来の産地・盛んな土地。" },
+      { word: "さんば", display: "産婆", meaning: "出産を助ける女性。助産師の古い呼び名。" },
+      { word: "たんば", display: "丹波", meaning: "京都・兵庫にまたがる旧国名。「丹波黒豆」。" },
+      { word: "あんば", display: "鞍馬", meaning: "体操競技の種目の一つ。" },
+      { word: "てんば", display: "転婆", meaning: "活発すぎる娘。「おてんば」。" },
+      { word: "じんば", display: "人馬", meaning: "人と馬。「人馬一体」。" },
+      { word: "せんば", display: "船場", meaning: "大阪の商業の中心地。" }
+    ]
+  },
+  {
+    template: "○んぱ",
+    answers: [
+      { word: "でんぱ", display: "電波", meaning: "空間を伝わる電磁波。" },
+      { word: "りんぱ", display: "リンパ", meaning: "体内を流れる無色の液。「リンパ腺」。" },
+      { word: "ろんぱ", display: "論破", meaning: "議論で相手を言い負かすこと。" },
+      { word: "かんぱ", display: "カンパ／寒波", meaning: "資金を募る運動／強い寒気の到来。" },
+      { word: "なんぱ", display: "軟派／難破", meaning: "声をかけて交際を求めること／船が難儀すること。" },
+      { word: "たんぱ", display: "短波", meaning: "波長の短い電波。「短波放送」。" },
+      { word: "しんぱ", display: "新派", meaning: "新しい流派。特に明治期に起きた演劇の一派。" },
+      { word: "こんぱ", display: "コンパ", meaning: "学生などの親睦の飲み会。" }
+    ]
+  },
+  {
+    template: "○んが",
+    answers: [
+      { word: "まんが", display: "漫画", meaning: "絵と言葉で物語を表す作品。" },
+      { word: "れんが", display: "煉瓦／連歌", meaning: "粘土を焼き固めた建築材／数人で句を連ねる詩。" },
+      { word: "げんが", display: "原画", meaning: "複製のもとになる絵。もとの絵。" },
+      { word: "さんが", display: "山河／参賀", meaning: "山と川。国土／皇居へ祝いに参ること。" },
+      { word: "せんが", display: "線画", meaning: "線だけで描いた絵。" },
+      { word: "ぶんが", display: "文雅", meaning: "詩文などをたしなむ風流さ。" }
+    ]
+  },
+  {
+    template: "○んび",
+    answers: [
+      { word: "かんび", display: "甘美／完備", meaning: "うっとりするほど心地よいこと／すべて備わっていること。" },
+      { word: "ぐんび", display: "軍備", meaning: "戦争のための備え。「軍備縮小」。" },
+      { word: "さんび", display: "賛美／酸鼻", meaning: "ほめたたえること／むごたらしいこと。「酸鼻を極める」。" },
+      { word: "しんび", display: "審美", meaning: "美を見分けること。「審美眼」。" },
+      { word: "たんび", display: "耽美", meaning: "美にひたり酔うこと。「耽美主義」。" },
+      { word: "ばんび", display: "バンビ", meaning: "小鹿。ディズニー作品の名でも知られる。" }
+    ]
+  },
+  {
+    template: "○んそ",
+    answers: [
+      { word: "さんそ", display: "酸素", meaning: "呼吸に不可欠な気体元素。" },
+      { word: "たんそ", display: "炭素", meaning: "すべての有機物に含まれる元素。" },
+      { word: "えんそ", display: "塩素", meaning: "消毒や漂白に使う黄緑色の気体元素。" },
+      { word: "げんそ", display: "元素", meaning: "物質を構成する基本的な成分。" },
+      { word: "かんそ", display: "簡素", meaning: "むだがなく質素なこと。" }
+    ]
+  },
+  {
+    template: "○んぷ",
+    answers: [
+      { word: "しんぷ", display: "新婦／神父", meaning: "結婚式の花嫁／カトリックの聖職者。" },
+      { word: "ぶんぷ", display: "分布", meaning: "あちこちに分かれて存在すること。" },
+      { word: "てんぷ", display: "添付", meaning: "書類などを添えること。「添付ファイル」。" },
+      { word: "さんぷ", display: "散布", meaning: "まき散らすこと。「農薬を散布する」。" },
+      { word: "かんぷ", display: "完膚／還付", meaning: "傷のない皮膚。「完膚なきまで」／返し戻すこと。" }
+    ]
+  },
+  {
+    template: "○んろ",
+    answers: [
+      { word: "せんろ", display: "線路", meaning: "列車の走る軌道。" },
+      { word: "しんろ", display: "進路／針路", meaning: "進んでいく道／船や航空機の向かう方向。" },
+      { word: "こんろ", display: "コンロ", meaning: "煮炊きに使う小型の炉。「ガスコンロ」。" },
+      { word: "かんろ", display: "甘露", meaning: "あまい露／うまい飲み物。「甘露煮」。" },
+      { word: "へんろ", display: "遍路", meaning: "四国八十八か所を巡礼すること・その人。" }
+    ]
+  },
+  {
+    template: "○んわ",
+    answers: [
+      { word: "でんわ", display: "電話", meaning: "音声を電気で伝える通信。" },
+      { word: "しんわ", display: "神話／親和", meaning: "神々の物語／互いになじみ合うこと。" },
+      { word: "かんわ", display: "緩和／漢和", meaning: "ゆるめること／漢字と日本語。「漢和辞典」。" },
+      { word: "おんわ", display: "温和", meaning: "おだやかで、やさしいこと。" },
+      { word: "こんわ", display: "混和", meaning: "まぜ合わせること。" }
+    ]
+  },
+  {
+    template: "○んみ",
+    answers: [
+      { word: "ちんみ", display: "珍味", meaning: "めったに味わえないうまいもの。" },
+      { word: "かんみ", display: "甘味", meaning: "あまい味。「甘味処」。" },
+      { word: "さんみ", display: "酸味／三位", meaning: "すっぱい味／三つの位。「三位一体」。" },
+      { word: "しんみ", display: "親身", meaning: "肉親のように心のこもったさま。" }
+    ]
+  },
+  {
+    template: "○んぴ",
+    answers: [
+      { word: "しんぴ", display: "神秘", meaning: "人知でははかれない不思議さ。" },
+      { word: "あんぴ", display: "安否", meaning: "無事かどうか。「安否確認」。" },
+      { word: "さんぴ", display: "賛否", meaning: "賛成と反対。「賛否両論」。" },
+      { word: "ぶんぴ", display: "分泌", meaning: "体内で物質を作り出し送り出すこと。「ぶんぴつ」とも。" }
+    ]
+  },
+  {
+    template: "○んむ",
+    answers: [
+      { word: "きんむ", display: "勤務", meaning: "職場で仕事をすること。" },
+      { word: "にんむ", display: "任務", meaning: "果たすべき務め。" },
+      { word: "じんむ", display: "神武", meaning: "日本の初代とされる天皇。「神武景気」。" },
+      { word: "ざんむ", display: "残務", meaning: "やり残した仕事。「残務整理」。" }
+    ]
+  },
+  {
+    template: "き○い",
+    answers: [
+      { word: "きれい", display: "綺麗", meaning: "美しい。清潔である。" },
+      { word: "きかい", display: "機械／機会／奇怪", meaning: "動力で動く装置／ちょうどよいおり／あやしく不思議なこと。" },
+      { word: "きたい", display: "期待／気体／機体", meaning: "心待ちにすること／気体の状態／飛行機の本体。" },
+      { word: "きせい", display: "規制／既成／帰省", meaning: "きまりで制限すること／すでに出来上がっていること／ふるさとへ帰ること。" },
+      { word: "きらい", display: "嫌い／機雷", meaning: "好まないこと／水中に仕掛ける爆弾。" },
+      { word: "きよい", display: "清い", meaning: "汚れがなく澄んでいる。" },
+      { word: "きつい", display: "きつい", meaning: "厳しい。窮屈だ。「きつい仕事」。" },
+      { word: "きあい", display: "気合", meaning: "精神を集中させた勢い。「気合を入れる」。" },
+      { word: "きがい", display: "危害／気概", meaning: "生命や体を損なうこと／困難に負けない気性。" },
+      { word: "きてい", display: "規定／既定", meaning: "定めたきまり／すでに決まっていること。" },
+      { word: "きさい", display: "記載／奇才", meaning: "書き記すこと／並外れた才能。" },
+      { word: "きめい", display: "記名", meaning: "名前を書くこと。「記名投票」。" },
+      { word: "きない", display: "機内", meaning: "飛行機の中。「機内食」。" },
+      { word: "きへい", display: "騎兵", meaning: "馬に乗って戦う兵。" },
+      { word: "きすい", display: "汽水", meaning: "海水と淡水がまじった水。「汽水域」。" },
+      { word: "きもい", display: "キモい", meaning: "「気持ち悪い」を縮めた若者語。" }
+    ]
+  },
+  {
+    template: "み○い",
+    answers: [
+      { word: "みらい", display: "未来", meaning: "これから先。" },
+      { word: "みまい", display: "見舞い", meaning: "病人などを訪ねて慰めること。" },
+      { word: "みあい", display: "見合い", meaning: "結婚のために引き合わされること。" },
+      { word: "みてい", display: "未定", meaning: "まだ決まっていないこと。" },
+      { word: "みかい", display: "未開", meaning: "まだ開けていないこと。「未開の地」。" },
+      { word: "みすい", display: "未遂", meaning: "やりかけて果たせなかったこと。" },
+      { word: "みめい", display: "未明", meaning: "夜がまだ明けきらないころ。" },
+      { word: "みんい", display: "民意", meaning: "国民の意思。" },
+      { word: "みつい", display: "三井", meaning: "日本の代表的な財閥・企業グループの名。" },
+      { word: "みたい", display: "みたい", meaning: "「〜のようだ」を表すくだけた言い方。" },
+      { word: "みせい", display: "未成", meaning: "まだ出来上がっていないこと。「未成年」。" }
+    ]
+  },
+  {
+    template: "く○い",
+    answers: [
+      { word: "くさい", display: "臭い", meaning: "いやなにおいがする／あやしい。" },
+      { word: "くらい", display: "暗い／位", meaning: "光が少ない／地位・くらい。「位が高い」。" },
+      { word: "くろい", display: "黒い", meaning: "すみのような色である。" },
+      { word: "くるい", display: "狂い", meaning: "調子がずれること。「狂いが生じる」。" },
+      { word: "くわい", display: "慈姑", meaning: "正月料理に使う、芽の出た球茎。" },
+      { word: "くがい", display: "苦界", meaning: "苦しみの多いこの世／遊女の境遇。" },
+      { word: "くない", display: "宮内", meaning: "皇室に関する役所。「宮内庁」。" }
+    ]
+  },
+  {
+    template: "お○い",
+    answers: [
+      { word: "おもい", display: "重い／思い", meaning: "目方がある／心に抱く考え。" },
+      { word: "おおい", display: "多い／覆い", meaning: "数量がたくさんある／かぶせるもの。" },
+      { word: "おそい", display: "遅い", meaning: "速度がのろい／時刻がおそい。" },
+      { word: "おしい", display: "惜しい", meaning: "手放したくない。残念だ。" },
+      { word: "おれい", display: "お礼", meaning: "感謝の気持ちや、その品。" },
+      { word: "おめい", display: "汚名", meaning: "悪い評判。「汚名返上」。" },
+      { word: "おすい", display: "汚水", meaning: "汚れた水。生活排水など。" }
+    ]
+  },
+  {
+    template: "わ○い",
+    answers: [
+      { word: "わらい", display: "笑い", meaning: "笑うこと。「笑いを誘う」。" },
+      { word: "わるい", display: "悪い", meaning: "よくない。好ましくない。" },
+      { word: "わかい", display: "若い／和解", meaning: "年齢が少ない／争いをやめて仲直りすること。" },
+      { word: "わだい", display: "話題", meaning: "話の種。「話題の人」。" },
+      { word: "わへい", display: "和平", meaning: "戦いをやめて平和になること。" },
+      { word: "わせい", display: "和製／和声", meaning: "日本製。「和製英語」／和音のつながり。" }
+    ]
+  },
+  {
+    template: "す○い",
+    answers: [
+      { word: "すごい", display: "凄い", meaning: "程度がはなはだしい。" },
+      { word: "すまい", display: "住まい", meaning: "住んでいる家。" },
+      { word: "すくい", display: "救い", meaning: "助けること。「救いの手」。" },
+      { word: "すいい", display: "推移", meaning: "時とともに移り変わること。" },
+      { word: "すぱい", display: "スパイ", meaning: "ひそかに情報を探る者。" },
+      { word: "すかい", display: "スカイ", meaning: "空。「スカイツリー」。" }
+    ]
+  },
+  {
+    template: "つ○い",
+    answers: [
+      { word: "つよい", display: "強い", meaning: "力がある。もろくない。" },
+      { word: "つらい", display: "辛い", meaning: "苦しい。耐えがたい。" },
+      { word: "つかい", display: "使い", meaning: "用事を頼まれて行くこと・その人。" },
+      { word: "つがい", display: "番", meaning: "雌雄ひとそろい。「つがいの鳥」。" },
+      { word: "つたい", display: "伝い", meaning: "沿って行くこと。「壁伝いに歩く」。" }
+    ]
+  },
+  {
+    template: "ふ○い",
+    answers: [
+      { word: "ふかい", display: "深い／不快", meaning: "底までの距離が大きい／気分がよくないこと。" },
+      { word: "ふとい", display: "太い", meaning: "周りが大きい。「太い柱」。" },
+      { word: "ふるい", display: "古い／篩", meaning: "昔からある／粉をふるい分ける道具。" },
+      { word: "ふめい", display: "不明", meaning: "はっきりしないこと。「行方不明」。" },
+      { word: "ふせい", display: "不正", meaning: "正しくないこと。" },
+      { word: "ふらい", display: "フライ", meaning: "揚げ物／野球の飛球。" },
+      { word: "ふくい", display: "福井", meaning: "北陸地方の県。" },
+      { word: "ふさい", display: "夫妻／負債", meaning: "夫と妻／借金。" },
+      { word: "ふけい", display: "父兄", meaning: "児童生徒の保護者。" },
+      { word: "ふはい", display: "腐敗／不敗", meaning: "腐ること。堕落すること／一度も負けないこと。" },
+      { word: "ふてい", display: "不定／不貞", meaning: "定まらないこと／配偶者を裏切ること。" },
+      { word: "ふたい", display: "付帯", meaning: "主となるものに付き従うこと。「付帯条件」。" },
+      { word: "ふない", display: "船内", meaning: "船の中。「船内放送」。" }
+    ]
+  },
+  {
+    template: "と○い",
+    answers: [
+      { word: "とおい", display: "遠い", meaning: "距離や時間がへだたっている。" },
+      { word: "とけい", display: "時計", meaning: "時刻を示す器械。" },
+      { word: "とくい", display: "得意", meaning: "上手であること／なじみの客。" },
+      { word: "とかい", display: "都会", meaning: "人口が多く発展した町。" },
+      { word: "とりい", display: "鳥居", meaning: "神社の入り口に立つ門。" },
+      { word: "とだい", display: "土台", meaning: "建物を支える基礎／物事の基盤。" },
+      { word: "とない", display: "都内", meaning: "東京都の区域内。" },
+      { word: "とらい", display: "渡来", meaning: "海を渡って来ること。「渡来人」。" },
+      { word: "とせい", display: "渡世", meaning: "世渡り。生業。「渡世人」。" },
+      { word: "とべい", display: "渡米", meaning: "アメリカへ渡ること。" }
+    ]
+  },
+  {
+    template: "ほ○い",
+    answers: [
+      { word: "ほしい", display: "欲しい", meaning: "自分のものにしたいと思う。" },
+      { word: "ほそい", display: "細い", meaning: "周りが小さい。「細い道」。" },
+      { word: "ほうい", display: "方位／包囲", meaning: "方角／まわりを取り囲むこと。" },
+      { word: "ほんい", display: "本意", meaning: "本当の気持ち。「不本意」。" },
+      { word: "ほせい", display: "補正", meaning: "足りない点を補い正すこと。" },
+      { word: "ほくい", display: "北緯", meaning: "赤道より北の緯度。" },
+      { word: "ほすい", display: "保水", meaning: "水を保つこと。「保水力」。" },
+      { word: "ほれい", display: "保冷", meaning: "冷たさを保つこと。「保冷剤」。" },
+      { word: "ほてい", display: "布袋", meaning: "七福神の一。大きな袋を持つ福の神。" },
+      { word: "ほらい", display: "蓬莱", meaning: "仙人が住むという伝説の島。「蓬莱山」。" }
+    ]
+  },
+  {
+    template: "ち○い",
+    answers: [
+      { word: "ちかい", display: "近い／誓い", meaning: "へだたりが小さい／かたく約束すること。" },
+      { word: "ちがい", display: "違い", meaning: "同じでないこと。差。" },
+      { word: "ちめい", display: "地名／致命", meaning: "土地の名／命にかかわること。「致命傷」。" },
+      { word: "ちらい", display: "地雷", meaning: "地中に仕掛ける爆弾。「地雷を踏む」。" },
+      { word: "ちたい", display: "地帯", meaning: "ある特徴をもつ一帯。「工業地帯」。" },
+      { word: "ちけい", display: "地形", meaning: "土地の起伏のようす。" },
+      { word: "ちせい", display: "知性／治世", meaning: "考える力／世を治めること。" },
+      { word: "ちすい", display: "治水", meaning: "洪水を防ぎ水を治めること。" },
+      { word: "ちてい", display: "地底", meaning: "地面の底。「地底湖」。" }
+    ]
+  },
+  {
+    template: "な○い",
+    answers: [
+      { word: "ながい", display: "長い", meaning: "距離や時間が大きい。" },
+      { word: "ならい", display: "習い／倣い", meaning: "世のならわし／手本にすること。" },
+      { word: "なんい", display: "難易", meaning: "むずかしさとやさしさ。「難易度」。" },
+      { word: "なかい", display: "仲居", meaning: "旅館や料亭で客の世話をする女性。" },
+      { word: "なさい", display: "なさい", meaning: "「しなさい」など、やわらかい命令を表す語。" }
+    ]
+  },
+  {
+    template: "て○い",
+    answers: [
+      { word: "てはい", display: "手配", meaning: "準備を割りふること／指名手配。" },
+      { word: "てんい", display: "転移／天意", meaning: "別の場所へ移ること／天の心。" },
+      { word: "てあい", display: "手合い", meaning: "その種の連中／碁将棋の対戦。" },
+      { word: "てぬい", display: "手縫い", meaning: "機械でなく手で縫うこと。" },
+      { word: "てらい", display: "衒い", meaning: "知識や才能を見せびらかすこと。「衒いがない」。" }
+    ]
+  },
+  {
+    template: "り○い",
+    answers: [
+      { word: "りかい", display: "理解", meaning: "意味や事情をのみこむこと。" },
+      { word: "りせい", display: "理性", meaning: "筋道を立てて考える力。" },
+      { word: "りけい", display: "理系", meaning: "自然科学系の学問分野。" },
+      { word: "りさい", display: "罹災", meaning: "災害にあうこと。「罹災証明」。" }
+    ]
+  },
+  {
+    template: "し○う",
+    answers: [
+      { word: "しよう", display: "使用／仕様", meaning: "使うこと／作りや決まりごと。「仕様書」。" },
+      { word: "しこう", display: "思考／志向／施行", meaning: "考えること／目指すこと／実際に行うこと。" },
+      { word: "しそう", display: "思想", meaning: "物事についてのまとまった考え。" },
+      { word: "しどう", display: "指導／私道／始動", meaning: "教え導くこと／私有の道／動き始めること。" },
+      { word: "しほう", display: "四方／司法", meaning: "東西南北。まわり／法にもとづき裁くこと。" },
+      { word: "しぼう", display: "志望／脂肪／死亡", meaning: "こうなりたいと望むこと／あぶら／死ぬこと。" },
+      { word: "しとう", display: "死闘／至当", meaning: "死にものぐるいの戦い／きわめて当然なこと。" },
+      { word: "しなう", display: "撓う", meaning: "折れずに、しなやかに曲がる。" }
+    ]
+  },
+  {
+    template: "た○う",
+    answers: [
+      { word: "たろう", display: "太郎", meaning: "長男に多く使われた名。「桃太郎」。" },
+      { word: "たよう", display: "多様／多用", meaning: "さまざまであること／多く用いること。" },
+      { word: "たほう", display: "他方", meaning: "もう一方。「他方では」。" },
+      { word: "たそう", display: "多層", meaning: "層がいくつも重なっていること。" },
+      { word: "たまう", display: "給う", meaning: "目上の人がお与えになる。" },
+      { word: "たどう", display: "他動", meaning: "他に働きかけること。「他動詞」。" }
+    ]
+  },
+  {
+    template: "こ○う",
+    answers: [
+      { word: "こどう", display: "鼓動／古道", meaning: "心臓の打つ音／昔からの道。「熊野古道」。" },
+      { word: "ことう", display: "孤島", meaning: "ぽつんと離れた島。「絶海の孤島」。" },
+      { word: "こふう", display: "古風", meaning: "昔ふうで、今ふうでないこと。" },
+      { word: "こくう", display: "虚空", meaning: "何もない空間。おおぞら。" },
+      { word: "ここう", display: "戸口／虎口", meaning: "家の出入り口／きわめて危険な場所。「虎口を脱する」。" }
+    ]
+  },
+  {
+    template: "ま○う",
+    answers: [
+      { word: "まよう", display: "迷う", meaning: "道や心が定まらない。" },
+      { word: "まほう", display: "魔法", meaning: "不思議な力で異常なことを起こす術。" },
+      { word: "まとう", display: "纏う", meaning: "身につける。「衣をまとう」。" },
+      { word: "まどう", display: "惑う", meaning: "どうしてよいか分からず心が乱れる。" },
+      { word: "まもう", display: "磨耗", meaning: "すり減ること。「磨耗した部品」。" }
     ]
   }
 ];
