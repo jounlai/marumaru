@@ -2139,5 +2139,69 @@ const WORD_ROUNDS = [
       { word: "いんがい", display: "院外", meaning: "議院や病院の外。「院外団」。" },
       { word: "えんがい", display: "塩害／煙害", meaning: "潮風や塩分による被害／煙による被害。" }
     ]
+  },
+  {
+    template: "○んけん",
+    answers: [
+      { word: "しんけん", display: "真剣", meaning: "本気であること／本物の刀。" },
+      { word: "てんけん", display: "点検", meaning: "一つ一つ調べること。" },
+      { word: "じんけん", display: "人権", meaning: "人が生まれながらに持つ権利。" },
+      { word: "たんけん", display: "探検／短剣", meaning: "未知の地を探り調べること／短い剣。" },
+      { word: "へんけん", display: "偏見", meaning: "かたよった見方。" },
+      { word: "ぶんけん", display: "文献／分権", meaning: "研究の資料となる書物／権限を分けること。「地方分権」。" },
+      { word: "あんけん", display: "案件", meaning: "取り扱うべき事柄。「重要案件」。" },
+      { word: "ばんけん", display: "番犬", meaning: "家を守るために飼う犬。" },
+      { word: "いんけん", display: "陰険", meaning: "表面はよそおい、裏で悪意を持つこと。" },
+      { word: "せんけん", display: "先見", meaning: "先を見通すこと。「先見の明」。" },
+      { word: "はんけん", display: "版権", meaning: "出版に関する権利。著作権。" },
+      { word: "ほんけん", display: "本件／本県", meaning: "この件／この県。" },
+      { word: "おんけん", display: "穏健", meaning: "考え方がおだやかで、行き過ぎがないこと。" },
+      { word: "かんけん", display: "官憲／管見", meaning: "役所や警察／自分の見解をへりくだっていう語。" },
+      { word: "きんけん", display: "金券／勤倹", meaning: "現金の代わりに使える券／よく働き倹約すること。" }
+    ]
+  },
+  {
+    template: "○んりょう",
+    answers: [
+      { word: "かんりょう", display: "完了／官僚", meaning: "すっかり終わること／国の行政を担う役人。" },
+      { word: "ねんりょう", display: "燃料", meaning: "燃やして熱や動力を得るもの。" },
+      { word: "げんりょう", display: "原料／減量", meaning: "製品のもとになる材料／量を減らすこと。" },
+      { word: "ぶんりょう", display: "分量", meaning: "物の量。「分量を量る」。" },
+      { word: "いんりょう", display: "飲料", meaning: "飲み物。「飲料水」。" },
+      { word: "おんりょう", display: "音量／怨霊", meaning: "音の大きさ／恨みを抱いて祟るという霊。" },
+      { word: "ぜんりょう", display: "善良", meaning: "性質がよく、正直なこと。" },
+      { word: "せんりょう", display: "占領／千両／染料", meaning: "軍が土地を支配すること／正月に飾る赤い実の木／布を染める材料。" },
+      { word: "しんりょう", display: "診療", meaning: "診察して治療すること。「診療所」。" },
+      { word: "てんりょう", display: "天領", meaning: "江戸幕府が直接治めた土地。" },
+      { word: "まんりょう", display: "万両", meaning: "冬に赤い実をつける縁起物の低木。" },
+      { word: "きんりょう", display: "禁漁", meaning: "漁を禁じること。「禁漁期」。" }
+    ]
+  },
+  {
+    template: "○んがく",
+    answers: [
+      { word: "おんがく", display: "音楽", meaning: "音による芸術。" },
+      { word: "ぶんがく", display: "文学", meaning: "ことばによる芸術。小説・詩など。" },
+      { word: "けんがく", display: "見学", meaning: "実際に見て学ぶこと。" },
+      { word: "しんがく", display: "進学／神学", meaning: "上級の学校へ進むこと／神についての学問。" },
+      { word: "さんがく", display: "山岳", meaning: "高く険しい山々。「山岳地帯」。" },
+      { word: "ぜんがく", display: "全額", meaning: "金額のすべて。" },
+      { word: "げんがく", display: "弦楽／減額", meaning: "弦楽器の音楽。「弦楽四重奏」／金額を減らすこと。" },
+      { word: "かんがく", display: "漢学／官学", meaning: "中国古典の学問／国が設けた学校の学問。" },
+      { word: "せんがく", display: "浅学", meaning: "学問が浅いこと。「浅学非才」。" },
+      { word: "ねんがく", display: "年額", meaning: "一年あたりの金額。" },
+      { word: "へんがく", display: "扁額／変額", meaning: "横長の額。「扁額を掲げる」／金額が変わること。" }
+    ]
+  },
+  {
+    template: "○んりょく",
+    answers: [
+      { word: "ぜんりょく", display: "全力", meaning: "持っている力のすべて。" },
+      { word: "いんりょく", display: "引力", meaning: "物どうしが引き合う力。「万有引力」。" },
+      { word: "せんりょく", display: "戦力", meaning: "戦う力。「戦力外」。" },
+      { word: "きんりょく", display: "筋力", meaning: "筋肉の出す力。「筋力トレーニング」。" },
+      { word: "しんりょく", display: "新緑", meaning: "初夏の、若葉のみずみずしい緑。" },
+      { word: "たんりょく", display: "胆力", meaning: "物事に動じない気力。「胆力がある」。" }
+    ]
   }
 ];
