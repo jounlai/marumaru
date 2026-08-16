@@ -750,7 +750,8 @@ const ROUND_DATA = [
       { word: "どんぐり", meaning: "ブナ科の木になる、硬い殻の木の実。" },
       { word: "あんぐり", meaning: "あきれて口を大きく開けるさま。" },
       { word: "でんぐり", meaning: "ひっくり返ること。「でんぐり返し」「でんぐり返る」。" },
-      { word: "かんぐり", display: "勘ぐり", meaning: "人の言動を悪い方に推測すること。「勘ぐる」の名詞形。" }
+      { word: "かんぐり", display: "勘ぐり", meaning: "人の言動を悪い方に推測すること。「勘ぐる」の名詞形。" },
+      { word: "ざんぐり", meaning: "ゆったりと粗く編んだり着たりするさま。" }
     ]
   },
   {
@@ -1125,7 +1126,8 @@ const SPECIAL_ROUNDS = [
     answers: [
       { word: "ひとびと", display: "人々", meaning: "多くの人たち。皆さん。" },
       { word: "ふとぶと", display: "太々", meaning: "いかにも太く、堂々としているさま。" },
-      { word: "ことごと", display: "事々", meaning: "あらゆること。「ことごとく」「事々しい」の形でも使う。" }
+      { word: "ことごと", display: "事々", meaning: "あらゆること。「ことごとく」「事々しい」の形でも使う。" },
+      { word: "さとざと", display: "里々", meaning: "あちらこちらの村里。" }
     ]
   },
   {
@@ -1149,7 +1151,8 @@ const SPECIAL_ROUNDS = [
     mode: "dakutenSecond",
     answers: [
       { word: "しらじら", display: "白々", meaning: "夜が明けて白んでいくさま／見え透いてしらけるさま。" },
-      { word: "からがら", display: "辛々", meaning: "やっとのことで。「命からがら逃げ出す」。" }
+      { word: "からがら", display: "辛々", meaning: "やっとのことで。「命からがら逃げ出す」。" },
+      { word: "そらぞら", display: "空々", meaning: "「空々しい」の形で、見えすいたうそくさいさま。" }
     ]
   },
   {
@@ -1606,7 +1609,8 @@ const WORD_ROUNDS = [
       { word: "いんご", display: "隠語", meaning: "仲間うちだけに通じることば。" },
       { word: "しんご", display: "新語", meaning: "新しく生まれたことば。" },
       { word: "はんご", display: "反語", meaning: "疑問の形で逆の意味を強く表す言い方。" },
-      { word: "べんご", display: "弁護", meaning: "その人のために言い分を述べて守ること。" }
+      { word: "べんご", display: "弁護", meaning: "その人のために言い分を述べて守ること。" },
+      { word: "めんご", display: "めんご", meaning: "「ごめん」をひっくり返した軽い謝りの俗語。" }
     ]
   },
   {
@@ -1685,7 +1689,8 @@ const WORD_ROUNDS = [
       { word: "たんかん", display: "短観／単管", meaning: "日銀の企業短期経済観測調査／足場に使う鋼管。" },
       { word: "えんかん", display: "鉛管", meaning: "鉛でつくった管。" },
       { word: "まんかん", display: "満干", meaning: "潮の満ち引き。" },
-      { word: "けんかん", display: "顕官", meaning: "位の高い官職。" }
+      { word: "けんかん", display: "顕官", meaning: "位の高い官職。" },
+      { word: "かんかん", display: "かんかん", meaning: "日が強く照るさま／ひどく怒るさま。「かんかんに怒る」。" }
     ]
   },
   {
@@ -1728,7 +1733,8 @@ const WORD_ROUNDS = [
       { word: "ちんこう", display: "沈降", meaning: "沈んで下がること。「沈降作用」。" },
       { word: "えんこう", display: "円光／猿猴", meaning: "仏の背後の丸い光／サル。「猿猴が月を取る」。" },
       { word: "りんこう", display: "臨港", meaning: "港に面していること。「臨港線」。" },
-      { word: "まんこう", display: "満腔", meaning: "体じゅうに満ちること。「満腔の敬意」。" }
+      { word: "まんこう", display: "満腔", meaning: "体じゅうに満ちること。「満腔の敬意」。" },
+      { word: "らんこう", display: "乱交", meaning: "多人数が入り乱れて性的に交わること。" }
     ]
   },
   {
@@ -1984,7 +1990,8 @@ const WORD_ROUNDS = [
       { word: "らんち", display: "ランチ", meaning: "昼食／小型の船。" },
       { word: "れんち", display: "レンチ", meaning: "ボルトを回す工具。スパナ。" },
       { word: "くんち", display: "くんち", meaning: "九州の秋祭り。「長崎くんち」。" },
-      { word: "ざんち", display: "残置", meaning: "あとに残しておくこと。「残置物」。" }
+      { word: "ざんち", display: "残置", meaning: "あとに残しておくこと。「残置物」。" },
+      { word: "こんち", display: "こんち", meaning: "「こんにちは」を縮めたくだけた挨拶。「こんちは」。" }
     ]
   },
   {
@@ -2253,7 +2260,8 @@ const WORD_ROUNDS = [
       { word: "じんけつ", display: "人傑", meaning: "すぐれた人物。" },
       { word: "どんけつ", display: "どんけつ", meaning: "いちばん最後をいう俗語。びり。" },
       { word: "ざんけつ", display: "残欠", meaning: "一部が欠けて残ったもの。" },
-      { word: "いんけつ", display: "いんけつ", meaning: "ばくちで最低の目。転じて、運の悪いこと。" }
+      { word: "いんけつ", display: "いんけつ", meaning: "ばくちで最低の目。転じて、運の悪いこと。" },
+      { word: "きんけつ", display: "金欠", meaning: "お金がないこと。「金欠病」。" }
     ]
   },
   {
@@ -2307,7 +2315,8 @@ const WORD_ROUNDS = [
       { word: "しんかく", display: "神格", meaning: "神としての格式。「神格化」。" },
       { word: "せんかく", display: "尖閣／先客", meaning: "東シナ海の諸島の名／先に来ている客。" },
       { word: "らんかく", display: "乱獲", meaning: "むやみに獲りすぎること。" },
-      { word: "いんかく", display: "陰核", meaning: "女性の外性器の一部。クリトリス。" }
+      { word: "いんかく", display: "陰核", meaning: "女性の外性器の一部。クリトリス。" },
+      { word: "ぜんかく", display: "全角", meaning: "文字の幅が一文字分であること。↔半角。" }
     ]
   },
   {
@@ -2384,7 +2393,8 @@ const WORD_ROUNDS = [
       { word: "みんけん", display: "民権", meaning: "国民の政治的権利。「自由民権運動」。" },
       { word: "ぜんけん", display: "全権", meaning: "すべての権限。「全権大使」。" },
       { word: "がんけん", display: "頑健", meaning: "体ががんじょうで丈夫なこと。" },
-      { word: "ぐんけん", display: "郡県", meaning: "郡と県。「郡県制」。" }
+      { word: "ぐんけん", display: "郡県", meaning: "郡と県。「郡県制」。" },
+      { word: "けんけん", display: "けんけん", meaning: "片足で跳ぶ遊び。「けんけん跳び」。" }
     ]
   },
   {
@@ -2504,7 +2514,8 @@ const WORD_ROUNDS = [
       { word: "がんばん", display: "岩盤", meaning: "地中の硬い岩の層。「岩盤浴」。" },
       { word: "もんばん", display: "門番", meaning: "門を見張る人。" },
       { word: "れんばん", display: "連番", meaning: "続き番号。「連番のチケット」。" },
-      { word: "ひんばん", display: "品番", meaning: "商品につける番号。" }
+      { word: "ひんばん", display: "品番", meaning: "商品につける番号。" },
+      { word: "ばんばん", display: "ばんばん", meaning: "勢いよく続けざまにするさま。「ばんばん働く」。" }
     ]
   },
   {
@@ -2527,7 +2538,8 @@ const WORD_ROUNDS = [
       { word: "でんぱん", display: "伝搬", meaning: "波などが伝わり広がること。" },
       { word: "うんぱん", display: "運搬", meaning: "物を運ぶこと。" },
       { word: "いんぱん", display: "印判", meaning: "はんこ。印章。" },
-      { word: "れんぱん", display: "連判", meaning: "複数人が並べて署名・押印すること。「連判状」。" }
+      { word: "れんぱん", display: "連判", meaning: "複数人が並べて署名・押印すること。「連判状」。" },
+      { word: "ぱんぱん", display: "ぱんぱん", meaning: "はちきれそうに張っているさま。「腹がぱんぱん」。" }
     ]
   },
   {
@@ -2674,7 +2686,8 @@ const WORD_ROUNDS = [
       { word: "でんきゅう", display: "電球", meaning: "電気で光る球形のランプ。" },
       { word: "がんきゅう", display: "眼球", meaning: "目のたま。「眼球運動」。" },
       { word: "うんきゅう", display: "運休", meaning: "運行を休むこと。" },
-      { word: "ひんきゅう", display: "貧窮", meaning: "貧しくて困り果てること。" }
+      { word: "ひんきゅう", display: "貧窮", meaning: "貧しくて困り果てること。" },
+      { word: "せんきゅう", display: "センキュー", meaning: "ありがとう。thank you の音写。「サンキュー」とも。" }
     ]
   },
   {
@@ -2785,7 +2798,8 @@ const WORD_ROUNDS = [
       { word: "せんじゃ", display: "選者", meaning: "作品を選ぶ人。" },
       { word: "いんじゃ", display: "隠者", meaning: "世を離れて暮らす人。" },
       { word: "ひんじゃ", display: "貧者", meaning: "貧しい人。「貧者の一灯」。" },
-      { word: "なんじゃ", display: "なんじゃ", meaning: "「なんだ」のくだけた言い方。「なんじゃこりゃ」。" }
+      { word: "なんじゃ", display: "なんじゃ", meaning: "「なんだ」のくだけた言い方。「なんじゃこりゃ」。" },
+      { word: "ほんじゃ", display: "ほんじゃ", meaning: "「それじゃ」のくだけた言い方。「ほんじゃまた」。" }
     ]
   },
   {
@@ -2948,7 +2962,8 @@ const WORD_ROUNDS = [
       { word: "どんたく", display: "どんたく", meaning: "休日／福岡の祭り「博多どんたく」。オランダ語 zondag から。" },
       { word: "でんたく", display: "電卓", meaning: "電子式卓上計算機。" },
       { word: "そんたく", display: "忖度", meaning: "相手の心中をおしはかること。" },
-      { word: "しんたく", display: "信託／神託", meaning: "信用して財産を託すこと／神のお告げ。" }
+      { word: "しんたく", display: "信託／神託", meaning: "信用して財産を託すこと／神のお告げ。" },
+      { word: "ゆんたく", display: "ゆんたく", meaning: "沖縄のことばで、おしゃべりをすること。" }
     ]
   },
   {
@@ -3124,7 +3139,8 @@ const WORD_ROUNDS = [
       { word: "そんきん", display: "損金", meaning: "損失として計上する金額。" },
       { word: "ぶんきん", display: "文金", meaning: "日本髪の結い方。「文金高島田」。" },
       { word: "きんきん", display: "きんきん", meaning: "高く鋭い音／非常によく冷えたさま。" },
-      { word: "ちんきん", display: "沈金", meaning: "漆器に彫った線に金粉を埋める技法。" }
+      { word: "ちんきん", display: "沈金", meaning: "漆器に彫った線に金粉を埋める技法。" },
+      { word: "いんきん", display: "いんきん", meaning: "股にできる白癬。「いんきんたむし」。" }
     ]
   },
   {
@@ -3306,7 +3322,8 @@ const WORD_ROUNDS = [
       { word: "ばんこ", display: "万古", meaning: "はるかな昔。「万古不易」「万古焼」。" },
       { word: "おんこ", display: "温故", meaning: "「温故知新」の形で、古きを訪ねて新しきを知る。" },
       { word: "ちんこ", display: "ちんこ", meaning: "男性器をいう俗語。" },
-      { word: "まんこ", display: "まんこ", meaning: "女性器をいう俗語。" }
+      { word: "まんこ", display: "まんこ", meaning: "女性器をいう俗語。" },
+      { word: "ぱんこ", display: "パン粉", meaning: "パンを細かく砕いた衣。「パン粉をまぶす」。" }
     ]
   },
   {
@@ -3349,7 +3366,8 @@ const WORD_ROUNDS = [
       { word: "えんや", display: "えんや", meaning: "力を合わせるときの掛け声。「えんやこら」。" },
       { word: "どんや", display: "問屋", meaning: "品物を小売店に卸す店。とんや。" },
       { word: "りんや", display: "林野", meaning: "林と野原。「林野庁」。" },
-      { word: "せんや", display: "千夜", meaning: "千の夜。「千夜一夜物語」。" }
+      { word: "せんや", display: "千夜", meaning: "千の夜。「千夜一夜物語」。" },
+      { word: "ぱんや", display: "パン屋", meaning: "パンを焼いて売る店。" }
     ]
   },
   {
@@ -3516,7 +3534,8 @@ const WORD_ROUNDS = [
       { word: "へんろ", display: "遍路", meaning: "四国八十八か所を巡礼すること・その人。" },
       { word: "だんろ", display: "暖炉", meaning: "部屋を暖める、壁に作りつけた炉。" },
       { word: "はんろ", display: "販路", meaning: "商品を売りさばく先。「販路を広げる」。" },
-      { word: "えんろ", display: "遠路", meaning: "遠い道のり。「遠路はるばる」。" }
+      { word: "えんろ", display: "遠路", meaning: "遠い道のり。「遠路はるばる」。" },
+      { word: "げんろ", display: "元老", meaning: "その道の功労ある長老。明治期の重臣。" }
     ]
   },
   {
@@ -3564,7 +3583,10 @@ const WORD_ROUNDS = [
       { word: "ぐんぴ", display: "軍費", meaning: "戦争にかかる費用。" },
       { word: "そんぴ", display: "尊卑", meaning: "身分の高い低い。" },
       { word: "がんぴ", display: "雁皮", meaning: "和紙の原料になる木。「雁皮紙」。" },
-      { word: "わんぴ", display: "ワンピ", meaning: "ワンピースの略。「ONE PIECE」の略でも使う。" }
+      { word: "わんぴ", display: "ワンピ", meaning: "ワンピースの略。「ONE PIECE」の略でも使う。" },
+      { word: "げんぴ", display: "厳秘", meaning: "きびしく守るべき秘密。" },
+      { word: "せんぴ", display: "先非", meaning: "以前におかしたあやまち。" },
+      { word: "いんぴ", display: "隠微", meaning: "表に現れず、かすかでわかりにくいこと。" }
     ]
   },
   {
