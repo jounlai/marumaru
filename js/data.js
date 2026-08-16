@@ -475,7 +475,8 @@ const ROUND_DATA = [
       { word: "つかつか", meaning: "ためらわず勢いよく歩み寄るさま。" },
       { word: "でかでか", meaning: "非常に大きく目立つさま。" },
       { word: "どかどか", meaning: "大勢が一度に押し入るさま／重い足音。" },
-      { word: "ぼかぼか", meaning: "続けざまに殴る音・さま／暖かいさま。" }
+      { word: "ぼかぼか", meaning: "続けざまに殴る音・さま／暖かいさま。" },
+      { word: "よかよか", meaning: "九州で「よい、よい」と相手を受け入れたりなだめたりするときの言い方。" }
     ]
   },
   {
@@ -658,7 +659,8 @@ const ROUND_DATA = [
       { word: "つけつけ", meaning: "遠慮なく、きつい調子で言うさま。" },
       { word: "どけどけ", meaning: "「どけ」を重ね、道を空けさせる荒っぽい掛け声。" },
       { word: "ゆけゆけ", display: "行け行け", meaning: "勢いづけるときの掛け声／勢いに乗っているさま。" },
-      { word: "わけわけ", display: "わけわけ", meaning: "分け合うことをいうくだけた口語表現。" }
+      { word: "わけわけ", display: "わけわけ", meaning: "分け合うことをいうくだけた口語表現。" },
+      { word: "まけまけ", meaning: "愛媛・香川などで、容器からこぼれるほどいっぱいなさま。「まけまけいっぱい」。" }
     ]
   },
   {
@@ -803,7 +805,8 @@ const ROUND_DATA = [
       { word: "ぴよぴよ", meaning: "ひな鳥の鳴き声。" },
       { word: "つよつよ", display: "つよつよ", meaning: "非常に強いさまをいうネット・若者表現。" },
       { word: "ぶよぶよ", meaning: "締まりなく、柔らかく膨れているさま。" },
-      { word: "ぼよぼよ", meaning: "締まりがなく、たるんで揺れるさま。" }
+      { word: "ぼよぼよ", meaning: "締まりがなく、たるんで揺れるさま。" },
+      { word: "はよはよ", meaning: "「早く早く」と急かす言い方。関西を中心に広く使う。" }
     ]
   },
   {
@@ -1516,7 +1519,8 @@ const WORD_ROUNDS = [
       { word: "あんご", display: "安居", meaning: "僧が一定期間こもって修行すること。" },
       { word: "びんご", display: "ビンゴ", meaning: "数字を並べて当てるゲーム／「まさにそれだ」と言い当てたときの語。" },
       { word: "けんご", display: "堅固", meaning: "つくりや守りががんじょうで、しっかりしていること。「堅固な守り」。" },
-      { word: "なんご", display: "喃語", meaning: "乳児が発する、意味をなさない声。「あーうー」など。" }
+      { word: "なんご", display: "喃語", meaning: "乳児が発する、意味をなさない声。「あーうー」など。" },
+      { word: "てんご", display: "てんご", meaning: "関西で、いたずら・ふざけること。「てんごをする」。" }
     ]
   },
   {
@@ -1809,6 +1813,170 @@ const WORD_ROUNDS = [
       { word: "さんい", display: "賛意", meaning: "賛成する気持ち。「賛意を示す」。" },
       { word: "さらい", display: "再来／浚い", meaning: "「再来年」「再来週」の再来／さらうこと。「おさらい」。" },
       { word: "さぶい", display: "さぶい", meaning: "「寒い」のくだけた言い方。「さぶい話」。" }
+    ]
+  },
+  {
+    template: "○んち",
+    answers: [
+      { word: "ぱんち", display: "パンチ", meaning: "こぶしで打つこと／穴あけ器／強い迫力。" },
+      { word: "ぴんち", display: "ピンチ", meaning: "追いつめられた苦しい場面。" },
+      { word: "ぺんち", display: "ペンチ", meaning: "針金を挟んだり切ったりする工具。" },
+      { word: "べんち", display: "ベンチ", meaning: "背もたれのある長いす／競技の控え席。" },
+      { word: "みんち", display: "ミンチ", meaning: "細かくひいた肉。ひき肉。" },
+      { word: "めんち", display: "メンチ", meaning: "ひき肉。「メンチカツ」。" },
+      { word: "いんち", display: "インチ", meaning: "長さの単位。約2.54センチ。" },
+      { word: "あんち", display: "アンチ", meaning: "反対する立場・人。「アンチ〜」の形で使う。" },
+      { word: "りんち", display: "リンチ", meaning: "法によらず私的に加える制裁。私刑。" },
+      { word: "ぽんち", display: "ポンチ", meaning: "果物入りの飲み物「フルーツポンチ」／略画をいう「ポンチ絵」。" },
+      { word: "さんち", display: "産地", meaning: "その品物が作られた土地。" },
+      { word: "ばんち", display: "番地", meaning: "土地につけた番号。住所。" },
+      { word: "だんち", display: "団地", meaning: "住宅や工場をまとめて建てた区域。" },
+      { word: "ぼんち", display: "盆地", meaning: "周りを山に囲まれた平地。" },
+      { word: "かんち", display: "感知／完治", meaning: "感じ取ること／病気がすっかり治ること。" },
+      { word: "けんち", display: "見地／検地", meaning: "物事を見る立場／田畑を測って調べること。" },
+      { word: "げんち", display: "現地／言質", meaning: "物事が行われている場所／あとで証拠となる言葉。" },
+      { word: "しんち", display: "新地", meaning: "新しく開けた土地。「北新地」。" },
+      { word: "じんち", display: "陣地", meaning: "軍隊が構えた場所。" },
+      { word: "せんち", display: "戦地", meaning: "戦争が行われている土地。" },
+      { word: "たんち", display: "探知", meaning: "隠れているものを探り知ること。「魚群探知機」。" },
+      { word: "てんち", display: "天地", meaning: "天と地。世界／上と下。" },
+      { word: "とんち", display: "頓知", meaning: "その場に応じて働く機転。「一休さんの頓知」。" },
+      { word: "にんち", display: "認知", meaning: "物事を認め知ること。「認知症」。" },
+      { word: "ぜんち", display: "全治", meaning: "けがや病気がすっかり治ること。「全治二週間」。" },
+      { word: "おんち", display: "音痴", meaning: "音の高低を正しくとらえられないこと／その方面に疎いこと。" },
+      { word: "うんち", display: "うんち", meaning: "大便をいう幼児語。" }
+    ]
+  },
+  {
+    template: "○んぱい",
+    answers: [
+      { word: "しんぱい", display: "心配", meaning: "気にかけて不安に思うこと。" },
+      { word: "せんぱい", display: "先輩", meaning: "年齢や経験が上の人。" },
+      { word: "かんぱい", display: "乾杯／完敗", meaning: "杯を上げて祝うこと／まったく歯が立たず負けること。" },
+      { word: "まんぱい", display: "満杯", meaning: "いっぱいで、それ以上入らないこと。" },
+      { word: "ねんぱい", display: "年配", meaning: "かなり年をとっていること。「年配の方」。" },
+      { word: "さんぱい", display: "参拝／産廃／惨敗", meaning: "社寺にお参りすること／産業廃棄物／ひどく負けること。" },
+      { word: "ぜんぱい", display: "全廃／全敗", meaning: "すべてやめること／全部負けること。" },
+      { word: "れんぱい", display: "連敗", meaning: "続けて負けること。" },
+      { word: "てんぱい", display: "聴牌", meaning: "麻雀で、あと一枚でそろう状態。" },
+      { word: "ぶんぱい", display: "分配", meaning: "分けて配ること。" },
+      { word: "こんぱい", display: "困憊", meaning: "疲れ果てること。「疲労困憊」。" },
+      { word: "じんぱい", display: "塵肺", meaning: "粉じんを吸い込んで起こる肺の病気。" },
+      { word: "きんぱい", display: "金牌", meaning: "金製のメダル。" }
+    ]
+  },
+  {
+    template: "○んばい",
+    answers: [
+      { word: "はんばい", display: "販売", meaning: "品物を売ること。" },
+      { word: "かんばい", display: "完売／寒梅", meaning: "売り切れること／寒中に咲く梅。" },
+      { word: "ぐんばい", display: "軍配", meaning: "相撲の行司が持つうちわ。「軍配が上がる」。" },
+      { word: "さんばい", display: "三倍", meaning: "三つ分の量。" },
+      { word: "てんばい", display: "転売", meaning: "買ったものを、さらに他人に売ること。" },
+      { word: "いんばい", display: "淫売", meaning: "金銭を得て性を売ること。" }
+    ]
+  },
+  {
+    template: "ま○い",
+    answers: [
+      { word: "まるい", display: "丸い／円い", meaning: "円や球の形である／かどが立たない。「丸く収まる」。" },
+      { word: "まずい", display: "不味い", meaning: "おいしくない／具合が悪い。「まずいことになった」。" },
+      { word: "まよい", display: "迷い", meaning: "心が決まらないこと。「迷いが生じる」。" },
+      { word: "まあい", display: "間合い", meaning: "相手との距離やタイミング。「間合いを詰める」。" },
+      { word: "まかい", display: "魔界", meaning: "魔物の住む世界。" },
+      { word: "まがい", display: "紛い", meaning: "本物に似せたもの。「紛い物」。" },
+      { word: "まだい", display: "真鯛", meaning: "祝いの席にも使われる、代表的なタイ。" },
+      { word: "まとい", display: "纏", meaning: "江戸時代、火消しが組の目印に掲げた道具。" }
+    ]
+  },
+  {
+    template: "○んぽ",
+    answers: [
+      { word: "さんぽ", display: "散歩", meaning: "気晴らしにぶらぶら歩くこと。" },
+      { word: "しんぽ", display: "進歩", meaning: "物事がよい方へ進むこと。" },
+      { word: "てんぽ", display: "テンポ／店舗", meaning: "曲の速さ・物事の進む速さ／みせ。" },
+      { word: "たんぽ", display: "担保", meaning: "借金の保証として差し出すもの。" },
+      { word: "かんぽ", display: "簡保", meaning: "簡易生命保険。「かんぽ生命」。" },
+      { word: "ほんぽ", display: "本舗", meaning: "その商品を作る大もとの店。「元祖本舗」。" },
+      { word: "まんぽ", display: "万歩", meaning: "一万歩。「万歩計」。" }
+    ]
+  },
+  {
+    template: "○んゆう",
+    answers: [
+      { word: "しんゆう", display: "親友", meaning: "心から信頼し合える友。" },
+      { word: "きんゆう", display: "金融", meaning: "お金の貸し借り・流通。" },
+      { word: "かんゆう", display: "勧誘", meaning: "さそって仲間に入れようとすること。" },
+      { word: "がんゆう", display: "含有", meaning: "成分として含んでいること。「含有量」。" },
+      { word: "せんゆう", display: "専有／戦友", meaning: "ひとりで持つこと／ともに戦った仲間。" },
+      { word: "まんゆう", display: "漫遊", meaning: "あちこちを気ままに旅すること。「漫遊記」。" },
+      { word: "てんゆう", display: "天佑", meaning: "天の助け。「天佑神助」。" }
+    ]
+  },
+  {
+    template: "○んどく",
+    answers: [
+      { word: "たんどく", display: "単独", meaning: "ただ一人・一つで行うこと。" },
+      { word: "おんどく", display: "音読", meaning: "声に出して読むこと／漢字を音で読むこと。" },
+      { word: "はんどく", display: "判読", meaning: "読みにくい文字を推し量って読むこと。" },
+      { word: "らんどく", display: "乱読", meaning: "手当たりしだいに本を読むこと。" },
+      { word: "りんどく", display: "輪読", meaning: "何人かで順に読み、解釈し合うこと。" },
+      { word: "いんどく", display: "陰徳", meaning: "人に知られずに行うよい行い。「陰徳を積む」。" }
+    ]
+  },
+  {
+    template: "こ○い",
+    answers: [
+      { word: "こわい", display: "怖い／強い", meaning: "恐ろしい／北海道・東北などでは「疲れた」の意でも使う。「体がこわい」。" },
+      { word: "こまい", display: "細い／小まい", meaning: "細かい。西日本を中心に「小さい」の意で使う。「こまい魚」。" },
+      { word: "こない", display: "来ない／こない", meaning: "来ないこと／関西で「こんなに」の意。「こない暑いとは」。" },
+      { word: "こうい", display: "行為／好意／校医", meaning: "おこない／親しみの気持ち／学校の医師。" },
+      { word: "こせい", display: "個性", meaning: "その人やものだけがもつ特徴。" },
+      { word: "こたい", display: "固体／個体", meaning: "形が決まった状態の物質／独立した一つの生き物。" },
+      { word: "こだい", display: "古代／誇大", meaning: "大昔／おおげさなこと。「誇大広告」。" },
+      { word: "こてい", display: "固定", meaning: "動かないようにすること。" },
+      { word: "こけい", display: "固形", meaning: "かたまりの形。「固形燃料」。" },
+      { word: "こすい", display: "狡い／湖水", meaning: "ずるい／みずうみの水。" },
+      { word: "こよい", display: "今宵", meaning: "今夜。今晩。" },
+      { word: "こらい", display: "古来", meaning: "昔から。「古来まれなり」。" },
+      { word: "こがい", display: "戸外／子飼い", meaning: "家の外／幼いころから手元で育てること。" },
+      { word: "こんい", display: "懇意", meaning: "親しく付き合っていること。「懇意にする」。" }
+    ]
+  },
+  {
+    template: "せ○い",
+    answers: [
+      { word: "せかい", display: "世界", meaning: "地球上のすべて。人の暮らす場すべて。" },
+      { word: "せまい", display: "狭い", meaning: "広さや幅が小さい。「心が狭い」。" },
+      { word: "せだい", display: "世代", meaning: "同じ時代に生きる年齢層。「世代交代」。" },
+      { word: "せたい", display: "世帯", meaning: "住まいと生計を共にする集まり。所帯。" },
+      { word: "せんい", display: "繊維", meaning: "細い糸状のもの。「食物繊維」。" },
+      { word: "せいい", display: "誠意", meaning: "うそやごまかしのない、真心。" },
+      { word: "せこい", display: "せこい", meaning: "けちくさい。ずるくて小さい。もとは芸能・的屋の隠語。" }
+    ]
+  },
+  {
+    template: "え○い",
+    answers: [
+      { word: "えらい", display: "偉い／えらい", meaning: "立派だ／中部・関西などで「疲れた」「大変だ」の意でも使う。「えらい目にあった」。" },
+      { word: "えぐい", display: "えぐい", meaning: "あくが強く、のどを刺す味／ネット・若者語では「すごい」「ひどい」の強調にも使う。" },
+      { word: "えたい", display: "得体", meaning: "正体。「得体の知れない人物」。" },
+      { word: "えもい", display: "エモい", meaning: "心を強く動かされる、なんとも言えない気持ちをいうネット・若者表現。" },
+      { word: "えろい", display: "エロい", meaning: "性的な感じがするさまをいう口語。" }
+    ]
+  },
+  {
+    template: "○んぼ",
+    answers: [
+      { word: "たんぼ", display: "田んぼ", meaning: "稲を作る水田。" },
+      { word: "とんぼ", display: "蜻蛉", meaning: "細長い体と四枚の羽を持つ昆虫。" },
+      { word: "しんぼ", display: "辛抱", meaning: "つらさをこらえること。「辛抱強い」。" },
+      { word: "なんぼ", display: "なんぼ", meaning: "関西・西日本で「いくら」「どれほど」。「なんぼのもんじゃ」。" },
+      { word: "まんぼ", display: "マンボ", meaning: "キューバ生まれの陽気な音楽とダンス。" },
+      { word: "こんぼ", display: "コンボ", meaning: "少人数の演奏編成／格闘ゲームなどの連続技。" },
+      { word: "けんぼ", display: "健忘", meaning: "物忘れがひどいこと。「健忘症」。" },
+      { word: "げんぼ", display: "原簿", meaning: "もとになる帳簿。" },
+      { word: "ぜんぼ", display: "全貌", meaning: "全体のありさま。「事件の全貌」。" }
     ]
   }
 ];
