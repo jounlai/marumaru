@@ -732,7 +732,8 @@ const ROUND_DATA = [
       { word: "しずしず", display: "静々", meaning: "静かに、ゆっくりと落ち着いて動作するさま。" },
       { word: "かずかず", display: "数々", meaning: "多くのもの。いろいろ。" },
       { word: "くずくず", meaning: "崩れやすいさま／ぐずぐずと言うさま。" },
-      { word: "まずまず", meaning: "十分ではないが、まあまあ満足できるさま。" }
+      { word: "まずまず", meaning: "十分ではないが、まあまあ満足できるさま。" },
+      { word: "みずみず", display: "瑞々", meaning: "「みずみずしい」の形で、新鮮でつやがあるさま。" }
     ]
   },
   {
@@ -1035,7 +1036,8 @@ const SPECIAL_ROUNDS = [
     mode: "dakutenSecond",
     answers: [
       { word: "かねがね", display: "予々／兼ね兼ね", meaning: "以前から。かねて。" },
-      { word: "つねづね", display: "常々", meaning: "いつも。日ごろから。" }
+      { word: "つねづね", display: "常々", meaning: "いつも。日ごろから。" },
+      { word: "ふねぶね", display: "船々", meaning: "たくさんの船。" }
     ]
   },
   {
@@ -1071,7 +1073,8 @@ const SPECIAL_ROUNDS = [
     template: "○く〇く",
     mode: "dakutenSecond",
     answers: [
-      { word: "つくづく", display: "熟々／つくづく", meaning: "深く心に感じるさま／よくよく、じっくり。" }
+      { word: "つくづく", display: "熟々／つくづく", meaning: "深く心に感じるさま／よくよく、じっくり。" },
+      { word: "ふくぶく", display: "福々", meaning: "「福々しい」の形で、丸くふくよかで幸せそうなさま。" }
     ]
   },
   {
