@@ -478,10 +478,14 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
   border:1px solid #3a3a3a;border-radius:18px;background:#070707;padding:var(--cardPad);
 }
 .modalCard.narrow{width:min(520px,100%)}
-/* 見出しは上に貼り付く。カード内の他要素（position:relative）に隠れないよう z-index を持たせる */
+/* 見出しは上に貼り付く。
+   - z-index: カード内の他要素（position:relative）に隠れないようにする
+   - top: 負のマージンと同じ値にする。0 にすると貼り付き位置がマージン分だけ
+     下にずれ、1行目のカードに重なって上辺が欠ける */
 .modalHead{
   display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
-  position:sticky;top:0;z-index:2;background:#070707;border-bottom:1px solid #222;
+  position:sticky;top:calc(var(--cardPad) * -1);z-index:2;
+  background:#070707;border-bottom:1px solid #222;
   margin:calc(var(--cardPad) * -1) calc(var(--cardPad) * -1) 10px;
   padding:var(--cardPad) var(--cardPad) 10px;
 }

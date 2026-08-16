@@ -196,7 +196,8 @@ const ROUND_DATA = [
       { word: "だくだく", meaning: "汗や血などが大量に流れ出るさま。" },
       { word: "なくなく", display: "泣く泣く", meaning: "泣きながら。しかたなく、しぶしぶ。" },
       { word: "ろくろく", display: "碌々／ろくろく", meaning: "（打消しを伴い）十分には〜しない。「ろくろく寝ていない」。" },
-      { word: "そくそく", display: "惻々", meaning: "身にしみて強く感じられるさま。「惻々と胸に迫る」。" }
+      { word: "そくそく", display: "惻々", meaning: "身にしみて強く感じられるさま。「惻々と胸に迫る」。" },
+      { word: "せくせく", meaning: "落ち着きなく、こせこせと立ち働くさま。あくせく。" }
     ]
   },
   {
@@ -229,7 +230,8 @@ const ROUND_DATA = [
       { word: "ねたねた", meaning: "粘りつくさま。べたべた。" },
       { word: "ぬたぬた", meaning: "ぬめって粘りつくさま。" },
       { word: "のたのた", meaning: "動作が鈍く、のろのろと動くさま。" },
-      { word: "めためた", meaning: "ひどく崩れる・打ちのめされるさま。めちゃめちゃ。" }
+      { word: "めためた", meaning: "ひどく崩れる・打ちのめされるさま。めちゃめちゃ。" },
+      { word: "びたびた", meaning: "水気を含んで、べったり濡れているさま。" }
     ]
   },
   {
@@ -297,7 +299,8 @@ const ROUND_DATA = [
       { word: "にちにち", display: "日々（にちにち）", meaning: "毎日。一日一日。" },
       { word: "ごちごち", meaning: "硬くこわばっているさま。" },
       { word: "あちあち", meaning: "熱いものに触れたときに発する口語。「あちあち！」。" },
-      { word: "えちえち", display: "えちえち", meaning: "性的に扇情的なさまをいうネット・若者表現。「えっち」の変化形。" }
+      { word: "えちえち", display: "えちえち", meaning: "性的に扇情的なさまをいうネット・若者表現。「えっち」の変化形。" },
+      { word: "べちべち", meaning: "粘り気のあるものを続けて叩く音・さま。" }
     ]
   },
   {
@@ -568,7 +571,8 @@ const ROUND_DATA = [
       { word: "はやはや", display: "早々（はやはや）", meaning: "人を促して「早く早く」と急がせる語。" },
       { word: "わやわや", meaning: "大勢がまとまりなく騒ぎ立てるさま。" },
       { word: "ぱやぱや", meaning: "細く柔らかい毛などが軽く揺れるさま／頭がぼんやりするさま。" },
-      { word: "きやきや", meaning: "不安や心配で心が落ち着かないさま。" }
+      { word: "きやきや", meaning: "不安や心配で心が落ち着かないさま。" },
+      { word: "ぽやぽや", meaning: "柔らかい毛が生えているさま／気が抜けてぼんやりしているさま。" }
     ]
   },
   {
@@ -727,6 +731,104 @@ const ROUND_DATA = [
       { word: "でんぐり", meaning: "ひっくり返ること。「でんぐり返し」「でんぐり返る」。" },
       { word: "かんぐり", display: "勘ぐり", meaning: "人の言動を悪い方に推測すること。「勘ぐる」の名詞形。" }
     ]
+  },
+  {
+    template: "○い○い",
+    answers: [
+      { word: "ぐいぐい", meaning: "力強く引いたり進めたりするさま／勢いよく飲むさま。" },
+      { word: "すいすい", meaning: "抵抗なく軽やかに進むさま。" },
+      { word: "わいわい", meaning: "大勢がにぎやかに騒ぐさま。" },
+      { word: "ないない", display: "ないない", meaning: "物を片付けることをいう幼児語／「無い無い」と打ち消すこと。" },
+      { word: "まいまい", display: "舞々／蝸牛", meaning: "カタツムリの別名／くるくる舞うこと。" },
+      { word: "ばいばい", display: "バイバイ", meaning: "別れのあいさつ。" },
+      { word: "めいめい", display: "銘々", meaning: "一人一人。それぞれ。「銘々皿」。" },
+      { word: "ぶいぶい", display: "ぶいぶい", meaning: "羽音を表す語／「ぶいぶい言わせる」の形で、羽振りよく振る舞うこと。" },
+      { word: "せいせい", display: "清々", meaning: "わだかまりが取れて気分が晴れるさま。「せいせいした」。" },
+      { word: "ぜいぜい", meaning: "息が苦しく、のどが鳴るさま。" },
+      { word: "はいはい", display: "はいはい", meaning: "赤ん坊が手足で這うこと／気のない返事の繰り返し。" },
+      { word: "ほいほい", meaning: "気軽に応じるさま／人を促すときの掛け声。" },
+      { word: "ぽいぽい", meaning: "物を次々と軽く放り投げるさま。" },
+      { word: "ぎいぎい", meaning: "戸や床がきしんで鳴る音。" },
+      { word: "きいきい", meaning: "かん高くきしむ音／かん高い声。" },
+      { word: "ぴいぴい", meaning: "ひな鳥や笛の高い音／金がなくて苦しいさま。" },
+      { word: "れいれい", display: "麗々", meaning: "これ見よがしに目立つさま。「麗々しく飾る」。" }
+    ]
+  },
+  {
+    template: "○す○す",
+    answers: [
+      { word: "ますます", display: "益々", meaning: "程度がいっそう進むさま。" },
+      { word: "うすうす", display: "薄々", meaning: "なんとなく、かすかに。「薄々気づいていた」。" },
+      { word: "くすくす", meaning: "声を抑えて笑うさま。" },
+      { word: "やすやす", display: "易々", meaning: "たやすく。難なく。" },
+      { word: "ぎすぎす", meaning: "人間関係にとげとげしさがあるさま／やせて骨ばったさま。" },
+      { word: "ぶすぶす", meaning: "くすぶって煙が出るさま／太い物を突き刺す音。" },
+      { word: "ぷすぷす", meaning: "細かく刺す音／小さくくすぶる音。" },
+      { word: "かすかす", meaning: "水分がなくぱさついたさま／余裕がまったくないさま。" },
+      { word: "どすどす", meaning: "重い足音を立てて歩くさま。" },
+      { word: "のすのす", meaning: "大きな体で、ゆっくり歩くさま。" },
+      { word: "こすこす", meaning: "軽くこすり続けるさま。" }
+    ]
+  },
+  {
+    template: "○ま○ま",
+    answers: [
+      { word: "やまやま", display: "山々", meaning: "多くの山／「〜したいのはやまやま」の形で、そうしたい気持ちが強いこと。" },
+      { word: "たまたま", display: "偶々", meaning: "偶然に。ときたま。" },
+      { word: "ちまちま", meaning: "小さくまとまっているさま。こぢんまり。" },
+      { word: "にまにま", meaning: "うれしさを抑えきれず、ひとりで笑みを浮かべるさま。" },
+      { word: "さまさま", display: "様々（さまさま）", meaning: "「〜さまさま」の形で、ありがたい存在をいう語。「お客さまさま」。" },
+      { word: "あまあま", display: "甘々", meaning: "味や評価、態度がとても甘いさまをいう口語。" },
+      { word: "うまうま", meaning: "うまく。まんまと。「うまうまとだまされる」／幼児語でおいしい食べ物。" }
+    ]
+  },
+  {
+    template: "○び○び",
+    answers: [
+      { word: "のびのび", display: "伸び伸び", meaning: "のびやかで、窮屈さがないさま。" },
+      { word: "きびきび", meaning: "動作や話し方が、無駄なく歯切れのよいさま。" },
+      { word: "ちびちび", meaning: "少しずつ。「ちびちび飲む」。" },
+      { word: "たびたび", display: "度々", meaning: "何度も。しばしば。" }
+    ]
+  },
+  {
+    template: "○よ○よ",
+    answers: [
+      { word: "いよいよ", display: "愈々", meaning: "ますます。ついに。" },
+      { word: "ぷよぷよ", meaning: "柔らかく弾力があって揺れるさま。" },
+      { word: "ぴよぴよ", meaning: "ひな鳥の鳴き声。" },
+      { word: "つよつよ", display: "つよつよ", meaning: "非常に強いさまをいうネット・若者表現。" },
+      { word: "ぶよぶよ", meaning: "締まりなく、柔らかく膨れているさま。" },
+      { word: "ぼよぼよ", meaning: "締まりがなく、たるんで揺れるさま。" }
+    ]
+  },
+  {
+    template: "○れ○れ",
+    answers: [
+      { word: "すれすれ", meaning: "今にも触れそうなほど近いさま／限界ぎりぎり。" },
+      { word: "やれやれ", meaning: "安堵や疲れ、あきれた気持ちを表す語。" },
+      { word: "よれよれ", meaning: "衣服などが使い込まれて、形が崩れたさま。" },
+      { word: "われわれ", display: "我々", meaning: "自分たち。私たち。" },
+      { word: "でれでれ", meaning: "しまりなく甘えたり、鼻の下を伸ばしたりするさま。" },
+      { word: "どれどれ", meaning: "確かめようとするときに発する語。「どれどれ、見せてごらん」。" },
+      { word: "おれおれ", display: "オレオレ", meaning: "身内を装って金をだまし取る「オレオレ詐欺」の語。" },
+      { word: "これこれ", display: "此れ此れ", meaning: "内容を省略して示す語。「これこれしかじか」。" },
+      { word: "くれくれ", display: "くれくれ", meaning: "欲しい欲しいとねだるさま。ネットでは「くれくれ君」の形でも使う。" },
+      { word: "とれとれ", display: "獲れ獲れ", meaning: "とったばかりで新鮮なさま。「とれとれの魚」。" },
+      { word: "だれだれ", display: "誰々", meaning: "名前をぼかして示す語。「誰々が来た」。" },
+      { word: "ぶれぶれ", display: "ブレブレ", meaning: "写真などが手ぶれで乱れたさま／方針が定まらないさまをいう口語。" },
+      { word: "てれてれ", meaning: "恥ずかしがって、はにかむさま。" },
+      { word: "あれあれ", meaning: "驚いたり困惑したりしたときに発する語。" }
+    ]
+  },
+  {
+    template: "○ざ○ざ",
+    answers: [
+      { word: "わざわざ", display: "態々", meaning: "そのためだけに手間をかけて。" },
+      { word: "ぎざぎざ", meaning: "のこぎりの歯のように細かく刻まれたさま。" },
+      { word: "まざまざ", meaning: "目の前にあるように、ありありと。" },
+      { word: "むざむざ", meaning: "惜しげもなく。なすすべもなく。「むざむざ渡すものか」。" }
+    ]
   }
 ];
 
@@ -818,7 +920,7 @@ const SPECIAL_ROUNDS = [
     mode: "dakutenSecond",
     answers: [
       { word: "しみじみ", display: "染み染み／しみじみ", meaning: "心の底から深く感じるさま／心を開いてしんみり向き合うさま。" },
-      { word: "かみがみ", display: "神々", meaning: "多くの神。" },
+      { word: "かみがみ", display: "神々", meaning: "多くの神。八百万（やおよろず）の神々。" },
       { word: "すみずみ", display: "隅々", meaning: "あらゆる隅。細部に至るまで。" }
     ]
   },
@@ -975,7 +1077,10 @@ const WORD_ROUNDS = [
       { word: "ぎんせい", display: "銀製／吟声", meaning: "銀で作られていること／詩歌を吟じる声。" },
       { word: "がんせい", display: "眼精", meaning: "目の働き。「眼精疲労」。" },
       { word: "ねんせい", display: "粘性", meaning: "どろりと粘る性質。粘り気。" },
-      { word: "ひんせい", display: "品性", meaning: "人としての品格。「品性を疑う」。" }
+      { word: "ひんせい", display: "品性", meaning: "人としての品格。「品性を疑う」。" },
+      { word: "らんせい", display: "卵生／乱世", meaning: "卵で生まれること。「卵生動物」／秩序が乱れた世。" },
+      { word: "りんせい", display: "輪生", meaning: "茎の同じ高さに葉が輪のように付くこと。" },
+      { word: "ざんせい", display: "残生", meaning: "残りの人生。余生。" }
     ]
   },
   {
@@ -1027,7 +1132,7 @@ const WORD_ROUNDS = [
       { word: "さんぶ", display: "三部", meaning: "三つの部分・部門。「三部作」。" },
       { word: "ざんぶ", display: "ざんぶ", meaning: "水中へ勢いよく飛び込む音・さま。" },
       { word: "しんぶ", display: "深部", meaning: "奥深い部分。" },
-      { word: "ぜんぶ", display: "全部", meaning: "すべて。" },
+      { word: "ぜんぶ", display: "全部", meaning: "すべて。あるもの全体。「全部で十個」。" },
       { word: "てんぶ", display: "天部", meaning: "仏教で、天界に住む守護神たちの総称。" },
       { word: "でんぶ", display: "臀部／田麩", meaning: "しり／魚をほぐして味付けした食品（そぼろ）。" },
       { word: "なんぶ", display: "南部", meaning: "地域の南の部分。「南部鉄器」。" },
@@ -1099,13 +1204,15 @@ const WORD_ROUNDS = [
       { word: "へんしん", display: "変身／返信", meaning: "姿を変えること／返事を送ること。" },
       { word: "ほんしん", display: "本心", meaning: "本当の気持ち。" },
       { word: "まんしん", display: "慢心", meaning: "おごり高ぶること。" },
-      { word: "みんしん", display: "民心", meaning: "民衆の心。" },
+      { word: "みんしん", display: "民心", meaning: "民衆の心。世の人々の気持ち。「民心が離れる」。" },
       { word: "もんしん", display: "問診", meaning: "医師が患者に質問して状態を調べること。" },
       { word: "ざんしん", display: "斬新", meaning: "発想や手法が際立って新しいこと。" },
       { word: "めんしん", display: "免震", meaning: "建物に地震の揺れを伝わりにくくする構造。" },
       { word: "ぐんしん", display: "軍神", meaning: "戦いの神／武勲をたたえられた軍人。" },
       { word: "ふんしん", display: "分針", meaning: "時計の分を示す針。長針。" },
-      { word: "くんしん", display: "君臣", meaning: "主君と家来。" }
+      { word: "くんしん", display: "君臣", meaning: "主君と家来。" },
+      { word: "らんしん", display: "乱心", meaning: "心が乱れて正気を失うこと。" },
+      { word: "うんしん", display: "運針", meaning: "裁縫で針を運ぶこと。その手さばき。" }
     ]
   },
   {
@@ -1125,7 +1232,7 @@ const WORD_ROUNDS = [
       { word: "じんじ", display: "人事", meaning: "人の配置や処遇に関する仕事。" },
       { word: "せんじ", display: "戦時／煎じ", meaning: "戦争をしている時期／薬草などを煮出すこと。" },
       { word: "ぜんじ", display: "禅師／漸次", meaning: "高徳の僧に贈る称号／だんだんと。" },
-      { word: "だんじ", display: "男児", meaning: "男の子。" },
+      { word: "だんじ", display: "男児", meaning: "男の子。「日本男児」のように、男らしい男の意でも使う。" },
       { word: "ちんじ", display: "珍事", meaning: "めったにない、変わった出来事。" },
       { word: "てんじ", display: "展示／点字", meaning: "並べて見せること／指で読む点の文字。" },
       { word: "でんじ", display: "電磁", meaning: "電気と磁気に関すること。「電磁波」。" },
@@ -1139,7 +1246,10 @@ const WORD_ROUNDS = [
       { word: "みんじ", display: "民事", meaning: "私人どうしの法律関係に関することがら。" },
       { word: "もんじ", display: "文字", meaning: "ことばを書き表す記号。「文字通り」。" },
       { word: "りんじ", display: "臨時", meaning: "定まった時ではなく、その時かぎりのこと。" },
-      { word: "ぞんじ", display: "存じ", meaning: "知っていること。「ご存じ」「存じ上げる」。" }
+      { word: "ぞんじ", display: "存じ", meaning: "知っていること。「ご存じ」「存じ上げる」。" },
+      { word: "いんじ", display: "印字", meaning: "文字を紙などに印刷すること。" },
+      { word: "くんじ", display: "訓辞", meaning: "上の立場の人が教え諭す言葉。" },
+      { word: "すんじ", display: "寸時", meaning: "ごくわずかな時間。「寸時も休まない」。" }
     ]
   },
   {
@@ -1157,7 +1267,7 @@ const WORD_ROUNDS = [
       { word: "ばんく", display: "バンク", meaning: "銀行／傾斜した走路。「データバンク」。" },
       { word: "ぱんく", display: "パンク", meaning: "タイヤが破れること／音楽のジャンル。" },
       { word: "ひんく", display: "貧苦", meaning: "貧しさによる苦しみ。" },
-      { word: "ぴんく", display: "ピンク", meaning: "桃色。" },
+      { word: "ぴんく", display: "ピンク", meaning: "桃色。淡い赤色。" },
       { word: "みんく", display: "ミンク", meaning: "イタチ科の動物。その毛皮。" },
       { word: "むんく", display: "ムンク", meaning: "ノルウェーの画家。代表作「叫び」。" },
       { word: "もんく", display: "文句", meaning: "不平・苦情／文章中のことば。" },
@@ -1175,7 +1285,7 @@ const WORD_ROUNDS = [
       { word: "かくい", display: "各位", meaning: "大勢の相手それぞれへの敬称。「関係者各位」。" },
       { word: "かけい", display: "家計／家系", meaning: "暮らしのやりくり／一族の血筋。" },
       { word: "かこい", display: "囲い", meaning: "まわりを囲むもの。塀・柵。" },
-      { word: "かさい", display: "火災", meaning: "火事。" },
+      { word: "かさい", display: "火災", meaning: "火事。建物などが焼ける災害。" },
       { word: "かざい", display: "家財", meaning: "家にある道具や財産。" },
       { word: "かすい", display: "加水／下垂", meaning: "水を加えること／垂れ下がること。「下垂体」。" },
       { word: "かせい", display: "火星／加勢／苛性", meaning: "太陽系第4惑星／力添え／強い腐食性。「苛性ソーダ」。" },
@@ -1222,7 +1332,8 @@ const WORD_ROUNDS = [
       { word: "しろい", display: "白い", meaning: "雪のような色である。" },
       { word: "しんい", display: "真意", meaning: "本当の気持ち・意図。" },
       { word: "してい", display: "指定／師弟／子弟", meaning: "それと指し定めること／師と弟子／年若い者。" },
-      { word: "しぜい", display: "市税", meaning: "市が課す地方税。" }
+      { word: "しぜい", display: "市税", meaning: "市が課す地方税。" },
+      { word: "しえい", display: "市営／私営／射影", meaning: "市が経営すること／民間の経営／図形を面に投影した影。" }
     ]
   },
   {
@@ -1243,7 +1354,8 @@ const WORD_ROUNDS = [
       { word: "めんま", display: "メンマ", meaning: "タケノコを発酵させたラーメンの具。" },
       { word: "やんま", display: "ヤンマ", meaning: "大型のトンボの総称。「オニヤンマ」。" },
       { word: "らんま", display: "乱麻／らんま", meaning: "もつれた麻。「快刀乱麻」／『らんま1/2』でも知られる。" },
-      { word: "れんま", display: "錬磨", meaning: "きたえ磨くこと。「百戦錬磨」。" }
+      { word: "れんま", display: "錬磨", meaning: "きたえ磨くこと。「百戦錬磨」。" },
+      { word: "けんま", display: "研磨", meaning: "とぎ磨くこと。「研磨剤」。" }
     ]
   }
 ];
