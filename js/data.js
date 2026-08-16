@@ -1714,5 +1714,101 @@ const WORD_ROUNDS = [
       { word: "かおう", display: "花押", meaning: "署名の代わりに書く、図案化した記号。" },
       { word: "かんう", display: "関羽", meaning: "『三国志』の武将。義に厚い豪傑として知られる。" }
     ]
+  },
+  {
+    template: "○んとう",
+    answers: [
+      { word: "ほんとう", display: "本当／本島", meaning: "うそでないこと／その群島の中心となる島。" },
+      { word: "けんとう", display: "検討／見当／健闘", meaning: "よく調べ考えること／おおよその予想／よく戦うこと。" },
+      { word: "でんとう", display: "伝統／電灯", meaning: "古くから受け継がれてきたもの／電気の明かり。" },
+      { word: "てんとう", display: "転倒／店頭", meaning: "ひっくり返ること／店の前・店先。" },
+      { word: "せんとう", display: "先頭／戦闘／銭湯", meaning: "いちばん前／戦うこと／公衆浴場。" },
+      { word: "かんとう", display: "関東／敢闘", meaning: "東京を中心とする地方／勇敢に戦うこと。" },
+      { word: "しんとう", display: "浸透／神道", meaning: "しみ通ること／日本古来の民族信仰。" },
+      { word: "たんとう", display: "担当／短刀", meaning: "その仕事を受け持つこと／短い刀。" },
+      { word: "だんとう", display: "暖冬／弾頭", meaning: "例年より暖かい冬／ミサイルなどの先端部。" },
+      { word: "はんとう", display: "半島", meaning: "三方が海に突き出た陸地。" },
+      { word: "ばんとう", display: "番頭", meaning: "商家や旅館で使用人を束ねる人。" },
+      { word: "へんとう", display: "返答／扁桃", meaning: "返事をすること／のどの奥にあるリンパ組織。「扁桃腺」。" },
+      { word: "ふんとう", display: "奮闘", meaning: "力をふるって戦うこと。「孤軍奮闘」。" },
+      { word: "ぶんとう", display: "文頭", meaning: "文章のはじめ。" },
+      { word: "げんとう", display: "幻灯／厳冬", meaning: "スライドで絵を映す装置／寒さの厳しい冬。" },
+      { word: "きんとう", display: "均等", meaning: "差がなく、等しいこと。" },
+      { word: "さんとう", display: "三等", meaning: "三番目の等級。" },
+      { word: "じんとう", display: "陣頭", meaning: "軍勢の先頭。「陣頭指揮」。" },
+      { word: "ぜんとう", display: "前途／全島", meaning: "これから先の道のり／島全体。" },
+      { word: "なんとう", display: "南東", meaning: "南と東の中間の方角。" },
+      { word: "もんとう", display: "門徒", meaning: "その宗門の信者。特に浄土真宗の信者。" },
+      { word: "らんとう", display: "乱闘", meaning: "入り乱れて争うこと。" },
+      { word: "れんとう", display: "連投", meaning: "続けて投げること。「連投で勝つ」。" },
+      { word: "おんとう", display: "穏当", meaning: "おだやかで、無理がないこと。「穏当な処置」。" },
+      { word: "えんとう", display: "円筒", meaning: "つつ形。「円筒形」。" },
+      { word: "いんとう", display: "咽頭", meaning: "のどの、口と食道の間の部分。" },
+      { word: "あんとう", display: "暗闘", meaning: "表に出さずに争うこと。" }
+    ]
+  },
+  {
+    template: "○んかい",
+    answers: [
+      { word: "こんかい", display: "今回", meaning: "このたび。今度。" },
+      { word: "げんかい", display: "限界／玄界", meaning: "これ以上は無理という境目／九州北方の「玄界灘」。" },
+      { word: "てんかい", display: "展開／転回", meaning: "広がり進むこと／向きを変えること。" },
+      { word: "ぜんかい", display: "全快／全壊／前回", meaning: "すっかり治ること／すっかり壊れること／この前のとき。" },
+      { word: "だんかい", display: "段階／団塊", meaning: "物事の順序・程度／かたまり。「団塊の世代」。" },
+      { word: "ぶんかい", display: "分解", meaning: "一つのものを部分に分けること。" },
+      { word: "まんかい", display: "満開", meaning: "花がすっかり咲きそろうこと。" },
+      { word: "しんかい", display: "深海", meaning: "深い海。「深海魚」。" },
+      { word: "なんかい", display: "難解／南海", meaning: "わかりにくいこと／南の海。" },
+      { word: "はんかい", display: "半壊", meaning: "建物などが半分ほど壊れること。" },
+      { word: "ばんかい", display: "挽回", meaning: "失ったものを取り戻すこと。「名誉挽回」。" },
+      { word: "りんかい", display: "臨海／臨界", meaning: "海に面していること／状態が変わる境目。「臨界点」。" },
+      { word: "ほんかい", display: "本懐", meaning: "かねてからの願い。本望。「本懐を遂げる」。" },
+      { word: "えんかい", display: "宴会／沿海", meaning: "酒を酌み交わす集まり／陸に沿った海。" },
+      { word: "おんかい", display: "音階", meaning: "音を高さの順に並べたもの。" },
+      { word: "うんかい", display: "雲海", meaning: "高所から見下ろした、海のように広がる雲。" },
+      { word: "きんかい", display: "近海／金塊", meaning: "陸に近い海／金のかたまり。" },
+      { word: "さんかい", display: "散会／三回", meaning: "集まりが終わって解散すること／三度。" },
+      { word: "じんかい", display: "人海／塵芥", meaning: "多くの人。「人海戦術」／ちりやごみ。" },
+      { word: "せんかい", display: "旋回", meaning: "円を描くように回ること。" },
+      { word: "かんかい", display: "感懐", meaning: "心に感じて抱く思い。" }
+    ]
+  },
+  {
+    template: "○んけい",
+    answers: [
+      { word: "かんけい", display: "関係", meaning: "物事どうしのつながり。かかわり。" },
+      { word: "しんけい", display: "神経", meaning: "刺激を伝える体の組織／物事の感じ方。「神経が太い」。" },
+      { word: "そんけい", display: "尊敬", meaning: "相手を立派だと認め、うやまうこと。" },
+      { word: "はんけい", display: "半径", meaning: "円の中心から円周までの長さ。" },
+      { word: "へんけい", display: "変形", meaning: "形が変わること。" },
+      { word: "べんけい", display: "弁慶", meaning: "源義経に仕えたとされる僧兵、武蔵坊弁慶。「弁慶の泣き所」。" },
+      { word: "れんけい", display: "連携／連係", meaning: "互いに連絡を取り合って物事を行うこと。" },
+      { word: "ぶんけい", display: "文系／文型", meaning: "人文・社会系の学問分野／文の型。" },
+      { word: "てんけい", display: "典型／天啓", meaning: "そのものの特徴をよく表す例／天からの導き。" },
+      { word: "げんけい", display: "原形／原型／減刑", meaning: "もとの形／もとになる型／刑を軽くすること。" },
+      { word: "えんけい", display: "円形／遠景", meaning: "まるい形／遠くの景色。" },
+      { word: "きんけい", display: "謹啓／近景", meaning: "手紙の書き出しの語／手前に見える景色。" },
+      { word: "さんけい", display: "参詣／山系", meaning: "社寺にお参りすること／連なる山々のまとまり。" },
+      { word: "せんけい", display: "線形／扇形", meaning: "線のような形／おうぎの形。" },
+      { word: "ぜんけい", display: "全景／前傾", meaning: "全体の眺め／前に傾くこと。" },
+      { word: "じんけい", display: "陣形", meaning: "戦いや競技での隊の配置。" },
+      { word: "こんけい", display: "根茎", meaning: "地下を横に伸びる茎。レンコンやショウガなど。" },
+      { word: "りんけい", display: "鱗茎", meaning: "うろこ状の葉が重なった地下茎。タマネギやユリなど。" },
+      { word: "ふんけい", display: "刎頸", meaning: "首を切ること。「刎頸の交わり（生死を共にする友情）」。" },
+      { word: "いんけい", display: "陰茎", meaning: "雄の外生殖器。" }
+    ]
+  },
+  {
+    template: "さ○い",
+    answers: [
+      { word: "さむい", display: "寒い", meaning: "気温が低く感じられる／興ざめだ。「寒いギャグ」。" },
+      { word: "さかい", display: "境／堺", meaning: "物事の分かれ目・境目／大阪府の市の名。" },
+      { word: "さそい", display: "誘い", meaning: "人を誘うこと。「誘いに乗る」。" },
+      { word: "さつい", display: "殺意", meaning: "人を殺そうとする気持ち。" },
+      { word: "さとい", display: "聡い", meaning: "賢い。察しがよい。「耳が聡い」。" },
+      { word: "さんい", display: "賛意", meaning: "賛成する気持ち。「賛意を示す」。" },
+      { word: "さらい", display: "再来／浚い", meaning: "「再来年」「再来週」の再来／さらうこと。「おさらい」。" },
+      { word: "さぶい", display: "さぶい", meaning: "「寒い」のくだけた言い方。「さぶい話」。" }
+    ]
   }
 ];
