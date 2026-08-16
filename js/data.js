@@ -1139,7 +1139,8 @@ const WORD_ROUNDS = [
       { word: "さんき", display: "産気／三期", meaning: "出産が始まりそうな兆し。「産気づく」／三つに分けた期間の三番目。" },
       { word: "ぺんき", display: "ペンキ", meaning: "塗料。オランダ語 pek に由来する語。" },
       { word: "ぐんき", display: "軍記／軍旗", meaning: "合戦を描いた物語（軍記物語）／軍隊の旗。" },
-      { word: "れんき", display: "連記", meaning: "複数の名前を並べて書くこと。「連記投票」。" }
+      { word: "れんき", display: "連記", meaning: "複数の名前を並べて書くこと。「連記投票」。" },
+      { word: "くんき", display: "勲記", meaning: "勲章とともに授けられる証書。" }
     ]
   },
   {
@@ -1182,7 +1183,10 @@ const WORD_ROUNDS = [
       { word: "ひんせい", display: "品性", meaning: "人としての品格。「品性を疑う」。" },
       { word: "らんせい", display: "卵生／乱世", meaning: "卵で生まれること。「卵生動物」／秩序が乱れた世。" },
       { word: "りんせい", display: "輪生", meaning: "茎の同じ高さに葉が輪のように付くこと。" },
-      { word: "ざんせい", display: "残生", meaning: "残りの人生。余生。" }
+      { word: "ざんせい", display: "残生", meaning: "残りの人生。余生。" },
+      { word: "べんせい", display: "鞭声", meaning: "馬をむちうつ音。頼山陽の詩句「鞭声粛々（べんせいしゅくしゅく）夜河を渡る」。" },
+      { word: "もんせい", display: "門生", meaning: "門下生。弟子。" },
+      { word: "でんせい", display: "伝声", meaning: "声を伝えること。「伝声管」。" }
     ]
   },
   {
@@ -1216,7 +1220,9 @@ const WORD_ROUNDS = [
       { word: "りんどう", display: "竜胆／林道", meaning: "秋に紫の花を咲かせる草／山林を通る道。" },
       { word: "れんどう", display: "連動", meaning: "一方の動きに合わせて他方も動くこと。" },
       { word: "ずんどう", display: "寸胴", meaning: "上から下まで太さが同じで、くびれのない形。「寸胴鍋」。" },
-      { word: "おんどう", display: "音頭（おんどう）", meaning: "雅楽で、各楽器の首席奏者。一般には「音頭（おんど）」と読み、大勢の先頭で歌い出すこと・その歌。" }
+      { word: "おんどう", display: "音頭（おんどう）", meaning: "雅楽で、各楽器の首席奏者。一般には「音頭（おんど）」と読み、大勢の先頭で歌い出すこと・その歌。" },
+      { word: "がんどう", display: "龕灯", meaning: "前方だけを照らす携帯用の照明。「強盗提灯（がんどうぢょうちん）」。" },
+      { word: "ぶんどう", display: "分度", meaning: "角度を測ること。「分度器」。" }
     ]
   },
   {
@@ -1245,7 +1251,9 @@ const WORD_ROUNDS = [
       { word: "みんぶ", display: "民部", meaning: "律令制の役所「民部省」。戸籍や租税を扱った。" },
       { word: "もんぶ", display: "文部", meaning: "教育行政を担う役所。「文部科学省」。" },
       { word: "らんぶ", display: "乱舞", meaning: "入り乱れて舞うこと。" },
-      { word: "りんぶ", display: "輪舞", meaning: "輪になって踊る舞。ロンド。" }
+      { word: "りんぶ", display: "輪舞", meaning: "輪になって踊る舞。ロンド。" },
+      { word: "せんぶ", display: "宣撫", meaning: "占領地などで、方針を知らせて人心を安定させること。「宣撫工作」。" },
+      { word: "たんぶ", display: "反歩", meaning: "田畑の面積の単位。一反はおよそ十アール。" }
     ]
   },
   {
@@ -1277,7 +1285,9 @@ const WORD_ROUNDS = [
       { word: "ほんたい", display: "本体", meaning: "中心となる部分。" },
       { word: "めんたい", display: "明太", meaning: "スケトウダラ。「明太子」。" },
       { word: "れんたい", display: "連帯／連隊", meaning: "共に責任を負うこと／軍の編制単位。" },
-      { word: "がんたい", display: "眼帯", meaning: "目を保護するために当てる布や器具。" }
+      { word: "がんたい", display: "眼帯", meaning: "目を保護するために当てる布や器具。" },
+      { word: "そんたい", display: "尊体", meaning: "相手の体を敬っていう語／仏像などの敬称。" },
+      { word: "さんたい", display: "三体", meaning: "三つの体・書体。書道の楷書・行書・草書／天体力学の三体問題。" }
     ]
   },
   {
@@ -1314,7 +1324,8 @@ const WORD_ROUNDS = [
       { word: "ふんしん", display: "分針", meaning: "時計の分を示す針。長針。" },
       { word: "くんしん", display: "君臣", meaning: "主君と家来。" },
       { word: "らんしん", display: "乱心", meaning: "心が乱れて正気を失うこと。" },
-      { word: "うんしん", display: "運針", meaning: "裁縫で針を運ぶこと。その手さばき。" }
+      { word: "うんしん", display: "運針", meaning: "裁縫で針を運ぶこと。その手さばき。" },
+      { word: "いんしん", display: "音信（いんしん）", meaning: "たより。連絡。「おんしん」とも読む。" }
     ]
   },
   {
@@ -1351,7 +1362,12 @@ const WORD_ROUNDS = [
       { word: "ぞんじ", display: "存じ", meaning: "知っていること。「ご存じ」「存じ上げる」。" },
       { word: "いんじ", display: "印字", meaning: "文字を紙などに印刷すること。" },
       { word: "くんじ", display: "訓辞", meaning: "上の立場の人が教え諭す言葉。" },
-      { word: "すんじ", display: "寸時", meaning: "ごくわずかな時間。「寸時も休まない」。" }
+      { word: "すんじ", display: "寸時", meaning: "ごくわずかな時間。「寸時も休まない」。" },
+      { word: "とんじ", display: "豚児", meaning: "自分の息子をへりくだっていう語。" },
+      { word: "そんじ", display: "損じ", meaning: "やりそこなうこと。「書き損じ」。" },
+      { word: "れんじ", display: "連子", meaning: "細い木や竹を等間隔に並べた格子。「連子窓」。" },
+      { word: "ぶんじ", display: "文治", meaning: "鎌倉初期の元号（1185〜1190）。" },
+      { word: "がんじ", display: "元治", meaning: "江戸末期の元号（1864〜1865）。" }
     ]
   },
   {
@@ -1376,7 +1392,8 @@ const WORD_ROUNDS = [
       { word: "よんく", display: "四駆", meaning: "四輪駆動。「ミニ四駆」。" },
       { word: "らんく", display: "ランク", meaning: "順位。等級。" },
       { word: "りんく", display: "リンク", meaning: "つながり・関連づけ／スケート場。" },
-      { word: "れんく", display: "連句", meaning: "複数人が句を付け合っていく形式の詩。" }
+      { word: "れんく", display: "連句", meaning: "複数人が句を付け合っていく形式の詩。" },
+      { word: "かんく", display: "艱苦", meaning: "苦しみ悩むこと。「艱難辛苦」。" }
     ]
   },
   {
@@ -1408,7 +1425,10 @@ const WORD_ROUNDS = [
       { word: "かわい", display: "河合／可愛", meaning: "日本に多い姓／「かわいい」の古い形。「可愛い（かわいい）」。" },
       { word: "かんい", display: "簡易／官位", meaning: "手軽で簡単なこと／官職と位階。" },
       { word: "かまい", display: "構い", meaning: "かかわること。世話をすること。「お構いなく」「構いなし」／江戸時代には、立ち入りを禁じる追放刑もいった。" },
-      { word: "かばい", display: "庇い", meaning: "かばうこと。多く「かばい立て」「かばい手」の形で使う。" }
+      { word: "かばい", display: "庇い", meaning: "かばうこと。多く「かばい立て」「かばい手」の形で使う。" },
+      { word: "かえい", display: "嘉永", meaning: "江戸末期の元号（1848〜1854）。ペリー来航の頃。" },
+      { word: "かげい", display: "家芸", meaning: "その家に代々伝わる得意な芸。「お家芸」。" },
+      { word: "かかい", display: "歌会", meaning: "人々が集まって和歌を詠み、披露する会。" }
     ]
   },
   {
@@ -1437,7 +1457,12 @@ const WORD_ROUNDS = [
       { word: "しんい", display: "真意", meaning: "本当の気持ち・意図。" },
       { word: "してい", display: "指定／師弟／子弟", meaning: "それと指し定めること／師と弟子／年若い者。" },
       { word: "しぜい", display: "市税", meaning: "市が課す地方税。" },
-      { word: "しえい", display: "市営／私営／射影", meaning: "市が経営すること／民間の経営／図形を面に投影した影。" }
+      { word: "しえい", display: "市営／私営／射影", meaning: "市が経営すること／民間の経営／図形を面に投影した影。" },
+      { word: "しすい", display: "止水／死水", meaning: "静止して動かない水。「明鏡止水」／臨終の人の口を潤す水。" },
+      { word: "しずい", display: "歯髄", meaning: "歯の内部にある神経や血管の組織。俗にいう歯の神経。" },
+      { word: "しゆい", display: "思惟", meaning: "深く考えること。仏教語。「半跏思惟像（はんかしゆいぞう）」。" },
+      { word: "しわい", display: "吝い", meaning: "けちである。金離れが悪い。" },
+      { word: "しらい", display: "白井", meaning: "日本に多い姓。体操の「シライ」（白井健三の技）でも知られる。" }
     ]
   },
   {
@@ -1459,7 +1484,13 @@ const WORD_ROUNDS = [
       { word: "やんま", display: "ヤンマ", meaning: "大型のトンボの総称。「オニヤンマ」。" },
       { word: "らんま", display: "乱麻／らんま", meaning: "もつれた麻。「快刀乱麻」／『らんま1/2』でも知られる。" },
       { word: "れんま", display: "錬磨", meaning: "きたえ磨くこと。「百戦錬磨」。" },
-      { word: "けんま", display: "研磨", meaning: "とぎ磨くこと。「研磨剤」。" }
+      { word: "けんま", display: "研磨", meaning: "とぎ磨くこと。「研磨剤」。" },
+      { word: "かんま", display: "カンマ", meaning: "区切りに使う記号「,」。「カンマ区切り（CSV）」。「コンマ」とも。" },
+      { word: "おんま", display: "お馬", meaning: "馬をいう幼児語・親しみを込めた言い方。「お馬さん」。" },
+      { word: "いんま", display: "淫魔", meaning: "人を色情で惑わすとされる魔物。サキュバス・インキュバスの類。" },
+      { word: "しんま", display: "新馬", meaning: "競馬で、まだ一度も出走していない馬。「新馬戦」。" },
+      { word: "げんま", display: "減摩／幻魔", meaning: "すり減りや摩擦を減らすこと。「減摩油」／人を惑わす魔物。" },
+      { word: "きんま", display: "蒟醤／キンマ", meaning: "漆器に文様を彫って色漆を埋める技法。香川の伝統工芸／その名の由来となった東南アジアの植物。" }
     ]
   },
   {
@@ -1483,7 +1514,9 @@ const WORD_ROUNDS = [
       { word: "じんご", display: "人後", meaning: "他人のうしろ。「人後に落ちない（人にひけをとらない）」。" },
       { word: "ちんご", display: "鎮護", meaning: "乱れを鎮め、国などを守ること。「鎮護国家」。" },
       { word: "あんご", display: "安居", meaning: "僧が一定期間こもって修行すること。" },
-      { word: "びんご", display: "ビンゴ", meaning: "数字を並べて当てるゲーム／「まさにそれだ」と言い当てたときの語。" }
+      { word: "びんご", display: "ビンゴ", meaning: "数字を並べて当てるゲーム／「まさにそれだ」と言い当てたときの語。" },
+      { word: "けんご", display: "堅固", meaning: "つくりや守りががんじょうで、しっかりしていること。「堅固な守り」。" },
+      { word: "なんご", display: "喃語", meaning: "乳児が発する、意味をなさない声。「あーうー」など。" }
     ]
   },
   {
@@ -1520,7 +1553,166 @@ const WORD_ROUNDS = [
       { word: "ほんし", display: "本誌／本紙", meaning: "この雑誌／この新聞。" },
       { word: "めんし", display: "綿糸", meaning: "綿からつくった糸。" },
       { word: "らんし", display: "乱視／卵子", meaning: "像がぶれて見える目の状態／雌の生殖細胞。" },
-      { word: "ろんし", display: "論旨", meaning: "議論の趣旨。「論旨明快」。" }
+      { word: "ろんし", display: "論旨", meaning: "議論の趣旨。「論旨明快」。" },
+      { word: "あんし", display: "暗視", meaning: "暗い所で見ること。「暗視スコープ」。" },
+      { word: "りんし", display: "臨死", meaning: "死に臨むこと。「臨死体験」。" }
+    ]
+  },
+  {
+    template: "○んかん",
+    answers: [
+      { word: "いんかん", display: "印鑑", meaning: "はんこ。また、あらかじめ届け出た印影。" },
+      { word: "げんかん", display: "玄関", meaning: "建物の正面の出入り口。" },
+      { word: "どんかん", display: "鈍感", meaning: "感じ方がにぶいこと。" },
+      { word: "びんかん", display: "敏感", meaning: "感じ方がするどいこと。" },
+      { word: "みんかん", display: "民間", meaning: "役所や軍でない、一般の社会。" },
+      { word: "へんかん", display: "変換／返還", meaning: "別の形に変えること／もとの持ち主に返すこと。" },
+      { word: "ねんかん", display: "年間／年鑑", meaning: "一年の間／一年の出来事をまとめた本。" },
+      { word: "なんかん", display: "難関", meaning: "通り抜けるのが難しい所・段階。「難関を突破する」。" },
+      { word: "せんかん", display: "戦艦", meaning: "大砲と装甲を備えた大型の軍艦。" },
+      { word: "ぐんかん", display: "軍艦", meaning: "戦闘のための船。" },
+      { word: "てんかん", display: "転換／癲癇", meaning: "方向や方針を変えること／発作を伴う脳の病気。" },
+      { word: "しんかん", display: "新刊／震撼／森閑", meaning: "新しく出た本／恐れで震えること／ひっそり静まったさま。" },
+      { word: "はんかん", display: "反感", meaning: "反発する気持ち。「反感を買う」。" },
+      { word: "らんかん", display: "欄干", meaning: "橋や縁側のふちに設けた手すり。" },
+      { word: "りんかん", display: "林間", meaning: "林の中。「林間学校」。" },
+      { word: "きんかん", display: "金柑／近刊", meaning: "小さな柑橘の実／近く刊行されること。" },
+      { word: "さんかん", display: "参観", meaning: "その場に行って見ること。「授業参観」。" },
+      { word: "こんかん", display: "根幹", meaning: "物事の根本。「制度の根幹」。" },
+      { word: "ぶんかん", display: "文官", meaning: "軍人でない官吏。" },
+      { word: "ほんかん", display: "本館／本官", meaning: "中心となる建物／官吏が自分をいう語。" },
+      { word: "ぜんかん", display: "全巻／全館", meaning: "その本すべての巻／建物全体。" },
+      { word: "にんかん", display: "任官", meaning: "官職に任じられること。" },
+      { word: "ばんかん", display: "万感", meaning: "胸にわき起こるさまざまな思い。「万感の思い」。" },
+      { word: "おんかん", display: "音感", meaning: "音の高さや調子を聞き分ける感覚。「絶対音感」。" },
+      { word: "じんかん", display: "人間（じんかん）", meaning: "世の中。世間。「人間万事塞翁が馬」。" },
+      { word: "ぽんかん", display: "ポンカン", meaning: "インド原産の甘い柑橘。" },
+      { word: "あんかん", display: "安閑", meaning: "のんきに構えているさま。「安閑としていられない」。" },
+      { word: "れんかん", display: "連関", meaning: "互いに関わり合うこと。関連。" },
+      { word: "たんかん", display: "短観／単管", meaning: "日銀の企業短期経済観測調査／足場に使う鋼管。" }
+    ]
+  },
+  {
+    template: "○んこう",
+    answers: [
+      { word: "ぎんこう", display: "銀行", meaning: "お金を預かり、貸し出す金融機関。" },
+      { word: "けんこう", display: "健康", meaning: "心身に悪いところがなく、すこやかなこと。" },
+      { word: "かんこう", display: "観光／刊行／慣行", meaning: "名所を見て回ること／本を出すこと／習慣として行われていること。" },
+      { word: "げんこう", display: "原稿／現行／言行", meaning: "印刷などのもとになる文章／今行われていること／言うことと行い。" },
+      { word: "じんこう", display: "人口／人工", meaning: "人の数／人の手で作ること。" },
+      { word: "しんこう", display: "信仰／進行／振興", meaning: "神仏を信じること／進んでいくこと／盛んにすること。" },
+      { word: "さんこう", display: "参考", meaning: "考えるときの手がかりにすること。" },
+      { word: "せんこう", display: "専攻／線香／選考", meaning: "専門に研究すること／仏前で焚く香／選び定めること。" },
+      { word: "てんこう", display: "天候／転校", meaning: "空模様／別の学校へ移ること。" },
+      { word: "はんこう", display: "反抗／犯行", meaning: "逆らうこと／罪を犯すこと。" },
+      { word: "へんこう", display: "変更／偏光", meaning: "変えること／振動方向がかたよった光。" },
+      { word: "どんこう", display: "鈍行", meaning: "各駅に停まる列車。普通列車。" },
+      { word: "なんこう", display: "難航／軟膏", meaning: "物事がはかどらないこと／塗り薬。" },
+      { word: "あんこう", display: "鮟鱇", meaning: "大きな口をもつ深海性の魚。鍋物にする。" },
+      { word: "おんこう", display: "温厚", meaning: "おだやかで、思いやりがあること。" },
+      { word: "がんこう", display: "眼光", meaning: "目の光。「眼光紙背に徹する」。" },
+      { word: "きんこう", display: "均衡／近郊", meaning: "つり合いがとれていること／都市の周辺。" },
+      { word: "ぐんこう", display: "軍港／軍功", meaning: "軍艦の基地となる港／戦いでの手柄。" },
+      { word: "こんこう", display: "混交", meaning: "異なるものが入りまじること。「玉石混交」。" },
+      { word: "ざんこう", display: "残光", meaning: "日が沈んだあとに残る光。" },
+      { word: "たんこう", display: "炭鉱／単行", meaning: "石炭を掘る鉱山／単独で行うこと。「単行本」。" },
+      { word: "だんこう", display: "断行／団交", meaning: "思い切って行うこと／労働組合の団体交渉。" },
+      { word: "でんこう", display: "電光", meaning: "稲妻。「電光石火」。" },
+      { word: "とんこう", display: "敦煌", meaning: "シルクロードの要地。莫高窟で知られる中国の都市。" },
+      { word: "ねんこう", display: "年功", meaning: "長年の勤めや経験。「年功序列」。" },
+      { word: "ひんこう", display: "品行", meaning: "日ごろの行い。「品行方正」。" },
+      { word: "ぶんこう", display: "分光／分校", meaning: "光を波長ごとに分けること／本校から分かれた学校。" },
+      { word: "ほんこう", display: "本校", meaning: "中心となる学校。この学校。" },
+      { word: "れんこう", display: "連行", meaning: "警察などが強制的に連れて行くこと。" },
+      { word: "ろんこう", display: "論功", meaning: "手柄を評価すること。「論功行賞」。" },
+      { word: "ばんこう", display: "蛮行", meaning: "野蛮な行い。" },
+      { word: "いんこう", display: "咽喉", meaning: "のど。「耳鼻咽喉科」。" },
+      { word: "うんこう", display: "運行／運航", meaning: "列車などが決まった道を進むこと／船や航空機の運転。" },
+      { word: "ぜんこう", display: "善行／前号", meaning: "よい行い／雑誌などの前の号。" },
+      { word: "ちんこう", display: "沈降", meaning: "沈んで下がること。「沈降作用」。" }
+    ]
+  },
+  {
+    template: "あ○い",
+    answers: [
+      { word: "あおい", display: "青い／葵", meaning: "空や海のような色である／アオイ科の植物。徳川家の葵の紋。" },
+      { word: "あかい", display: "赤い", meaning: "血のような色である。" },
+      { word: "あくい", display: "悪意", meaning: "他人を害しようとする気持ち。" },
+      { word: "あさい", display: "浅い", meaning: "深さが少ない／程度が小さい。" },
+      { word: "あたい", display: "値／価", meaning: "数値。ねうち。「値する」。" },
+      { word: "あつい", display: "暑い／厚い／熱い", meaning: "気温が高い／厚みがある／温度が高い。" },
+      { word: "あまい", display: "甘い", meaning: "砂糖のような味である／基準がゆるい。" },
+      { word: "あらい", display: "荒い／粗い／洗い", meaning: "勢いが激しい／きめが大きい／洗うこと。" },
+      { word: "あるい", display: "或い", meaning: "「或いは」の形で、もしかすると・または、の意。" },
+      { word: "あわい", display: "淡い", meaning: "色や味、感情などが薄い。「淡い期待」。" },
+      { word: "あんい", display: "安易", meaning: "たやすいこと／深く考えず、いいかげんなこと。" },
+      { word: "あれい", display: "亜鈴", meaning: "筋力トレーニングに使うおもり。ダンベル。" }
+    ]
+  },
+  {
+    template: "○んそう",
+    answers: [
+      { word: "えんそう", display: "演奏", meaning: "楽器で音楽を奏でること。" },
+      { word: "かんそう", display: "感想／乾燥／完走", meaning: "心に感じたこと／水分がなくなること／最後まで走りきること。" },
+      { word: "せんそう", display: "戦争／船倉", meaning: "国と国とが武力で争うこと／船の荷を積む区画。" },
+      { word: "ばんそう", display: "伴奏／伴走", meaning: "主役の演奏に合わせて奏でること／走者に付き添って走ること。" },
+      { word: "へんそう", display: "変装", meaning: "別人に見えるよう身なりを変えること。" },
+      { word: "ほんそう", display: "奔走", meaning: "物事がうまく運ぶよう、あちこち駆け回ること。" },
+      { word: "げんそう", display: "幻想", meaning: "現実にはない、とりとめのない思い。まぼろし。" },
+      { word: "ぐんそう", display: "軍曹", meaning: "旧陸軍の下士官の階級の一つ。" },
+      { word: "けんそう", display: "喧噪", meaning: "人声や物音でやかましいこと。" },
+      { word: "ふんそう", display: "紛争／扮装", meaning: "もめごと。争い／役柄に合わせて身なりを整えること。" },
+      { word: "らんそう", display: "卵巣", meaning: "卵をつくる雌の生殖器官。" },
+      { word: "にんそう", display: "人相", meaning: "顔つき。「人相が悪い」。" },
+      { word: "とんそう", display: "遁走", meaning: "逃げ去ること。「遁走曲（フーガ）」。" },
+      { word: "でんそう", display: "伝送／電送", meaning: "次々に伝え送ること／電気信号で画像などを送ること。" },
+      { word: "さんそう", display: "山荘", meaning: "山中に建てた別荘。" },
+      { word: "しんそう", display: "真相／深層／新装", meaning: "物事の本当の姿／奥深い層／新しくよそおうこと。" },
+      { word: "だんそう", display: "断層／男装／弾倉", meaning: "地層のずれ／女性が男の身なりをすること／弾を入れる部分。" },
+      { word: "てんそう", display: "転送", meaning: "届いたものを、さらに他へ送ること。" },
+      { word: "ぜんそう", display: "前奏", meaning: "曲の主部の前に演奏される部分。「前奏曲」。" },
+      { word: "れんそう", display: "連想", meaning: "あることから、関係のある別のことを思い浮かべること。" },
+      { word: "ろんそう", display: "論争", meaning: "意見を戦わせること。" },
+      { word: "うんそう", display: "運送", meaning: "荷物を運び送ること。" },
+      { word: "たんそう", display: "炭層", meaning: "石炭を含む地層。" },
+      { word: "いんそう", display: "印相", meaning: "仏像が手指で示す形。印（いん）を結ぶ形。" },
+      { word: "がんそう", display: "含嗽", meaning: "うがいをすること。「含嗽薬」。" }
+    ]
+  },
+  {
+    template: "た○い",
+    answers: [
+      { word: "たかい", display: "高い", meaning: "位置や程度、値段が上である。" },
+      { word: "たがい", display: "互い", meaning: "両方がそれぞれに。「お互いさま」。" },
+      { word: "たらい", display: "盥", meaning: "水を入れて洗い物などに使う浅い容器。「たらい回し」。" },
+      { word: "たるい", display: "たるい", meaning: "だるい。まどろっこしい。「甘ったるい」の形でも使う。" },
+      { word: "たんい", display: "単位", meaning: "量をはかる基準／学習の履修量。" },
+      { word: "ただい", display: "多大", meaning: "きわめて多く大きいこと。「多大な迷惑」。" },
+      { word: "たわい", display: "他愛", meaning: "「たわいない」の形で、とりとめがない・手ごたえがない意。" },
+      { word: "たあい", display: "他愛（たあい）", meaning: "「たあいない」の形で使う、「たわいない」と同じ語。" },
+      { word: "たぜい", display: "多勢", meaning: "人数が多いこと。「多勢に無勢」。" },
+      { word: "たせい", display: "他生／多生", meaning: "仏教で、この世以外の生。「他生の縁」。" },
+      { word: "たとい", display: "仮令", meaning: "「たとえ」の古い言い方。「たとい〜でも」。" },
+      { word: "たちい", display: "立ち居", meaning: "立ったり座ったりする動作。「立ち居振る舞い」。" }
+    ]
+  },
+  {
+    template: "か○う",
+    answers: [
+      { word: "かこう", display: "加工／下降／河口", meaning: "手を加えて作りかえること／下がること／川が海に注ぐ所。" },
+      { word: "かとう", display: "加藤／下等", meaning: "日本に多い姓／程度が低いこと。" },
+      { word: "かどう", display: "華道／稼働／可動", meaning: "生け花の道／機械や人が働くこと／動かせること。" },
+      { word: "かのう", display: "可能／化膿", meaning: "できること／傷が膿むこと。" },
+      { word: "かそう", display: "仮装／仮想／火葬", meaning: "別のものに見せかけること／仮に想定すること／遺体を焼いて葬ること。" },
+      { word: "かよう", display: "歌謡／火曜／通う", meaning: "節をつけて歌う歌／週の三番目の曜日／行き来すること。" },
+      { word: "かろう", display: "過労／家老", meaning: "働きすぎて疲れること／大名家で家臣を統率した重臣。" },
+      { word: "かくう", display: "架空", meaning: "事実でなく、想像で作ったこと。「架空の人物」。" },
+      { word: "かなう", display: "叶う／適う", meaning: "願いが実現する／条件にあてはまる。" },
+      { word: "かまう", display: "構う", meaning: "気にかける。世話をする。「構わない」。" },
+      { word: "かごう", display: "化合", meaning: "二種以上の元素が結びついて別の物質になること。" },
+      { word: "かふう", display: "家風", meaning: "その家に伝わる習わしや気風。" },
+      { word: "かおう", display: "花押", meaning: "署名の代わりに書く、図案化した記号。" },
+      { word: "かんう", display: "関羽", meaning: "『三国志』の武将。義に厚い豪傑として知られる。" }
     ]
   }
 ];
