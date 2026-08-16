@@ -1970,13 +1970,12 @@ const WORD_ROUNDS = [
     answers: [
       { word: "たんぼ", display: "田んぼ", meaning: "稲を作る水田。" },
       { word: "とんぼ", display: "蜻蛉", meaning: "細長い体と四枚の羽を持つ昆虫。" },
-      { word: "しんぼ", display: "辛抱", meaning: "つらさをこらえること。「辛抱強い」。" },
       { word: "なんぼ", display: "なんぼ", meaning: "関西・西日本で「いくら」「どれほど」。「なんぼのもんじゃ」。" },
       { word: "まんぼ", display: "マンボ", meaning: "キューバ生まれの陽気な音楽とダンス。" },
       { word: "こんぼ", display: "コンボ", meaning: "少人数の演奏編成／格闘ゲームなどの連続技。" },
-      { word: "けんぼ", display: "健忘", meaning: "物忘れがひどいこと。「健忘症」。" },
       { word: "げんぼ", display: "原簿", meaning: "もとになる帳簿。" },
-      { word: "ぜんぼ", display: "全貌", meaning: "全体のありさま。「事件の全貌」。" }
+      { word: "ぶんぼ", display: "分母", meaning: "分数で、横線の下に書く数。" },
+      { word: "けんぼ", display: "賢母", meaning: "かしこい母。「良妻賢母」。" }
     ]
   },
   {
@@ -1987,7 +1986,6 @@ const WORD_ROUNDS = [
       { word: "ぶんぽう", display: "文法", meaning: "ことばの決まり・組み立てのきまり。" },
       { word: "でんぽう", display: "電報", meaning: "電信を使って文を送る通信。「祝電」。" },
       { word: "みんぽう", display: "民法／民放", meaning: "私人間の権利義務を定めた法律／民間放送。" },
-      { word: "らんぽう", display: "乱暴", meaning: "荒々しくふるまうこと。" },
       { word: "れんぽう", display: "連邦／連峰", meaning: "複数の州や国が結びついた国家／連なる山々。" },
       { word: "ろんぽう", display: "論法", meaning: "議論の進め方。「三段論法」。" },
       { word: "かんぽう", display: "漢方／官報", meaning: "中国由来の医術／政府が出す公示の文書。" },
@@ -2202,6 +2200,58 @@ const WORD_ROUNDS = [
       { word: "きんりょく", display: "筋力", meaning: "筋肉の出す力。「筋力トレーニング」。" },
       { word: "しんりょく", display: "新緑", meaning: "初夏の、若葉のみずみずしい緑。" },
       { word: "たんりょく", display: "胆力", meaning: "物事に動じない気力。「胆力がある」。" }
+    ]
+  },
+  {
+    template: "○んぼう",
+    answers: [
+      { word: "らんぼう", display: "乱暴", meaning: "荒々しくふるまうこと。" },
+      { word: "しんぼう", display: "辛抱／心棒", meaning: "つらさをこらえること。「辛抱強い」／回転の中心となる軸。" },
+      { word: "てんぼう", display: "展望", meaning: "広く見わたすこと。将来の見通し。「展望台」。" },
+      { word: "がんぼう", display: "願望", meaning: "こうあってほしいと願うこと。" },
+      { word: "かんぼう", display: "官房／感冒", meaning: "内閣官房などの部局／かぜ。" },
+      { word: "こんぼう", display: "棍棒", meaning: "打ちたたくのに使う太い棒。" },
+      { word: "さんぼう", display: "参謀／三宝", meaning: "作戦を立てる将校／仏・法・僧の三つの宝。" },
+      { word: "じんぼう", display: "人望", meaning: "人々から寄せられる信頼と敬意。「人望が厚い」。" },
+      { word: "せんぼう", display: "羨望", meaning: "うらやましく思うこと。「羨望の的」。" },
+      { word: "ぜんぼう", display: "全貌", meaning: "全体のありさま。「事件の全貌」。" },
+      { word: "けんぼう", display: "健忘／権謀", meaning: "物忘れがひどいこと。「健忘症」／たくみなはかりごと。「権謀術数」。" },
+      { word: "ほんぼう", display: "本俸", meaning: "手当を除いた基本の給料。" }
+    ]
+  },
+  {
+    template: "○んばん",
+    answers: [
+      { word: "かんばん", display: "看板", meaning: "店名や商品を示す掲示。「看板娘」。" },
+      { word: "けんばん", display: "鍵盤", meaning: "ピアノなどの、指で押す部分。" },
+      { word: "ほんばん", display: "本番", meaning: "練習でない、実際の場面。" },
+      { word: "こんばん", display: "今晩", meaning: "きょうの夜。「こんばんは」。" },
+      { word: "なんばん", display: "南蛮", meaning: "室町・江戸期に南方から来た外国。「南蛮漬け」。" },
+      { word: "えんばん", display: "円盤", meaning: "平たい円形の物。「円盤投げ」。" },
+      { word: "うんばん", display: "運搬", meaning: "物を運ぶこと。" },
+      { word: "せんばん", display: "旋盤／千万", meaning: "材料を回して削る工作機械／数の千万。「笑止千万」。" },
+      { word: "ぜんばん", display: "全般", meaning: "物事の全体。「全般にわたる」。" },
+      { word: "さんばん", display: "三番", meaning: "三つ目。「三番手」。" },
+      { word: "ぎんばん", display: "銀盤", meaning: "スケートリンクの氷の面。" },
+      { word: "げんばん", display: "原盤／原板", meaning: "複製のもとになる盤／写真の元になる板。" },
+      { word: "りんばん", display: "輪番", meaning: "順ぐりに交代すること。「輪番制」。" },
+      { word: "いんばん", display: "印判", meaning: "はんこ。印形（いんぎょう）。" },
+      { word: "おんばん", display: "音盤", meaning: "レコード盤。" }
+    ]
+  },
+  {
+    template: "○んぱん",
+    answers: [
+      { word: "あんぱん", display: "あんパン", meaning: "あんこの入ったパン。木村屋が発祥とされる。" },
+      { word: "しんぱん", display: "審判／新版／侵犯", meaning: "勝敗を判定する人／新しく出した版／他国の領域をおかすこと。" },
+      { word: "かんぱん", display: "甲板／乾板", meaning: "船の上面の床／写真用の感光板。" },
+      { word: "せんぱん", display: "戦犯／先般", meaning: "戦争犯罪人／さきごろ。" },
+      { word: "ぜんぱん", display: "全般", meaning: "物事の全体にわたること。" },
+      { word: "だんぱん", display: "談判", meaning: "かけ合って話をつけること。「直談判」。" },
+      { word: "たんぱん", display: "短パン", meaning: "丈の短いズボン。" },
+      { word: "てんぱん", display: "天板", meaning: "机やオーブンの、上面の板。" },
+      { word: "ふんぱん", display: "噴飯", meaning: "おかしくてこらえきれないこと。「噴飯もの」。" },
+      { word: "まんぱん", display: "満帆", meaning: "帆いっぱいに風を受けること。「順風満帆」。" }
     ]
   }
 ];
