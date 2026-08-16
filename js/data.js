@@ -2054,5 +2054,90 @@ const WORD_ROUNDS = [
       { word: "しんけつ", display: "心血", meaning: "心と力のすべて。「心血を注ぐ」。" },
       { word: "さんけつ", display: "酸欠／三傑", meaning: "酸素が不足すること／その分野でとくに優れた三人。" }
     ]
+  },
+  {
+    template: "○んぜん",
+    answers: [
+      { word: "あんぜん", display: "安全", meaning: "危険がないこと。" },
+      { word: "かんぜん", display: "完全／敢然", meaning: "欠けたところがないこと／思い切って行うさま。" },
+      { word: "だんぜん", display: "断然", meaning: "きっぱりと／他より際立って。「断然おすすめ」。" },
+      { word: "ばんぜん", display: "万全", meaning: "少しも手抜かりがないこと。「万全を期す」。" },
+      { word: "しんぜん", display: "親善／神前", meaning: "国や団体が親しく交わること／神の前。「神前結婚」。" },
+      { word: "せんぜん", display: "戦前", meaning: "戦争の前。特に第二次世界大戦より前。" },
+      { word: "ぜんぜん", display: "全然", meaning: "まったく。否定を伴うほか、口語では強い肯定にも使う。" },
+      { word: "もんぜん", display: "門前", meaning: "門の前。「門前払い」「門前市をなす」。" },
+      { word: "まんぜん", display: "漫然", meaning: "とりとめもなく、いいかげんなさま。「漫然と過ごす」。" },
+      { word: "はんぜん", display: "判然", meaning: "はっきりしているさま。「判然としない」。" },
+      { word: "げんぜん", display: "厳然", meaning: "おごそかで、動かしがたいさま。「厳然たる事実」。" },
+      { word: "がんぜん", display: "眼前", meaning: "目の前。「眼前に広がる」。" },
+      { word: "こんぜん", display: "渾然", meaning: "溶け合って一つになっているさま。「渾然一体」。" },
+      { word: "さんぜん", display: "燦然／三千", meaning: "きらきらと輝くさま。「燦然と輝く」／三千。" },
+      { word: "たんぜん", display: "丹前", meaning: "綿入れの厚い着物。どてら。" },
+      { word: "りんぜん", display: "凛然", meaning: "りりしく引き締まっているさま。" },
+      { word: "うんぜん", display: "雲仙", meaning: "長崎県の火山と温泉地。「雲仙普賢岳」。" },
+      { word: "ほんぜん", display: "本然／翻然", meaning: "生まれつきそなわっていること／急に心を改めるさま。" }
+    ]
+  },
+  {
+    template: "○んかく",
+    answers: [
+      { word: "かんかく", display: "感覚／間隔", meaning: "感じ取るはたらき／あいだのへだたり。" },
+      { word: "さんかく", display: "三角／参画", meaning: "三つの角のある形／計画に加わること。" },
+      { word: "じんかく", display: "人格", meaning: "その人の人間としてのあり方・品格。" },
+      { word: "ほんかく", display: "本格", meaning: "本来のあり方。「本格的」。" },
+      { word: "げんかく", display: "幻覚／厳格", meaning: "実在しないものが見えること／規律が厳しいこと。" },
+      { word: "りんかく", display: "輪郭", meaning: "物の外形を示す線。「輪郭がぼやける」。" },
+      { word: "へんかく", display: "変革／変格", meaning: "根本から変えること／基本の型からはずれること。" },
+      { word: "ひんかく", display: "品格", meaning: "そのものにそなわる気高さ。品位。" },
+      { word: "えんかく", display: "沿革／遠隔", meaning: "移り変わってきた歴史／遠く離れていること。" },
+      { word: "きんかく", display: "金閣", meaning: "京都・鹿苑寺の舎利殿。「金閣寺」。" },
+      { word: "ぎんかく", display: "銀閣", meaning: "京都・慈照寺の観音殿。「銀閣寺」。" },
+      { word: "どんかく", display: "鈍角", meaning: "九十度より大きく百八十度より小さい角。" },
+      { word: "はんかく", display: "半角", meaning: "文字の幅が全角の半分であること。" },
+      { word: "ぐんかく", display: "軍拡", meaning: "軍備を拡張すること。" },
+      { word: "けんかく", display: "剣客", meaning: "剣術にすぐれた人。けんきゃく。" },
+      { word: "しんかく", display: "神格", meaning: "神としての格式。「神格化」。" },
+      { word: "せんかく", display: "尖閣／先客", meaning: "東シナ海の諸島の名／先に来ている客。" }
+    ]
+  },
+  {
+    template: "○んたん",
+    answers: [
+      { word: "かんたん", display: "簡単／感嘆", meaning: "手間がかからないこと／深く感心すること。" },
+      { word: "がんたん", display: "元旦", meaning: "元日の朝。「旦」は日の出を表す字。" },
+      { word: "せんたん", display: "先端／戦端", meaning: "物のいちばん先／戦いの始まり。「戦端を開く」。" },
+      { word: "らんたん", display: "ランタン", meaning: "持ち運びのできる手さげランプ。" },
+      { word: "れんたん", display: "練炭", meaning: "石炭の粉を固めた燃料。" },
+      { word: "こんたん", display: "魂胆", meaning: "心にひそむたくらみ。「何か魂胆がある」。" },
+      { word: "ばんたん", display: "万端", meaning: "あることに関するすべて。「準備万端」。" },
+      { word: "ぶんたん", display: "分担／文旦", meaning: "分けて受け持つこと／大型の柑橘。" },
+      { word: "あんたん", display: "暗澹", meaning: "暗く、望みがないさま。「暗澹たる気持ち」。" },
+      { word: "さんたん", display: "惨憺／賛嘆", meaning: "見るにしのびないさま。「惨憺たる結果」／深くほめること。" },
+      { word: "しんたん", display: "心胆／薪炭", meaning: "きもったま。「心胆を寒からしめる」／たきぎと炭。" },
+      { word: "じんたん", display: "仁丹", meaning: "銀色の粒の口中清涼剤。森下仁丹の商品。" },
+      { word: "けんたん", display: "健啖", meaning: "好き嫌いなくよく食べること。「健啖家」。" },
+      { word: "てんたん", display: "恬淡", meaning: "欲がなく、あっさりしているさま。「無欲恬淡」。" },
+      { word: "たんたん", display: "淡々／坦々", meaning: "感情を表さずあっさりしたさま／平らに続くさま。" }
+    ]
+  },
+  {
+    template: "○んがい",
+    answers: [
+      { word: "そんがい", display: "損害", meaning: "損失・被害を受けること。「損害賠償」。" },
+      { word: "あんがい", display: "案外", meaning: "思っていたのと違って。意外に。" },
+      { word: "ろんがい", display: "論外", meaning: "議論する値打ちもないこと。" },
+      { word: "らんがい", display: "欄外", meaning: "紙面の枠の外。「欄外に注記する」。" },
+      { word: "かんがい", display: "感慨／灌漑", meaning: "しみじみと感じること。「感慨深い」／田畑に水を引くこと。" },
+      { word: "しんがい", display: "心外／侵害", meaning: "思いがけず残念なこと／権利などをおかすこと。" },
+      { word: "ばんがい", display: "番外", meaning: "予定の番組・順番の外。「番外編」。" },
+      { word: "もんがい", display: "門外", meaning: "門の外／その専門の外。「門外漢」。" },
+      { word: "てんがい", display: "天涯／天蓋", meaning: "空の果て。「天涯孤独」／寝台などの上を覆う飾り。" },
+      { word: "げんがい", display: "言外／限外", meaning: "ことばに表していない部分。「言外ににおわせる」／限度の外。" },
+      { word: "じんがい", display: "人外", meaning: "人間の世界の外。人ならざるもの。" },
+      { word: "せんがい", display: "選外", meaning: "選に入らなかったこと。「選外佳作」。" },
+      { word: "こんがい", display: "婚外", meaning: "婚姻関係の外。「婚外子」。" },
+      { word: "いんがい", display: "院外", meaning: "議院や病院の外。「院外団」。" },
+      { word: "えんがい", display: "塩害／煙害", meaning: "潮風や塩分による被害／煙による被害。" }
+    ]
   }
 ];
