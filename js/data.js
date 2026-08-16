@@ -1168,7 +1168,7 @@ const WORD_ROUNDS = [
       { word: "かんせい", display: "完成／歓声／慣性／管制", meaning: "仕上がること／喜びの声／動きを保つ性質／統制すること。" },
       { word: "きんせい", display: "均整／金星／禁制", meaning: "つり合いが取れていること／太陽系第2惑星／禁じられていること。" },
       { word: "ぐんせい", display: "群生／軍政", meaning: "同種の生物がまとまって生えること／軍による統治。" },
-      { word: "けんせい", display: "牽制／権勢", meaning: "相手の自由な行動を抑えること／権力と勢い。" },
+      { word: "けんせい", display: "牽制／権勢", meaning: "相手の自由な行動を抑えること。野球の「牽制球」／権力と勢い。" },
       { word: "げんせい", display: "厳正／現世", meaning: "厳しく公正なこと／この世。" },
       { word: "こんせい", display: "混成／懇請", meaning: "入りまじって一つになること／心を込めて頼むこと。" },
       { word: "さんせい", display: "賛成／酸性／三世", meaning: "同意すること／pHが7未満の性質／三代目。" },
@@ -1435,7 +1435,7 @@ const WORD_ROUNDS = [
       { word: "からい", display: "辛い", meaning: "舌をさす味／評価が厳しい。「点が辛い」。" },
       { word: "かるい", display: "軽い", meaning: "重さや程度が小さい。" },
       { word: "かれい", display: "華麗／加齢／鰈", meaning: "はなやかで美しい／年をとること／平たい海の魚。" },
-      { word: "かわい", display: "河合／可愛", meaning: "日本に多い姓／「かわいい」の古い形。「可愛い（かわいい）」。" },
+      { word: "かわい", display: "河合／可愛", meaning: "日本に多い姓。ピアノの「カワイ」／「かわいい」の古い形。" },
       { word: "かんい", display: "簡易／官位", meaning: "手軽で簡単なこと／官職と位階。" },
       { word: "かまい", display: "構い", meaning: "かかわること。世話をすること。「お構いなく」「構いなし」／江戸時代には、立ち入りを禁じる追放刑もいった。" },
       { word: "かばい", display: "庇い", meaning: "かばうこと。多く「かばい立て」「かばい手」の形で使う。" },
@@ -1769,7 +1769,9 @@ const WORD_ROUNDS = [
       { word: "あんとう", display: "暗闘", meaning: "表に出さずに争うこと。" },
       { word: "ぐんとう", display: "群島／軍刀", meaning: "集まって連なる島々／軍人が持つ刀。" },
       { word: "ちんとう", display: "枕頭", meaning: "まくらもと。「枕頭の書」。" },
-      { word: "にんとう", display: "人頭", meaning: "人の数。「人頭税」。" }
+      { word: "にんとう", display: "人頭", meaning: "人の数。「人頭税」。" },
+      { word: "べんとう", display: "弁当", meaning: "持ち運べるように詰めた食事。" },
+      { word: "まんとう", display: "饅頭（マントウ）", meaning: "中国の蒸しパン。中華まんの原型。" }
     ]
   },
   {
@@ -1863,7 +1865,7 @@ const WORD_ROUNDS = [
       { word: "げんち", display: "現地／言質", meaning: "物事が行われている場所／あとで証拠となる言葉。" },
       { word: "しんち", display: "新地", meaning: "新しく開けた土地。「北新地」。" },
       { word: "じんち", display: "陣地", meaning: "軍隊が構えた場所。" },
-      { word: "せんち", display: "戦地", meaning: "戦争が行われている土地。" },
+      { word: "せんち", display: "戦地／センチ", meaning: "戦争が行われている土地／長さの単位センチメートル。「センチな気分」の意でも使う。" },
       { word: "たんち", display: "探知", meaning: "隠れているものを探り知ること。「魚群探知機」。" },
       { word: "てんち", display: "天地", meaning: "天と地。世界／上と下。" },
       { word: "とんち", display: "頓知", meaning: "その場に応じて働く機転。「一休さんの頓知」。" },
@@ -1887,7 +1889,7 @@ const WORD_ROUNDS = [
       { word: "さんぱい", display: "参拝／産廃／惨敗", meaning: "社寺にお参りすること／産業廃棄物／ひどく負けること。" },
       { word: "ぜんぱい", display: "全廃／全敗", meaning: "すべてやめること／全部負けること。" },
       { word: "れんぱい", display: "連敗", meaning: "続けて負けること。" },
-      { word: "てんぱい", display: "聴牌", meaning: "麻雀で、あと一枚でそろう状態。" },
+      { word: "てんぱい", display: "聴牌", meaning: "麻雀で、あと一枚でそろう状態。「テンパる」の語源。" },
       { word: "ぶんぱい", display: "分配", meaning: "分けて配ること。" },
       { word: "こんぱい", display: "困憊", meaning: "疲れ果てること。「疲労困憊」。" },
       { word: "じんぱい", display: "塵肺", meaning: "粉じんを吸い込んで起こる肺の病気。" },
@@ -2007,13 +2009,14 @@ const WORD_ROUNDS = [
     template: "○んぼ",
     answers: [
       { word: "たんぼ", display: "田んぼ", meaning: "稲を作る水田。" },
-      { word: "とんぼ", display: "蜻蛉", meaning: "細長い体と四枚の羽を持つ昆虫。" },
+      { word: "とんぼ", display: "蜻蛉／トンボ", meaning: "細長い体と四枚の羽を持つ昆虫／印刷や製本で位置を合わせるための目印。" },
       { word: "なんぼ", display: "なんぼ", meaning: "関西・西日本で「いくら」「どれほど」。「なんぼのもんじゃ」。" },
       { word: "まんぼ", display: "マンボ", meaning: "キューバ生まれの陽気な音楽とダンス。" },
       { word: "こんぼ", display: "コンボ", meaning: "少人数の演奏編成／格闘ゲームなどの連続技。" },
       { word: "げんぼ", display: "原簿", meaning: "もとになる帳簿。" },
       { word: "ぶんぼ", display: "分母", meaning: "分数で、横線の下に書く数。" },
-      { word: "けんぼ", display: "賢母", meaning: "かしこい母。「良妻賢母」。" }
+      { word: "けんぼ", display: "賢母", meaning: "かしこい母。「良妻賢母」。" },
+      { word: "さんぼ", display: "サンボ", meaning: "ロシア発祥の格闘技。" }
     ]
   },
   {
@@ -2277,7 +2280,7 @@ const WORD_ROUNDS = [
   {
     template: "○んばん",
     answers: [
-      { word: "かんばん", display: "看板", meaning: "店名や商品を示す掲示。「看板娘」。" },
+      { word: "かんばん", display: "看板", meaning: "店名や商品を示す掲示。「看板娘」／トヨタ生産方式の「かんばん方式」。" },
       { word: "けんばん", display: "鍵盤", meaning: "ピアノなどの、指で押す部分。" },
       { word: "ほんばん", display: "本番", meaning: "練習でない、実際の場面。" },
       { word: "こんばん", display: "今晩", meaning: "きょうの夜。「こんばんは」。" },
@@ -2909,7 +2912,9 @@ const WORD_ROUNDS = [
       { word: "せんど", display: "鮮度", meaning: "新しさの度合い。「鮮度が落ちる」。" },
       { word: "ひんど", display: "頻度", meaning: "繰り返し起こる度合い。" },
       { word: "らんど", display: "ランド", meaning: "土地／遊園地の名などに使う語。" },
-      { word: "とんど", display: "とんど", meaning: "正月飾りを焼く行事。左義長。「どんど」とも。" }
+      { word: "とんど", display: "とんど", meaning: "正月飾りを焼く行事。左義長。「どんど」とも。" },
+      { word: "はんど", display: "ハンド", meaning: "手／サッカーの反則「ハンド」。" },
+      { word: "えんど", display: "エンド", meaning: "終わり／端。「エンドロール」。" }
     ]
   },
   {
@@ -2944,7 +2949,7 @@ const WORD_ROUNDS = [
       { word: "もんこ", display: "門戸", meaning: "門と戸／出入り口。「門戸を開く」。" },
       { word: "さんこ", display: "三顧", meaning: "三度たずねて礼を尽くすこと。「三顧の礼」。" },
       { word: "はんこ", display: "判子", meaning: "印鑑。はん。" },
-      { word: "がんこ", display: "頑固", meaning: "かたくなに自分の考えを曲げないこと。" },
+      { word: "がんこ", display: "頑固", meaning: "かたくなに自分の考えを曲げないこと／関西では「がんこ〜」の形で「とても」の意でも使う。" },
       { word: "てんこ", display: "点呼", meaning: "名を呼んで人数を確かめること。" },
       { word: "わんこ", display: "わんこ", meaning: "犬をかわいく呼ぶ語／「わんこそば」の椀。" },
       { word: "えんこ", display: "縁故／えんこ", meaning: "血縁や知り合いのつて。「縁故採用」／機械が動かなくなること。" },
@@ -3031,7 +3036,7 @@ const WORD_ROUNDS = [
     answers: [
       { word: "げんば", display: "現場", meaning: "物事が実際に行われている場所。" },
       { word: "ほんば", display: "本場", meaning: "そのものの本来の産地・盛んな土地。" },
-      { word: "さんば", display: "産婆", meaning: "出産を助ける女性。助産師の古い呼び名。" },
+      { word: "さんば", display: "産婆／サンバ", meaning: "出産を助ける女性。助産師の古い呼び名／ブラジルの舞曲。" },
       { word: "たんば", display: "丹波", meaning: "京都・兵庫にまたがる旧国名。「丹波黒豆」。" },
       { word: "あんば", display: "鞍馬", meaning: "体操競技の種目の一つ。" },
       { word: "てんば", display: "転婆", meaning: "活発すぎる娘。「おてんば」。" },
@@ -3129,7 +3134,9 @@ const WORD_ROUNDS = [
       { word: "ひんぷ", display: "貧富", meaning: "貧しさと豊かさ。「貧富の差」。" },
       { word: "はんぷ", display: "頒布", meaning: "広く分けて配ること。「頒布会」。" },
       { word: "ねんぷ", display: "年譜", meaning: "人の経歴を年ごとに記したもの。" },
-      { word: "すんぷ", display: "駿府", meaning: "静岡の古い呼び名。「駿府城」。" }
+      { word: "すんぷ", display: "駿府", meaning: "静岡の古い呼び名。「駿府城」。" },
+      { word: "ぽんぷ", display: "ポンプ", meaning: "液体や気体を送る装置。オランダ語 pomp から。" },
+      { word: "あんぷ", display: "アンプ", meaning: "音を増幅する装置。アンプリファイアの略。" }
     ]
   },
   {
@@ -3208,7 +3215,7 @@ const WORD_ROUNDS = [
       { word: "きれい", display: "綺麗", meaning: "美しい。清潔である。" },
       { word: "きかい", display: "機械／機会／奇怪", meaning: "動力で動く装置／ちょうどよいおり／あやしく不思議なこと。" },
       { word: "きたい", display: "期待／気体／機体", meaning: "心待ちにすること／気体の状態／飛行機の本体。" },
-      { word: "きせい", display: "規制／既成／帰省", meaning: "きまりで制限すること／すでに出来上がっていること／ふるさとへ帰ること。" },
+      { word: "きせい", display: "規制／既成／帰省／棋聖", meaning: "きまりで制限すること／すでに出来上がっていること／ふるさとへ帰ること／将棋・囲碁のタイトル。" },
       { word: "きらい", display: "嫌い／機雷", meaning: "好まないこと／水中に仕掛ける爆弾。" },
       { word: "きよい", display: "清い", meaning: "汚れがなく澄んでいる。" },
       { word: "きつい", display: "きつい", meaning: "厳しい。窮屈だ。「きつい仕事」。" },
