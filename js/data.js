@@ -1780,7 +1780,8 @@ const WORD_ROUNDS = [
       { word: "えんこう", display: "円光／猿猴", meaning: "仏の背後の丸い光／サル。「猿猴が月を取る」。" },
       { word: "りんこう", display: "臨港", meaning: "港に面していること。「臨港線」。" },
       { word: "まんこう", display: "満腔", meaning: "体じゅうに満ちること。「満腔の敬意」。" },
-      { word: "らんこう", display: "乱交", meaning: "多人数が入り乱れて性的に交わること。" }
+      { word: "らんこう", display: "乱交", meaning: "多人数が入り乱れて性的に交わること。" },
+      { word: "くんこう", display: "勲功", meaning: "国や主君のために立てた功績。「勲功をたてる」。" }
     ]
   },
   {
@@ -1919,7 +1920,8 @@ const WORD_ROUNDS = [
       { word: "ざんとう", display: "残党", meaning: "戦いに敗れて生き残った者。" },
       { word: "くんとう", display: "薫陶", meaning: "すぐれた人格で人を育てること。「薫陶を受ける」。" },
       { word: "こんとう", display: "昏倒", meaning: "気を失って倒れること。" },
-      { word: "どんとう", display: "鈍刀", meaning: "切れ味の悪い刀。" }
+      { word: "どんとう", display: "鈍刀", meaning: "切れ味の悪い刀。" },
+      { word: "がんとう", display: "岩頭", meaning: "岩の上。切り立った岩の先。" }
     ]
   },
   {
@@ -2153,7 +2155,8 @@ const WORD_ROUNDS = [
       { word: "みんゆう", display: "民有", meaning: "民間が所有していること。「民有地」。" },
       { word: "けんゆう", display: "硯友", meaning: "文筆の友。「硯友社」。" },
       { word: "えんゆう", display: "円融", meaning: "すべてが溶け合って一つになること。「円融三諦」。" },
-      { word: "りんゆう", display: "林邑", meaning: "古代ベトナムの国。「林邑楽」。" }
+      { word: "りんゆう", display: "林邑", meaning: "古代ベトナムの国。「林邑楽」。" },
+      { word: "さんゆう", display: "三友", meaning: "三種類の友。「益者三友」「損者三友」。" }
     ]
   },
   {
@@ -2192,7 +2195,8 @@ const WORD_ROUNDS = [
       { word: "こえい", display: "孤影", meaning: "ひとりぼっちの姿。「孤影悄然」。" },
       { word: "これい", display: "古例", meaning: "昔からのしきたり。" },
       { word: "こばい", display: "故買", meaning: "盗品と知りながら買うこと。「故買屋」。" },
-      { word: "こざい", display: "古材", meaning: "古い建物から取った木材。" }
+      { word: "こざい", display: "古材", meaning: "古い建物から取った木材。" },
+      { word: "こへい", display: "古兵", meaning: "戦さ慣れした古参の兵。" }
     ]
   },
   {
@@ -2233,7 +2237,8 @@ const WORD_ROUNDS = [
       { word: "けんぼ", display: "賢母", meaning: "かしこい母。「良妻賢母」。" },
       { word: "さんぼ", display: "サンボ", meaning: "ロシア発祥の格闘技。" },
       { word: "ふんぼ", display: "墳墓", meaning: "はか。「墳墓の地」。" },
-      { word: "れんぼ", display: "恋慕", meaning: "人を恋しく思うこと。「横恋慕」。" }
+      { word: "れんぼ", display: "恋慕", meaning: "人を恋しく思うこと。「横恋慕」。" },
+      { word: "ごんぼ", display: "ごんぼ", meaning: "ごぼうのこと。西日本などの言い方。" }
     ]
   },
   {
@@ -2846,7 +2851,8 @@ const WORD_ROUNDS = [
       { word: "にんきょう", display: "任侠", meaning: "弱きを助け強きをくじく気風。「任侠映画」。" },
       { word: "じんきょう", display: "人境", meaning: "人の住む世界。「結廬在人境」。" },
       { word: "でんきょう", display: "伝教", meaning: "伝教大師。最澄の諡号。" },
-      { word: "ぎんきょう", display: "銀橋", meaning: "宝塚の舞台で、客席側に張り出した通路。" }
+      { word: "ぎんきょう", display: "銀橋", meaning: "宝塚の舞台で、客席側に張り出した通路。" },
+      { word: "けんきょう", display: "牽強", meaning: "無理に理屈をこじつけること。「牽強付会」。" }
     ]
   },
   {
@@ -2973,7 +2979,8 @@ const WORD_ROUNDS = [
       { word: "どんじゅう", display: "鈍重", meaning: "動きがにぶく重々しいこと。" },
       { word: "おんじゅう", display: "温柔", meaning: "おだやかですなおなこと。" },
       { word: "ぱんじゅう", display: "パンじゅう", meaning: "まんじゅう形に焼いた菓子パン。横浜や新潟の名物。" },
-      { word: "はんじゅう", display: "半獣", meaning: "半分が獣の姿。「半獣神」。" }
+      { word: "はんじゅう", display: "半獣", meaning: "半分が獣の姿。「半獣神」。" },
+      { word: "じんじゅう", display: "人獣", meaning: "人と動物。「人獣共通感染症」。" }
     ]
   },
   {
@@ -3148,7 +3155,8 @@ const WORD_ROUNDS = [
       { word: "おんとく", display: "恩徳", meaning: "めぐみと恵み深い人柄。" },
       { word: "さんとく", display: "三徳", meaning: "三つの徳。「三徳包丁」。" },
       { word: "しんとく", display: "神徳", meaning: "神のもつめぐみと力。" },
-      { word: "てんとく", display: "天徳", meaning: "天からさずかった徳。平安中期の年号。" }
+      { word: "てんとく", display: "天徳", meaning: "天からさずかった徳。平安中期の年号。" },
+      { word: "けんとく", display: "建徳", meaning: "南北朝時代、南朝の年号。" }
     ]
   },
   {
@@ -3213,7 +3221,8 @@ const WORD_ROUNDS = [
       { word: "れんだい", display: "蓮台", meaning: "仏像がのる蓮の花の形の台。" },
       { word: "ちんだい", display: "鎮台", meaning: "明治初期に各地へ置かれた陸軍の部隊。" },
       { word: "みんだい", display: "明代", meaning: "中国の明の時代。" },
-      { word: "うんだい", display: "雲台", meaning: "三脚の上でカメラの向きを変える部品。" }
+      { word: "うんだい", display: "雲台", meaning: "三脚の上でカメラの向きを変える部品。" },
+      { word: "ぶんだい", display: "文台", meaning: "文を書くときに使う低い台。" }
     ]
   },
   {
@@ -3352,7 +3361,9 @@ const WORD_ROUNDS = [
       { word: "かんいん", display: "姦淫", meaning: "道にはずれた男女の交わり。" },
       { word: "しんいん", display: "心因", meaning: "心の側にある原因。「心因性」。" },
       { word: "ぶんいん", display: "分院", meaning: "本院から分かれた病院や寺院。" },
-      { word: "もんいん", display: "門院", meaning: "女院の称号。「建礼門院」。" }
+      { word: "もんいん", display: "門院", meaning: "女院の称号。「建礼門院」。" },
+      { word: "おんいん", display: "音韻", meaning: "ことばを組み立てる音の単位や体系。「音韻論」。" },
+      { word: "ほんいん", display: "本院", meaning: "分院に対する、本体の病院や寺院。" }
     ]
   },
   {
@@ -3782,7 +3793,8 @@ const WORD_ROUNDS = [
       { word: "はんみ", display: "半身", meaning: "体を斜めに構えること。「半身に構える」。" },
       { word: "みんみ", display: "みんみ", meaning: "セミの鳴き声を表す語。「みんみん蝉」。" },
       { word: "おんみ", display: "御身", meaning: "相手を敬っていう「あなた」。" },
-      { word: "けんみ", display: "検見", meaning: "江戸時代、作柄を調べて年貢を決めたこと。" }
+      { word: "けんみ", display: "検見", meaning: "江戸時代、作柄を調べて年貢を決めたこと。" },
+      { word: "ほんみ", display: "本身", meaning: "刀の、鞘や柄を除いた刀身そのもの。" }
     ]
   },
   {
@@ -3811,7 +3823,8 @@ const WORD_ROUNDS = [
       { word: "はんぴ", display: "半臂", meaning: "束帯の下に着る袖のない衣。" },
       { word: "きんぴ", display: "金肥", meaning: "お金を出して買う肥料。↔自給肥料。" },
       { word: "じんぴ", display: "靭皮", meaning: "樹皮の内側の丈夫な層。「靭皮繊維」。" },
-      { word: "でんぴ", display: "電費", meaning: "電気自動車が電力あたりで走れる距離。" }
+      { word: "でんぴ", display: "電費", meaning: "電気自動車が電力あたりで走れる距離。" },
+      { word: "けんぴ", display: "けんぴ", meaning: "細く切った芋を揚げて蜜をからめた菓子。「芋けんぴ」。" }
     ]
   },
   {
