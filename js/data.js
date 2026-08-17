@@ -3938,7 +3938,7 @@ const WORD_ROUNDS = [
       { word: "ぐんぷ", display: "軍夫", meaning: "軍について荷役などをした人夫。" },
       { word: "せんぷ", display: "宣撫", meaning: "占領地の住民をなだめ従わせること。" },
       { word: "ばんぷ", display: "万夫", meaning: "多くの人。「万夫不当」。" },
-      { word: "いんぷ", display: "印譜", meaning: "印章・印影を集めた本。" },
+      { word: "いんぷ", display: "印譜／淫婦／インプ", meaning: "印影を集めた本／みだらな女／SNSの表示回数「インプレッション」の略。" },
       { word: "げんぷ", display: "厳父", meaning: "相手の父を敬っていう語。" },
       { word: "ぜんぷ", display: "前夫", meaning: "以前の夫／亡夫。" },
       { word: "へんぷ", display: "返付", meaning: "返すこと・返還。" },
