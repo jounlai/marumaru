@@ -20,11 +20,16 @@ npx playwright install chromium
 
 `lint-data.js` は依存なしで動く。`smoke.js` は jsdom、それ以外は Chromium（Playwright）を使う。
 
-**キャッシュについて**：`index.html` は `css/styles.css?v=3518` のように
-収録語数をクエリに付けている。GitHub Pages は `cache-control: max-age=600`
-で配信するため、これを上げ忘れると、既に遊んだ人のブラウザが古い `data.js`
-を使い続け、**追加したはずの語が不正解になる**。`lint-data.js` が語数との
-一致を検査するので、語を追加したら `?v=` も同じ数に直すこと。
+**キャッシュについて**：`index.html` は `css/styles.css?v=6fbe48ad` のように
+`css/styles.css` `js/data.js` `js/game.js` の内容から作るハッシュを付けている。
+GitHub Pages は `cache-control: max-age=600` で配信するため、これを上げ忘れると
+既に遊んだ人のブラウザが古いファイルを使い続け、**追加したはずの語が不正解に
+なる／直したはずの不具合が残る**。`lint-data.js` が一致を検査し、ずれていれば
+正しい値を出すので、その値に書き換えること。
+
+```
+- index.html: js/data.js の ?v=6fbe48ad が古い → ?v=1a2b3c4d に直す
+```
 
 **注意**：`lint-data.js` を通っても「読みが正しいか」は分からない。
 清濁や拍数の取り違え（探訪＝たんぼう、頒布＝はんぷ、惨敗＝ざんぱい など）は

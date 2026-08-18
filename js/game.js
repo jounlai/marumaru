@@ -422,12 +422,61 @@ function flashAnswer(a, note){
 }
 
 /* ------------------------------------------------------------- 5) 演出 */
-let actx = null;
+
+/* iPhone で効果音が鳴らない件について。原因は3つあり、どれも対処が要る。
+ *
+ *  1) 着信スイッチが「消音」だと WebAudio は鳴らない。ページの音は既定で
+ *     ambient 扱いになり、消音スイッチに従うため。playback 扱いに変えると鳴る。
+ *     ・iOS 16.4 以降 … navigator.audioSession.type = "playback" で明示できる
+ *     ・それ以前     … 無音の <audio> をループ再生すると playback に切り替わる
+ *  2) AudioContext は最初 suspended で始まる。ユーザー操作の中で resume が要る。
+ *  3) 一度バックグラウンドに回すと再び suspended になり、戻っても止まったまま。
+ *
+ * 無音WAVは外部ファイルにせず data URI で持つ（依存ゼロ・file:// でも動く）。
+ */
+const SILENT_WAV = "data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA";
+
+let actx = null, silentEl = null;
+
+// 消音スイッチを無視して鳴らせる状態にする。最初のタップで一度だけ効かせる。
+// audioSession が使えるならそれで済ませる。無音ループは再生中の表示が
+// コントロールセンターに出てしまうので、古い iOS のときだけの手段にする
+function enablePlaybackAudio(){
+  try {
+    if (navigator.audioSession) { navigator.audioSession.type = "playback"; return; }
+  } catch (e) {}
+  if (silentEl) { if (silentEl.paused) silentEl.play().catch(() => {}); return; }
+  silentEl = new Audio(SILENT_WAV);
+  silentEl.loop = true;
+  silentEl.volume = 1;          // muted や volume=0 では playback に切り替わらない
+  silentEl.play().catch(() => {});
+}
+
 function audio(){
   if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
   if (actx.state === "suspended") actx.resume();
   return actx;
 }
+
+// 最初のタップ／キー操作で解錠する。iOS はユーザー操作の中でしか受け付けない
+function unlockAudio(){
+  enablePlaybackAudio();
+  const c = audio();
+  // 無音を一発鳴らして、実際に音の出せる状態かを確定させる
+  try {
+    const b = c.createBuffer(1, 1, 22050), s = c.createBufferSource();
+    s.buffer = b; s.connect(c.destination); s.start(0);
+  } catch (e) {}
+}
+["pointerdown", "touchstart", "keydown"].forEach(ev =>
+  addEventListener(ev, unlockAudio, {once: true, passive: true}));
+
+// バックグラウンドから戻ると suspended のままなので鳴らし直せるようにする
+addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible" || !actx) return;
+  if (actx.state === "suspended") actx.resume().catch(() => {});
+  if (silentEl && silentEl.paused) silentEl.play().catch(() => {});
+});
 function tone(freq, {dur = .14, type = "triangle", vol = .06, at = 0, glide = 0} = {}){
   if (!soundOn) return;
   try {
@@ -971,7 +1020,8 @@ $("#gAnswerBtn").addEventListener("click", openAnswers);
 $("#soundBtn").addEventListener("click", () => {
   soundOn = !soundOn;
   $("#soundBtn").textContent = soundOn ? "♪ 効果音 ON" : "♪ 効果音 OFF";
-  if (soundOn) sfxHint();
+  if (soundOn) { unlockAudio(); sfxHint(); }
+  else if (silentEl) silentEl.pause();   // OFF のあいだは無音ループも止める
   saveProgress();
 });
 

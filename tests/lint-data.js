@@ -12,6 +12,7 @@
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const crypto = require("crypto");
 
 const DATA = path.join(__dirname, "..", "js", "data.js");
 
@@ -75,13 +76,23 @@ for (const [label, rounds] of [["通常", ROUND_DATA], ["SPECIAL", SPECIAL_ROUND
   }
 }
 
-// index.html の ?v= は収録語数。ここがずれると、既に遊んだ人のブラウザが
-// 古い data.js をキャッシュから使い続け、追加した語が不正解になる。
+// index.html の ?v= は css/js の内容から作るハッシュ。ここを上げ忘れると、
+// 既に遊んだ人のブラウザが古い data.js / game.js をキャッシュから使い続け、
+// 追加した語が不正解になったり、直したはずの不具合が残ったりする。
 // （GitHub Pages は cache-control: max-age=600 で配信する）
-const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
-for (const m of html.matchAll(/(?:href|src)="((?:css|js)\/[^"?]+)(\?v=(\d+))?"/g)) {
-  if (!m[2]) errors.push(`index.html: ${m[1]} に ?v= が無い（キャッシュ対策）`);
-  else if (+m[3] !== words) errors.push(`index.html: ${m[1]} の ?v=${m[3]} が語数(${words})と違う`);
+// 語数ではなく内容から作るのは、語彙を変えない修正でもキャッシュを切るため。
+const root = path.join(__dirname, "..");
+const ASSETS = ["css/styles.css", "js/data.js", "js/game.js"];
+const stamp = crypto.createHash("sha1")
+  .update(ASSETS.map(f => fs.readFileSync(path.join(root, f))).join("\n"))
+  .digest("hex").slice(0, 8);
+
+const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const refs = [...html.matchAll(/(?:href|src)="((?:css|js)\/[^"?]*?)(?:\?v=([^"]*))?"/g)];
+for (const f of ASSETS) if (!refs.some(m => m[1] === f)) errors.push(`index.html が ${f} を読み込んでいない`);
+for (const m of refs) {
+  if (m[2] === undefined) errors.push(`index.html: ${m[1]} に ?v= が無い（キャッシュ対策）`);
+  else if (m[2] !== stamp) errors.push(`index.html: ${m[1]} の ?v=${m[2]} が古い → ?v=${stamp} に直す`);
 }
 
 const n = rs => rs.reduce((s, r) => s + r.answers.length, 0);
