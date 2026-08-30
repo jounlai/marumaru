@@ -555,7 +555,7 @@ function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, ms = 900})
   $("#burstSub").textContent = sub || "";
   $("#burstMeaning").textContent = meaning || "";
   $("#burstBonus").textContent = bonus || "";
-  box.className = "burst" + (dim ? " dim" : "") + (gold ? " gold" : "");
+  box.className = "burst" + (dim ? " dim" : "") + (gold ? " gold" : "") + (long ? " long" : "");
   $("#burstInner").className = "burstInner" + (long ? " long" : "");
   void box.offsetWidth;
   box.classList.add("show");
