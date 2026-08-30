@@ -2214,7 +2214,8 @@ const WORD_ROUNDS = [
       { word: "いんぽ", display: "インポ", meaning: "インポテンツ（勃起不全）の略。俗な言い方。" },
       { word: "ぎんぽ", display: "ぎんぽ", meaning: "細長い姿の海の魚。天ぷらの種。" },
       { word: "はんぽ", display: "半歩", meaning: "一歩の半分。「半歩先を行く」。" },
-      { word: "りんぽ", display: "隣保", meaning: "隣家・近隣／近隣で助け合うこと。" }
+      { word: "りんぽ", display: "隣保", meaning: "隣家・近隣／近隣で助け合うこと。" },
+      { word: "こんぽ", display: "コンポ", meaning: "コンポーネントステレオの略。プレーヤー・アンプ・スピーカーなどを組み合わせた音響装置。" }
     ]
   },
   {
@@ -2326,7 +2327,8 @@ const WORD_ROUNDS = [
       { word: "ふんぼ", display: "墳墓", meaning: "はか。「墳墓の地」。" },
       { word: "れんぼ", display: "恋慕", meaning: "人を恋しく思うこと。「横恋慕」。" },
       { word: "ごんぼ", display: "ごんぼ", meaning: "ごぼうのこと。西日本などの言い方。" },
-      { word: "せんぼ", display: "千保", meaning: "姓の一つ。「千保」など。" }
+      { word: "せんぼ", display: "千保", meaning: "姓の一つ。「千保」など。" },
+      { word: "おんぼ", display: "オンボ", meaning: "オンボードの略。パソコンの基板に機能が組み込まれていること。「オンボのグラフィック」。" }
     ]
   },
   {
@@ -2561,7 +2563,7 @@ const WORD_ROUNDS = [
       { word: "たんけん", display: "探検／短剣", meaning: "未知の地を探り調べること／短い剣。" },
       { word: "へんけん", display: "偏見", meaning: "かたよった見方。" },
       { word: "ぶんけん", display: "文献／分権", meaning: "研究の資料となる書物／権限を分けること。「地方分権」。" },
-      { word: "あんけん", display: "案件", meaning: "取り扱うべき事柄。「重要案件」。" },
+      { word: "あんけん", display: "案件", meaning: "取り扱うべき事柄。「重要案件」／配信者やインフルエンサーが企業から受ける広告・PRの仕事。" },
       { word: "ばんけん", display: "番犬", meaning: "家を守るために飼う犬。" },
       { word: "いんけん", display: "陰険", meaning: "表面はよそおい、裏で悪意を持つこと。" },
       { word: "せんけん", display: "先見", meaning: "先を見通すこと。「先見の明」。" },
@@ -3693,7 +3695,8 @@ const WORD_ROUNDS = [
       { word: "ぱんこ", display: "パン粉", meaning: "パンを細かく砕いた衣。「パン粉をまぶす」。" },
       { word: "くんこ", display: "訓詁", meaning: "古典の字句の意味を解き明かすこと。「訓詁学」。" },
       { word: "ぜんこ", display: "全戸", meaning: "その地域のすべての家。「全戸配布」。" },
-      { word: "じんこ", display: "沈香", meaning: "香木の沈香。" }
+      { word: "じんこ", display: "沈香", meaning: "香木の沈香。" },
+      { word: "れんこ", display: "連呼", meaning: "同じ言葉を何度も繰り返して呼ぶこと。「名前を連呼する」。" }
     ]
   },
   {
@@ -3713,7 +3716,8 @@ const WORD_ROUNDS = [
       { word: "わんさ", display: "わんさ", meaning: "大勢が押し寄せるさま。「わんさと集まる」。" },
       { word: "はんさ", display: "煩瑣", meaning: "こまごまとしてわずらわしいこと。" },
       { word: "さんさ", display: "燦々", meaning: "日光などが盛んに降り注ぐさま。" },
-      { word: "ざんさ", display: "残渣", meaning: "こしたあとに残るかす。" }
+      { word: "ざんさ", display: "残渣", meaning: "こしたあとに残るかす。" },
+      { word: "せんさ", display: "センサ／センサー", meaning: "光・温度・圧力などを検出して、情報に変える装置。技術分野では「センサ」とも表記する。" }
     ]
   },
   {
@@ -3841,7 +3845,8 @@ const WORD_ROUNDS = [
       { word: "えんぱ", display: "煙波", meaning: "もやが立ちこめた水面。" },
       { word: "ぜんぱ", display: "全波", meaning: "すべての波長域。「全波受信機」。" },
       { word: "もんぱ", display: "門派", meaning: "宗派・学派の一分派。" },
-      { word: "ねんぱ", display: "念波", meaning: "思念を伝える波、テレパシー。" }
+      { word: "ねんぱ", display: "念波", meaning: "思念を伝える波、テレパシー。" },
+      { word: "わんぱ", display: "ワンパ", meaning: "ワンパターンの略。同じ展開ややり方の繰り返し。「わんぱな攻め」。" }
     ]
   },
   {
@@ -3861,7 +3866,7 @@ const WORD_ROUNDS = [
       { word: "きんが", display: "謹賀", meaning: "つつしんで祝うこと。「謹賀新年」。" },
       { word: "なんが", display: "南画", meaning: "中国南宗画の流れをくむ絵。" },
       { word: "ほんが", display: "本歌", meaning: "もとになった歌。「本歌取り」。" },
-      { word: "てんが", display: "典雅", meaning: "正しく整っていて上品なこと。" },
+      { word: "てんが", display: "典雅／TENGA", meaning: "正しく整っていて上品なこと／2005年に発売されたプレジャーアイテムのブランド。" },
       { word: "かんが", display: "閑雅", meaning: "もの静かで趣のあること。" },
       { word: "ぜんが", display: "禅画", meaning: "禅僧が描いた墨絵。" },
       { word: "おんが", display: "遠賀", meaning: "福岡県の地名。「遠賀川」「遠賀郡」。" },
@@ -3943,7 +3948,9 @@ const WORD_ROUNDS = [
       { word: "ぜんぷ", display: "前夫", meaning: "以前の夫／亡夫。" },
       { word: "へんぷ", display: "返付", meaning: "返すこと・返還。" },
       { word: "でんぷ", display: "田夫", meaning: "農夫・百姓。" },
-      { word: "くんぷ", display: "君父", meaning: "主君と父。「君父の恩」。" }
+      { word: "くんぷ", display: "君父", meaning: "主君と父。「君父の恩」。" },
+      { word: "こんぷ", display: "コンプ", meaning: "コンプリートの略。ゲームのアイテムやコレクションなどを、すべてそろえること。" },
+      { word: "ぱんぷ", display: "パンプ", meaning: "パンプアップの略。筋力トレーニングの直後に、筋肉が張って大きく見えること。" }
     ]
   },
   {
@@ -4293,7 +4300,7 @@ const WORD_ROUNDS = [
       { word: "ちかい", display: "近い／誓い", meaning: "へだたりが小さい／かたく約束すること。" },
       { word: "ちがい", display: "違い", meaning: "同じでないこと。差。" },
       { word: "ちめい", display: "地名／致命", meaning: "土地の名／命にかかわること。「致命傷」。" },
-      { word: "ちらい", display: "地雷", meaning: "地中に仕掛ける爆弾。「地雷を踏む」。" },
+      { word: "ちらい", display: "地雷（ちらい・まれ）", meaning: "「じらい」の古い・まれな読み。地中に仕掛ける爆弾。" },
       { word: "ちたい", display: "地帯", meaning: "ある特徴をもつ一帯。「工業地帯」。" },
       { word: "ちけい", display: "地形", meaning: "土地の起伏のようす。" },
       { word: "ちせい", display: "知性／治世", meaning: "考える力／世を治めること。" },
@@ -4307,7 +4314,7 @@ const WORD_ROUNDS = [
       { word: "ちぜい", display: "地税", meaning: "土地にかかる税。" },
       { word: "ちれい", display: "地霊", meaning: "その土地に宿るとされる霊。" },
       { word: "ちない", display: "地内", meaning: "その土地の区域の中。「敷地内」。" },
-      { word: "ちるい", display: "地塁", meaning: "両側の断層に挟まれ、高く残った地形。" },
+      { word: "ちるい", display: "地塁／チルい", meaning: "両側の断層に挟まれ、高く残った地形／くつろいで心地よいさま。英語 chill に由来する若者語。" },
       { word: "ちさい", display: "地裁", meaning: "地方裁判所。" }
     ]
   },
