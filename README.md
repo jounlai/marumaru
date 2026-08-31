@@ -1,6 +1,10 @@
 # 〇〇ことば
 
-かな穴埋めサバイバル。**https://jounlai.github.io/marumaru/**
+かな穴埋めサバイバル。**https://marumaru.heuron.com/**
+
+旧アドレスの https://jounlai.github.io/marumaru/ は、上のアドレスへ転送する。
+★やスコアの保存先はドメインごとに分かれるので、転送のときにセーブを URL で
+運び、移転先で取り込む（[index.html](index.html) の先頭と `importHandoffSave()`）。
 
 `〇ん〇ん` のように穴の空いたお題が出るので、**すべての穴に同じ仮名**を入れて
 成り立つことばを探す。`か` を選べば「かんかん」、`ぷ` を選べば「ぷんぷん」。
@@ -50,8 +54,8 @@
 2. `node tests/lint-data.js` を通す（盤面から作れるか・重複・字数・語釈の欠落を検査）
 3. lint が出す `?v=` の値を [index.html](index.html) に反映する
 
-`?v=` は css/js の内容から作るハッシュ。GitHub Pages は `cache-control: max-age=600`
-で配信するので、ここを上げ忘れると**すでに遊んだ人のブラウザが古い data.js を使い続け、
+`?v=` は css/js の内容から作るハッシュ。配信元がキャッシュを効かせるので、
+ここを上げ忘れると**すでに遊んだ人のブラウザが古い data.js を使い続け、
 追加したはずの語が不正解になる**。
 
 lint を通っても読みが正しいかは分からない。清濁や拍数の取り違え

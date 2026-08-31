@@ -5,6 +5,25 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>〇〇ことば — かな穴埋めサバイバル</title>
+<link rel="canonical" href="https://marumaru.heuron.com/">
+
+<!-- 引っ越し先へ誘導する。GitHub Pages（旧アドレス）で開かれたときだけ転送する。
+     localStorage はドメインをまたげず、そのまま飛ばすと★もスコアも消えるので、
+     セーブを URL のフラグメントに載せて運び、移転先の game.js が取り込む。
+     localhost や file:// では何もしないので、手元ではそのまま遊べる。 -->
+<script>
+(function(){
+  if (location.hostname !== "jounlai.github.io") return;
+  var save = "";
+  try {
+    save = localStorage.getItem("maruanagame-progress-v5")
+        || localStorage.getItem("maruanagame-progress-v4") || "";
+  } catch (e) {}
+  // 長すぎるセーブは URL に載せない（転送そのものが失敗するのを避ける）
+  var hash = (save && save.length < 30000) ? "#save=" + encodeURIComponent(save) : "";
+  location.replace("https://marumaru.heuron.com/" + location.search + hash);
+})();
+</script>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FJ9BJXEGF"></script>
@@ -16,7 +35,7 @@
   gtag('config', 'G-1FJ9BJXEGF');
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=985ab557">
+<link rel="stylesheet" href="css/styles.css?v=b318111a">
 </head>
 <body>
 
@@ -241,7 +260,7 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=985ab557"></script>
-<script src="js/game.js?v=985ab557"></script>
+<script src="js/data.js?v=b318111a"></script>
+<script src="js/game.js?v=b318111a"></script>
 </body>
 </html>

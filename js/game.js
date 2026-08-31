@@ -140,6 +140,22 @@ function loadProgress(){
   if (Number.isFinite(x.score)) score = x.score;
   if (Number.isFinite(x.maxCombo)) maxCombo = x.maxCombo;
 }
+/* 旧アドレス（GitHub Pages）から運ばれてきたセーブを取り込む。
+ * localStorage はドメインごとに別なので、移転のあいだだけ URL で受け渡す。
+ * すでにこのドメインで遊んでいれば、そちらを優先して上書きしない。 */
+function importHandoffSave(){
+  const m = /(?:^|[#&])save=([^&]*)/.exec(location.hash);
+  if (!m) return;
+  try {
+    if (!localStorage.getItem(SAVE_KEY) && !localStorage.getItem(LEGACY_SAVE_KEY)) {
+      const raw = decodeURIComponent(m[1]);
+      JSON.parse(raw);                      // 壊れていたら取り込まない
+      localStorage.setItem(SAVE_KEY, raw);
+    }
+  } catch (e) {}
+  // 引き継ぎ用の文字列をアドレス欄に残さない
+  try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+}
 function clearSavedProgress(){
   try { localStorage.removeItem(SAVE_KEY); localStorage.removeItem(LEGACY_SAVE_KEY); } catch (e) {}
 }
@@ -1045,6 +1061,7 @@ document.addEventListener("keydown", e => {
   if (inputKanasForRound().includes(e.key)) guess(e.key);
 });
 
+importHandoffSave();
 loadProgress();
 
 // 起動時に詰んだ状態（★0 のまま／入力できないラウンド）で放置しないための復旧
