@@ -2,9 +2,8 @@
 
 かな穴埋めサバイバル。**https://marumaru.heuron.com/**
 
-旧アドレスの https://jounlai.github.io/marumaru/ は、上のアドレスへ転送する。
-★やスコアの保存先はドメインごとに分かれるので、転送のときにセーブを URL で
-運び、移転先で取り込む（[index.html](index.html) の先頭と `importHandoffSave()`）。
+旧アドレスの https://jounlai.github.io/marumaru/ を開くと、こちらへ転送する
+（下の「引っ越しについて」を参照）。
 
 `〇ん〇ん` のように穴の空いたお題が出るので、**すべての穴に同じ仮名**を入れて
 成り立つことばを探す。`か` を選べば「かんかん」、`ぷ` を選べば「ぷんぷん」。
@@ -60,6 +59,46 @@
 
 lint を通っても読みが正しいかは分からない。清濁や拍数の取り違え
 （探訪＝たんぼう、頒布＝はんぷ）は人が確かめること。
+
+## 引っ越しについて
+
+配信元を GitHub Pages から marumaru.heuron.com へ移した。旧アドレスは
+[index.html](index.html) 先頭のスクリプトで転送する。判定は
+`location.hostname === "jounlai.github.io"` に限っているので、localhost や
+`file://` では転送されず、手元ではそのまま遊べる。
+
+★・スコア・発見済みの語は localStorage にあり、ドメインをまたげない。
+そのまま飛ばすと進行が消えるので、転送のときにセーブを URL のフラグメント
+（`#save=`）へ載せ、移転先の `importHandoffSave()` が取り込む。移転先にも
+セーブがあれば `mergeProgress()` で合流させる。
+
+| 項目 | 混ぜかた |
+|---|---|
+| 発見済みの語・使った仮名 | 和集合 |
+| クリア済み・PERFECT の印 | どちらかで立っていれば立てる |
+| ★・スコア・最大コンボ | 大きいほう |
+| 降参の印 | 両方で降参していたときだけ |
+
+かなは `encodeURIComponent` で1文字9字に膨らむので、遊び込んだセーブほど URL が
+長くなる。10万字を超えるときは `found` を落として `discovered` だけを運び、
+移転先で `found` を補う。
+
+**デプロイの順番**：先に marumaru.heuron.com を新しいビルドにしてから、GitHub Pages を
+差し替える。合流のコードは移転先の `js/game.js` にあるので、逆にすると引き継ぎ用の
+`#save=...` が取り込まれず、アドレス欄に残る。
+
+### 手元で確かめる
+
+セーブのキーは `maruanagame-progress-v5`（旧 `maruanagame-progress-v4`）。
+
+```js
+JSON.parse(localStorage.getItem("maruanagame-progress-v5") ?? "null")        // 覗く
+localStorage.removeItem("maruanagame-progress-v5"); location.replace("/");   // まっさらに戻す
+```
+
+GUI なら ⚙メニューの「記録をすべてリセット」が同じことをする。旧アドレスは開いた
+瞬間に転送されるので、そちらにセーブを仕込むときは同じオリジンの別パス
+（例：`https://jounlai.github.io/marumaru/css/styles.css`）でコンソールを開いて書く。
 
 ## 貢献者
 
