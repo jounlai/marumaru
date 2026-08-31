@@ -19,8 +19,17 @@
     save = localStorage.getItem("maruanagame-progress-v5")
         || localStorage.getItem("maruanagame-progress-v4") || "";
   } catch (e) {}
-  // 長すぎるセーブは URL に載せない（転送そのものが失敗するのを避ける）
-  var hash = (save && save.length < 30000) ? "#save=" + encodeURIComponent(save) : "";
+  var payload = save ? encodeURIComponent(save) : "";
+  // かなは1文字9字に膨らむので、遊び込んだ人ほど URL が長くなる。上限を超えたら
+  // 発見済みの語（discovered）だけに絞って運ぶ。found は移転先で補われる。
+  if (payload.length > 100000) {
+    try {
+      var x = JSON.parse(save);
+      (x.rounds || []).forEach(function(r){ if (r) delete r.found; });
+      payload = encodeURIComponent(JSON.stringify(x));
+    } catch (e) {}
+  }
+  var hash = (payload && payload.length <= 100000) ? "#save=" + payload : "";
   location.replace("https://marumaru.heuron.com/" + location.search + hash);
 })();
 </script>
@@ -35,7 +44,7 @@
   gtag('config', 'G-1FJ9BJXEGF');
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=b318111a">
+<link rel="stylesheet" href="css/styles.css?v=4ca1487d">
 </head>
 <body>
 
@@ -260,7 +269,7 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=b318111a"></script>
-<script src="js/game.js?v=b318111a"></script>
+<script src="js/data.js?v=4ca1487d"></script>
+<script src="js/game.js?v=4ca1487d"></script>
 </body>
 </html>

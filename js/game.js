@@ -140,21 +140,70 @@ function loadProgress(){
   if (Number.isFinite(x.score)) score = x.score;
   if (Number.isFinite(x.maxCombo)) maxCombo = x.maxCombo;
 }
-/* 旧アドレス（GitHub Pages）から運ばれてきたセーブを取り込む。
- * localStorage はドメインごとに別なので、移転のあいだだけ URL で受け渡す。
- * すでにこのドメインで遊んでいれば、そちらを優先して上書きしない。 */
+/* 旧アドレス（GitHub Pages）から運ばれてきたセーブを、このドメインのセーブへ
+ * 合流させる。localStorage はドメインごとに別なので、移転のあいだだけ URL で
+ * 受け渡す。
+ * 「移転先に保存が無ければ入れる」では引き継げない。移転先を一度でも開くと
+ * 保存が作られるため、旧アドレスのクリア履歴が黙って捨てられていた。
+ * どちらの進行も消えないよう、発見済みの語は和集合、★とスコアは大きいほう、
+ * クリアの印は立っているほうを採って混ぜる。 */
 function importHandoffSave(){
   const m = /(?:^|[#&])save=([^&]*)/.exec(location.hash);
   if (!m) return;
   try {
-    if (!localStorage.getItem(SAVE_KEY) && !localStorage.getItem(LEGACY_SAVE_KEY)) {
-      const raw = decodeURIComponent(m[1]);
-      JSON.parse(raw);                      // 壊れていたら取り込まない
-      localStorage.setItem(SAVE_KEY, raw);
-    }
+    const incoming = JSON.parse(decodeURIComponent(m[1]));
+    let mine = null;
+    try {
+      mine = JSON.parse(localStorage.getItem(SAVE_KEY) || localStorage.getItem(LEGACY_SAVE_KEY) || "null");
+    } catch (e) {}
+    const merged = mine ? mergeProgress(mine, incoming) : { ...incoming, v: 5, rounds: normalizeRounds(incoming) };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(merged));
   } catch (e) {}
   // 引き継ぎ用の文字列をアドレス欄に残さない
   try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+}
+// セーブの rounds を template 付きの形にそろえる（v4 は並び順で持っていた）
+function normalizeRounds(x){
+  return (Array.isArray(x.rounds) ? x.rounds : []).map((r, i) => {
+    if (!r) return null;
+    const template = (typeof r.template === "string") ? r.template : ROUND_DATA_LEGACY_ORDER[i];
+    if (!template) return null;
+    const discovered = Array.isArray(r.discovered) ? r.discovered : [];
+    return {
+      template,
+      // URL に載せるため found を落としたセーブが来ることがある（下の分岐を参照）
+      found: Array.isArray(r.found) ? r.found : discovered,
+      discovered,
+      used: Array.isArray(r.used) ? r.used : [],
+      cleared: !!r.cleared, rewarded: !!r.rewarded, gaveUp: !!r.gaveUp,
+      perfect: !!r.perfect, perfectRewarded: !!r.perfectRewarded
+    };
+  }).filter(Boolean);
+}
+function mergeProgress(mine, other){
+  const n = v => Number.isFinite(v) ? v : 0;
+  const byTemplate = new Map();
+  for (const r of [...normalizeRounds(mine), ...normalizeRounds(other)]) {
+    const cur = byTemplate.get(r.template);
+    if (!cur) { byTemplate.set(r.template, r); continue; }
+    cur.found = [...new Set([...cur.found, ...r.found])];
+    cur.discovered = [...new Set([...cur.discovered, ...r.discovered])];
+    cur.used = [...new Set([...cur.used, ...r.used])];
+    cur.cleared = cur.cleared || r.cleared;
+    cur.rewarded = cur.rewarded || r.rewarded;
+    cur.perfect = cur.perfect || r.perfect;
+    cur.perfectRewarded = cur.perfectRewarded || r.perfectRewarded;
+    cur.gaveUp = cur.gaveUp && r.gaveUp;   // 片方で降参していなければ降参扱いにしない
+  }
+  return {
+    v: 5,
+    roundTemplate: mine.roundTemplate || other.roundTemplate,
+    stars: Math.max(n(mine.stars), n(other.stars)),
+    soundOn: typeof mine.soundOn === "boolean" ? mine.soundOn : other.soundOn,
+    score: Math.max(n(mine.score), n(other.score)),
+    maxCombo: Math.max(n(mine.maxCombo), n(other.maxCombo)),
+    rounds: [...byTemplate.values()]
+  };
 }
 function clearSavedProgress(){
   try { localStorage.removeItem(SAVE_KEY); localStorage.removeItem(LEGACY_SAVE_KEY); } catch (e) {}
