@@ -1478,7 +1478,8 @@ const WORD_ROUNDS = [
       { word: "らんぶ", display: "乱舞", meaning: "入り乱れて舞うこと。" },
       { word: "りんぶ", display: "輪舞", meaning: "輪になって踊る舞。ロンド。" },
       { word: "せんぶ", display: "宣撫", meaning: "占領地などで、方針を知らせて人心を安定させること。「宣撫工作」。" },
-      { word: "たんぶ", display: "反歩", meaning: "田畑の面積の単位。一反はおよそ十アール。" }
+      { word: "たんぶ", display: "反歩", meaning: "田畑の面積の単位。一反はおよそ十アール。" },
+      { word: "よんぶ", display: "四部", meaning: "四つの部分。「四部作」。" }
     ]
   },
   {
@@ -1846,7 +1847,8 @@ const WORD_ROUNDS = [
       { word: "かんかん", display: "かんかん", meaning: "日が強く照るさま／ひどく怒るさま。「かんかんに怒る」。" },
       { word: "ぷんかん", display: "五分間", meaning: "人名の一つ。「五分間」など。" },
       { word: "めんかん", display: "免官", meaning: "官職をやめさせること。" },
-      { word: "だんかん", display: "断簡", meaning: "切れ切れになった書物の一部。「断簡零墨」。" }
+      { word: "だんかん", display: "断簡", meaning: "切れ切れになった書物の一部。「断簡零墨」。" },
+      { word: "ふんかん", display: "分間", meaning: "1分を単位として数える語。「五分間」。" }
     ]
   },
   {
@@ -1915,7 +1917,8 @@ const WORD_ROUNDS = [
       { word: "あしい", display: "悪しい", meaning: "悪い、粗悪な。" },
       { word: "あない", display: "案内", meaning: "道案内・案内／情報・通知。" },
       { word: "あもい", display: "廈門", meaning: "中国福建省の都市、厦門（アモイ）。" },
-      { word: "あだい", display: "亜大", meaning: "亜細亜大学の略称。" }
+      { word: "あだい", display: "亜大", meaning: "亜細亜大学の略称。" },
+      { word: "あざい", display: "浅井", meaning: "近江の戦国大名。「浅井長政」。" }
     ]
   },
   {
@@ -2181,7 +2184,8 @@ const WORD_ROUNDS = [
       { word: "もんち", display: "門地", meaning: "家柄。「門地による差別」。" },
       { word: "なんち", display: "難治", meaning: "治りにくいこと。「難治性」。" },
       { word: "ごんち", display: "権智", meaning: "仏が相手に応じて使う、手だてとしての智慧。" },
-      { word: "ぞんち", display: "存知", meaning: "知っていること。承知していること。" }
+      { word: "ぞんち", display: "存知", meaning: "知っていること。承知していること。" },
+      { word: "ぶんち", display: "文治", meaning: "武力によらず、学問や法で世を治めること。「文治政治」。" }
     ]
   },
   {
@@ -2206,7 +2210,8 @@ const WORD_ROUNDS = [
       { word: "ぎんぱい", display: "銀牌", meaning: "銀製のメダル。" },
       { word: "げんぱい", display: "減配", meaning: "配当や配給を減らすこと。" },
       { word: "へんぱい", display: "返杯", meaning: "注がれた杯を相手に返すこと。" },
-      { word: "そんぱい", display: "存廃", meaning: "残すか廃止するか。「存廃を問う」。" }
+      { word: "そんぱい", display: "存廃", meaning: "残すか廃止するか。「存廃を問う」。" },
+      { word: "なんぱい", display: "何杯", meaning: "いくつの杯・碗か。「ごはん何杯」。" }
     ]
   },
   {
@@ -2224,7 +2229,8 @@ const WORD_ROUNDS = [
       { word: "あんばい", display: "塩梅／按配", meaning: "味加減・ぐあい／うまく配置すること。" },
       { word: "れんばい", display: "廉売", meaning: "安く売ること。「廉売所」。" },
       { word: "ぶんばい", display: "分売", meaning: "ひとそろいの物を分けて売ること。" },
-      { word: "よんばい", display: "四倍", meaning: "四つ分の量。" }
+      { word: "よんばい", display: "四倍", meaning: "四つ分の量。" },
+      { word: "なんばい", display: "何倍", meaning: "いくつ分か。「何倍にもふくらむ」。" }
     ]
   },
   {
@@ -2292,7 +2298,8 @@ const WORD_ROUNDS = [
       { word: "えんゆう", display: "円融", meaning: "すべてが溶け合って一つになること。「円融三諦」。" },
       { word: "りんゆう", display: "林邑", meaning: "古代ベトナムの国。「林邑楽」。" },
       { word: "さんゆう", display: "三友", meaning: "三種類の友。「益者三友」「損者三友」。" },
-      { word: "げんゆう", display: "原由", meaning: "原因・理由。" }
+      { word: "げんゆう", display: "原由", meaning: "原因・理由。" },
+      { word: "こんゆう", display: "今夕", meaning: "きょうの夕方。今晩。" }
     ]
   },
   {
@@ -2783,7 +2790,8 @@ const WORD_ROUNDS = [
       { word: "れんばん", display: "連番", meaning: "続き番号。「連番のチケット」。" },
       { word: "ひんばん", display: "品番", meaning: "商品につける番号。" },
       { word: "ばんばん", display: "ばんばん", meaning: "勢いよく続けざまにするさま。「ばんばん働く」。" },
-      { word: "しんばん", display: "審判", meaning: "判断・裁定／競技の審判。" }
+      { word: "しんばん", display: "審判", meaning: "判断・裁定／競技の審判。" },
+      { word: "よんばん", display: "四番", meaning: "四番目。野球で四番目の打者。" }
     ]
   },
   {
@@ -2850,7 +2858,8 @@ const WORD_ROUNDS = [
       { word: "ごんじょう", display: "言上", meaning: "目上の人に申し上げること。" },
       { word: "ふんじょう", display: "紛擾", meaning: "もめて騒ぎになること。ごたごた。" },
       { word: "もんじょう", display: "文章", meaning: "「文章博士」の形で、律令制の漢文の教官。" },
-      { word: "みんじょう", display: "民情", meaning: "民衆の暮らしぶりや気持ち。" }
+      { word: "みんじょう", display: "民情", meaning: "民衆の暮らしぶりや気持ち。" },
+      { word: "よんじょう", display: "四畳", meaning: "畳四枚の広さ。「四畳半」。" }
     ]
   },
   {
@@ -3029,7 +3038,8 @@ const WORD_ROUNDS = [
       { word: "ばんきょう", display: "蕃境", meaning: "異民族の住む辺境を指す古い表現。" },
       { word: "ごんきょう", display: "権教", meaning: "真実の教えへ導くための、仮の教え。" },
       { word: "あんきょう", display: "安協", meaning: "交通安全協会の略称。" },
-      { word: "えんきょう", display: "円鏡", meaning: "まるい鏡。「円鏡のような月」。" }
+      { word: "えんきょう", display: "円鏡", meaning: "まるい鏡。「円鏡のような月」。" },
+      { word: "さんきょう", display: "山峡", meaning: "山と山にはさまれた谷あい。やまかい。" }
     ]
   },
   {
@@ -3359,7 +3369,8 @@ const WORD_ROUNDS = [
       { word: "がんてん", display: "眼点", meaning: "単細胞生物などがもつ、光を感じる小さな点。" },
       { word: "だんてん", display: "断点", meaning: "切断する点。" },
       { word: "ばんてん", display: "万天", meaning: "全世界・天下。" },
-      { word: "ねんてん", display: "捻転", meaning: "ねじれること。「腸捻転」。" }
+      { word: "ねんてん", display: "捻転", meaning: "ねじれること。「腸捻転」。" },
+      { word: "よんてん", display: "四点", meaning: "四つの点。得点が4であること。" }
     ]
   },
   {
@@ -3515,7 +3526,9 @@ const WORD_ROUNDS = [
       { word: "くんめい", display: "君命", meaning: "主君の命令。" },
       { word: "おんめい", display: "音名", meaning: "音の高さにつけた名。ハニホヘトイロ、CDE…。" },
       { word: "いんめい", display: "員名", meaning: "構成員・会員の氏名。" },
-      { word: "ちんめい", display: "珍名", meaning: "珍しい、変わった名前。" }
+      { word: "ちんめい", display: "珍名", meaning: "珍しい、変わった名前。" },
+      { word: "よんめい", display: "四名", meaning: "四人。人数の数え方。" },
+      { word: "なんめい", display: "何名", meaning: "何人。人数をたずねる語。" }
     ]
   },
   {
@@ -3718,7 +3731,8 @@ const WORD_ROUNDS = [
       { word: "のんど", display: "喉", meaning: "のど／歌声／本ののど（内側の余白）。" },
       { word: "よんど", display: "４度", meaning: "四回／四色印刷（CMYK）。" },
       { word: "めんど", meaning: "「面倒」のくだけた言い方。「めんどくさい」。" },
-      { word: "れんど", display: "練度", meaning: "訓練の習熟の度合い。「練度が高い」。" }
+      { word: "れんど", display: "練度", meaning: "訓練の習熟の度合い。「練度が高い」。" },
+      { word: "もんど", display: "主水", meaning: "武家の官名の一つ。「中村主水」。" }
     ]
   },
   {
@@ -3779,7 +3793,8 @@ const WORD_ROUNDS = [
       { word: "じんこ", display: "沈香", meaning: "香木の沈香。" },
       { word: "れんこ", display: "連呼", meaning: "同じ言葉を何度も繰り返して呼ぶこと。「名前を連呼する」。" },
       { word: "なんこ", display: "何個", meaning: "いくつ。個数をたずねる語。" },
-      { word: "せんこ", display: "千古", meaning: "大昔。また、永遠。「千古の謎」。" }
+      { word: "せんこ", display: "千古", meaning: "大昔。また、永遠。「千古の謎」。" },
+      { word: "よんこ", display: "四個", meaning: "四つ。個数の数え方。" }
     ]
   },
   {
@@ -3800,7 +3815,8 @@ const WORD_ROUNDS = [
       { word: "はんさ", display: "煩瑣", meaning: "こまごまとしてわずらわしいこと。" },
       { word: "さんさ", display: "燦々", meaning: "日光などが盛んに降り注ぐさま。" },
       { word: "ざんさ", display: "残渣", meaning: "こしたあとに残るかす。" },
-      { word: "せんさ", display: "センサ／センサー", meaning: "光・温度・圧力などを検出して、情報に変える装置。技術分野では「センサ」とも表記する。" }
+      { word: "せんさ", display: "センサ／センサー", meaning: "光・温度・圧力などを検出して、情報に変える装置。技術分野では「センサ」とも表記する。" },
+      { word: "なんさ", display: "南沙", meaning: "南シナ海の諸島。「南沙諸島」。" }
     ]
   },
   {
@@ -3904,7 +3920,9 @@ const WORD_ROUNDS = [
       { word: "しんば", display: "新馬", meaning: "まだ勝ったことのない競走馬。「新馬戦」。" },
       { word: "まんば", display: "漫罵", meaning: "むやみに悪口を浴びせること。" },
       { word: "にんば", display: "荷場", meaning: "地名の一つ。「荷場」など。" },
-      { word: "めんば", display: "面罵", meaning: "面と向かってののしること。" }
+      { word: "めんば", display: "面罵", meaning: "面と向かってののしること。" },
+      { word: "いんば", display: "印旛", meaning: "千葉県の地名。「印旛沼」。" },
+      { word: "やんば", display: "八ッ場", meaning: "群馬県の地名。「八ッ場ダム」。" }
     ]
   },
   {
@@ -4081,7 +4099,8 @@ const WORD_ROUNDS = [
       { word: "ぜんわ", display: "禅話", meaning: "禅についての話。" },
       { word: "あんわ", display: "安和", meaning: "年号「安和」（968～970年）。" },
       { word: "ぶんわ", display: "文和", meaning: "北朝の年号「文和」（1352～1356年）。" },
-      { word: "てんわ", display: "天和", meaning: "年号「天和」（1681～1684年）。" }
+      { word: "てんわ", display: "天和", meaning: "年号「天和」（1681～1684年）。" },
+      { word: "はんわ", display: "阪和", meaning: "大阪と和歌山。「阪和線」「阪和道」。" }
     ]
   },
   {
@@ -4484,7 +4503,8 @@ const WORD_ROUNDS = [
       { word: "しあう", display: "仕合う", meaning: "互いに同じことをする。「勝負を仕合う」。" },
       { word: "しごう", display: "諡号", meaning: "死後におくる名。おくりな。" },
       { word: "しぞう", display: "死蔵", meaning: "使わずにしまい込んでおくこと。" },
-      { word: "しおう", display: "雌黄", meaning: "黄色の鉱物顔料。" }
+      { word: "しおう", display: "雌黄", meaning: "黄色の鉱物顔料。" },
+      { word: "しぐう", display: "四隅", meaning: "四つのすみ。よすみ。" }
     ]
   },
   {
@@ -4525,7 +4545,8 @@ const WORD_ROUNDS = [
       { word: "ころう", display: "古老／固陋", meaning: "昔をよく知る老人／古い考えに凝り固まること。" },
       { word: "こそう", display: "古層", meaning: "古い時代の層。「文化の古層」。" },
       { word: "こぼう", display: "虎榜", meaning: "中国の高等科挙合格者を掲示した札。" },
-      { word: "こほう", display: "古方", meaning: "古くからのやり方。「古方派」。" }
+      { word: "こほう", display: "古方", meaning: "古くからのやり方。「古方派」。" },
+      { word: "こごう", display: "古豪", meaning: "経験を積んだ強者。「古豪が復活する」。" }
     ]
   },
   {
