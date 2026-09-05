@@ -355,11 +355,12 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 .flash.good{color:#fff}
 .flash.bad{color:#ff8f8f}
 .flash.info{color:var(--muted);font-weight:600}
-.flash .fw{font-size:14px;font-weight:900;letter-spacing:.02em}
-.flash .rd{font-size:10px;font-weight:700;color:var(--muted);margin-left:6px}
+.flash .fw{font-size:17px;font-weight:900;letter-spacing:.02em}
+.flash .rd{font-size:12px;font-weight:700;color:var(--muted);margin-left:6px}
 .flash .fn{display:none}
+/* 語釈は読ませたい文なので、演出の添え物より一段大きく・明るくする */
 .flash .fm{
-  font-size:11px;font-weight:500;color:#c2c2c2;line-height:1.35;
+  font-size:14px;font-weight:500;color:#dcdcdc;line-height:1.45;
   max-width:min(560px,94vw);
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
@@ -603,6 +604,12 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 }
 
 /* ------------------------------------------------------- 8) レスポンシブ */
+/* デスクトップは盤面の下に余白があるので、語釈をさらに大きく、3行まで見せる */
+@media(min-width:961px){
+  .flash .fw{font-size:19px}
+  .flash .rd{font-size:13px}
+  .flash .fm{font-size:16px;max-width:min(720px,80vw);-webkit-line-clamp:3}
+}
 @media(max-width:960px){
   :root{--gap:6px}
   .app{padding:calc(5px + env(safe-area-inset-top)) 8px calc(5px + env(safe-area-inset-bottom))}
@@ -630,7 +637,10 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 /* 縦に余裕がない端末では文字と余白をさらに詰める */
 @media(max-height:680px){
   .pattern{font-size:clamp(30px,7vw,48px);margin:0 0 2px}
+  /* 縦が足りない端末だけは、盤面を削らないよう語釈も少し詰める */
   .flash{min-height:15px;font-size:11px}
+  .flash .fw{font-size:15px}
+  .flash .fm{font-size:12.5px;line-height:1.35}
 }
 
 @media(prefers-reduced-motion:reduce){
