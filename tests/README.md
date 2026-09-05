@@ -12,6 +12,7 @@ npx playwright install chromium
 | スクリプト | 何を見るか | 実行 |
 |---|---|---|
 | `lint-data.js` | **出題データの健全性検査**（依存なし）。盤面から作れるか・重複・字数・語釈の欠落、および `index.html` の `?v=` が語数と一致するかを検査する。語を追加したらまずこれ | `node tests/lint-data.js` |
+| `check-readings.js` | **display に当てた漢字が、その読みを本当に持つか**を JMdict で検査する。lint を通っても読みの取り違えは見つからないので、語を足したら続けて回す。初回だけ辞書を落として `tests/.cache/` に置く（約11MB・依存なし） | `node tests/check-readings.js` |
 | `smoke.js` | プレイ通し試験（正解・誤答・コンボ・クリア・PERFECT・セーブ復元・SPECIAL・WORD・ヒント・降参・ゲームオーバー・語彙データの健全性）。`testbody.js` が中身 | `node tests/smoke.js` |
 | `deadend.js` | 「かなが押せなくなる」行き止まりが無いか（★0・降参済み・盤面ロック時の復帰手段） | `node tests/deadend.js` |
 | `repro.js` | 旧セーブデータからの起動（★0／降参済み／クリア済み）で入力できるか | `node tests/repro.js` |
@@ -33,7 +34,12 @@ GitHub Pages は `cache-control: max-age=600` で配信するため、これを�
 
 **注意**：`lint-data.js` を通っても「読みが正しいか」は分からない。
 清濁や拍数の取り違え（探訪＝たんぼう、頒布＝はんぷ、惨敗＝ざんぱい など）は
-機械では検出できないので、人が確かめること。
+`lint-data.js` では検出できない。`check-readings.js` が display の漢字を辞書に
+当てて拾うが、display の無い語（かな書きの語）は依然として人が確かめること。
+
+実際、盤面の空いた枠を埋めるために、既存語の漢字と語釈を使い回した捏造が
+入り込んでいた（「ちっちり＝てっちり」「づっぱり＝突っ張り」など計48語）。
+`check-readings.js` はこの形を検出する。
 `shot.js` / `mascot.js` の出力は `tests/shots/` に入る。
 
 ## 期待結果
