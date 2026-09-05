@@ -1362,7 +1362,8 @@ const WORD_ROUNDS = [
       { word: "ぐんき", display: "軍記／軍旗", meaning: "合戦を描いた物語（軍記物語）／軍隊の旗。" },
       { word: "れんき", display: "連記", meaning: "複数の名前を並べて書くこと。「連記投票」。" },
       { word: "くんき", display: "勲記", meaning: "勲章とともに授けられる証書。" },
-      { word: "ぎんき", display: "銀器", meaning: "銀で作った器物。" }
+      { word: "ぎんき", display: "銀器", meaning: "銀で作った器物。" },
+      { word: "そんき", display: "損気", meaning: "損をする気質。「短気は損気」の形で使う。" }
     ]
   },
   {
@@ -2069,7 +2070,8 @@ const WORD_ROUNDS = [
       { word: "がんかい", display: "眼界", meaning: "目に見える範囲。視野。" },
       { word: "ねんかい", display: "年会", meaning: "年に一度の集まり。「年会費」。" },
       { word: "ふんかい", display: "糞塊", meaning: "直腸などに固まった便の塊。" },
-      { word: "らんかい", display: "卵塊", meaning: "カエルやクモなどの卵のかたまり。" }
+      { word: "らんかい", display: "卵塊", meaning: "カエルやクモなどの卵のかたまり。" },
+      { word: "よんかい", display: "四階／四回", meaning: "建物の4番目の階／4度目。「四回戦」。" }
     ]
   },
   {
@@ -2102,7 +2104,8 @@ const WORD_ROUNDS = [
       { word: "だんけい", display: "男系", meaning: "男性を通じて受け継がれる血筋。" },
       { word: "たんけい", display: "短径", meaning: "楕円の短いほうの径。↔長径。" },
       { word: "らんけい", display: "卵形", meaning: "たまごの形。" },
-      { word: "ばんけい", display: "晩景", meaning: "夕暮れの景色。" }
+      { word: "ばんけい", display: "晩景", meaning: "夕暮れの景色。" },
+      { word: "ぐんけい", display: "軍警", meaning: "軍隊と警察。また、軍警察（憲兵）の略。" }
     ]
   },
   {
