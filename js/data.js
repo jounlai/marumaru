@@ -606,7 +606,6 @@ const ROUND_DATA = [
       { word: "ぼっかり", meaning: "穴などが大きく開くさま。「ぽっかり」の濁った形。" },
       { word: "ぱっかり", meaning: "大きく二つに割れて開くさま。" },
       { word: "ぷっかり", meaning: "軽く浮かんでいるさま。" },
-      { word: "じっかり", meaning: "「しっかり」の異形。堅実で確かなさま。" },
       { word: "とっかり", display: "トッカリ", meaning: "北海道などでアザラシを指す語。" }
     ]
   },
@@ -822,8 +821,7 @@ const ROUND_DATA = [
     template: "○んやり",
     answers: [
       { word: "ひんやり", meaning: "冷たく感じられるさま。" },
-      { word: "ぼんやり", meaning: "はっきりしないさま／注意が散漫なさま。" },
-      { word: "ほんやり", meaning: "「ぼんやり」の清音形。はっきりしないさま。" }
+      { word: "ぼんやり", meaning: "はっきりしないさま／注意が散漫なさま。" }
     ]
   },
   {
@@ -1405,7 +1403,8 @@ const WORD_ROUNDS = [
       { word: "べんせい", display: "鞭声", meaning: "馬をむちうつ音。頼山陽の詩句「鞭声粛々（べんせいしゅくしゅく）夜河を渡る」。" },
       { word: "もんせい", display: "門生", meaning: "門下生。弟子。" },
       { word: "でんせい", display: "伝声", meaning: "声を伝えること。「伝声管」。" },
-      { word: "よんせい", display: "四世", meaning: "四代目。移民の四代目の世代。" }
+      { word: "よんせい", display: "四世", meaning: "四代目。移民の四代目の世代。" },
+      { word: "ふんせい", display: "憤青", meaning: "中国で、強い愛国心から過激な言動をする若者。" }
     ]
   },
   {
@@ -1691,8 +1690,7 @@ const WORD_ROUNDS = [
       { word: "しずい", display: "歯髄", meaning: "歯の内部にある神経や血管の組織。俗にいう歯の神経。" },
       { word: "しゆい", display: "思惟", meaning: "深く考えること。仏教語。「半跏思惟像（はんかしゆいぞう）」。" },
       { word: "しわい", display: "吝い", meaning: "けちである。金離れが悪い。" },
-      { word: "しらい", display: "白井", meaning: "日本に多い姓。体操の「シライ」（白井健三の技）でも知られる。" },
-      { word: "しびい", meaning: "「渋い」の方言。味が渋い／落ち着いて趣がある。" }
+      { word: "しらい", display: "白井", meaning: "日本に多い姓。体操の「シライ」（白井健三の技）でも知られる。" }
     ]
   },
   {
@@ -2246,7 +2244,6 @@ const WORD_ROUNDS = [
       { word: "ませい", display: "磨製", meaning: "石を磨いて作ること。" },
       { word: "まじい", meaning: "「してはならない・するはずがない」の意を表す古風な語。" },
       { word: "まづい", display: "不味い", meaning: "「まずい」の古い書き方。味が悪い／都合が悪い。" },
-      { word: "まびい", meaning: "「まぶい」の変化した形。美しい、かっこいい。" },
       { word: "まりい", display: "まり以", meaning: "姓の一つ。「まり以」など。" }
     ]
   },
@@ -2364,7 +2361,6 @@ const WORD_ROUNDS = [
       { word: "えろい", display: "エロい", meaning: "性的な感じがするさまをいう口語。" },
       { word: "えずい", display: "えずい", meaning: "西日本で「気持ちが悪い」「ひどい」。" },
       { word: "ええい", display: "ええい", meaning: "思い切るときや苛立つときに出す声。" },
-      { word: "えぎい", meaning: "「えぐい」の変化した形。刺激が強い。" },
       { word: "えりい", display: "愛里依", meaning: "女性の名の一つ。「愛里依」など。" },
       { word: "えいい", display: "鋭意", meaning: "心を打ち込んで励むさま。「鋭意努力する」。" }
     ]
@@ -2471,8 +2467,7 @@ const WORD_ROUNDS = [
       { word: "はあい", display: "はあい", meaning: "のんびりした返事の声。" },
       { word: "はつい", display: "発意", meaning: "思いつくこと。言い出すこと。" },
       { word: "はいい", display: "廃位", meaning: "王位などから退けられること。" },
-      { word: "はきい", display: "波木井", meaning: "姓の一つ。「波木井」など。" },
-      { word: "はじい", meaning: "「恥ずい」の変化した形。きまりが悪い。" }
+      { word: "はきい", display: "波木井", meaning: "姓の一つ。「波木井」など。" }
     ]
   },
   {
@@ -3097,7 +3092,8 @@ const WORD_ROUNDS = [
       { word: "えんしゃ", display: "園舎", meaning: "幼稚園・保育園などの建物。" },
       { word: "ごんしゃ", display: "権舎", meaning: "仮の住まい。一時的な宿舎。" },
       { word: "ねんしゃ", display: "念写", meaning: "念じるだけで画像が写るとされる超常現象。" },
-      { word: "とんしゃ", display: "豚舎", meaning: "豚を飼う小屋。" }
+      { word: "とんしゃ", display: "豚舎", meaning: "豚を飼う小屋。" },
+      { word: "がんしゃ", display: "顔射", meaning: "性行為で相手の顔に射精すること。俗語。" }
     ]
   },
   {
@@ -4449,8 +4445,7 @@ const WORD_ROUNDS = [
       { word: "なるい", display: "なるい", meaning: "傾きがゆるやかだ。手ぬるい。" },
       { word: "ないい", display: "内意", meaning: "表に出さない意向。「内意を伝える」。" },
       { word: "なあい", display: "菜愛", meaning: "女性の名の一つ。「菜愛」など。" },
-      { word: "なりい", display: "菜里衣", meaning: "姓の一つ。「菜里衣」など。" },
-      { word: "なをい", meaning: "仮名書きの人名（表記：Naoi／Nawoi）。" }
+      { word: "なりい", display: "菜里衣", meaning: "姓の一つ。「菜里衣」など。" }
     ]
   },
   {

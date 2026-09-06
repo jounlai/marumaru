@@ -1,5 +1,12 @@
 {
+  "name": "marumaru",
+  "private": true,
+  "description": "〇〇ことば — 確認用スクリプトだけが使う。ゲーム本体は依存ゼロ。",
+  "scripts": {
+    "test": "node tests/lint-data.js && node tests/check-readings.js"
+  },
   "devDependencies": {
+    "jsdom": "^26.1.0",
     "playwright": "^1.62.1"
   }
 }
