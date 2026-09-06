@@ -1473,7 +1473,8 @@ const WORD_ROUNDS = [
       { word: "りんぶ", display: "輪舞", meaning: "輪になって踊る舞。ロンド。" },
       { word: "せんぶ", display: "宣撫", meaning: "占領地などで、方針を知らせて人心を安定させること。「宣撫工作」。" },
       { word: "たんぶ", display: "反歩", meaning: "田畑の面積の単位。一反はおよそ十アール。" },
-      { word: "よんぶ", display: "四部", meaning: "四つの部分。「四部作」。" }
+      { word: "よんぶ", display: "四部", meaning: "四つの部分。「四部作」。" },
+      { word: "そんぶ", display: "孫武", meaning: "『孫子』を著したとされる中国古代の兵法家。" }
     ]
   },
   {
@@ -1884,7 +1885,8 @@ const WORD_ROUNDS = [
       { word: "りんこう", display: "臨港", meaning: "港に面していること。「臨港線」。" },
       { word: "まんこう", display: "満腔", meaning: "体じゅうに満ちること。「満腔の敬意」。" },
       { word: "らんこう", display: "乱交", meaning: "多人数が入り乱れて性的に交わること。" },
-      { word: "くんこう", display: "勲功", meaning: "国や主君のために立てた功績。「勲功をたてる」。" }
+      { word: "くんこう", display: "勲功", meaning: "国や主君のために立てた功績。「勲功をたてる」。" },
+      { word: "にんこう", display: "仁孝", meaning: "江戸後期の天皇。「仁孝天皇」。" }
     ]
   },
   {
@@ -1943,7 +1945,8 @@ const WORD_ROUNDS = [
       { word: "はんそう", display: "帆走／搬送", meaning: "帆に風を受けて走ること／運び送ること。" },
       { word: "めんそう", display: "面相", meaning: "顔つき。「百面相」。" },
       { word: "ひんそう", display: "貧相", meaning: "みすぼらしく見えるようす。" },
-      { word: "なんそう", display: "南宋", meaning: "金に追われ南へ移った、中国の宋の王朝。" }
+      { word: "なんそう", display: "南宋", meaning: "金に追われ南へ移った、中国の宋の王朝。" },
+      { word: "きんそう", display: "欽宗", meaning: "北宋最後の皇帝。金に連れ去られた。" }
     ]
   },
   {
@@ -2642,7 +2645,9 @@ const WORD_ROUNDS = [
       { word: "けんけん", display: "けんけん", meaning: "片足で跳ぶ遊び。「けんけん跳び」。" },
       { word: "りんけん", display: "臨検", meaning: "役人が現場へ出向いて調べること。" },
       { word: "なんけん", display: "難件", meaning: "処理の難しい案件。" },
-      { word: "まんけん", display: "万券", meaning: "一万円札のこと。" }
+      { word: "まんけん", display: "万券", meaning: "一万円札のこと。" },
+      { word: "にんけん", display: "仁賢", meaning: "記紀に伝わる古代の天皇。「仁賢天皇」。" },
+      { word: "そんけん", display: "孫権", meaning: "『三国志』で呉を建てた武将。" }
     ]
   },
   {
@@ -3371,7 +3376,7 @@ const WORD_ROUNDS = [
       { word: "かんとく", display: "監督", meaning: "取り締まり指導する人。「映画監督」。" },
       { word: "じんとく", display: "人徳", meaning: "その人にそなわる徳。「人徳がある」。" },
       { word: "あんとく", display: "安徳", meaning: "平家とともに海に沈んだとされる幼帝。「安徳天皇」。" },
-      { word: "ぶんとく", display: "文徳", meaning: "平安前期の天皇。「文徳天皇」。" },
+      { word: "もんとく", display: "文徳", meaning: "平安前期の天皇。「文徳天皇」。" },
       { word: "そんとく", display: "損得", meaning: "損と得。「損得勘定」。" },
       { word: "いんとく", display: "隠匿", meaning: "かくして人に知られないようにすること。" },
       { word: "にんとく", display: "仁徳", meaning: "仁徳天皇。世界最大級の古墳で知られる。" },
@@ -3523,7 +3528,8 @@ const WORD_ROUNDS = [
       { word: "よんめい", display: "四名", meaning: "四人。人数の数え方。" },
       { word: "なんめい", display: "何名", meaning: "何人。人数をたずねる語。" },
       { word: "ぜんめい", display: "喘鳴", meaning: "息をするとき、ぜいぜいと鳴る音。" },
-      { word: "さんめい", display: "山名", meaning: "室町幕府の有力守護大名。「山名宗全」。" }
+      { word: "さんめい", display: "山名", meaning: "室町幕府の有力守護大名。「山名宗全」。" },
+      { word: "きんめい", display: "欽明", meaning: "仏教が伝来したころの天皇。「欽明天皇」。" }
     ]
   },
   {
