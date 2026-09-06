@@ -4564,5 +4564,30 @@ const WORD_ROUNDS = [
       { word: "まごう", display: "紛う", meaning: "「まがう」と同じ。「見紛う」。" },
       { word: "まふう", display: "魔風", meaning: "魔物が起こすという嵐・不気味な風。" }
     ]
+  },
+  {
+    template: "○んぐ",
+    answers: [
+      { word: "てんぐ", display: "天狗", meaning: "山に住むという赤ら顔で鼻の高い妖怪／得意になること。「天狗になる」。" },
+      { word: "ねんぐ", display: "年貢", meaning: "領主に納めた税。「年貢の納め時」。" },
+      { word: "ぶんぐ", display: "文具", meaning: "筆記具やノートなど、文房具。" },
+      { word: "がんぐ", display: "玩具", meaning: "おもちゃ。「玩具メーカー」。" },
+      { word: "しんぐ", display: "寝具／神具", meaning: "布団や枕など寝るための道具／神を祭るための道具。" },
+      { word: "きんぐ", display: "キング", meaning: "王／トランプやチェスの王の札・駒。" },
+      { word: "りんぐ", display: "リング", meaning: "輪・指輪／ボクシングなどの試合場。" },
+      { word: "とんぐ", display: "トング", meaning: "食べ物をはさんで取る、V字形の道具。" },
+      { word: "そんぐ", display: "ソング", meaning: "歌。「テーマソング」。" },
+      { word: "ろんぐ", display: "ロング", meaning: "長いこと。「ロングヘア」「ロングセラー」。" },
+      { word: "やんぐ", display: "ヤング", meaning: "若者。若々しいこと。" },
+      { word: "はんぐ", display: "ハング", meaning: "つるすこと／機械が止まって反応しなくなること。" },
+      { word: "でんぐ", display: "デング", meaning: "蚊が媒介する感染症。「デング熱」。" },
+      { word: "あんぐ", display: "暗愚", meaning: "道理に暗く、おろかなこと。「暗愚な君主」。" },
+      { word: "ぼんぐ", display: "凡愚", meaning: "平凡でおろかなこと。また、その人。" },
+      { word: "けんぐ", display: "賢愚", meaning: "かしこいことと、おろかなこと。" },
+      { word: "みんぐ", display: "民具", meaning: "庶民が暮らしの中で使ってきた道具。" },
+      { word: "にんぐ", display: "忍具", meaning: "忍者が使う道具。手裏剣や鉤縄など。" },
+      { word: "ごんぐ", display: "欣求", meaning: "喜び求めること。「厭離穢土欣求浄土」。" },
+      { word: "ちんぐ", display: "チング（친구）", meaning: "韓国語で「友だち」。同年の親しい間柄をいう。" }
+    ]
   }
 ];
