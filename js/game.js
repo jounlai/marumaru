@@ -21,8 +21,8 @@ const KANA_ROWS = [
   ["ま","み","む","め","も"],
   ["や",null,"ゆ",null,"よ"],
   ["ら","り","る","れ","ろ"],
-  ["わ",null,null,null,"を"],
-  ["ん",null,null,null,null]
+  // わ・を・ん は3つしかないので1行にまとめ、空いたぶんを下の操作バーに回す
+  ["わ",null,"を",null,"ん"]
 ];
 const VOICED_ROWS = [
   ["が","ぎ","ぐ","げ","ご"],
@@ -59,13 +59,13 @@ const MODE_KEY = "maruanagame-mode";
 let mode = null;
 try { const m = localStorage.getItem(MODE_KEY); if (m === "kids" || m === "adult") mode = m; } catch (e) {}
 
-// こども版は、やさしい語だけに絞ってから盤面を組む。正解が3語に満たなくなった
-// ラウンドは当てずっぽうになるので、そのラウンドごと外す。
+// こども版で外すのは、子供に見せたくない語だけにする。難しい語も正解のまま
+// 残す。正解を減らすと「押しても当たらない」ことが増えて、★ばかり減るため。
 function applyMode(){
   if (mode !== "kids") return;
   const kept = [];
   for (const r of ROUND_DATA) {
-    const answers = r.answers.filter(a => KIDS_OK.has(a.word));
+    const answers = r.answers.filter(a => !KIDS_NG.has(a.word));
     if (answers.length >= 3) kept.push({ ...r, answers });
   }
   ROUND_DATA.length = 0;
@@ -107,7 +107,9 @@ const STAGES = buildStages();
 const STAGE_OF = new Map();
 STAGES.forEach((rounds, si) => rounds.forEach(i => STAGE_OF.set(i, si)));
 
-const CLEAR_RATE = 0.6;
+const CLEAR_RATE_ADULT = 0.6;
+const CLEAR_RATE_KIDS = 0.4;   // こども版はクリアまでの語数を減らす
+function clearRate(){ return mode === "kids" ? CLEAR_RATE_KIDS : CLEAR_RATE_ADULT; }
 const BASE_POINT = 100;      // 1正解の基礎点
 const COMBO_STEP = 20;       // コンボ1つごとの加点
 const FEVER_AT = 5;          // 何連続でFEVERか
@@ -287,7 +289,7 @@ function fillWord(round, kana){
   if (round.mode === "dakutenSecond") return round.template.replace("○", kana).replace("〇", voicedKana(kana));
   return round.template.replaceAll("○", kana);
 }
-function clearTarget(round = current()){ return Math.max(1, Math.ceil(round.answers.length * CLEAR_RATE)); }
+function clearTarget(round = current()){ return Math.max(1, Math.ceil(round.answers.length * clearRate())); }
 function answerMap(){ return new Map(current().answers.map(a => [a.word, a])); }
 function answerDisplay(a){ return a.display || a.word; }
 function kanaForWord(word){
@@ -649,6 +651,17 @@ function sfxWrong(){
   tone(95, {type: "square", vol: .045, dur: .32});
 }
 function sfxClear(){ [0, 4, 7, 12].forEach((s, i) => tone(523.25 * Math.pow(2, s / 12), {type: "triangle", vol: .07, dur: .45, at: i * .075})); }
+// ラウンドクリア用。ステージクリアより軽いが、駆け上がって和音で締める
+function sfxClearFanfare(){
+  const base = 523.25;
+  [0, 4, 7, 12].forEach((semi, i) => {
+    const f = base * Math.pow(2, semi / 12);
+    tone(f, {type: "triangle", vol: .07, dur: .22, at: i * .085});
+    tone(f * 2, {type: "sine", vol: .026, dur: .2, at: i * .085 + .01});
+  });
+  [0, 4, 7].forEach((semi, i) =>
+    tone(base * 2 * Math.pow(2, semi / 12), {type: "sine", vol: .04, dur: .8, at: .36 + i * .02}));
+}
 function sfxPerfect(){ [0, 4, 7, 12, 16, 19, 24].forEach((s, i) => tone(523.25 * Math.pow(2, s / 12), {type: "triangle", vol: .07, dur: .6, at: i * .085})); }
 function sfxHint(){ tone(880, {type: "sine", vol: .05, dur: .1}); tone(660, {type: "sine", vol: .05, dur: .14, at: .09}); }
 function buzz(ms){ if (soundOn && navigator.vibrate) { try { navigator.vibrate(ms); } catch (e) {} } }
@@ -988,13 +1001,18 @@ function finishRound(silent){
   }
   saveProgress();
   if (!silent) {
-    sfxClear(); buzz([30, 50, 30]);
-    mascotPose("cheer", 820);
-    mascotSay("ゴール！", "gold", 2000);
+    const colors = mode === "kids" ? KIDS_COLORS : ["#fff", "#ffd34d", "#bbb", "#7ef9d0"];
+    sfxClearFanfare(); buzz([30, 50, 30, 50, 90]);
+    mascotPose("cheer", 900);
+    mascotSay("ゴール！", "gold", 2200);
+    document.body.classList.add("celebrate");
+    setTimeout(() => document.body.classList.remove("celebrate"), 1200);
+    confetti(55, colors, 2600);
     setTimeout(() => {
       showBurst({mark: roundName(), word: "ROUND CLEAR", sub: `${s.discovered.size} / ${current().answers.length} 語発見`,
-        bonus, dim: true, long: true, char: "pose", ms: 1250});
-      particles(null, 34, mode === "kids" ? KIDS_COLORS : ["#fff", "#ffd34d", "#bbb"]);
+        bonus, dim: true, gold: true, long: true, char: "pose", ms: 2200});
+      particles(null, 46, colors);
+      setTimeout(() => particles(null, 30, colors), 380);
     }, 340);
   }
 }
@@ -1346,11 +1364,15 @@ importHandoffSave();
 if (!mode) {
   $("#modeGate").hidden = false;
 } else {
-  document.body.classList.toggle("kidsMode", mode === "kids");
+  document.documentElement.classList.remove("noMode");
+  document.documentElement.classList.toggle("kidsMode", mode === "kids");
   $("#modeName").textContent = mode === "kids" ? "こども版" : "おとな版";
   $("#switchModeBtn").textContent = mode === "kids" ? "おとな版に切り替える" : "こども版に切り替える";
   if (mode === "kids") {
     ["#hintBtn", "#hintBtnM", "#mHintBtn"].forEach(sel => { const b = $(sel); if (b) b.textContent = "ヒント"; });
+    $("#nextBtn").textContent = "つぎへ →";
+    $("#retryBtn").textContent = "やりなおす";
+    $("#revealBtn").textContent = "こたえを見る";
   }
   loadProgress();
 

@@ -468,12 +468,15 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 .doneBar{
   flex:none;display:flex;align-items:center;gap:10px;justify-content:space-between;
   border:1px solid var(--gold);border-radius:12px;background:linear-gradient(180deg,#151206,#0a0a0a);
-  padding:8px 10px;height:56px;overflow:hidden;
+  padding:6px 9px;height:46px;overflow:hidden;
   visibility:hidden;opacity:0;transition:opacity .18s;
 }
 .doneBar.show{visibility:visible;opacity:1;animation:doneIn .4s cubic-bezier(.2,1.2,.3,1)}
 @keyframes doneIn{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:none}}
-.doneMsg{font-size:11.5px;line-height:1.5;color:#e9e2c6;min-width:0}
+.doneMsg{
+  font-size:11.5px;line-height:1.4;color:#e9e2c6;min-width:0;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
 .doneMsg b{color:var(--gold)}
 .doneBtns{display:flex;gap:6px;flex:none}
 .doneBtns .btn{flex:none}
@@ -633,8 +636,7 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
   .roundList{grid-template-columns:repeat(2,minmax(0,1fr))}
   .modalCard{--cardPad:11px;border-radius:14px}
   .answerRow{grid-template-columns:minmax(120px,42%) minmax(0,1fr);gap:8px}
-  .doneBar{gap:7px;padding:6px 8px;height:58px}
-  .doneMsg{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .doneBar{gap:6px;padding:5px 7px;height:48px}
   .doneBtns .btn{flex:1}
   .floatText{font-size:15px}
 }
@@ -702,33 +704,33 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 
 /* ------------------------------------------------------------ 11) こども版 */
 /* 読ませたいもの（お題・かな・語釈）を大きく、点数まわりは丸ごと隠す */
-body.kidsMode .hudScore,
-body.kidsMode .comboTag,
-body.kidsMode #difficulty,
-body.kidsMode .statGrid .stat:nth-child(1),
-body.kidsMode .statGrid .stat:nth-child(2){ display:none }
+.kidsMode .hudScore,
+.kidsMode .comboTag,
+.kidsMode #difficulty,
+.kidsMode .statGrid .stat:nth-child(1),
+.kidsMode .statGrid .stat:nth-child(2){ display:none }
 
-body.kidsMode .pattern{font-size:clamp(40px,10vw,84px)}
-body.kidsMode .kana{font-size:clamp(20px,4vh,34px);border-radius:9px}
-body.kidsMode .flash .fw{font-size:22px}
-body.kidsMode .flash .fm{font-size:17px;color:#e8e8e8;-webkit-line-clamp:3}
-body.kidsMode .flash .rd{font-size:14px}
-body.kidsMode .progressText{font-size:13px}
-body.kidsMode .foundTitle,
-body.kidsMode .chip{font-size:13px}
-body.kidsMode .rcMeta,
-body.kidsMode .stageNote{font-size:12px}
-body.kidsMode .rcTop{font-size:14px}
-body.kidsMode .doneMsg{font-size:14px}
-body.kidsMode .btn{font-size:14px;padding:10px 14px}
+.kidsMode .pattern{font-size:clamp(40px,10vw,84px)}
+.kidsMode .kana{font-size:clamp(20px,4vh,34px);border-radius:9px}
+.kidsMode .flash .fw{font-size:22px}
+.kidsMode .flash .fm{font-size:17px;color:#e8e8e8;-webkit-line-clamp:3}
+.kidsMode .flash .rd{font-size:14px}
+.kidsMode .progressText{font-size:13px}
+.kidsMode .foundTitle,
+.kidsMode .chip{font-size:13px}
+.kidsMode .rcMeta,
+.kidsMode .stageNote{font-size:12px}
+.kidsMode .rcTop{font-size:14px}
+.kidsMode .doneMsg{font-size:14px}
+.kidsMode .btn{font-size:14px;padding:10px 14px}
 @media(min-width:961px){
-  body.kidsMode .flash .fw{font-size:26px}
-  body.kidsMode .flash .fm{font-size:19px}
+  .kidsMode .flash .fw{font-size:26px}
+  .kidsMode .flash .fm{font-size:19px}
 }
 .chipTag.stage{border-color:#3c6f5c;color:var(--fever)}
 .kidsOnly{display:none}
-body.kidsMode .kidsOnly{display:block}
-body.kidsMode .adultOnly{display:none}
+.kidsMode .kidsOnly{display:block}
+.kidsMode .adultOnly{display:none}
 
 /* --------------------------------------------------------------- 12) ロゴ */
 .brand img{display:block;height:22px;width:auto}
@@ -749,50 +751,50 @@ body.kidsMode .adultOnly{display:none}
 
 /* ------------------------------------------------- 13) こども版の色と動き */
 /* ロゴから採った色。かなの行ごとに色を変えて、盤面を絵本の見開きに近づける */
-body.kidsMode{
+.kidsMode{
   --k-yellow:#ffd42a; --k-orange:#ff8a1f; --k-blue:#38a9ea;
   --k-green:#8ac93a; --k-pink:#f2789f; --k-cream:#fff3cf;
   --gold:var(--k-yellow); --fever:var(--k-green);
   background:radial-gradient(120% 90% at 50% -10%,#1b1206 0%,#0a0705 55%,#050403 100%);
 }
-body.kidsMode .app{background:transparent}
-body.kidsMode .gridWrap{border-color:#3a2a12;background:#0f0b06}
-body.kidsMode .kana{
+.kidsMode .app{background:transparent}
+.kidsMode .gridWrap{border-color:#3a2a12;background:#0f0b06}
+.kidsMode .kana{
   border-width:2px;background:#150f08;font-weight:800;
   border-color:var(--k-yellow);color:var(--k-cream);
 }
-body.kidsMode .kanaRow:nth-child(5n+2) .kana{border-color:var(--k-orange)}
-body.kidsMode .kanaRow:nth-child(5n+3) .kana{border-color:var(--k-blue)}
-body.kidsMode .kanaRow:nth-child(5n+4) .kana{border-color:var(--k-green)}
-body.kidsMode .kanaRow:nth-child(5n+5) .kana{border-color:var(--k-pink)}
-body.kidsMode .kana:disabled{opacity:.28}
+.kidsMode .kanaRow:nth-child(5n+2) .kana{border-color:var(--k-orange)}
+.kidsMode .kanaRow:nth-child(5n+3) .kana{border-color:var(--k-blue)}
+.kidsMode .kanaRow:nth-child(5n+4) .kana{border-color:var(--k-green)}
+.kidsMode .kanaRow:nth-child(5n+5) .kana{border-color:var(--k-pink)}
+.kidsMode .kana:disabled{opacity:.28}
 /* 当てたかなは白く塗って緑の輪で囲む。行ごとの色枠のなかに緑で塗ると、
    まわりの緑枠のかなと見分けがつかなかったため。 */
-body.kidsMode .kana.correct{
+.kidsMode .kana.correct{
   background:#fff;color:#12210a;border-color:#fff;font-weight:900;
   box-shadow:0 0 0 3px var(--k-green),0 3px 10px rgba(0,0,0,.55);
 }
-body.kidsMode .kana.correct::after{
+.kidsMode .kana.correct::after{
   content:"✓";position:absolute;right:3px;top:1px;
   font-size:11px;font-weight:900;color:var(--k-green);line-height:1;
 }
-body.kidsMode .kana.pop{animation:kidsPop .42s cubic-bezier(.2,1.5,.4,1)}
+.kidsMode .kana.pop{animation:kidsPop .42s cubic-bezier(.2,1.5,.4,1)}
 @keyframes kidsPop{
   0%{transform:scale(1) rotate(0)}
   35%{transform:scale(1.28) rotate(-7deg)}
   65%{transform:scale(.95) rotate(4deg)}
   100%{transform:scale(1) rotate(0)}
 }
-body.kidsMode .pattern{color:var(--k-cream);text-shadow:0 4px 0 #6b4a1a,0 0 26px rgba(255,212,42,.35)}
-body.kidsMode .pattern .hole{color:var(--k-yellow)}
-body.kidsMode .flash.good{color:var(--k-yellow)}
-body.kidsMode .flash .fw{text-shadow:0 3px 0 #6b4a1a}
-body.kidsMode .burstWord{
+.kidsMode .pattern{color:var(--k-cream);text-shadow:0 4px 0 #6b4a1a,0 0 26px rgba(255,212,42,.35)}
+.kidsMode .pattern .hole{color:var(--k-yellow)}
+.kidsMode .flash.good{color:var(--k-yellow)}
+.kidsMode .flash .fw{text-shadow:0 3px 0 #6b4a1a}
+.kidsMode .burstWord{
   color:var(--k-yellow);
   text-shadow:0 5px 0 #6b4a1a,0 3px 22px rgba(0,0,0,.92),0 0 34px rgba(255,212,42,.55);
 }
-body.kidsMode .burstMark{color:var(--k-orange);letter-spacing:.12em}
-body.kidsMode .burstInner{animation-name:kidsBurst}
+.kidsMode .burstMark{color:var(--k-orange);letter-spacing:.12em}
+.kidsMode .burstInner{animation-name:kidsBurst}
 @keyframes kidsBurst{
   0%{opacity:0;transform:scale(.4) rotate(-8deg)}
   22%{opacity:1;transform:scale(1.18) rotate(3deg)}
@@ -801,13 +803,13 @@ body.kidsMode .burstInner{animation-name:kidsBurst}
   86%{opacity:1;transform:scale(1)}
   100%{opacity:0;transform:scale(.98) translateY(-12px)}
 }
-body.kidsMode .chip{border-color:var(--k-blue);background:#0b1219}
-body.kidsMode .chipTag.stage{border-color:var(--k-green);color:var(--k-green)}
-body.kidsMode .stageChip.done{border-color:var(--k-green)}
-body.kidsMode .stageChip.done b{color:var(--k-green)}
-body.kidsMode .roundChoice.cleared{border-color:var(--k-green)}
-body.kidsMode .mgBtn.kids b{color:var(--k-yellow)}
-body.kidsMode .btn.primary{background:var(--k-yellow);color:#3a2606;border-color:#fff}
+.kidsMode .chip{border-color:var(--k-blue);background:#0b1219}
+.kidsMode .chipTag.stage{border-color:var(--k-green);color:var(--k-green)}
+.kidsMode .stageChip.done{border-color:var(--k-green)}
+.kidsMode .stageChip.done b{color:var(--k-green)}
+.kidsMode .roundChoice.cleared{border-color:var(--k-green)}
+.kidsMode .mgBtn.kids b{color:var(--k-yellow)}
+.kidsMode .btn.primary{background:var(--k-yellow);color:#3a2606;border-color:#fff}
 /* 入り口の「こども版」ボタンは、押してほしいので少しだけ跳ねる */
 .mgBtn.kids{animation:mgWiggle 2.6s .8s ease-in-out infinite}
 @keyframes mgWiggle{
@@ -817,17 +819,33 @@ body.kidsMode .btn.primary{background:var(--k-yellow);color:#3a2606;border-color
 }
 
 /* こども版は字が大きいぶん、語釈の欄も高くする（高さは固定のまま） */
-body.kidsMode .flash{height:84px}
-body.kidsMode .flash .fm{-webkit-line-clamp:2;max-height:3em}
-@media(min-width:961px){ body.kidsMode .flash{height:94px} }
-@media(max-height:680px){ body.kidsMode .flash{height:62px} }
+.kidsMode .flash{height:84px}
+.kidsMode .flash .fm{-webkit-line-clamp:2;max-height:3em}
+@media(min-width:961px){ .kidsMode .flash{height:94px} }
+@media(max-height:680px){ .kidsMode .flash{height:62px} }
 
-/* 語釈欄と操作バーは同じ場所を共有する。バーは語釈の上に重ねて出すので、
-   出ても消えても盤面の高さは動かない。 */
-.flashWrap{position:relative;flex:none}
-.flashWrap .doneBar{position:absolute;inset:0;height:auto}
+/* 操作バーは盤面の下に置き、出ていないあいだも同じ高さを確保しておく。
+   語釈の上に重ねると解説が読めなくなるので、重ねない。 */
+.doneBar{margin-top:var(--gap)}
+/* 「次のラウンドへ」は次にすることなので、目立たせる */
+.doneBar.show{animation:doneIn .4s cubic-bezier(.2,1.2,.3,1),doneGlow 1.8s .4s ease-in-out infinite}
+@keyframes doneGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,211,77,0)}
+  50%{box-shadow:0 0 0 3px rgba(255,211,77,.28),0 0 18px rgba(255,211,77,.35)}
+}
+/* 「次のラウンドへ」は次にすることなので、ひと目で分かる色にして光らせる。
+   大きさは動かさない（動くとタップが狙いにくく、自動テストも掴めない）。 */
+.doneBar.show #nextBtn{
+  background:var(--gold);color:#3a2606;border-color:#fff;font-weight:900;
+  animation:nextGlow 1.5s .3s ease-in-out infinite;
+}
+@keyframes nextGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,211,77,.5)}
+  50%{box-shadow:0 0 0 5px rgba(255,211,77,.16),0 0 18px rgba(255,211,77,.85)}
+}
+.doneBar.show #reviveBarBtn{background:var(--gold);color:#3a2606;border-color:#fff;font-weight:900}
 /* 当てたかなは、押せなくなっても色を落とさない（見つけた印として残す） */
-body.kidsMode .kana.correct:disabled{opacity:1}
+.kidsMode .kana.correct:disabled{opacity:1}
 
 /* ------------------------------------------------------- 14) キャラクター */
 .mgChar{
@@ -861,9 +879,9 @@ body.kidsMode .kana.correct:disabled{opacity:1}
 @keyframes charGood{0%{transform:translateX(-50%) scale(.7) rotate(-8deg)}40%{transform:translateX(-50%) scale(1.15) rotate(3deg)}100%{transform:translateX(-50%) scale(1)}}
 
 /* こども版はキャラクターに入れ替える */
-body.kidsMode .mChar{display:block}
-body.kidsMode .mRig{display:none}
-body.kidsMode .mBubble{bottom:54px}
+.kidsMode .mChar{display:block}
+.kidsMode .mRig{display:none}
+.kidsMode .mBubble{bottom:54px}
 
 /* バーストのキャラクター（ステージクリア・PERFECT） */
 .burstChar{
@@ -877,13 +895,13 @@ body.kidsMode .mBubble{bottom:54px}
   100%{opacity:1;transform:none}
 }
 /* キャラクターより吹き出しを手前に出す */
-body.kidsMode .mChar{width:58px;height:58px;z-index:1}
-body.kidsMode .mBubble{z-index:3;bottom:60px}
+.kidsMode .mChar{width:58px;height:58px;z-index:1}
+.kidsMode .mBubble{z-index:3;bottom:60px}
 /* 入り口はロゴとキャラクターが一体になった絵を使う */
 .mgLogo.hero{width:min(420px,80vw);margin-bottom:14px}
 
 /* こども版のステージ一覧は、お題と進み具合だけにする */
-body.kidsMode #roundModal .modalSub{display:none}
+.kidsMode #roundModal .modalSub{display:none}
 .roundChoice.kid{
   display:grid;grid-template-columns:34px 1fr;grid-template-rows:auto auto;
   align-items:center;gap:4px 10px;padding:12px 12px;
@@ -897,7 +915,7 @@ body.kidsMode #roundModal .modalSub{display:none}
 .roundChoice.kid .rcMark.done{border-color:var(--k-green);color:var(--k-green);font-size:19px}
 .roundChoice.kid .rcPattern{font-size:26px;margin:0;text-align:left}
 .roundChoice.kid .rcBar{grid-column:2}
-body.kidsMode .roundList{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.kidsMode .roundList{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
 
 /* ------------------------------------------------ 15) ステージクリアの祝い */
 .confetti{
@@ -918,3 +936,6 @@ body.celebrate .app{animation:celebrateFlash 1.2s ease-out}
 }
 .burst.gold .burstWord{animation:clearPulse 1.1s ease-in-out 2}
 @keyframes clearPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+/* モードを選ぶ前に盤面がちらつかないよう、決まるまで隠しておく */
+.noMode .app{visibility:hidden}

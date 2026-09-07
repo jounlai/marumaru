@@ -76,11 +76,11 @@ for (const [label, rounds] of [["通常", ROUND_DATA], ["SPECIAL", SPECIAL_ROUND
   }
 }
 
-// こども版の語リスト（js/kids.js）が data.js とずれていないか。
+// こども版で外す語リスト（js/kids.js）が data.js とずれていないか。
 // 語を消したのに kids.js に残っている、という取り残しを拾う。
 const kidsSrc = fs.readFileSync(path.join(__dirname, "..", "js", "kids.js"), "utf8");
 const kidsBox = {};
-vm.runInNewContext(kidsSrc + ";this.OUT=KIDS_OK;", kidsBox);
+vm.runInNewContext(kidsSrc + ";this.OUT=KIDS_NG;", kidsBox);
 const allWords = new Set();
 for (const rs of [ROUND_DATA, SPECIAL_ROUNDS, WORD_ROUNDS]) for (const r of rs) for (const a of r.answers) allWords.add(a.word);
 const orphans = [...kidsBox.OUT].filter(w => !allWords.has(w));

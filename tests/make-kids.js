@@ -1,19 +1,17 @@
-/* こども版に出す語を選び、js/kids.js を書き出す。
+/* こども版に出さない語を選び、js/kids.js を書き出す。
  *   node tests/make-kids.js
  *
- * 選び方（「中間」の線）
- *   1. 卑猥・性的・差別的な語は、辞書に載っていても外す（下の BLOCK）
- *   2. JMdict に常用度タグ（news/ichi/spec/gai/nf）が付く語は入れる
- *   3. タグが無くても、漢字表記を持たない語（きらきら・わくわく のような
- *      擬音語・擬態語・口語）は、辞書に見出しがあれば入れる
- *   4. SPECIAL ラウンドの畳語（ときどき・さまざま・ひとびと）は、漢字表記を
- *      持つがどれも日常語なので、辞書に見出しがあれば入れる
- *   5. それ以外（惻々・磊々・蓼蓼 のような表外漢字の漢語、辞書に無い古語）は外す
+ * 方針
+ *   こども版でも、正解になる語は減らさない。減らすと「押しても当たらない」
+ *   ことが増えて、★ばかり減ってしまうため。難しい語は、出会って覚える側に置く。
+ *   外すのは、子供に見せたくない語だけにする。
  *
- * 出力は「出してよい語」の側にする。語を足したときに既定で こども版へ
- * 出ないほうが安全なため。tests/lint-data.js が同期を検査する。
+ *   1. 性的な語・障害を指す古い俗称は外す（下の BLOCK）
+ *   2. うんこ・うんち・ちんちん のような下ネタは外さない。子供の笑いの範囲で、
+ *      辞書にも載っている
  *
- * 辞書は check-readings.js と同じ tests/.cache/JMdict_e.gz を使う。
+ * 語釈から機械的に候補を拾ったうえで、BLOCK は人が決める。語を足したら
+ * 走らせ直して、新しい語が引っかからないか確かめること。
  */
 "use strict";
 const fs = require("fs");
@@ -30,12 +28,10 @@ const OUT = path.join(ROOT, "js", "kids.js");
 const BLOCK = new Set([
   // 性的な語
   "えろえろ", "えちえち", "えろい", "らんこう", "がんしゃ", "いんび", "いんむ",
-  "いんぷ", "くがい", "たゆう", "ちんこ", "まんこ", "ちんぽ", "ちんちん",
-  "いんぽ", "ぱいぱい", "てんが",
-  // 障害を指す古い俗称（大人版では注記付きで残している）
-  "めくめく", "つんぼ", "ちんば", "よいよい",
-  // 排泄まわりで、笑いにならないもの
-  "しいしい", "べんき"
+  "いんぷ", "くがい", "たゆう", "ちんこ", "まんこ", "ちんぽ", "いんぽ",
+  "ぱいぱい", "てんが",
+  // 障害を指す古い俗称（おとな版では注記付きで残している）
+  "めくめく", "つんぼ", "ちんば", "よいよい"
 ]);
 
 const kata = w => [...w].map(c => {
@@ -74,49 +70,46 @@ vm.runInNewContext(
 );
 const { ROUND_DATA, SPECIAL_ROUNDS, WORD_ROUNDS } = sandbox.OUT;
 
-const okWords = [];
-let blocked = 0, tooHard = 0, total = 0;
-
-for (const [isSpecial, rounds] of [[false, ROUND_DATA], [true, SPECIAL_ROUNDS], [false, WORD_ROUNDS]]) {
+const ngWords = [];
+let total = 0;
+for (const rounds of [ROUND_DATA, SPECIAL_ROUNDS, WORD_ROUNDS]) {
   for (const r of rounds) {
     for (const a of r.answers) {
       total++;
-      if (BLOCK.has(a.word)) { blocked++; continue; }
-      const hot = look(a.word);
-      if (hot === undefined) { tooHard++; continue; }      // 辞書に見出しが無い
-      const hasKanji = a.display && /[一-鿿]/.test(a.display);
-      if (hot || !hasKanji || isSpecial) okWords.push(a.word);
-      else tooHard++;
+      if (BLOCK.has(a.word)) ngWords.push(a.word);
     }
   }
 }
 
-const uniq = [...new Set(okWords)].sort();
+const uniq = [...new Set(ngWords)].sort();
 const rows = [];
-for (let i = 0; i < uniq.length; i += 8) rows.push("  " + uniq.slice(i, i + 8).map(w => `"${w}"`).join(", "));
+for (let i = 0; i < uniq.length; i += 6) rows.push("  " + uniq.slice(i, i + 6).map(w => `"${w}"`).join(", "));
 
 fs.writeFileSync(OUT,
 `/* ===========================================================================
- * kids.js — こども版に出す語（tests/make-kids.js が生成する。手で編集しない）
- * 卑猥・差別的な語と、辞書で低頻度の難しい語を外した ${uniq.length} 語。
+ * kids.js — こども版に出さない語（tests/make-kids.js が生成する。手で編集しない）
+ * 性的な語と、障害を指す古い俗称 ${uniq.length} 語。難しい語は外していない。
+ * 減らすと押しても当たらないことが増え、★ばかり減ってしまうため。
  * 語を足したら node tests/make-kids.js を走らせ直すこと。
  * =========================================================================== */
-const KIDS_OK = new Set([
+const KIDS_NG = new Set([
 ${rows.join(",\n")}
 ]);
 `);
 
-// ラウンドごとの成立状況
-let alive = 0, dead = [];
-const okSet = new Set(uniq);
-for (const [lab, rounds] of [["通常", ROUND_DATA], ["SPECIAL", SPECIAL_ROUNDS], ["WORD", WORD_ROUNDS]]) {
-  for (const r of rounds) {
-    const n = r.answers.filter(a => okSet.has(a.word)).length;
-    if (n < 3) dead.push(`${lab} ${r.template}(${r.answers.length}→${n})`); else alive++;
-  }
+// 念のため、語釈から拾える性的・差別的な語が BLOCK から漏れていないか見る
+const SUSPECT = /男性器|女性器|射精|勃起|性行為|性的|売春|遊女|娼|みだら|淫|差別語|盲人|聾|足の不自由/;
+const missed = [];
+for (const rounds of [ROUND_DATA, SPECIAL_ROUNDS, WORD_ROUNDS])
+  for (const r of rounds)
+    for (const a of r.answers)
+      if (!BLOCK.has(a.word) && SUSPECT.test(a.meaning)) missed.push(`${a.word}（${a.display || ""}）`);
+
+console.log(`全${total}語 → こども版で外す ${uniq.length}語 ／ 出す ${total - uniq.length}語`);
+if (missed.length) {
+  console.log("\n■ 語釈から見て、BLOCK に足すか検討したほうがよい語");
+  console.log("  " + missed.join("  "));
+} else {
+  console.log("語釈から見て、取りこぼしは無い。");
 }
-console.log(`全${total}語 → こども版 ${uniq.length}語`);
-console.log(`  卑猥・差別で除外 ${blocked}語 ／ 難しすぎるとして除外 ${tooHard}語`);
-console.log(`ラウンド: 成立 ${alive} ／ 正解3語未満で こども版から外れる ${dead.length}`);
-if (dead.length) console.log("  " + dead.join("  "));
 console.log(`\n${path.relative(ROOT, OUT)} を書き出した。`);

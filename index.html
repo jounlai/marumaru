@@ -44,14 +44,26 @@
   gtag('config', 'G-1FJ9BJXEGF');
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=df270272">
+<!-- モードは CSS が効く前に決める。あとから body へ付けると、
+     こども版でも棒人間が一瞬だけ見えてしまうため。 -->
+<script>
+(function(){
+  var m = null;
+  try { m = localStorage.getItem("maruanagame-mode"); } catch (e) {}
+  var c = document.documentElement.classList;
+  if (m === "kids") c.add("kidsMode");
+  if (m !== "kids" && m !== "adult") c.add("noMode");
+})();
+</script>
+
+<link rel="stylesheet" href="css/styles.css?v=ad356a69">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=df270272" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=ad356a69" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -71,7 +83,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand"><img src="img/logo-small.png?v=df270272" alt="まるまる 〇〇ことば" width="320" height="104"></div>
+    <div class="brand"><img src="img/logo-small.png?v=ad356a69" alt="まるまる 〇〇ことば" width="320" height="104"></div>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -130,19 +142,7 @@
             <span id="toClear"></span>
           </div>
         </div>
-        <div class="flashWrap">
-          <div class="flash" id="flash" aria-live="polite"></div>
-          <!-- クリア後の操作バー。語釈欄に重ねて出すので、盤面の高さは動かない -->
-          <div class="doneBar" id="doneBar">
-          <div class="doneMsg" id="doneMsg"></div>
-          <div class="doneBtns">
-          <button class="btn primary" id="reviveBarBtn">★5で再開</button>
-          <button class="btn" id="retryBtn">やり直す</button>
-          <button class="btn" id="revealBtn">答えを見る</button>
-          <button class="btn primary" id="nextBtn">次のラウンドへ →</button>
-          </div>
-          </div>
-        </div>
+        <div class="flash" id="flash" aria-live="polite"></div>
       </section>
 
       <!-- 五十音パネル -->
@@ -194,6 +194,18 @@
         </div>
       </div>
     </aside>
+  </div>
+
+  <!-- クリア後の操作バー。出ていないあいだも同じ高さを確保しておくので、
+       出ても消えても盤面の高さは動かない -->
+  <div class="doneBar" id="doneBar">
+    <div class="doneMsg" id="doneMsg"></div>
+    <div class="doneBtns">
+      <button class="btn primary" id="reviveBarBtn">★5で再開</button>
+      <button class="btn" id="retryBtn">やり直す</button>
+      <button class="btn" id="revealBtn">答えを見る</button>
+      <button class="btn primary" id="nextBtn">次のラウンドへ →</button>
+    </div>
   </div>
 
 </div>
@@ -307,8 +319,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=df270272"></script>
-<script src="js/kids.js?v=df270272"></script>
-<script src="js/game.js?v=df270272"></script>
+<script src="js/data.js?v=ad356a69"></script>
+<script src="js/kids.js?v=ad356a69"></script>
+<script src="js/game.js?v=ad356a69"></script>
 </body>
 </html>
