@@ -1101,6 +1101,12 @@ function currentStage(){ const si = STAGE_OF.get(roundIndex); return si === unde
 function stageCleared(si){ return STAGES[si].every(i => roundStates[i].cleared); }
 function stageDone(si){ return STAGES[si].filter(i => roundStates[i].cleared).length; }
 function stageUnlocked(si){ return si === 0 || stageCleared(si - 1); }
+// まだ開いていない先のステージに立たないよう、進める中でいちばん先を返す
+function highestUnlocked(){
+  let n = 0;
+  while (n < STAGES.length - 1 && stageCleared(n)) n++;
+  return n;
+}
 
 // ステージを越えたら★は満タンに戻す。1ステージが一区切りで、
 // しくじってもそのステージだけやり直せばよい、という作りにする。
@@ -1164,11 +1170,29 @@ function selectRound(i){
 function gameOver(){
   // ★0 の直後に予約されるので、先にやり直してしまった場合は開かない
   if (stars > 0) return;
-  $("#gameoverText").innerHTML =
-    `ステージ ${currentStage() + 1} で★が尽きました。<br>★5で再開できます。<b>記録は消えません。</b><br>発見したことば <b>${totalCorrectCount()}</b> 語。`;
+  const found = totalCorrectCount();
+  if (mode === "kids") {
+    $("#gameoverTitle").textContent = "★がなくなった！";
+    $("#gameoverText").innerHTML =
+      `でも、見つけた <b>${found}</b> こ の ことばは きえないよ。<br>★5こ で もういちど やってみよう！`;
+  } else {
+    $("#gameoverTitle").textContent = "GAME OVER";
+    $("#gameoverText").innerHTML =
+      `ステージ ${currentStage() + 1} で★が尽きました。<br>★5で再開できます。<b>記録は消えません。</b><br>発見したことば <b>${found}</b> 語。`;
+  }
+  $("#goChar").src = "img/maru-think.png";
   $("#gScore").textContent = num(score);
   $("#gCombo").textContent = num(maxCombo);
+  sfxGameOver();
+  buzz([60, 80, 60]);
   openModal("#gameoverModal");
+}
+// 失敗の音。落ち込ませすぎないよう、下がって最後にひとつ持ち上げる
+function sfxGameOver(){
+  [0, -2, -5].forEach((semi, i) =>
+    tone(392 * Math.pow(2, semi / 12), {type: "triangle", vol: .06, dur: .34, at: i * .17}));
+  tone(261.63, {type: "sine", vol: .05, dur: .9, at: .5});
+  tone(392, {type: "sine", vol: .035, dur: .8, at: .62});
 }
 // ★が尽きたときの再開。発見済みのことばもクリア済みの印もそのまま残す。
 // せっかく見つけた語が消えると、やる気ごと折れてしまうため。
@@ -1373,6 +1397,10 @@ if (!mode) {
     $("#nextBtn").textContent = "つぎへ →";
     $("#retryBtn").textContent = "やりなおす";
     $("#revealBtn").textContent = "こたえを見る";
+    $("#reviveBtn").textContent = "★5こ で もういちど";
+    $("#reviveBarBtn").textContent = "★5こ で もういちど";
+    $("#gAnswerBtn").textContent = "こたえを見る";
+    $("#gResetBtn").textContent = "はじめから やりなおす";
   }
   loadProgress();
 
@@ -1388,6 +1416,13 @@ if (!mode) {
       : "このラウンドは全問正解済みです。一覧から別のラウンドを選べます。";
   }
 
+  // 前のステージを終えていないのに、その先のラウンドから始まってしまうことがある
+  // （別モードのセーブや、ステージの並びが変わったとき）。開いている所へ戻す。
+  if (!stageUnlocked(currentStage())) {
+    const si = highestUnlocked();
+    const next = STAGES[si].find(i => !roundStates[i].cleared);
+    roundIndex = next === undefined ? STAGES[si][0] : next;
+  }
   viewStage = currentStage();
   render();
   if (bootNotice) flash("info", bootNotice);

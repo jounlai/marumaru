@@ -56,14 +56,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=ad356a69">
+<link rel="stylesheet" href="css/styles.css?v=3eec8461">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=ad356a69" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=3eec8461" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -83,7 +83,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand"><img src="img/logo-small.png?v=ad356a69" alt="まるまる 〇〇ことば" width="320" height="104"></div>
+    <div class="brand"><img src="img/logo-small.png?v=3eec8461" alt="まるまる 〇〇ことば" width="320" height="104"></div>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -302,10 +302,11 @@
 </div>
 
 <div class="modal" id="gameoverModal" data-persistent>
-  <div class="modalCard narrow" style="text-align:center">
-    <div style="font-size:46px;line-height:1">☆</div>
-    <div class="modalTitle" style="font-size:32px">GAME OVER</div>
-    <div class="modalSub" id="gameoverText" style="margin:6px 0 12px"></div>
+  <div class="modalCard narrow goCard">
+    <div class="goStars" aria-hidden="true"><i>☆</i><i>☆</i><i>☆</i><i>☆</i><i>☆</i></div>
+    <img class="goChar" id="goChar" src="img/maru-think.png" alt="" aria-hidden="true">
+    <div class="goTitle" id="gameoverTitle">GAME OVER</div>
+    <div class="modalSub" id="gameoverText"></div>
     <div class="statGrid">
       <div class="stat"><small>SCORE</small><b id="gScore">0</b></div>
       <div class="stat"><small>MAX COMBO</small><b id="gCombo">0</b></div>
@@ -319,8 +320,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=ad356a69"></script>
-<script src="js/kids.js?v=ad356a69"></script>
-<script src="js/game.js?v=ad356a69"></script>
+<script src="js/data.js?v=3eec8461"></script>
+<script src="js/kids.js?v=3eec8461"></script>
+<script src="js/game.js?v=3eec8461"></script>
 </body>
 </html>
