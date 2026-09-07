@@ -18,8 +18,15 @@
   check("一覧はいまのステージの問題を出す",
     document.querySelectorAll("#roundList .roundChoice").length === STAGES[0].length,
     `${document.querySelectorAll("#roundList .roundChoice").length}/${STAGES[0].length}`);
-  check("ステージ帯が出る", document.querySelectorAll("#stageStrip .stageChip").length === STAGES.length);
-  check("先のステージは施錠", document.querySelector('#stageStrip .stageChip[data-stage="1"]').disabled === true);
+  check("ステージの道が出る", document.querySelectorAll("#stageStrip .stageStop").length === STAGES.length);
+  check("先のステージは施錠の見た目", document.querySelector('#stageStrip .stageStop[data-stage="1"]').classList.contains("locked"));
+  check("施錠中でも問題は見える", (() => {
+    document.querySelector('#stageStrip .stageStop[data-stage="1"]').click();
+    const cards = document.querySelectorAll("#roundList .roundChoice");
+    const ok = cards.length === STAGES[1].length && [...cards].every(c => c.disabled);
+    document.querySelector('#stageStrip .stageStop[data-stage="0"]').click();
+    return ok;
+  })());
   check("かなボタン72個（清音46＋濁音半濁音26）", q("#kanaGrid").querySelectorAll(".kana").length === 72,
     String(q("#kanaGrid").querySelectorAll(".kana").length));
   check("ポケットがグリッド内に残る", !!q("#kanaGrid #pocket"));

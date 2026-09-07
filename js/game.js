@@ -770,9 +770,10 @@ function mascotSay(text, kind, ms = 1200){
 const CHAR_POSE = {cheer: "cheer", spin: "good", down: "idle"};
 function setChar(pose){
   if (!mCharEl) return;
-  mCharEl.className = "mChar is-" + pose;
+  const aim = mCharEl.classList.contains("aim") ? " aim" : "";
+  mCharEl.className = "mChar";
   void mCharEl.offsetWidth;   // 同じポーズを続けて出しても動きが再生されるように
-  mCharEl.className = "mChar is-" + pose;
+  mCharEl.className = "mChar is-" + pose + aim;
 }
 function mascotPose(cls, ms){
   clearTimeout(mascotPoseTimer);
@@ -790,6 +791,7 @@ function mascotPose(cls, ms){
 function mascotHead(text){
   mHeadEl.textContent = text || "の";
   mHeadEl.classList.toggle("aim", !!text);
+  if (mCharEl) mCharEl.classList.toggle("aim", !!text);
 }
 
 function updateMascot(){
@@ -1233,17 +1235,25 @@ function closeModals(opts){
 let viewStage = 0;
 function openRoundList(){
   if (viewStage < 0 || viewStage >= STAGES.length) viewStage = currentStage();
+  // ステージ選びは、すごろくの道にする。番号の羅列だと、どこまで来たのかが
+  // 数字でしか分からず味気ないため。いまいる所にはキャラクターが立つ。
+  const here = currentStage();
   const strip = STAGES.map((rounds, si) => {
     const done = stageDone(si), all = rounds.length;
     const open = stageUnlocked(si);
     const cls = [
       si === viewStage ? "on" : "",
       !open ? "locked" : "",
-      stageCleared(si) ? "done" : ""
+      stageCleared(si) ? "done" : "",
+      si === here ? "here" : ""
     ].join(" ");
-    return `<button class="stageChip ${cls}" data-stage="${si}" ${open ? "" : "disabled"}>
-      <b>${si + 1}</b><small>${open ? done + "/" + all : "ー"}</small></button>`;
-  }).join("");
+    const face = stageCleared(si) ? "★" : open ? si + 1 : "";
+    return `<button class="stageStop ${cls}" data-stage="${si}" title="ステージ ${si + 1}">
+      ${si === here ? '<img class="stopChar" src="img/maru-run.png" alt="">' : ""}
+      <span class="stopDot"><b>${face}</b></span>
+      <small>${open ? done + "/" + all : "？"}</small>
+    </button>`;
+  }).join("") + '<div class="stageGoal"><span>🏁</span><small>ゴール</small></div>';
 
   const rounds = STAGES[viewStage];
   const locked = !stageUnlocked(viewStage);
@@ -1279,7 +1289,7 @@ function openRoundList(){
   }).join("");
 
   const head = locked
-    ? `<div class="stageNote">${mode === "kids" ? "まえのステージをクリアするとひらくよ。" : "前のステージをぜんぶクリアすると開きます。"}</div>`
+    ? `<div class="stageNote peek">${mode === "kids" ? "どんな もんだいか だけ 見られるよ。まえのステージをクリアするとあそべる！" : "どんな問題かは見られます。前のステージをぜんぶクリアすると遊べます。"}</div>`
     : mode === "kids"
       ? ""
       : `<div class="stageNote">この ${rounds.length} 問をぜんぶクリアすると、次のステージへ進めます。
@@ -1290,8 +1300,12 @@ function openRoundList(){
     ? `ステージ ${viewStage + 1}`
     : `ステージ ${viewStage + 1} / ${STAGES.length}`;
   $("#roundList").innerHTML = head + list;
-  $("#stageStrip").querySelectorAll(".stageChip").forEach(b =>
+  $("#stageStrip").querySelectorAll(".stageStop").forEach(b =>
     b.addEventListener("click", () => { viewStage = Number(b.dataset.stage); openRoundList(); }));
+  // いまいる停留所が見えるところまで道をずらす
+  const hereEl = $("#stageStrip").querySelector(".stageStop.on");
+  // jsdom には scrollIntoView が無いので、あるときだけ呼ぶ
+  if (hereEl && hereEl.scrollIntoView) hereEl.scrollIntoView({block: "nearest", inline: "center"});
   $("#roundList").querySelectorAll(".roundChoice").forEach(b =>
     b.addEventListener("click", () => selectRound(Number(b.dataset.round))));
   openModal("#roundModal");

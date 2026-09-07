@@ -683,20 +683,52 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 .mgNote{margin-top:20px;color:#6f6f6f;font-size:11px;line-height:1.8}
 
 /* --------------------------------------------------------- 10) ステージ */
+/* ステージ選び＝すごろくの道。点線の道の上に丸い停留所が並び、
+   いまいる所にキャラクターが立つ。 */
 .stageStrip{
-  display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;margin-bottom:4px;
-  border-bottom:1px solid var(--line);
+  display:flex;align-items:flex-end;gap:0;overflow-x:auto;
+  padding:34px 4px 12px;margin-bottom:6px;border-bottom:1px solid var(--line);
+  scrollbar-width:none;
 }
-.stageChip{
-  flex:0 0 auto;min-width:46px;border:1px solid var(--line);background:#0d0d0d;
-  border-radius:10px;padding:6px 8px;cursor:pointer;line-height:1.2;
+.stageStrip::-webkit-scrollbar{display:none}
+.stageStop{
+  position:relative;flex:0 0 auto;width:56px;background:none;border:0;padding:0 0 2px;
+  cursor:pointer;text-align:center;
 }
-.stageChip b{display:block;font-size:14px;font-weight:900}
-.stageChip small{display:block;font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
-.stageChip.on{border-color:#fff;background:#1a1a1a}
-.stageChip.done{border-color:#3c6f5c}
-.stageChip.done b{color:var(--fever)}
-.stageChip.locked{opacity:.4;cursor:not-allowed}
+.stageStop::before{                       /* 隣へ続く道 */
+  content:"";position:absolute;left:50%;right:-50%;top:17px;height:3px;
+  background:repeating-linear-gradient(90deg,#4a4a4a 0 6px,transparent 6px 12px);
+}
+.stageStop:last-of-type::before{display:none}
+.stopDot{
+  position:relative;z-index:1;display:grid;place-items:center;
+  width:34px;height:34px;margin:0 auto;border-radius:50%;
+  border:2px solid #4a4a4a;background:#101010;
+  transition:transform .12s,border-color .12s,background .12s;
+}
+.stopDot b{font-size:14px;font-weight:900;color:#9a9a9a}
+.stageStop small{display:block;margin-top:3px;font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stageStop.done .stopDot{border-color:var(--gold);background:#1d1602}
+.stageStop.done .stopDot b{color:var(--gold);font-size:16px}
+.stageStop.done::before{background:repeating-linear-gradient(90deg,var(--gold) 0 6px,transparent 6px 12px);opacity:.7}
+.stageStop.on .stopDot{border-color:#fff;background:#242424;transform:scale(1.18)}
+.stageStop.on .stopDot b{color:#fff}
+.stageStop.locked .stopDot{border-style:dashed;opacity:.55}
+.stageStop.locked small{opacity:.6}
+.stopChar{
+  position:absolute;left:50%;bottom:38px;width:34px;height:auto;
+  transform:translateX(-50%);pointer-events:none;
+  animation:stopHop 1.9s ease-in-out infinite;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.7));
+}
+@keyframes stopHop{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
+.stageGoal{flex:0 0 auto;width:52px;text-align:center;padding-bottom:2px}
+.stageGoal span{display:block;font-size:22px;line-height:34px}
+.stageGoal small{display:block;font-size:10px;color:var(--muted)}
+/* 施錠されたステージでも、どんな問題かは読めるようにする */
+.roundChoice[disabled]{opacity:.72;cursor:not-allowed}
+.roundChoice[disabled] .rcPattern{opacity:1}
+.stageNote.peek{border-color:#4a3a12;background:#141005;color:#d9c9a0}
 .stageNote{
   grid-column:1/-1;color:var(--muted);font-size:11px;line-height:1.7;
   padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#0b0b0b;
@@ -856,7 +888,7 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 @keyframes charFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 
 /* 進捗バーの上を歩くキャラクター。棒人間と同じ枠に立たせる */
-.mChar{display:none;position:absolute;left:50%;bottom:0;width:52px;height:52px;transform:translateX(-50%)}
+.mChar{display:block;position:absolute;left:50%;bottom:0;width:50px;height:50px;transform:translateX(-50%);z-index:1}
 .mChar img{
   position:absolute;left:50%;bottom:0;transform:translateX(-50%);
   height:100%;width:auto;opacity:0;transition:opacity .12s;
@@ -878,10 +910,12 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 .mChar.is-good img[data-pose="good"]{animation:charGood 1.3s ease-in-out}
 @keyframes charGood{0%{transform:translateX(-50%) scale(.7) rotate(-8deg)}40%{transform:translateX(-50%) scale(1.15) rotate(3deg)}100%{transform:translateX(-50%) scale(1)}}
 
-/* こども版はキャラクターに入れ替える */
-.kidsMode .mChar{display:block}
-.kidsMode .mRig{display:none}
-.kidsMode .mBubble{bottom:54px}
+/* 棒人間はキャラクターに置き換えた。CSSの棒人間は残してあるが、表示はしない */
+.mRig{display:none}
+.mBubble{bottom:52px}
+/* 狙っているかなにカーソルを合わせているあいだは、キャラクターが光る
+   （棒人間のときは頭がそのかなに変わっていた合図の代わり） */
+.mChar.aim img{filter:drop-shadow(0 2px 4px rgba(0,0,0,.6)) drop-shadow(0 0 7px rgba(255,255,255,.9))}
 
 /* バーストのキャラクター（ステージクリア・PERFECT） */
 .burstChar{
@@ -895,8 +929,9 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
   100%{opacity:1;transform:none}
 }
 /* キャラクターより吹き出しを手前に出す */
-.kidsMode .mChar{width:58px;height:58px;z-index:1}
-.kidsMode .mBubble{z-index:3;bottom:60px}
+.kidsMode .mChar{width:58px;height:58px}
+.mBubble{z-index:3}
+.kidsMode .mBubble{bottom:60px}
 /* 入り口はロゴとキャラクターが一体になった絵を使う */
 .mgLogo.hero{width:min(420px,80vw);margin-bottom:14px}
 
