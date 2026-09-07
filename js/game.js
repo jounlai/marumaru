@@ -506,7 +506,7 @@ function renderDoneBar(){
 
   const msg = $("#doneMsg");
   if (dead) {
-    msg.innerHTML = `<b>★が尽きました</b> — ステージ ${currentStage() + 1} を最初からやり直します。`;
+    msg.innerHTML = "<b>★が尽きました</b> — ★5で再開できます。見つけたことばは消えません。";
   } else if (exhausted) {
     msg.innerHTML = `<b>押せるかなが尽きました</b> — ${s.discovered.size} / ${total} 語。やり直すか、次のラウンドへ。`;
   } else if (s.perfect) {
@@ -1028,21 +1028,6 @@ function finishStage(si){
   setTimeout(() => { viewStage = Math.min(si + 1, STAGES.length - 1); openRoundList(); }, 1900);
 }
 
-// ★が尽きたら、そのステージだけ最初からやり直す
-function restartStage(){
-  const si = currentStage();
-  STAGES[si].forEach(i => {
-    const st = roundStates[i];
-    st.found.clear(); st.discovered.clear(); st.used.clear();
-    st.cleared = false; st.gaveUp = false; st.perfect = false;
-  });
-  stars = 5; combo = 0; starsShown = -1;
-  roundIndex = STAGES[si][0];
-  closeModals({force: true});
-  saveProgress();
-  render();
-  flash("info", `ステージ ${si + 1} を最初からやり直します。`);
-}
 
 function nextRound(){
   const si = currentStage();
@@ -1077,12 +1062,22 @@ function gameOver(){
   // ★0 の直後に予約されるので、先にやり直してしまった場合は開かない
   if (stars > 0) return;
   $("#gameoverText").innerHTML =
-    `ステージ ${currentStage() + 1} で★が尽きました。<br>このステージを最初からやり直します。<br>発見したことば <b>${totalCorrectCount()}</b> 語。`;
+    `ステージ ${currentStage() + 1} で★が尽きました。<br>★5で再開できます。<b>記録は消えません。</b><br>発見したことば <b>${totalCorrectCount()}</b> 語。`;
   $("#gScore").textContent = num(score);
   $("#gCombo").textContent = num(maxCombo);
   openModal("#gameoverModal");
 }
-function revive(){ restartStage(); }
+// ★が尽きたときの再開。発見済みのことばもクリア済みの印もそのまま残す。
+// せっかく見つけた語が消えると、やる気ごと折れてしまうため。
+function revive(){
+  stars = 5;
+  combo = 0;
+  starsShown = -1;
+  closeModals({force: true});
+  saveProgress();
+  render();
+  flash("info", "★5で再開します。見つけたことばはそのままです。");
+}
 function resetAll(skipConfirm){
   if (!skipConfirm && !confirm("★・スコア・発見語・クリア履歴をすべて消去しますか？")) return;
   roundIndex = 0; stars = 5; score = 0; combo = 0; maxCombo = 0; scoreShown = 0; starsShown = -1;

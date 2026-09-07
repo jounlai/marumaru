@@ -45,8 +45,8 @@ const line = (t, ok, extra) => console.log(`   ${ok ? " ok " : "FAIL"}  ${t}${ex
     await page.waitForTimeout(300);
     await page.click(".kana:not([disabled])");
     await page.waitForTimeout(200);
-    // ステージやり直しなので、押した記録は消えて★は満タンに戻る
-    ck("再開後にかなを押せる", await page.evaluate(() => roundStates[roundIndex].used.size === 1),
+    // 再開しても押した記録は消えない（★だけ戻る）
+    ck("再開後にかなを押せる", await page.evaluate(() => roundStates[roundIndex].used.size > 5),
       "★=" + await page.evaluate(() => stars) +
       " 押下=" + await page.evaluate(() => roundStates[roundIndex].used.size));
     if (errs.length) ck("JSエラーなし", false, errs.join(" | "));
