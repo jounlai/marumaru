@@ -27,7 +27,13 @@ const DEVICES = [
     await page.goto(URL);
     await page.waitForTimeout(400);
 
-    // ラウンド一覧 → 通常ラウンド0を選ぶ
+    // 入り口でおとな版を選ぶ（読み込み直しが入る）
+    if (await page.isVisible("#modeGate")) {
+      await page.click('[data-mode="adult"]');
+      await page.waitForTimeout(600);
+    }
+
+    // ステージ一覧 → 通常ラウンド0を選ぶ
     await page.click('#roundList .roundChoice[data-round="0"]');
     await page.waitForTimeout(400);
 

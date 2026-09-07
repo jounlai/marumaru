@@ -10,6 +10,8 @@ async function scenario(browser, name, { seed, useTap }) {
   const errs = [];
   page.on("pageerror", e => errs.push(String(e)));
   if (seed) {
+    // 入り口を出さずに、おとな版として起動させる
+    await page.addInitScript(() => localStorage.setItem("maruanagame-mode", "adult"));
     await page.addInitScript(seed);
   }
   await page.goto(URL);

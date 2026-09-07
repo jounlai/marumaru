@@ -646,3 +646,77 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
 }
+
+/* ------------------------------------------------- 9) 入り口（モード選択） */
+.modeGate{
+  position:fixed;inset:0;z-index:90;background:var(--bg);
+  display:grid;place-items:center;padding:20px;overflow:auto;
+}
+.modeGate[hidden]{display:none}
+.mgInner{text-align:center;max-width:640px;width:100%}
+.mgBrand{font-size:clamp(28px,7vw,44px);font-weight:950;letter-spacing:.04em;margin-bottom:6px}
+.mgLead{color:var(--muted);font-size:clamp(13px,2.6vw,16px);font-weight:700;margin-bottom:22px}
+.mgBtns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){ .mgBtns{grid-template-columns:1fr} }
+.mgBtn{
+  border:1px solid var(--line);background:var(--panel);border-radius:16px;
+  padding:22px 16px;cursor:pointer;text-align:center;
+  transition:transform .1s,border-color .12s,background .12s;
+}
+.mgBtn:hover{border-color:#5a5a5a;background:#131313}
+.mgBtn:active{transform:scale(.98)}
+.mgBtn b{display:block;font-size:clamp(20px,4.6vw,26px);font-weight:950;margin-bottom:8px}
+.mgBtn small{display:block;color:var(--muted);font-size:12px;font-weight:600;line-height:1.6}
+.mgBtn.kids{border-color:#3c6f5c;background:#0c1512}
+.mgBtn.kids b{color:var(--fever)}
+.mgNote{margin-top:20px;color:#6f6f6f;font-size:11px;line-height:1.8}
+
+/* --------------------------------------------------------- 10) ステージ */
+.stageStrip{
+  display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;margin-bottom:4px;
+  border-bottom:1px solid var(--line);
+}
+.stageChip{
+  flex:0 0 auto;min-width:46px;border:1px solid var(--line);background:#0d0d0d;
+  border-radius:10px;padding:6px 8px;cursor:pointer;line-height:1.2;
+}
+.stageChip b{display:block;font-size:14px;font-weight:900}
+.stageChip small{display:block;font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stageChip.on{border-color:#fff;background:#1a1a1a}
+.stageChip.done{border-color:#3c6f5c}
+.stageChip.done b{color:var(--fever)}
+.stageChip.locked{opacity:.4;cursor:not-allowed}
+.stageNote{
+  grid-column:1/-1;color:var(--muted);font-size:11px;line-height:1.7;
+  padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#0b0b0b;
+}
+
+/* ------------------------------------------------------------ 11) こども版 */
+/* 読ませたいもの（お題・かな・語釈）を大きく、点数まわりは丸ごと隠す */
+body.kidsMode .hudScore,
+body.kidsMode .comboTag,
+body.kidsMode #difficulty,
+body.kidsMode .statGrid .stat:nth-child(1),
+body.kidsMode .statGrid .stat:nth-child(2){ display:none }
+
+body.kidsMode .pattern{font-size:clamp(40px,10vw,84px)}
+body.kidsMode .kana{font-size:clamp(20px,4vh,34px);border-radius:9px}
+body.kidsMode .flash .fw{font-size:22px}
+body.kidsMode .flash .fm{font-size:17px;color:#e8e8e8;-webkit-line-clamp:3}
+body.kidsMode .flash .rd{font-size:14px}
+body.kidsMode .progressText{font-size:13px}
+body.kidsMode .foundTitle,
+body.kidsMode .chip{font-size:13px}
+body.kidsMode .rcMeta,
+body.kidsMode .stageNote{font-size:12px}
+body.kidsMode .rcTop{font-size:14px}
+body.kidsMode .doneMsg{font-size:14px}
+body.kidsMode .btn{font-size:14px;padding:10px 14px}
+@media(min-width:961px){
+  body.kidsMode .flash .fw{font-size:26px}
+  body.kidsMode .flash .fm{font-size:19px}
+}
+.chipTag.stage{border-color:#3c6f5c;color:var(--fever)}
+.kidsOnly{display:none}
+body.kidsMode .kidsOnly{display:block}
+body.kidsMode .adultOnly{display:none}

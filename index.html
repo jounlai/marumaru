@@ -44,9 +44,28 @@
   gtag('config', 'G-1FJ9BJXEGF');
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=7987ed64">
+<link rel="stylesheet" href="css/styles.css?v=c3e3aa39">
 </head>
 <body>
+
+<!-- 入り口。モードを選ぶまでゲームは動かさない -->
+<div class="modeGate" id="modeGate" hidden>
+  <div class="mgInner">
+    <div class="mgBrand">〇〇ことば</div>
+    <div class="mgLead">どちらであそびますか？</div>
+    <div class="mgBtns">
+      <button class="mgBtn kids" data-mode="kids">
+        <b>こども版</b>
+        <small>小学生〜中学生むけ<br>やさしいことばだけ・大きな文字</small>
+      </button>
+      <button class="mgBtn" data-mode="adult">
+        <b>おとな版</b>
+        <small>すべてのことば<br>スコア・コンボあり</small>
+      </button>
+    </div>
+    <div class="mgNote">あとから ⚙ メニューでいつでも変えられます。<br>それぞれの記録は別々に残ります。</div>
+  </div>
+</div>
 
 <div class="app" id="app">
 
@@ -72,6 +91,7 @@
       <!-- お題と進捗 -->
       <section class="stage">
         <div class="stageChips">
+          <span class="chipTag stage" id="stageChip">ステージ 1</span>
           <span class="chipTag" id="roundLabel">ROUND 01</span>
           <span class="chipTag ghost" id="difficulty">WARM-UP</span>
           <span class="comboTag" id="comboTag"></span>
@@ -130,11 +150,17 @@
       </div>
       <div class="panel">
         <h2>ルール</h2>
-        <div class="rules">
+        <div class="rules adultOnly">
           ★は<b>5個</b>から。はずすたびに<b class="key">★−1</b>、0でゲームオーバー。<br>
           正解の<b>60％</b>を見つけたらクリア＆<b class="key">★＋1</b>。<br>
           そこで止めても、<b class="key">全問正解（PERFECT）</b>を狙って続けてもいい。<br>
           連続正解で<b class="key">コンボ</b>、5連続で<b class="key">FEVER（スコア2倍）</b>。
+        </div>
+        <div class="rules kidsOnly">
+          おなじ<b>かな</b>を、あいている<b class="key">〇</b>ぜんぶに入れて、ことばを作ってね。<br>
+          まちがえると<b class="key">★が1つ</b>へるよ。ぜんぶなくなったら、そのステージをもう一度。<br>
+          <b>60％</b>見つけたらクリア。ステージの<b>ぜんぶ</b>をクリアすると次のステージへ！<br>
+          こまったら<b class="key">ヒント</b>を押していいよ。
         </div>
         <div class="actions">
           <button class="btn" id="hintBtn">ヒント −300</button>
@@ -155,7 +181,7 @@
   <div class="doneBar" id="doneBar" hidden>
     <div class="doneMsg" id="doneMsg"></div>
     <div class="doneBtns">
-      <button class="btn primary" id="reviveBarBtn">★5で再開</button>
+      <button class="btn primary" id="reviveBarBtn">このステージをやり直す</button>
       <button class="btn" id="retryBtn">やり直す</button>
       <button class="btn" id="revealBtn">答えを見る</button>
       <button class="btn primary" id="nextBtn">次のラウンドへ →</button>
@@ -182,11 +208,12 @@
   <div class="modalCard">
     <div class="modalHead">
       <div>
-        <div class="modalTitle">ラウンド一覧</div>
-        <div class="modalSub">好きなラウンドから挑戦できます。正解の60％でクリア、全問正解でPERFECT。</div>
+        <div class="modalTitle" id="stageTitle">ステージ</div>
+        <div class="modalSub">ステージの問題をぜんぶクリアすると、次のステージが開きます。</div>
       </div>
       <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
     </div>
+    <div class="stageStrip" id="stageStrip"></div>
     <div class="roundList" id="roundList"></div>
   </div>
 </div>
@@ -209,7 +236,7 @@
     <div class="modalHead">
       <div>
         <div class="modalTitle">メニュー</div>
-        <div class="modalSub" id="menuRank"></div>
+        <div class="modalSub"><span id="modeName">おとな版</span> ・ <span id="menuRank"></span></div>
       </div>
       <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
     </div>
@@ -226,6 +253,7 @@
       <button class="btn" id="mGiveupBtn">降参して答えを見る</button>
       <button class="btn" id="mRetryBtn">このラウンドをやり直す</button>
       <button class="btn" id="soundBtn">♪ 効果音 ON</button>
+      <button class="btn" id="switchModeBtn">こども版に切り替える</button>
       <button class="btn danger" id="resetBtn">記録をすべてリセット</button>
     </div>
 
@@ -261,7 +289,7 @@
       <div class="stat"><small>MAX COMBO</small><b id="gCombo">0</b></div>
     </div>
     <div class="menuList">
-      <button class="btn primary" id="reviveBtn">★5で再挑戦（記録は保持）</button>
+      <button class="btn primary" id="reviveBtn">このステージをやり直す</button>
       <button class="btn" id="gAnswerBtn">このラウンドの答えを見る</button>
       <button class="btn danger" id="gResetBtn">最初からやり直す</button>
     </div>
@@ -269,7 +297,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=7987ed64"></script>
-<script src="js/game.js?v=7987ed64"></script>
+<script src="js/data.js?v=c3e3aa39"></script>
+<script src="js/kids.js?v=c3e3aa39"></script>
+<script src="js/game.js?v=c3e3aa39"></script>
 </body>
 </html>

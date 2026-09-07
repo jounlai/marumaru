@@ -12,6 +12,7 @@ npx playwright install chromium
 | スクリプト | 何を見るか | 実行 |
 |---|---|---|
 | `lint-data.js` | **出題データの健全性検査**（依存なし）。盤面から作れるか・重複・字数・語釈の欠落、および `index.html` の `?v=` が語数と一致するかを検査する。語を追加したらまずこれ | `node tests/lint-data.js` |
+| `make-kids.js` | **こども版に出す語を選び直す**（`js/kids.js` を生成）。卑猥・差別的な語と、辞書で低頻度の難語を外す。語を足したら回す | `node tests/make-kids.js` |
 | `check-readings.js` | **display に当てた漢字が、その読みを本当に持つか**を JMdict で検査する。lint を通っても読みの取り違えは見つからないので、語を足したら続けて回す。初回だけ辞書を落として `tests/.cache/` に置く（約11MB・依存なし） | `node tests/check-readings.js` |
 | `smoke.js` | プレイ通し試験（正解・誤答・コンボ・クリア・PERFECT・セーブ復元・SPECIAL・WORD・ヒント・降参・ゲームオーバー・語彙データの健全性）。`testbody.js` が中身 | `node tests/smoke.js` |
 | `deadend.js` | 「かなが押せなくなる」行き止まりが無いか（★0・降参済み・盤面ロック時の復帰手段） | `node tests/deadend.js` |

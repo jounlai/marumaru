@@ -10,6 +10,8 @@ const html = fs.readFileSync(ROOT + "/index.html", "utf8");
 const dom = new JSDOM(html, { runScripts: "outside-only", pretendToBeVisual: true, url: "http://localhost/" });
 const { window } = dom;
 window.localStorage.clear();
+// 入り口でモードを選ぶまでゲームは始まらないので、おとな版で起動させる
+window.localStorage.setItem("maruanagame-mode", "adult");
 window.navigator.vibrate = () => true;
 window.AudioContext = function () { throw new Error("no audio in jsdom"); };
 
@@ -18,6 +20,7 @@ window.addEventListener("error", e => errors.push("window error: " + e.message))
 
 const src = [
   fs.readFileSync(ROOT + "/js/data.js", "utf8"),
+  fs.readFileSync(ROOT + "/js/kids.js", "utf8"),
   fs.readFileSync(ROOT + "/js/game.js", "utf8"),
   fs.readFileSync(__dirname + "/testbody.js", "utf8")
 ].join("\n;\n");

@@ -15,18 +15,25 @@
 
   // ---- 起動時
   check("起動時にラウンド一覧が開く", q("#roundModal").classList.contains("show"));
-  check("ラウンドカード数 = ラウンド数",
-    q("#roundList").querySelectorAll(".roundChoice").length === ROUND_DATA.length,
-    q("#roundList").querySelectorAll(".roundChoice").length + "/" + ROUND_DATA.length);
+  check("一覧はいまのステージの問題を出す",
+    document.querySelectorAll("#roundList .roundChoice").length === STAGES[0].length,
+    `${document.querySelectorAll("#roundList .roundChoice").length}/${STAGES[0].length}`);
+  check("ステージ帯が出る", document.querySelectorAll("#stageStrip .stageChip").length === STAGES.length);
+  check("先のステージは施錠", document.querySelector('#stageStrip .stageChip[data-stage="1"]').disabled === true);
   check("かなボタン72個（清音46＋濁音半濁音26）", q("#kanaGrid").querySelectorAll(".kana").length === 72,
     String(q("#kanaGrid").querySelectorAll(".kana").length));
   check("ポケットがグリッド内に残る", !!q("#kanaGrid #pocket"));
   check("3グループの合計 = 全ラウンド",
-    MAIN_ROUND_COUNT + SPECIAL_ROUND_COUNT + WORD_ROUND_COUNT === ROUND_DATA.length,
-    `${MAIN_ROUND_COUNT} + ${SPECIAL_ROUND_COUNT} + ${WORD_ROUND_COUNT} = ${ROUND_DATA.length}`);
+    groupCount("main") + groupCount("special") + groupCount("word") === ROUND_DATA.length,
+    `${groupCount("main")} + ${groupCount("special")} + ${groupCount("word")} = ${ROUND_DATA.length}`);
+  const SPECIAL_START = ROUND_DATA.findIndex(r => r.group === "special");
+  const WORD_START = ROUND_DATA.findIndex(r => r.group === "word");
+  const MAIN_ROUND_COUNT = groupCount("main");
   check("グループ判定", groupOf(0) === "main" && groupOf(SPECIAL_START) === "special" && groupOf(WORD_START) === "word");
   check("ラウンド名", roundName(0).startsWith("ROUND") && roundName(SPECIAL_START).startsWith("SPECIAL") && roundName(WORD_START).startsWith("WORD"),
     roundName(WORD_START));
+  check("ステージ", STAGES.length > 1 && STAGES.every(s => s.length >= 6) && STAGES.flat().length === ROUND_DATA.length,
+    `${STAGES.length}ステージ / 1面${STAGES[0].length}問`);
   check("棒人間がいる", !!q("#mascot") && !!q("#mHead"));
 
   // ---- ラウンド0を選択

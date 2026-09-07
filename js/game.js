@@ -46,11 +46,66 @@ ROUND_DATA.sort((a, b) => {
 });
 // 並び：通常（擬音・擬態）→ SPECIAL（連濁）→ WORD（ふつうのことば）
 ROUND_DATA.push(...SPECIAL_ROUNDS, ...WORD_ROUNDS);
-const SPECIAL_ROUND_COUNT = SPECIAL_ROUNDS.length;
-const WORD_ROUND_COUNT = WORD_ROUNDS.length;
-const SPECIAL_START = MAIN_ROUND_COUNT;
-const WORD_START = MAIN_ROUND_COUNT + SPECIAL_ROUND_COUNT;
-function groupOf(i){ return i >= WORD_START ? "word" : i >= SPECIAL_START ? "special" : "main"; }
+// 種別は添字の範囲ではなくラウンド自身に持たせる。こども版では途中のラウンドが
+// 抜けるので、範囲で判定すると崩れるため。
+ROUND_DATA.forEach((r, i) => {
+  r.group = i >= MAIN_ROUND_COUNT + SPECIAL_ROUNDS.length ? "word"
+          : i >= MAIN_ROUND_COUNT ? "special" : "main";
+});
+function groupOf(i){ return ROUND_DATA[i].group; }
+
+/* ------------------------------------------------- 1.5) こども版 / おとな版 */
+const MODE_KEY = "maruanagame-mode";
+let mode = null;
+try { const m = localStorage.getItem(MODE_KEY); if (m === "kids" || m === "adult") mode = m; } catch (e) {}
+
+// こども版は、やさしい語だけに絞ってから盤面を組む。正解が3語に満たなくなった
+// ラウンドは当てずっぽうになるので、そのラウンドごと外す。
+function applyMode(){
+  if (mode !== "kids") return;
+  const kept = [];
+  for (const r of ROUND_DATA) {
+    const answers = r.answers.filter(a => KIDS_OK.has(a.word));
+    if (answers.length >= 3) kept.push({ ...r, answers });
+  }
+  ROUND_DATA.length = 0;
+  ROUND_DATA.push(...kept);
+}
+applyMode();
+function HINT_COST(){ return mode === "kids" ? 0 : HINT_COST_ADULT; }
+
+// 種別ごとの通し番号（ROUND 01 / SPECIAL 01 / WORD 01）
+const ROUND_NO = new Map();
+{
+  const n = { main: 0, special: 0, word: 0 };
+  ROUND_DATA.forEach((r, i) => ROUND_NO.set(i, ++n[r.group]));
+}
+
+/* ------------------------------------------------------------- 1.6) ステージ */
+const STAGE_SIZE = 8;
+// 1ステージのなかで形式が偏らないよう、通常・WORD・SPECIAL を混ぜて並べる。
+// 通常ラウンドは正解数の多い順に並んでいるので、この順のまま取り出せば
+// ステージが進むほど難しくなる。
+function buildStages(){
+  const byGroup = { main: [], special: [], word: [] };
+  ROUND_DATA.forEach((r, i) => byGroup[r.group].push(i));
+  const order = [];
+  const take = g => { if (byGroup[g].length) order.push(byGroup[g].shift()); };
+  while (byGroup.main.length || byGroup.word.length || byGroup.special.length) {
+    take("main"); take("word"); take("main"); take("word"); take("special"); take("word");
+  }
+  const stages = [];
+  for (let i = 0; i < order.length; i += STAGE_SIZE) stages.push(order.slice(i, i + STAGE_SIZE));
+  // 最後のステージが短すぎたら手前に足す（6問未満のステージを作らない）
+  if (stages.length > 1 && stages[stages.length - 1].length < 6) {
+    const tail = stages.pop();
+    stages[stages.length - 1].push(...tail);
+  }
+  return stages;
+}
+const STAGES = buildStages();
+const STAGE_OF = new Map();
+STAGES.forEach((rounds, si) => rounds.forEach(i => STAGE_OF.set(i, si)));
 
 const CLEAR_RATE = 0.6;
 const BASE_POINT = 100;      // 1正解の基礎点
@@ -59,7 +114,7 @@ const FEVER_AT = 5;          // 何連続でFEVERか
 const FEVER_MULT = 2;        // FEVER中の倍率
 const CLEAR_BONUS = 500;
 const PERFECT_BONUS = 2000;
-const HINT_COST = 300;
+const HINT_COST_ADULT = 300;
 
 const RANKS = [
   [0,"見習い"],[1500,"ことば拾い"],[5000,"語彙の使い手"],[12000,"辞書見習い"],
@@ -67,8 +122,12 @@ const RANKS = [
 ];
 
 /* ------------------------------------------------------- 2) 状態・セーブ */
-const SAVE_KEY = "maruanagame-progress-v5";
+// 進行はモードごとに分ける。おとな版は旧アドレスからの引き継ぎがあるので
+// キーを変えず v5 のまま使う。
+const ADULT_SAVE_KEY = "maruanagame-progress-v5";
+const KIDS_SAVE_KEY = "maruanagame-progress-kids-v1";
 const LEGACY_SAVE_KEY = "maruanagame-progress-v4";
+function saveKeyFor(m){ return m === "kids" ? KIDS_SAVE_KEY : ADULT_SAVE_KEY; }
 
 let roundIndex = 0;
 let stars = 5;
@@ -96,11 +155,14 @@ function serializeProgress(){
   };
 }
 function saveProgress(){
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify(serializeProgress())); } catch (e) {}
+  try { localStorage.setItem(saveKeyFor(mode), JSON.stringify(serializeProgress())); } catch (e) {}
 }
 function loadProgress(){
   let raw = null;
-  try { raw = localStorage.getItem(SAVE_KEY) || localStorage.getItem(LEGACY_SAVE_KEY); } catch (e) {}
+  try {
+    raw = localStorage.getItem(saveKeyFor(mode));
+    if (!raw && mode !== "kids") raw = localStorage.getItem(LEGACY_SAVE_KEY);
+  } catch (e) {}
   if (!raw) return;
   let x;
   try { x = JSON.parse(raw); } catch (e) { return; }
@@ -154,10 +216,10 @@ function importHandoffSave(){
     const incoming = JSON.parse(decodeURIComponent(m[1]));
     let mine = null;
     try {
-      mine = JSON.parse(localStorage.getItem(SAVE_KEY) || localStorage.getItem(LEGACY_SAVE_KEY) || "null");
+      mine = JSON.parse(localStorage.getItem(ADULT_SAVE_KEY) || localStorage.getItem(LEGACY_SAVE_KEY) || "null");
     } catch (e) {}
     const merged = mine ? mergeProgress(mine, incoming) : { ...incoming, v: 5, rounds: normalizeRounds(incoming) };
-    localStorage.setItem(SAVE_KEY, JSON.stringify(merged));
+    localStorage.setItem(ADULT_SAVE_KEY, JSON.stringify(merged));
   } catch (e) {}
   // 引き継ぎ用の文字列をアドレス欄に残さない
   try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
@@ -206,7 +268,10 @@ function mergeProgress(mine, other){
   };
 }
 function clearSavedProgress(){
-  try { localStorage.removeItem(SAVE_KEY); localStorage.removeItem(LEGACY_SAVE_KEY); } catch (e) {}
+  try {
+    localStorage.removeItem(saveKeyFor(mode));
+    if (mode !== "kids") localStorage.removeItem(LEGACY_SAVE_KEY);
+  } catch (e) {}
 }
 
 /* --------------------------------------------------------- 3) 小道具 */
@@ -230,9 +295,8 @@ function kanaForWord(word){
 }
 function totalCorrectCount(){ return roundStates.reduce((n, s) => n + s.discovered.size, 0); }
 function clearedCount(){ return roundStates.filter(s => s.cleared).length; }
-function mainClearedCount(){ return roundStates.slice(0, SPECIAL_START).filter(s => s.cleared).length; }
-function specialClearedCount(){ return roundStates.slice(SPECIAL_START, WORD_START).filter(s => s.cleared).length; }
-function wordClearedCount(){ return roundStates.slice(WORD_START).filter(s => s.cleared).length; }
+function groupCount(g){ return ROUND_DATA.filter(r => r.group === g).length; }
+function groupClearedCount(g){ return roundStates.filter((s, i) => s.cleared && ROUND_DATA[i].group === g).length; }
 function perfectCount(){ return roundStates.filter(s => s.perfect).length; }
 function isFever(){ return combo >= FEVER_AT; }
 function rankName(){
@@ -256,17 +320,14 @@ function difficultyLabel(idx){
   const g = groupOf(idx);
   if (g === "special") return "SPECIAL — 連濁トラップ";
   if (g === "word") return `WORD — ふつうの${[...ROUND_DATA[idx].template].length}文字ことば`;
-  if (idx < 5) return "WARM-UP";
-  if (idx < 12) return "NORMAL";
-  if (idx < 20) return "HARD";
-  if (idx < 26) return "VERY HARD";
-  return "HELL";
+  return "同じかなを全部の穴に";
 }
 function roundName(i = roundIndex){
   const g = groupOf(i);
-  if (g === "special") return `SPECIAL ${String(i - SPECIAL_START + 1).padStart(2, "0")}`;
-  if (g === "word") return `WORD ${String(i - WORD_START + 1).padStart(2, "0")}`;
-  return `ROUND ${String(i + 1).padStart(2, "0")}`;
+  const no = String(ROUND_NO.get(i) || 1).padStart(2, "0");
+  if (g === "special") return `SPECIAL ${no}`;
+  if (g === "word") return `WORD ${no}`;
+  return `ROUND ${no}`;
 }
 // テンプレートを表示用HTMLへ（SPECIAL の2つ目の穴には濁点を重ねる）
 function templateHTML(template){
@@ -445,7 +506,7 @@ function renderDoneBar(){
 
   const msg = $("#doneMsg");
   if (dead) {
-    msg.innerHTML = "<b>★が尽きました</b> — かなは押せません。★5で再開できます。";
+    msg.innerHTML = `<b>★が尽きました</b> — ステージ ${currentStage() + 1} を最初からやり直します。`;
   } else if (exhausted) {
     msg.innerHTML = `<b>押せるかなが尽きました</b> — ${s.discovered.size} / ${total} 語。やり直すか、次のラウンドへ。`;
   } else if (s.perfect) {
@@ -463,6 +524,7 @@ function renderDoneBar(){
 }
 
 function render(){
+  $("#stageChip").textContent = `ステージ ${currentStage() + 1}`;
   $("#roundLabel").textContent = roundName();
   $("#roundLabel").classList.toggle("special", isSpecial());
   $("#difficulty").textContent = difficultyLabel(roundIndex);
@@ -800,7 +862,8 @@ function guess(kana){
     const willPerfect = state().discovered.size >= total;
     if (!state().cleared && state().discovered.size >= clearTarget()) finishRound(willPerfect);
     else if (!willPerfect) showBurst({
-      mark: combo >= 2 ? `COMBO ×${combo}` : "CORRECT",
+      mark: mode === "kids" ? (combo >= 2 ? `${combo} れんぞく！` : "せいかい！")
+                            : (combo >= 2 ? `COMBO ×${combo}` : "CORRECT"),
       word: answerDisplay(a),
       sub: (a.display && a.display !== a.word) ? a.word : "",
       long: true, ms: 1400
@@ -895,15 +958,15 @@ function useHint(){
     return k && !state().used.has(k);
   });
   if (!pool.length) { flash("info", "もうヒントの出しようがありません。"); return; }
-  if (score < HINT_COST) { flash("bad", `ヒントには ${HINT_COST} スコア必要です（現在 ${num(score)}）。`); return; }
+  if (score < HINT_COST()) { flash("bad", `ヒントには ${HINT_COST()} スコア必要です（現在 ${num(score)}）。`); return; }
 
-  score -= HINT_COST;
+  score -= HINT_COST();
   const a = pick(pool);
   const k = kanaForWord(a.word);
   const btn = document.querySelector(`.kana[data-kana="${k}"]`);
   if (btn) {
     btn.classList.add("hintGlow");
-    floatText(`−${HINT_COST}`, btn, "bad");
+    if (HINT_COST()) floatText(`−${HINT_COST()}`, btn, "bad");
     setTimeout(() => btn.classList.remove("hintGlow"), 5000);
   }
   sfxHint();
@@ -945,15 +1008,58 @@ function giveUp(){
   openAnswers();
 }
 
+/* ------------------------------------------------------------ ステージ進行 */
+function currentStage(){ const si = STAGE_OF.get(roundIndex); return si === undefined ? 0 : si; }
+function stageCleared(si){ return STAGES[si].every(i => roundStates[i].cleared); }
+function stageDone(si){ return STAGES[si].filter(i => roundStates[i].cleared).length; }
+function stageUnlocked(si){ return si === 0 || stageCleared(si - 1); }
+
+// ステージを越えたら★は満タンに戻す。1ステージが一区切りで、
+// しくじってもそのステージだけやり直せばよい、という作りにする。
+function finishStage(si){
+  stars = 5;
+  starsShown = -1;
+  combo = 0;
+  saveProgress();
+  sfxPerfect(); buzz([40, 60, 40, 60, 80]);
+  showBurst({mark: `STAGE ${si + 1}`, word: "STAGE CLEAR", sub: `${STAGES[si].length}問すべてクリア`,
+    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, ms: 1800});
+  particles(null, 60, ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8"]);
+  setTimeout(() => { viewStage = Math.min(si + 1, STAGES.length - 1); openRoundList(); }, 1900);
+}
+
+// ★が尽きたら、そのステージだけ最初からやり直す
+function restartStage(){
+  const si = currentStage();
+  STAGES[si].forEach(i => {
+    const st = roundStates[i];
+    st.found.clear(); st.discovered.clear(); st.used.clear();
+    st.cleared = false; st.gaveUp = false; st.perfect = false;
+  });
+  stars = 5; combo = 0; starsShown = -1;
+  roundIndex = STAGES[si][0];
+  closeModals({force: true});
+  saveProgress();
+  render();
+  flash("info", `ステージ ${si + 1} を最初からやり直します。`);
+}
+
 function nextRound(){
-  const allCleared = clearedCount() === ROUND_DATA.length;
-  if (roundIndex >= ROUND_DATA.length - 1 || allCleared) { openRoundList(); return; }
-  selectRound(roundIndex + 1);
+  const si = currentStage();
+  if (stageCleared(si)) {
+    if (si >= STAGES.length - 1) { viewStage = si; openRoundList(); return; }
+    finishStage(si);
+    return;
+  }
+  const rest = STAGES[si].filter(i => i !== roundIndex && !roundStates[i].cleared);
+  if (rest.length) { selectRound(rest[0]); return; }
+  openRoundList();
 }
 
 function selectRound(i){
   if (i < 0 || i >= ROUND_DATA.length) return;
   roundIndex = i;
+  viewStage = currentStage();
   combo = 0;
   lastFoundWord = null;
   flash("info", "");
@@ -968,21 +1074,15 @@ function selectRound(i){
 }
 
 function gameOver(){
+  // ★0 の直後に予約されるので、先にやり直してしまった場合は開かない
+  if (stars > 0) return;
   $("#gameoverText").innerHTML =
-    `${roundName()} で★が尽きました。<br>発見したことば <b>${totalCorrectCount()}</b> 語。日本語は広かった。`;
+    `ステージ ${currentStage() + 1} で★が尽きました。<br>このステージを最初からやり直します。<br>発見したことば <b>${totalCorrectCount()}</b> 語。`;
   $("#gScore").textContent = num(score);
   $("#gCombo").textContent = num(maxCombo);
   openModal("#gameoverModal");
 }
-function revive(){
-  stars = 5;
-  combo = 0;
-  starsShown = -1;
-  closeModals({force: true});
-  saveProgress();
-  render();
-  flash("info", "★5で再開。記録はそのままです。");
-}
+function revive(){ restartStage(); }
 function resetAll(skipConfirm){
   if (!skipConfirm && !confirm("★・スコア・発見語・クリア履歴をすべて消去しますか？")) return;
   roundIndex = 0; stars = 5; score = 0; combo = 0; maxCombo = 0; scoreShown = 0; starsShown = -1;
@@ -1008,34 +1108,51 @@ function closeModals(opts){
   });
 }
 
+let viewStage = 0;
 function openRoundList(){
-  const list = $("#roundList");
-  let html = "";
-  ROUND_DATA.forEach((r, i) => {
-    if (i === SPECIAL_START) {
-      html += `<div class="specialHeader">SPECIAL — 連濁ラウンド
-        <small>清音を1つ選ぶと、後半の「〇゙」が自動で濁音になります。</small></div>`;
-    }
-    if (i === WORD_START) {
-      html += `<div class="specialHeader">WORD — ふつうのことば
-        <small>穴は1つだけ。擬音語・擬態語ではない、3〜4文字の名詞・形容詞・固有名詞などを探します。</small></div>`;
-    }
-    const st = roundStates[i];
-    const total = r.answers.length;
-    const target = clearTarget(r);
+  if (viewStage < 0 || viewStage >= STAGES.length) viewStage = currentStage();
+  const strip = STAGES.map((rounds, si) => {
+    const done = stageDone(si), all = rounds.length;
+    const open = stageUnlocked(si);
+    const cls = [
+      si === viewStage ? "on" : "",
+      !open ? "locked" : "",
+      stageCleared(si) ? "done" : ""
+    ].join(" ");
+    return `<button class="stageChip ${cls}" data-stage="${si}" ${open ? "" : "disabled"}>
+      <b>${si + 1}</b><small>${open ? done + "/" + all : "ー"}</small></button>`;
+  }).join("");
+
+  const rounds = STAGES[viewStage];
+  const locked = !stageUnlocked(viewStage);
+  const list = rounds.map(i => {
+    const r = ROUND_DATA[i], st = roundStates[i];
+    const total = r.answers.length, target = clearTarget(r);
     const badge = st.perfect ? '<span class="badge gold">PERFECT</span>'
       : st.cleared ? '<span class="badge">✓ クリア</span>'
       : st.gaveUp ? '<span class="badge">降参</span>'
       : `<span class="badge">${st.discovered.size}/${target}</span>`;
-    html += `<button class="roundChoice ${st.perfect ? "perfect " : st.cleared ? "cleared " : ""}${i === roundIndex ? "current" : ""}" data-round="${i}">
+    return `<button class="roundChoice ${st.perfect ? "perfect " : st.cleared ? "cleared " : ""}${i === roundIndex ? "current" : ""}"
+        data-round="${i}" ${locked ? "disabled" : ""}>
       <div class="rcTop"><span>${roundName(i)}</span>${badge}</div>
       <div class="rcPattern">${templateHTML(r.template)}</div>
-      <div class="rcMeta">全${total}語 ・ ${target}語でクリア</div>
+      <div class="rcMeta">${difficultyLabel(i)} ・ 全${total}語 ・ ${target}語でクリア</div>
       <div class="rcBar"><i style="width:${Math.min(100, st.discovered.size / total * 100)}%"></i></div>
     </button>`;
-  });
-  list.innerHTML = html;
-  list.querySelectorAll(".roundChoice").forEach(b => b.addEventListener("click", () => selectRound(Number(b.dataset.round))));
+  }).join("");
+
+  const head = locked
+    ? `<div class="stageNote">前のステージをぜんぶクリアすると開きます。</div>`
+    : `<div class="stageNote">この ${rounds.length} 問をぜんぶクリアすると、次のステージへ進めます。
+        ★はステージを越えるたびに満タンに戻ります。</div>`;
+
+  $("#stageStrip").innerHTML = strip;
+  $("#stageTitle").textContent = `ステージ ${viewStage + 1} / ${STAGES.length}`;
+  $("#roundList").innerHTML = head + list;
+  $("#stageStrip").querySelectorAll(".stageChip").forEach(b =>
+    b.addEventListener("click", () => { viewStage = Number(b.dataset.stage); openRoundList(); }));
+  $("#roundList").querySelectorAll(".roundChoice").forEach(b =>
+    b.addEventListener("click", () => selectRound(Number(b.dataset.round))));
   openModal("#roundModal");
 }
 
@@ -1059,7 +1176,7 @@ function openMenu(){
   $("#mCombo").textContent = num(maxCombo);
   $("#mFound").textContent = num(totalCorrectCount());
   $("#mCleared").textContent =
-    `${mainClearedCount()}/${MAIN_ROUND_COUNT}・${specialClearedCount()}/${SPECIAL_ROUND_COUNT}・${wordClearedCount()}/${WORD_ROUND_COUNT}`;
+    `${groupClearedCount("main")}/${groupCount("main")}・${groupClearedCount("special")}/${groupCount("special")}・${groupClearedCount("word")}/${groupCount("word")}`;
   $("#menuRank").textContent = `${rankName()} ・ PERFECT ${perfectCount()} ラウンド`;
   $("#soundBtn").textContent = soundOn ? "♪ 効果音 ON" : "♪ 効果音 OFF";
   openModal("#menuModal");
@@ -1110,21 +1227,48 @@ document.addEventListener("keydown", e => {
   if (inputKanasForRound().includes(e.key)) guess(e.key);
 });
 
-importHandoffSave();
-loadProgress();
-
-// 起動時に詰んだ状態（★0 のまま／入力できないラウンド）で放置しないための復旧
-let bootNotice = "";
-if (stars <= 0) {
-  stars = 5;
-  bootNotice = "前回★が尽きていました。★5から再開します。";
-  saveProgress();
-} else if (roundLocked()) {
-  bootNotice = state().gaveUp
-    ? "このラウンドは降参済みです。「やり直す」か、一覧から別のラウンドを選んでください。"
-    : "このラウンドは全問正解済みです。一覧から別のラウンドを選べます。";
+/* ------------------------------------------------------------ 8) 入り口 */
+// モードを選ぶまでゲームは始めない。選び直すとページを読み込み直す。
+// 盤面の語彙そのものが変わるので、途中から差し替えるより作り直すほうが確実。
+function chooseMode(m){
+  try { localStorage.setItem(MODE_KEY, m); } catch (e) {}
+  location.reload();
 }
+document.querySelectorAll("[data-mode]").forEach(b =>
+  b.addEventListener("click", () => chooseMode(b.dataset.mode)));
+$("#switchModeBtn").addEventListener("click", () => {
+  const to = mode === "kids" ? "おとな版" : "こども版";
+  if (!confirm(`${to}に切り替えますか？\nそれぞれの記録は別々に残るので、戻せば続きから遊べます。`)) return;
+  chooseMode(mode === "kids" ? "adult" : "kids");
+});
 
-render();
-if (bootNotice) flash("info", bootNotice);
-openRoundList();
+importHandoffSave();
+
+if (!mode) {
+  $("#modeGate").hidden = false;
+} else {
+  document.body.classList.toggle("kidsMode", mode === "kids");
+  $("#modeName").textContent = mode === "kids" ? "こども版" : "おとな版";
+  $("#switchModeBtn").textContent = mode === "kids" ? "おとな版に切り替える" : "こども版に切り替える";
+  if (mode === "kids") {
+    ["#hintBtn", "#hintBtnM", "#mHintBtn"].forEach(sel => { const b = $(sel); if (b) b.textContent = "ヒント"; });
+  }
+  loadProgress();
+
+  // 起動時に詰んだ状態（★0 のまま／入力できないラウンド）で放置しないための復旧
+  let bootNotice = "";
+  if (stars <= 0) {
+    stars = 5;
+    bootNotice = "前回★が尽きていました。★5から再開します。";
+    saveProgress();
+  } else if (roundLocked()) {
+    bootNotice = state().gaveUp
+      ? "このラウンドは降参済みです。「やり直す」か、一覧から別のラウンドを選んでください。"
+      : "このラウンドは全問正解済みです。一覧から別のラウンドを選べます。";
+  }
+
+  viewStage = currentStage();
+  render();
+  if (bootNotice) flash("info", bootNotice);
+  openRoundList();
+}

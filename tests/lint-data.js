@@ -76,13 +76,23 @@ for (const [label, rounds] of [["通常", ROUND_DATA], ["SPECIAL", SPECIAL_ROUND
   }
 }
 
+// こども版の語リスト（js/kids.js）が data.js とずれていないか。
+// 語を消したのに kids.js に残っている、という取り残しを拾う。
+const kidsSrc = fs.readFileSync(path.join(__dirname, "..", "js", "kids.js"), "utf8");
+const kidsBox = {};
+vm.runInNewContext(kidsSrc + ";this.OUT=KIDS_OK;", kidsBox);
+const allWords = new Set();
+for (const rs of [ROUND_DATA, SPECIAL_ROUNDS, WORD_ROUNDS]) for (const r of rs) for (const a of r.answers) allWords.add(a.word);
+const orphans = [...kidsBox.OUT].filter(w => !allWords.has(w));
+if (orphans.length) errors.push(`js/kids.js に data.js から消えた語が残っている（node tests/make-kids.js で作り直す）: ${orphans.slice(0, 8).join("・")}${orphans.length > 8 ? " ほか" : ""}`);
+
 // index.html の ?v= は css/js の内容から作るハッシュ。ここを上げ忘れると、
 // 既に遊んだ人のブラウザが古い data.js / game.js をキャッシュから使い続け、
 // 追加した語が不正解になったり、直したはずの不具合が残ったりする。
 // （GitHub Pages は cache-control: max-age=600 で配信する）
 // 語数ではなく内容から作るのは、語彙を変えない修正でもキャッシュを切るため。
 const root = path.join(__dirname, "..");
-const ASSETS = ["css/styles.css", "js/data.js", "js/game.js"];
+const ASSETS = ["css/styles.css", "js/data.js", "js/kids.js", "js/game.js"];
 const stamp = crypto.createHash("sha1")
   .update(ASSETS.map(f => fs.readFileSync(path.join(root, f))).join("\n"))
   .digest("hex").slice(0, 8);
