@@ -27,10 +27,13 @@ const DEVICES = [
     await page.goto(URL);
     await page.waitForTimeout(400);
 
-    // 入り口でおとな版を選ぶ（読み込み直しが入る）
+    // 入り口でおとな版を選ぶ。選ぶとページを読み込み直すので、
+    // 読み込み完了と一覧の再表示を待たないと、消える寸前のDOMを掴んでしまう。
     if (await page.isVisible("#modeGate")) {
       await page.click('[data-mode="adult"]');
-      await page.waitForTimeout(600);
+      await page.waitForLoadState("load");
+      await page.waitForSelector("#roundModal.show");
+      await page.waitForTimeout(200);
     }
 
     // ステージ一覧 → 通常ラウンド0を選ぶ
@@ -72,17 +75,33 @@ const DEVICES = [
     await page.screenshot({ path: path.join(OUT, `${d.name}-played.png`) });
 
     // SPECIAL ラウンド
-    await page.click("#roundListBtn");
+    // 押すと全画面モーダルが自分の上に出るので、Playwright の遮蔽判定に
+    // 引っかかる。実機のタップでは開くため、素のマウス操作で押す。
+    {
+      const b = await page.$eval("#roundListBtn", e => { const r = e.getBoundingClientRect(); return {x: r.left + r.width/2, y: r.top + r.height/2}; });
+      await page.mouse.click(b.x, b.y);
+    }
     await page.waitForTimeout(250);
-    const spBtn = await page.$(`.roundChoice[data-round="30"]`);
+    // ステージ一覧には、いまのステージの問題だけが並ぶ。種別は見出しで探す。
+    const pickRound = async prefix => {
+      for (const b of await page.$$("#roundList .roundChoice")) {
+        if ((await b.textContent()).includes(prefix)) return b;
+      }
+      return null;
+    };
+    const spBtn = await pickRound("SPECIAL");
     if (spBtn) { await spBtn.click(); await page.waitForTimeout(400); await metrics("SPECIAL"); }
     await page.screenshot({ path: path.join(OUT, `${d.name}-special.png`) });
 
     // WORD ラウンド
-    await page.click("#roundListBtn");
+    // 押すと全画面モーダルが自分の上に出るので、Playwright の遮蔽判定に
+    // 引っかかる。実機のタップでは開くため、素のマウス操作で押す。
+    {
+      const b = await page.$eval("#roundListBtn", e => { const r = e.getBoundingClientRect(); return {x: r.left + r.width/2, y: r.top + r.height/2}; });
+      await page.mouse.click(b.x, b.y);
+    }
     await page.waitForTimeout(250);
-    const wIdx = await page.evaluate(() => WORD_START);
-    const wBtn = await page.$(`.roundChoice[data-round="${wIdx}"]`);
+    const wBtn = await pickRound("WORD");
     if (wBtn) { await wBtn.click(); await page.waitForTimeout(400); await metrics("WORD"); }
     await page.screenshot({ path: path.join(OUT, `${d.name}-word.png`) });
 

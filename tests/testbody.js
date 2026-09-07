@@ -79,7 +79,7 @@
   check("クリア判定", roundStates[0].cleared);
   check("クリアで★+1", stars === 5, "stars=" + stars);
   check("クリアボーナス+500", score >= scoreAtFever + 500);
-  check("doneBar表示", !q("#doneBar").hidden);
+  check("doneBar表示", q("#doneBar").classList.contains("show"));
   const notYet = r0.answers.find(a => !roundStates[0].discovered.has(a.word));
   check("クリア後も入力可（PERFECT続行）", !q(`.kana[data-kana="${kanaOf(r0, notYet.word)}"]`).disabled);
 

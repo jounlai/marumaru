@@ -501,8 +501,9 @@ function renderDoneBar(){
   const dead = stars <= 0;
   const exhausted = !dead && !s.gaveUp && !s.perfect && roundExhausted();
 
-  if (!dead && !exhausted && !s.cleared && !s.gaveUp) { bar.hidden = true; return; }
-  bar.hidden = false;
+  const show = dead || exhausted || s.cleared || s.gaveUp;
+  bar.classList.toggle("show", show);
+  if (!show) return;
 
   const msg = $("#doneMsg");
   if (dead) {
@@ -620,14 +621,30 @@ function tone(freq, {dur = .14, type = "triangle", vol = .06, at = 0, glide = 0}
   } catch (e) {}
 }
 const SCALE = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21, 24];
+// ロゴの色。こども版の粒や光に使う
+const KIDS_COLORS = ["#ffd42a", "#ff8a1f", "#38a9ea", "#8ac93a", "#f2789f", "#fff3cf"];
+
 function sfxCorrect(n){
   const semi = SCALE[Math.min(n - 1, SCALE.length - 1)];
   const f = 440 * Math.pow(2, semi / 12);
+  if (mode === "kids") {
+    // 鉄琴のように、澄んだ音を重ねて長めに響かせる
+    tone(f * 2, {type: "sine", vol: .075, dur: .5});
+    tone(f * 3, {type: "sine", vol: .03, dur: .42, at: .05});
+    tone(f * 4, {type: "sine", vol: .016, dur: .3, at: .1});
+    return;
+  }
   tone(f, {type: "triangle", vol: .07, dur: .13});
   tone(f * 2, {type: "sine", vol: .028, dur: .2, at: .02});
   if (isFever()) tone(f * 3, {type: "sine", vol: .02, dur: .26, at: .05});
 }
 function sfxWrong(){
+  if (mode === "kids") {
+    // 「ぽよん」と下がるだけにする。責められている音にしない
+    tone(430, {type: "sine", vol: .07, dur: .26, glide: 170});
+    tone(215, {type: "triangle", vol: .03, dur: .3, at: .05, glide: 120});
+    return;
+  }
   tone(190, {type: "sawtooth", vol: .07, dur: .3, glide: 70});
   tone(95, {type: "square", vol: .045, dur: .32});
 }
@@ -674,9 +691,12 @@ function shake(){
 }
 
 let burstTimer = 0;
-function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, ms = 900}){
+function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, ms = 900}){
   const box = $("#burst");
   clearTimeout(burstTimer);
+  const bc = $("#burstChar");
+  bc.hidden = !char;
+  if (char) { bc.src = `img/maru-${char}.png`; bc.style.animation = "none"; void bc.offsetWidth; bc.style.animation = ""; }
   $("#burstMark").textContent = mark || "";
   $("#burstWord").textContent = word || "";
   $("#burstSub").textContent = sub || "";
@@ -690,7 +710,7 @@ function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, ms = 900})
 }
 
 /* --- ひらがな棒人間：進捗バーの上を歩き、ゴール旗（クリア地点）を目指す --- */
-const mascotEl = $("#mascot"), mRigEl = $("#mRig"), mHeadEl = $("#mHead"),
+const mascotEl = $("#mascot"), mRigEl = $("#mRig"), mHeadEl = $("#mHead"), mCharEl = $("#mChar"),
       mBubbleEl = $("#mBubble"), goalEl = $("#goal");
 const trackPos = ratio => (4 + Math.max(0, Math.min(1, ratio)) * 92) + "%";
 let mascotLeft = null, mascotWalkTimer = 0, mascotPoseTimer = 0, mBubbleTimer = 0;
@@ -702,13 +722,25 @@ function mascotSay(text, kind, ms = 1200){
   mBubbleTimer = setTimeout(() => mBubbleEl.classList.remove("show"), ms);
 }
 // 姿勢は mRig に当てる（横位置の translate と競合させないため）
+// 棒人間のポーズ名を、キャラクターの絵に読み替える
+const CHAR_POSE = {cheer: "cheer", spin: "good", down: "idle"};
+function setChar(pose){
+  if (!mCharEl) return;
+  mCharEl.className = "mChar is-" + pose;
+  void mCharEl.offsetWidth;   // 同じポーズを続けて出しても動きが再生されるように
+  mCharEl.className = "mChar is-" + pose;
+}
 function mascotPose(cls, ms){
   clearTimeout(mascotPoseTimer);
   mRigEl.classList.remove("cheer", "down", "spin");
   void mRigEl.offsetWidth;
-  if (!cls) return;
+  if (!cls) { setChar("idle"); return; }
   mRigEl.classList.add(cls);
-  mascotPoseTimer = setTimeout(() => mRigEl.classList.remove(cls), ms);
+  setChar(CHAR_POSE[cls] || "idle");
+  mascotPoseTimer = setTimeout(() => {
+    mRigEl.classList.remove(cls);
+    setChar(mascotEl.classList.contains("walking") ? "run" : "idle");
+  }, ms);
 }
 // 棒人間の頭は常にひらがな1文字。待機中は「の」、狙っているときはそのかな
 function mascotHead(text){
@@ -730,8 +762,12 @@ function updateMascot(){
     mBubbleEl.style.left = left;
     if (moving) {
       mascotEl.classList.add("walking");
+      if (!mRigEl.classList.contains("cheer") && !mRigEl.classList.contains("spin")) setChar("run");
       clearTimeout(mascotWalkTimer);
-      mascotWalkTimer = setTimeout(() => mascotEl.classList.remove("walking"), 520);
+      mascotWalkTimer = setTimeout(() => {
+        mascotEl.classList.remove("walking");
+        if (!mRigEl.className.includes("cheer") && !mRigEl.className.includes("spin")) setChar("idle");
+      }, 520);
     }
   }
 }
@@ -875,7 +911,9 @@ function guess(kana){
     stars--;
     popLostStar();
     sfxWrong(); buzz([25, 40, 25]); shake();
-    flash("bad", `${word} — ${pick(BAD_MSGS)}`);
+    // こども版では、外したときに作られた文字列をそのまま出さない。
+    // 収録していない語（卑猥な並びを含む）が画面に出てしまうため。
+    flash("bad", mode === "kids" ? pick(BAD_MSGS) : `${word} — ${pick(BAD_MSGS)}`);
   }
 
   saveProgress();
@@ -884,6 +922,7 @@ function guess(kana){
   // 演出は再描画のあとに付ける（render() でボタンが作り直されるため）
   const btn = document.querySelector(`.kana[data-kana="${kana}"]`);
   throwKana(kana, btn, hit);
+  if (btn && hit && mode === "kids") particles(btn, 10, KIDS_COLORS);
   if (btn && hit) {
     btn.classList.add("pop");
     floatText(`+${pts}${combo >= 2 ? ` ×${combo}` : ""}`, btn, isFever() ? "gold" : "");
@@ -923,8 +962,8 @@ function finishRound(silent){
     mascotSay("ゴール！", "gold", 2000);
     setTimeout(() => {
       showBurst({mark: roundName(), word: "ROUND CLEAR", sub: `${s.discovered.size} / ${current().answers.length} 語発見`,
-        bonus, dim: true, long: true, ms: 1250});
-      particles(null, 34, ["#fff", "#ffd34d", "#bbb"]);
+        bonus, dim: true, long: true, char: "pose", ms: 1250});
+      particles(null, 34, mode === "kids" ? KIDS_COLORS : ["#fff", "#ffd34d", "#bbb"]);
     }, 340);
   }
 }
@@ -945,8 +984,8 @@ function perfectRound(){
   mascotSay("パーフェクト！", "gold", 2600);
   setTimeout(() => {
     showBurst({mark: roundName(), word: "PERFECT!!", sub: `全 ${current().answers.length} 語を発見`,
-      bonus, dim: true, gold: true, long: true, ms: 1600});
-    particles(null, 60, ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8"]);
+      bonus, dim: true, gold: true, long: true, char: "pose", ms: 1600});
+    particles(null, 60, mode === "kids" ? KIDS_COLORS : ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8"]);
   }, 360);
 }
 
@@ -1023,8 +1062,8 @@ function finishStage(si){
   saveProgress();
   sfxPerfect(); buzz([40, 60, 40, 60, 80]);
   showBurst({mark: `STAGE ${si + 1}`, word: "STAGE CLEAR", sub: `${STAGES[si].length}問すべてクリア`,
-    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, ms: 1800});
-  particles(null, 60, ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8"]);
+    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, char: "good", ms: 1800});
+  particles(null, 60, mode === "kids" ? KIDS_COLORS : ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8"]);
   setTimeout(() => { viewStage = Math.min(si + 1, STAGES.length - 1); openRoundList(); }, 1900);
 }
 

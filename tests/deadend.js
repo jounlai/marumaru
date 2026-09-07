@@ -16,8 +16,13 @@ const line = (t, ok, extra) => console.log(`   ${ok ? " ok " : "FAIL"}  ${t}${ex
     const page = await ctx.newPage();
     const errs = []; page.on("pageerror", e => errs.push(String(e)));
     await page.goto(URL); await page.waitForTimeout(300);
-    // 入り口でおとな版を選ぶ（選ぶと読み込み直しが入る）
-    if (await page.isVisible("#modeGate")) { await page.click('[data-mode="adult"]'); await page.waitForTimeout(600); }
+    // 入り口でおとな版を選ぶ（選ぶと読み込み直しが入るので、完了を待つ）
+    if (await page.isVisible("#modeGate")) {
+      await page.click('[data-mode="adult"]');
+      await page.waitForLoadState("load");
+      await page.waitForSelector("#roundModal.show");
+      await page.waitForTimeout(200);
+    }
     await page.click('#roundList .roundChoice[data-round="0"]');
     await page.waitForTimeout(200);
 
@@ -60,8 +65,13 @@ const line = (t, ok, extra) => console.log(`   ${ok ? " ok " : "FAIL"}  ${t}${ex
     const page = await ctx.newPage();
     const errs = []; page.on("pageerror", e => errs.push(String(e)));
     await page.goto(URL); await page.waitForTimeout(300);
-    // 入り口でおとな版を選ぶ（選ぶと読み込み直しが入る）
-    if (await page.isVisible("#modeGate")) { await page.click('[data-mode="adult"]'); await page.waitForTimeout(600); }
+    // 入り口でおとな版を選ぶ（選ぶと読み込み直しが入るので、完了を待つ）
+    if (await page.isVisible("#modeGate")) {
+      await page.click('[data-mode="adult"]');
+      await page.waitForLoadState("load");
+      await page.waitForSelector("#roundModal.show");
+      await page.waitForTimeout(200);
+    }
     await page.click('#roundList .roundChoice[data-round="0"]');
     await page.waitForTimeout(200);
     await page.evaluate(() => {
@@ -98,8 +108,13 @@ const line = (t, ok, extra) => console.log(`   ${ok ? " ok " : "FAIL"}  ${t}${ex
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
     const page = await ctx.newPage();
     await page.goto(URL); await page.waitForTimeout(300);
-    // 入り口でおとな版を選ぶ（選ぶと読み込み直しが入る）
-    if (await page.isVisible("#modeGate")) { await page.click('[data-mode="adult"]'); await page.waitForTimeout(600); }
+    // 入り口でおとな版を選ぶ（選ぶと読み込み直しが入るので、完了を待つ）
+    if (await page.isVisible("#modeGate")) {
+      await page.click('[data-mode="adult"]');
+      await page.waitForLoadState("load");
+      await page.waitForSelector("#roundModal.show");
+      await page.waitForTimeout(200);
+    }
     await page.click('#roundList .roundChoice[data-round="0"]');
     await page.waitForTimeout(200);
     await page.click("#menuBtn"); await page.waitForTimeout(200);

@@ -44,14 +44,14 @@
   gtag('config', 'G-1FJ9BJXEGF');
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=d62cbc90">
+<link rel="stylesheet" href="css/styles.css?v=4d806cfd">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <div class="mgBrand">〇〇ことば</div>
+    <img class="mgLogo hero" src="img/logo-hero.png?v=4d806cfd" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -71,7 +71,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand">〇〇ことば</div>
+    <div class="brand"><img src="img/logo-small.png?v=4d806cfd" alt="まるまる 〇〇ことば" width="320" height="104"></div>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -104,6 +104,13 @@
             <div class="mBubble" id="mBubble"></div>
             <!-- mascot=横位置 / mRig=ジャンプ・転倒などの姿勢 / mBob=歩行の上下動と呼吸 -->
             <div class="mascot" id="mascot">
+              <!-- こども版はキャラクターが、おとな版は棒人間が同じ場所を歩く -->
+              <div class="mChar is-idle" id="mChar" aria-hidden="true">
+                <img src="img/maru-think.png" data-pose="idle" alt="">
+                <img src="img/maru-run.png" data-pose="run" alt="">
+                <img src="img/maru-pose.png" data-pose="cheer" alt="">
+                <img src="img/maru-good.png" data-pose="good" alt="">
+              </div>
               <div class="mRig" id="mRig">
                 <!-- 描画順＝重なり順。腕は最後に置いて頭・胴より手前に出す -->
                 <div class="mBob">
@@ -123,7 +130,19 @@
             <span id="toClear"></span>
           </div>
         </div>
-        <div class="flash" id="flash" aria-live="polite"></div>
+        <div class="flashWrap">
+          <div class="flash" id="flash" aria-live="polite"></div>
+          <!-- クリア後の操作バー。語釈欄に重ねて出すので、盤面の高さは動かない -->
+          <div class="doneBar" id="doneBar">
+          <div class="doneMsg" id="doneMsg"></div>
+          <div class="doneBtns">
+          <button class="btn primary" id="reviveBarBtn">★5で再開</button>
+          <button class="btn" id="retryBtn">やり直す</button>
+          <button class="btn" id="revealBtn">答えを見る</button>
+          <button class="btn primary" id="nextBtn">次のラウンドへ →</button>
+          </div>
+          </div>
+        </div>
       </section>
 
       <!-- 五十音パネル -->
@@ -177,16 +196,6 @@
     </aside>
   </div>
 
-  <!-- クリア後に出る操作バー -->
-  <div class="doneBar" id="doneBar" hidden>
-    <div class="doneMsg" id="doneMsg"></div>
-    <div class="doneBtns">
-      <button class="btn primary" id="reviveBarBtn">★5で再開</button>
-      <button class="btn" id="retryBtn">やり直す</button>
-      <button class="btn" id="revealBtn">答えを見る</button>
-      <button class="btn primary" id="nextBtn">次のラウンドへ →</button>
-    </div>
-  </div>
 </div>
 
 <!-- ============================== 演出レイヤー ============================== -->
@@ -195,6 +204,7 @@
 
 <div class="burst" id="burst" aria-hidden="true">
   <div class="burstInner" id="burstInner">
+    <img class="burstChar" id="burstChar" src="img/maru-good.png" alt="" hidden>
     <div class="burstMark" id="burstMark">CORRECT</div>
     <div class="burstWord" id="burstWord"></div>
     <div class="burstSub" id="burstSub"></div>
@@ -297,8 +307,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=d62cbc90"></script>
-<script src="js/kids.js?v=d62cbc90"></script>
-<script src="js/game.js?v=d62cbc90"></script>
+<script src="js/data.js?v=4d806cfd"></script>
+<script src="js/kids.js?v=4d806cfd"></script>
+<script src="js/game.js?v=4d806cfd"></script>
 </body>
 </html>
