@@ -1159,29 +1159,48 @@ function openRoundList(){
 
   const rounds = STAGES[viewStage];
   const locked = !stageUnlocked(viewStage);
-  const list = rounds.map(i => {
+  // こども版は、お題と進み具合だけを見せる。数字と説明を減らして、
+  // 何をすればいいかが一目で分かるようにする。
+  const list = rounds.map((i, n) => {
     const r = ROUND_DATA[i], st = roundStates[i];
     const total = r.answers.length, target = clearTarget(r);
+    const cls = `${st.perfect ? "perfect " : st.cleared ? "cleared " : ""}${i === roundIndex ? "current" : ""}`;
+    const pct = Math.min(100, st.discovered.size / total * 100);
+
+    if (mode === "kids") {
+      const mark = st.cleared ? '<span class="rcMark done">★</span>'
+        : st.gaveUp ? '<span class="rcMark">…</span>'
+        : `<span class="rcMark">${n + 1}</span>`;
+      return `<button class="roundChoice kid ${cls}" data-round="${i}" ${locked ? "disabled" : ""}>
+        ${mark}
+        <div class="rcPattern">${templateHTML(r.template)}</div>
+        <div class="rcBar"><i style="width:${pct}%"></i></div>
+      </button>`;
+    }
+
     const badge = st.perfect ? '<span class="badge gold">PERFECT</span>'
       : st.cleared ? '<span class="badge">✓ クリア</span>'
       : st.gaveUp ? '<span class="badge">降参</span>'
       : `<span class="badge">${st.discovered.size}/${target}</span>`;
-    return `<button class="roundChoice ${st.perfect ? "perfect " : st.cleared ? "cleared " : ""}${i === roundIndex ? "current" : ""}"
-        data-round="${i}" ${locked ? "disabled" : ""}>
+    return `<button class="roundChoice ${cls}" data-round="${i}" ${locked ? "disabled" : ""}>
       <div class="rcTop"><span>${roundName(i)}</span>${badge}</div>
       <div class="rcPattern">${templateHTML(r.template)}</div>
       <div class="rcMeta">${difficultyLabel(i)} ・ 全${total}語 ・ ${target}語でクリア</div>
-      <div class="rcBar"><i style="width:${Math.min(100, st.discovered.size / total * 100)}%"></i></div>
+      <div class="rcBar"><i style="width:${pct}%"></i></div>
     </button>`;
   }).join("");
 
   const head = locked
-    ? `<div class="stageNote">前のステージをぜんぶクリアすると開きます。</div>`
-    : `<div class="stageNote">この ${rounds.length} 問をぜんぶクリアすると、次のステージへ進めます。
+    ? `<div class="stageNote">${mode === "kids" ? "まえのステージをクリアするとひらくよ。" : "前のステージをぜんぶクリアすると開きます。"}</div>`
+    : mode === "kids"
+      ? ""
+      : `<div class="stageNote">この ${rounds.length} 問をぜんぶクリアすると、次のステージへ進めます。
         ★はステージを越えるたびに満タンに戻ります。</div>`;
 
   $("#stageStrip").innerHTML = strip;
-  $("#stageTitle").textContent = `ステージ ${viewStage + 1} / ${STAGES.length}`;
+  $("#stageTitle").textContent = mode === "kids"
+    ? `ステージ ${viewStage + 1}`
+    : `ステージ ${viewStage + 1} / ${STAGES.length}`;
   $("#roundList").innerHTML = head + list;
   $("#stageStrip").querySelectorAll(".stageChip").forEach(b =>
     b.addEventListener("click", () => { viewStage = Number(b.dataset.stage); openRoundList(); }));

@@ -872,3 +872,20 @@ body.kidsMode .mChar{width:58px;height:58px;z-index:1}
 body.kidsMode .mBubble{z-index:3;bottom:60px}
 /* 入り口はロゴとキャラクターが一体になった絵を使う */
 .mgLogo.hero{width:min(420px,80vw);margin-bottom:14px}
+
+/* こども版のステージ一覧は、お題と進み具合だけにする */
+body.kidsMode #roundModal .modalSub{display:none}
+.roundChoice.kid{
+  display:grid;grid-template-columns:34px 1fr;grid-template-rows:auto auto;
+  align-items:center;gap:4px 10px;padding:12px 12px;
+}
+.roundChoice.kid .rcMark{
+  grid-row:1/3;display:grid;place-items:center;
+  width:34px;height:34px;border-radius:50%;
+  border:2px solid var(--k-yellow);color:var(--k-yellow);
+  font-size:16px;font-weight:900;
+}
+.roundChoice.kid .rcMark.done{border-color:var(--k-green);color:var(--k-green);font-size:19px}
+.roundChoice.kid .rcPattern{font-size:26px;margin:0;text-align:left}
+.roundChoice.kid .rcBar{grid-column:2}
+body.kidsMode .roundList{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
