@@ -766,7 +766,16 @@ body.kidsMode .kanaRow:nth-child(5n+3) .kana{border-color:var(--k-blue)}
 body.kidsMode .kanaRow:nth-child(5n+4) .kana{border-color:var(--k-green)}
 body.kidsMode .kanaRow:nth-child(5n+5) .kana{border-color:var(--k-pink)}
 body.kidsMode .kana:disabled{opacity:.28}
-body.kidsMode .kana.correct{background:var(--k-green);color:#0b1400;border-color:#fff}
+/* 当てたかなは白く塗って緑の輪で囲む。行ごとの色枠のなかに緑で塗ると、
+   まわりの緑枠のかなと見分けがつかなかったため。 */
+body.kidsMode .kana.correct{
+  background:#fff;color:#12210a;border-color:#fff;font-weight:900;
+  box-shadow:0 0 0 3px var(--k-green),0 3px 10px rgba(0,0,0,.55);
+}
+body.kidsMode .kana.correct::after{
+  content:"✓";position:absolute;right:3px;top:1px;
+  font-size:11px;font-weight:900;color:var(--k-green);line-height:1;
+}
 body.kidsMode .kana.pop{animation:kidsPop .42s cubic-bezier(.2,1.5,.4,1)}
 @keyframes kidsPop{
   0%{transform:scale(1) rotate(0)}
@@ -889,3 +898,23 @@ body.kidsMode #roundModal .modalSub{display:none}
 .roundChoice.kid .rcPattern{font-size:26px;margin:0;text-align:left}
 .roundChoice.kid .rcBar{grid-column:2}
 body.kidsMode .roundList{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+
+/* ------------------------------------------------ 15) ステージクリアの祝い */
+.confetti{
+  position:fixed;top:-24px;width:10px;height:14px;z-index:72;pointer-events:none;
+  animation:confettiFall var(--dur,2s) var(--delay,0s) cubic-bezier(.25,.6,.5,1) forwards;
+}
+@keyframes confettiFall{
+  0%{opacity:0;transform:translate(0,-10vh) rotate(0)}
+  8%{opacity:1}
+  100%{opacity:.9;transform:translate(var(--sway,0),108vh) rotate(var(--spin,360deg))}
+}
+/* 画面全体をひと呼吸だけ明るくする */
+body.celebrate .app{animation:celebrateFlash 1.2s ease-out}
+@keyframes celebrateFlash{
+  0%{filter:brightness(1)}
+  12%{filter:brightness(1.5) saturate(1.3)}
+  100%{filter:brightness(1)}
+}
+.burst.gold .burstWord{animation:clearPulse 1.1s ease-in-out 2}
+@keyframes clearPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}

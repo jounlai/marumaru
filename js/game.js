@@ -663,6 +663,37 @@ function floatText(text, el, cls){
   document.body.appendChild(d);
   setTimeout(() => d.remove(), 1000);
 }
+/* ステージクリア用の紙吹雪。画面の上から落として、通り過ぎたら片づける */
+function confetti(count, colors, ms = 2600){
+  const fx = $("#fx");
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement("i");
+    p.className = "confetti";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.background = colors[i % colors.length];
+    p.style.setProperty("--dur", (1.4 + Math.random() * 1.4).toFixed(2) + "s");
+    p.style.setProperty("--delay", (Math.random() * .9).toFixed(2) + "s");
+    p.style.setProperty("--sway", (Math.random() * 120 - 60).toFixed(0) + "px");
+    p.style.setProperty("--spin", (Math.random() * 900 - 450).toFixed(0) + "deg");
+    if (i % 3 === 0) p.style.borderRadius = "50%";
+    fx.appendChild(p);
+    setTimeout(() => p.remove(), ms);
+  }
+}
+
+// 「タタタ・ターン」の短いファンファーレ。和音を重ねて厚くする
+function sfxFanfare(){
+  const base = 523.25;                       // ド
+  const mel = [[0, 0], [0, .12], [0, .24], [7, .38], [12, .62]];
+  mel.forEach(([semi, at], i) => {
+    const f = base * Math.pow(2, semi / 12);
+    tone(f, {type: "triangle", vol: .075, dur: i === mel.length - 1 ? .9 : .18, at});
+    tone(f * 2, {type: "sine", vol: .03, dur: i === mel.length - 1 ? .9 : .16, at: at + .01});
+  });
+  [0, 4, 7, 12].forEach((semi, i) =>            // 最後に和音を伸ばす
+    tone(base * Math.pow(2, semi / 12), {type: "sine", vol: .045, dur: 1.1, at: .62 + i * .02}));
+}
+
 function particles(el, count, colors){
   const fx = $("#fx");
   const r = el ? el.getBoundingClientRect() : {left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0};
@@ -1060,11 +1091,26 @@ function finishStage(si){
   starsShown = -1;
   combo = 0;
   saveProgress();
-  sfxPerfect(); buzz([40, 60, 40, 60, 80]);
+  const colors = mode === "kids" ? KIDS_COLORS : ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8", "#ff8a1f"];
+
+  sfxFanfare();
+  buzz([50, 60, 50, 60, 50, 60, 120]);
+  document.body.classList.add("celebrate");
+  setTimeout(() => document.body.classList.remove("celebrate"), 1200);
+
   showBurst({mark: `STAGE ${si + 1}`, word: "STAGE CLEAR", sub: `${STAGES[si].length}問すべてクリア`,
-    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, char: "good", ms: 1800});
-  particles(null, 60, mode === "kids" ? KIDS_COLORS : ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8"]);
-  setTimeout(() => { viewStage = Math.min(si + 1, STAGES.length - 1); openRoundList(); }, 1900);
+    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, char: "good", ms: 3000});
+
+  confetti(110, colors, 3400);
+  // 中央から一発、そのあと左右からも上げる
+  particles(null, 60, colors);
+  const corner = (x, y) => ({getBoundingClientRect: () => ({left: x, top: y, width: 0, height: 0})});
+  setTimeout(() => particles(corner(innerWidth * .18, innerHeight * .62), 34, colors), 260);
+  setTimeout(() => particles(corner(innerWidth * .82, innerHeight * .62), 34, colors), 460);
+  setTimeout(() => particles(null, 40, colors), 760);
+  setTimeout(() => { mascotPose("spin", 1320); mascotSay("やったー！", "gold", 2200); }, 200);
+
+  setTimeout(() => { viewStage = Math.min(si + 1, STAGES.length - 1); openRoundList(); }, 3100);
 }
 
 
