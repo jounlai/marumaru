@@ -583,9 +583,41 @@ function render(){
 
 const SITE_URL = "https://marumaru.heuron.com/";
 const AUTHOR = "@jounlai";
-// X の投稿画面を開く。収録漏れの報告と、PERFECT の自慢に使う
+// X の投稿画面を開く。収録漏れの報告と、PERFECT の共有に使う
 function xIntent(text){
   return "https://x.com/intent/tweet?text=" + encodeURIComponent(text + "\n" + SITE_URL);
+}
+/* 投稿を読んだ人は、たいていこのゲームを知らない。お題の記号だけ貼っても
+   何のことか伝わらないので、遊び方の1行と、そのラウンドの実例を添える。 */
+function gameBlurb(round = current()){
+  // 例に出す語は、知らない人が見ても分かるものを選ぶ。データの先頭から取ると
+  // anan や 殷々 のような珍しい語が並んで、かえって分からなくなるため。
+  const score = a => {
+    const d = a.display;
+    if (!d) return 3;                                   // かな書き（かんかん など）
+    if (/[／/]/.test(d)) return 0;                      // 複数表記は例に向かない
+    if (/[A-Za-zＡ-Ｚａ-ｚ0-9]/.test(d)) return 0;       // anan・TENGA のたぐい
+    if (/[々〻]/.test(d)) return 1;                      // 殷々・延々 は読みにくい
+    return [...d].length === 2 ? 3 : 2;                 // 暗記・元気 のような2字熟語
+  };
+  const seen = new Set();
+  const ex = [...round.answers]
+    .map((a, i) => ({a, i, s: score(a)}))
+    .sort((x, y) => y.s - x.s || x.i - y.i)
+    .filter(({a}) => {
+      const k = kanaForWord(a.word);
+      if (!k || seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    })
+    .slice(0, 2)
+    .map(({a}) => `「${kanaForWord(a.word)}」なら ${answerDisplay(a)}`);
+  const rule = round.group === "word"
+    ? "〇 にかなを1つ入れて、成り立つことばを探すゲームです"
+    : round.group === "special"
+      ? "前の 〇 にかなを入れると後ろが同じかなの濁音になる、ことば探しです"
+      : "〇 ぜんぶに同じかなを入れて、成り立つことばを探すゲームです";
+  return ex.length ? `${rule}。${ex.join("、")}。` : `${rule}。`;
 }
 /* はずれたとき。収録漏れかもしれないので、その場から作者へ報告できるようにする。
    こども版では作った文字列自体を見せないため、報告の導線も出さない。 */
@@ -596,7 +628,8 @@ function flashMiss(word){
     `<span class="fw">${esc(word)}</span>` +
     `<span class="fm">${esc(pick(BAD_MSGS))}</span>` +
     `<a class="reportLink" target="_blank" rel="noopener" href="${esc(xIntent(
-      `${AUTHOR} 〇〇ことば：「${word}」（${current().template}）が通じませんでした。` +
+      `${AUTHOR} 〇〇ことば：「${word}」が通じませんでした。\n` +
+      `${gameBlurb()}\n` +
       `辞書に無いのか、私の記憶に無いのか。`))}">` +
     `いや、これはことばだ。作者に言う →</a>`;
 }
@@ -830,11 +863,13 @@ function roundActions(){
   const s = state();
   if (s.perfect) {
     const n = current().answers.length;
-    const brag = pick([
-      `〇〇ことば「${current().template}」、全${n}語を発掘。辞書の底が見えました。`,
-      `〇〇ことば「${current().template}」で PERFECT。日本語、まだ隠し持っていた。`,
-      `〇〇ことば「${current().template}」を制覇。${n}語、ぜんぶ〇に入れました。`
+    const closing = pick([
+      "辞書の底が見えました。",
+      "日本語、まだ隠し持っていた。",
+      "こんなにあるとは思わなかった。"
     ]);
+    const brag = `〇〇ことば「${current().template}」、全${n}語ぜんぶ見つけました。\n` +
+      `${gameBlurb()}\n${closing}`;
     acts.push({label: mode === "kids" ? "X で しらせる" : "X で共有する", keepOpen: true,
       run: () => window.open(xIntent(brag), "_blank", "noopener")});
   }
