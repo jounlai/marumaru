@@ -1217,3 +1217,68 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
   .mgBtn small{font-size:11px;line-height:1.5}
   .mgNote{margin-top:10px;font-size:10px;line-height:1.6}
 }
+
+/* --------------------------------------------- 20) ステージ間の移動 */
+.travel{
+  position:fixed;inset:0;z-index:85;display:grid;place-items:center;
+  background:radial-gradient(120% 90% at 50% 40%,#1b1206 0%,#0a0705 60%,#050403 100%);
+  padding:20px;
+}
+.travel[hidden]{display:none}
+.tvInner{width:min(560px,92vw);text-align:center}
+.tvLabel{font-size:clamp(16px,4.4vw,24px);font-weight:900;color:var(--muted);margin-bottom:26px}
+.tvLabel i{font-style:normal;margin:0 12px;color:#5f5f5f}
+.tvLabel b{color:var(--gold)}
+.travel.go .tvLabel b{animation:tvToIn 1.9s ease-out both}
+@keyframes tvToIn{
+  0%,45%{opacity:.25;transform:scale(.9)}
+  70%{opacity:1;transform:scale(1.15)}
+  100%{opacity:1;transform:scale(1)}
+}
+.tvRoad{position:relative;display:flex;align-items:center;justify-content:space-between;height:78px}
+.tvLine{
+  position:absolute;left:44px;right:44px;top:26px;height:4px;
+  background:repeating-linear-gradient(90deg,#5a5a5a 0 8px,transparent 8px 16px);
+}
+.travel.go .tvLine{animation:tvRoadFill 1.9s ease-in-out both}
+@keyframes tvRoadFill{
+  0%{background:repeating-linear-gradient(90deg,#5a5a5a 0 8px,transparent 8px 16px)}
+  100%{background:repeating-linear-gradient(90deg,var(--gold) 0 8px,transparent 8px 16px)}
+}
+.tvStop{position:relative;z-index:1;width:88px}
+.tvStop b{
+  display:grid;place-items:center;width:56px;height:56px;margin:0 auto;
+  border-radius:50%;border:3px solid #4a4a4a;background:#101010;
+  font-size:22px;font-weight:900;color:#9a9a9a;
+}
+.tvStop small{display:block;margin-top:8px;font-size:13px;font-weight:800;color:var(--muted)}
+.tvStop.from b{border-color:var(--gold);color:var(--gold);background:#1d1602}
+.tvStop.from small{color:var(--gold)}
+.travel.go .tvStop.to b{animation:tvArrive 1.9s ease-out both}
+.travel.go .tvStop.to small{animation:tvToIn 1.9s ease-out both}
+@keyframes tvArrive{
+  0%,55%{border-color:#4a4a4a;color:#9a9a9a;background:#101010;transform:scale(1)}
+  75%{border-color:#fff;color:#fff;background:#242424;transform:scale(1.22)}
+  100%{border-color:#fff;color:#fff;background:#242424;transform:scale(1.1)}
+}
+.tvChar{
+  position:absolute;bottom:22px;left:22px;width:64px;height:auto;z-index:2;
+  filter:drop-shadow(0 3px 6px rgba(0,0,0,.7));
+}
+.travel.go .tvChar{animation:tvRun 1.9s cubic-bezier(.35,.05,.4,1) both}
+@keyframes tvRun{
+  0%{left:22px;transform:translateY(0) rotate(-2deg)}
+  12%{transform:translateY(-9px) rotate(3deg)}
+  25%{transform:translateY(0) rotate(-2deg)}
+  37%{transform:translateY(-9px) rotate(3deg)}
+  50%{transform:translateY(0) rotate(-2deg)}
+  62%{transform:translateY(-9px) rotate(3deg)}
+  75%{transform:translateY(0) rotate(-2deg)}
+  88%{transform:translateY(-6px) rotate(2deg)}
+  100%{left:calc(100% - 86px);transform:translateY(0) rotate(0)}
+}
+.tvNote{margin-top:26px;font-size:13px;font-weight:700;color:#7d7d7d}
+.travel.go .tvNote{animation:actionsIn .5s 1.3s ease-out both}
+.kidsMode .tvLabel{font-size:clamp(18px,5vw,26px)}
+.kidsMode .tvStop small{font-size:14px}
+.kidsMode .tvNote{font-size:14px}

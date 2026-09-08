@@ -1383,7 +1383,8 @@ function finishStage(si){
   if (more) acts.push({label: mode === "kids"
     ? "このステージを つづける" : "このステージを続ける（PERFECT を狙う）", run: stayInStage});
   if (si < STAGES.length - 1) acts.push({label: mode === "kids"
-    ? "つぎの ステージへ →" : "次のステージへ →", primary: true, run: goNextStage});
+    ? `つぎの まち「${stageName(si + 1)}」へ →` : `次の街「${stageName(si + 1)}」へ →`,
+    primary: true, run: goNextStage});
   if (!acts.length) acts.push({label: mode === "kids" ? "いちらんを 見る" : "ステージ一覧を見る", primary: true, run: stayInStage});
 
   showBurst({mark: `ステージ ${si + 1}　${stageName(si)}`, word: "STAGE CLEAR",
@@ -1410,9 +1411,46 @@ function goNextStage(){
   const next = Math.min(si + 1, STAGES.length - 1);
   closeModals({force: true});
   hideBurst();
-  viewStage = next;
-  const first = STAGES[next].find(i => !roundStates[i].cleared);
-  selectRound(first === undefined ? STAGES[next][0] : first);
+  if (next === si) { viewStage = si; openRoundList(); return; }
+  travelTo(si, next);
+}
+
+/* 街から街へ歩いて渡る。ステージが変わったことを、数字ではなく移動で見せる。
+   着いたらラウンド選択（ステージ一覧）に立つ。 */
+function travelTo(from, to){
+  const el = $("#travel");
+  $("#tvFrom").textContent = stageName(from);
+  $("#tvFromName").textContent = stageName(from);
+  $("#tvTo").textContent = stageName(to);
+  $("#tvToName").textContent = stageName(to);
+  $("#tvToNo").textContent = to + 1;
+  $("#tvNote").textContent = mode === "kids" ? "つぎの まちへ むかっています…" : "次の街へ向かっています…";
+
+  // 先の街の1問目を選んでおく（一覧を閉じたらそこから遊べる）
+  const first = STAGES[to].find(i => !roundStates[i].cleared);
+  roundIndex = first === undefined ? STAGES[to][0] : first;
+  viewStage = to;
+  combo = 0;
+  saveProgress();
+
+  el.hidden = false;
+  el.classList.remove("go");
+  void el.offsetWidth;
+  el.classList.add("go");
+  sfxTravel();
+  setTimeout(() => {
+    el.hidden = true;
+    el.classList.remove("go");
+    render();
+    openRoundList();
+  }, 2300);
+}
+// 歩いていく音。軽く弾んで、着いたところで開ける
+function sfxTravel(){
+  [0, 2, 4, 5, 7].forEach((semi, i) =>
+    tone(392 * Math.pow(2, semi / 12), {type: "triangle", vol: .05, dur: .16, at: i * .3}));
+  [0, 4, 7, 12].forEach((semi, i) =>
+    tone(523.25 * Math.pow(2, semi / 12), {type: "sine", vol: .045, dur: .9, at: 1.55 + i * .03}));
 }
 function stayInStage(){
   closeModals({force: true});
