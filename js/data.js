@@ -1593,7 +1593,8 @@ const WORD_ROUNDS = [
       { word: "ごんじ", display: "郷司", meaning: "姓の一つ。「郷司」など。" },
       { word: "やんじ", display: "良枝", meaning: "人名の一つ。「良枝」など。" },
       { word: "ねんじ", display: "年次", meaning: "年ごと。「年次計画」「年次休暇」。" },
-      { word: "ひんじ", display: "ヒンジ／賓辞", meaning: "扉やふたの蝶番／論理学で、判断の述語。" }
+      { word: "ひんじ", display: "ヒンジ／賓辞", meaning: "扉やふたの蝶番／論理学で、判断の述語。" },
+      { word: "がんじ", display: "雁字", meaning: "雁が一列に並んで飛ぶさまを文字に見立てた語／手紙。「雁字搦め」。" }
     ]
   },
   {
