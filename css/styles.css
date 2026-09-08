@@ -1178,3 +1178,10 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
   background:var(--gold);color:#3a2606;border-color:#fff;font-weight:900;
   animation:nextGlow 1.5s .3s ease-in-out infinite;
 }
+/* はずれたときに出す、収録漏れの報告リンク */
+.reportLink{
+  font-size:11px;font-weight:700;color:#ffb0b0;text-decoration:underline;
+  text-underline-offset:2px;margin-top:1px;
+}
+.reportLink:hover{color:#fff}
+@media(min-width:961px){ .reportLink{font-size:12px} }

@@ -581,6 +581,25 @@ function render(){
   document.body.classList.toggle("isGreat", state().great && !state().perfect);
 }
 
+const SITE_URL = "https://marumaru.heuron.com/";
+const AUTHOR = "@jounlai";
+// X の投稿画面を開く。収録漏れの報告と、PERFECT の自慢に使う
+function xIntent(text){
+  return "https://x.com/intent/tweet?text=" + encodeURIComponent(text + "\n" + SITE_URL);
+}
+/* はずれたとき。収録漏れかもしれないので、その場から作者へ報告できるようにする。
+   こども版では作った文字列自体を見せないため、報告の導線も出さない。 */
+function flashMiss(word){
+  if (mode === "kids") { flash("bad", pick(BAD_MSGS)); return; }
+  flashEl.className = "flash bad";
+  flashEl.innerHTML =
+    `<span class="fw">${esc(word)}</span>` +
+    `<span class="fm">${esc(pick(BAD_MSGS))}</span>` +
+    `<a class="reportLink" target="_blank" rel="noopener" href="${esc(xIntent(
+      `${AUTHOR} 〇〇ことば：「${word}」（${current().template}）が未収録でした。`))}">` +
+    `この語を作者に報告する →</a>`;
+}
+
 function flash(kind, text){
   flashEl.className = "flash " + kind;
   flashEl.textContent = text;
@@ -808,6 +827,12 @@ let burstTimer = 0;
 function roundActions(){
   const acts = [];
   const s = state();
+  if (s.perfect) {
+    const n = current().answers.length;
+    acts.push({label: mode === "kids" ? "X で じまんする" : "X で自慢する", keepOpen: true,
+      run: () => window.open(xIntent(
+        `〇〇ことば「${current().template}」を PERFECT！全${n}語ぜんぶ見つけました。`), "_blank", "noopener")});
+  }
   const more = !roundLocked() && s.discovered.size < current().answers.length;
   if (more) {
     const goal = !s.great ? "GREAT" : (canPerfect() ? "PERFECT" : "");
@@ -848,7 +873,7 @@ function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, acti
     const b = document.createElement("button");
     b.className = "btn" + (a.primary ? " primary" : "");
     b.textContent = a.label;
-    b.addEventListener("click", () => { hideBurst(); if (a.run) a.run(); });
+    b.addEventListener("click", () => { if (!a.keepOpen) hideBurst(); if (a.run) a.run(); });
     acts.appendChild(b);
   }
   // 画面いっぱいを覆うので、外側を押しても閉じられるようにする
@@ -1097,7 +1122,7 @@ function guess(kana){
     sfxWrong(); buzz([25, 40, 25]); shake();
     // こども版では、外したときに作られた文字列をそのまま出さない。
     // 収録していない語（卑猥な並びを含む）が画面に出てしまうため。
-    flash("bad", mode === "kids" ? pick(BAD_MSGS) : `${word} — ${pick(BAD_MSGS)}`);
+    flashMiss(word);
   }
 
   saveProgress();
