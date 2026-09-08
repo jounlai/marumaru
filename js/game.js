@@ -371,6 +371,11 @@ function roundName(i = roundIndex){
   return `ROUND ${no}`;
 }
 // テンプレートを表示用HTMLへ（SPECIAL の2つ目の穴には濁点を重ねる）
+// 画面と同じ字面の文字列。データでは穴を ○（白丸）で持っているが、
+// 表に出すときは題字と同じ 〇 にそろえる（SPECIAL の後半は濁点つき）。
+function templateText(template){
+  return [...template].map(ch => ch === "○" ? "〇" : ch === "〇" ? "〇゙" : ch).join("");
+}
 function templateHTML(template){
   return [...template].map(ch => {
     if (ch === "○") return '<span class="hole">〇</span>';
@@ -592,11 +597,12 @@ function xIntent(text){
    ゲーム名は行頭ではなくハッシュタグで最後に置く（行頭の「〇〇ことば」は
    伏せ字に見えて、名前だと伝わらないため）。 */
 function puzzleLines(round = current(), exCount = 3){
+  const t = templateText(round.template);
   const rule = round.group === "word"
-    ? `「${round.template}」の 〇 にかなを1つ入れて、ことばにする遊び。`
+    ? `「${t}」の 〇 にかなを1つ入れて、ことばにする遊び。`
     : round.group === "special"
-      ? `「${round.template}」の前の 〇 にかなを入れる。後ろは同じかなの濁音になる。`
-      : `「${round.template}」の 〇 に同じかなを入れて、ことばにする遊び。`;
+      ? `「${t}」の前の 〇 にかなを入れる。後ろは同じかなの濁音になる。`
+      : `「${t}」の 〇 に同じかなを入れて、ことばにする遊び。`;
   const ex = blurbExamples(round, exCount).map(a => `${kanaForWord(a.word)}→${answerDisplay(a)}`);
   return ex.length ? `${rule}\n${ex.join("、")}…` : rule;
 }
