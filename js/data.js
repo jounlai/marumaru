@@ -1043,7 +1043,7 @@ const ROUND_DATA = [
       { word: "ねっとり", meaning: "強い粘り気があるさま。" },
       { word: "べっとり", meaning: "粘るものが厚くくっつくさま。" },
       { word: "むっとり", meaning: "熱気や湿気がこもって息苦しいさま。" },
-      { word: "はっとり", display: "服部", meaning: "日本に多い姓。「服部半蔵」など。" },
+      { word: "はっとり", display: "服部", meaning: "日本に多い姓。伊賀の忍者、服部半蔵で知られる。" },
       { word: "のっとり", display: "乗っ取り", meaning: "力ずくで奪い取ること。「ハイジャック」。" },
       { word: "とっとり", display: "鳥取", meaning: "中国地方の県。鳥取砂丘で知られる。" },
       { word: "てっとり", display: "手っ取り", meaning: "「手っ取り早い」の形で、手間がかからないこと。" },
@@ -1410,7 +1410,7 @@ const WORD_ROUNDS = [
   {
     template: "○んどう",
     answers: [
-      { word: "あんどう", display: "安藤", meaning: "日本に多い姓。「安藤忠雄」など。" },
+      { word: "あんどう", display: "安藤", meaning: "日本に多い姓。建築家の安藤忠雄など。" },
       { word: "いんどう", display: "引導", meaning: "死者を導く儀式の言葉。「引導を渡す」。" },
       { word: "うんどう", display: "運動", meaning: "体を動かすこと／目的のために働きかける活動。" },
       { word: "えんどう", display: "遠藤／豌豆", meaning: "日本に多い姓／エンドウ豆。" },
@@ -1590,8 +1590,6 @@ const WORD_ROUNDS = [
       { word: "れんじ", display: "連子", meaning: "細い木や竹を等間隔に並べた格子。「連子窓」。" },
       { word: "ぶんじ", display: "文治", meaning: "鎌倉初期の元号（1185〜1190）。" },
       { word: "おんじ", display: "音字", meaning: "音だけを表す文字。表音文字。" },
-      { word: "ごんじ", display: "郷司", meaning: "姓の一つ。「郷司」など。" },
-      { word: "やんじ", display: "良枝", meaning: "人名の一つ。「良枝」など。" },
       { word: "ねんじ", display: "年次", meaning: "年ごと。「年次計画」「年次休暇」。" },
       { word: "ひんじ", display: "ヒンジ／賓辞", meaning: "扉やふたの蝶番／論理学で、判断の述語。" },
       { word: "がんじ", display: "雁字", meaning: "雁が一列に並んで飛ぶさまを文字に見立てた語／手紙。「雁字搦め」。" }
@@ -1657,9 +1655,7 @@ const WORD_ROUNDS = [
       { word: "かばい", display: "庇い", meaning: "かばうこと。多く「かばい立て」「かばい手」の形で使う。" },
       { word: "かえい", display: "嘉永", meaning: "江戸末期の元号（1848〜1854）。ペリー来航の頃。" },
       { word: "かげい", display: "家芸", meaning: "その家に代々伝わる得意な芸。「お家芸」。" },
-      { word: "かかい", display: "歌会", meaning: "人々が集まって和歌を詠み、披露する会。" },
-      { word: "かつい", display: "葛井", meaning: "姓の一つ。「葛井」など。" },
-      { word: "かりい", display: "仮井", meaning: "姓の一つ。「仮井」など。" }
+      { word: "かかい", display: "歌会", meaning: "人々が集まって和歌を詠み、披露する会。" }
     ]
   },
   {
@@ -1693,7 +1689,7 @@ const WORD_ROUNDS = [
       { word: "しずい", display: "歯髄", meaning: "歯の内部にある神経や血管の組織。俗にいう歯の神経。" },
       { word: "しゆい", display: "思惟", meaning: "深く考えること。仏教語。「半跏思惟像（はんかしゆいぞう）」。" },
       { word: "しわい", display: "吝い", meaning: "けちである。金離れが悪い。" },
-      { word: "しらい", display: "白井", meaning: "日本に多い姓。体操の「シライ」（白井健三の技）でも知られる。" }
+      { word: "しらい", display: "白井", meaning: "日本に多い姓。体操の白井健三は技に名を残した（シライ）。" }
     ]
   },
   {
@@ -1839,7 +1835,6 @@ const WORD_ROUNDS = [
       { word: "まんかん", display: "満干", meaning: "潮の満ち引き。" },
       { word: "けんかん", display: "顕官", meaning: "位の高い官職。" },
       { word: "かんかん", display: "かんかん", meaning: "日が強く照るさま／ひどく怒るさま。「かんかんに怒る」。" },
-      { word: "ぷんかん", display: "五分間", meaning: "人名の一つ。「五分間」など。" },
       { word: "めんかん", display: "免官", meaning: "官職をやめさせること。" },
       { word: "だんかん", display: "断簡", meaning: "切れ切れになった書物の一部。「断簡零墨」。" },
       { word: "ふんかん", display: "分間", meaning: "1分を単位として数える語。「五分間」。" }
@@ -1908,7 +1903,6 @@ const WORD_ROUNDS = [
       { word: "あれい", display: "亜鈴", meaning: "筋力トレーニングに使うおもり。ダンベル。" },
       { word: "あちい", display: "あちい", meaning: "「暑い」のくだけた言い方。" },
       { word: "あにい", display: "兄い", meaning: "にいさん。仲間内の年長者を呼ぶ語。" },
-      { word: "あぐい", display: "亜久井", meaning: "姓の一つ。「亜久井」など。" },
       { word: "あしい", display: "悪しい", meaning: "悪い、粗悪な。" },
       { word: "あない", display: "案内", meaning: "道案内・案内／情報・通知。" },
       { word: "あもい", display: "廈門", meaning: "中国福建省の都市、厦門（アモイ）。" },
@@ -1971,9 +1965,8 @@ const WORD_ROUNDS = [
       { word: "たげい", display: "多芸", meaning: "多くの芸ができること。「多芸多才」。" },
       { word: "たゆい", display: "たゆい", meaning: "だるい。「たゆい体を起こす」。" },
       { word: "たけい", display: "多形", meaning: "同じものが複数の形をとること。「多形紅斑」。" },
-      { word: "たべい", display: "田部井", meaning: "姓の一つ。「田部井淳子」。" },
+      { word: "たべい", display: "田部井", meaning: "群馬に多い姓。田部井淳子は女性で初めてエベレストに登った登山家。" },
       { word: "たたい", display: "多体", meaning: "多数の物体からなること。「多体問題」など。" },
-      { word: "たきい", display: "多喜井", meaning: "姓の一つ。「多喜井」など。" },
       { word: "たつい", display: "達意", meaning: "言いたいことがよく伝わること。「達意の文章」。" }
     ]
   },
@@ -2134,8 +2127,7 @@ const WORD_ROUNDS = [
       { word: "さびい", display: "さびい", meaning: "「寒い」のくだけた言い方。" },
       { word: "さみい", display: "さみい", meaning: "「寒い」のくだけた言い方。" },
       { word: "さけい", display: "左傾", meaning: "左に傾くこと。思想が左寄りになること。" },
-      { word: "さがい", display: "詐害", meaning: "人を欺いて損害を与えること。" },
-      { word: "さきい", display: "崎井", meaning: "姓の一つ。「崎井」など。" }
+      { word: "さがい", display: "詐害", meaning: "人を欺いて損害を与えること。" }
     ]
   },
   {
@@ -2240,7 +2232,7 @@ const WORD_ROUNDS = [
       { word: "まだい", display: "真鯛", meaning: "祝いの席にも使われる、代表的なタイ。" },
       { word: "まとい", display: "纏", meaning: "江戸時代、火消しが組の目印に掲げた道具。" },
       { word: "ますい", display: "麻酔", meaning: "薬で感覚を失わせること。" },
-      { word: "まつい", display: "松井", meaning: "日本に多い姓。「松井秀喜」など。" },
+      { word: "まつい", display: "松井", meaning: "日本に多い姓。野球の松井秀喜など。" },
       { word: "まさい", display: "マサイ", meaning: "ケニアやタンザニアに暮らす牧畜民族。「マサイ族」。" },
       { word: "まどい", display: "惑い／円居", meaning: "心の迷い／親しい者が集まりくつろぐこと。" },
       { word: "まごい", display: "真鯉", meaning: "黒い色の鯉。こいのぼりの黒い鯉。" },
@@ -2248,8 +2240,7 @@ const WORD_ROUNDS = [
       { word: "まろい", display: "円い", meaning: "「丸い」の古風な言い方。角がなく穏やか。" },
       { word: "ませい", display: "磨製", meaning: "石を磨いて作ること。" },
       { word: "まじい", meaning: "「してはならない・するはずがない」の意を表す古風な語。" },
-      { word: "まづい", display: "不味い", meaning: "「まずい」の古い書き方。味が悪い／都合が悪い。" },
-      { word: "まりい", display: "まり以", meaning: "姓の一つ。「まり以」など。" }
+      { word: "まづい", display: "不味い", meaning: "「まずい」の古い書き方。味が悪い／都合が悪い。" }
     ]
   },
   {
@@ -2336,7 +2327,6 @@ const WORD_ROUNDS = [
       { word: "こざい", display: "古材", meaning: "古い建物から取った木材。" },
       { word: "こへい", display: "古兵", meaning: "戦さ慣れした古参の兵。" },
       { word: "こめい", display: "古名", meaning: "古い名称・以前の名称。" },
-      { word: "こしい", display: "越井", meaning: "姓の一つ。「越井」など。" },
       { word: "こるい", display: "孤塁", meaning: "孤立した砦。「孤塁を守る」。" },
       { word: "こさい", display: "小才", meaning: "ちょっとした才知。「小才が利く」。" }
     ]
@@ -2352,8 +2342,7 @@ const WORD_ROUNDS = [
       { word: "せいい", display: "誠意", meaning: "うそやごまかしのない、真心。" },
       { word: "せこい", display: "せこい", meaning: "けちくさい。ずるくて小さい。もとは芸能・的屋の隠語。" },
       { word: "せおい", display: "背負い", meaning: "背に負うこと。「背負い投げ」。" },
-      { word: "せきい", display: "赤緯", meaning: "天球上の緯度にあたる座標、赤緯。" },
-      { word: "せざい", display: "世在", meaning: "姓の一つ。「世在」など。" }
+      { word: "せきい", display: "赤緯", meaning: "天球上の緯度にあたる座標、赤緯。" }
     ]
   },
   {
@@ -2366,7 +2355,6 @@ const WORD_ROUNDS = [
       { word: "えろい", display: "エロい", meaning: "性的な感じがするさまをいう口語。" },
       { word: "えずい", display: "えずい", meaning: "西日本で「気持ちが悪い」「ひどい」。" },
       { word: "ええい", display: "ええい", meaning: "思い切るときや苛立つときに出す声。" },
-      { word: "えりい", display: "愛里依", meaning: "女性の名の一つ。「愛里依」など。" },
       { word: "えいい", display: "鋭意", meaning: "心を打ち込んで励むさま。「鋭意努力する」。" }
     ]
   },
@@ -2385,7 +2373,6 @@ const WORD_ROUNDS = [
       { word: "ふんぼ", display: "墳墓", meaning: "はか。「墳墓の地」。" },
       { word: "れんぼ", display: "恋慕", meaning: "人を恋しく思うこと。「横恋慕」。" },
       { word: "ごんぼ", display: "ごんぼ", meaning: "ごぼうのこと。西日本などの言い方。" },
-      { word: "せんぼ", display: "千保", meaning: "姓の一つ。「千保」など。" },
       { word: "おんぼ", display: "オンボ", meaning: "オンボードの略。パソコンの基板に機能が組み込まれていること。「オンボのグラフィック」。" },
       { word: "ゆんぼ", display: "ユンボ", meaning: "油圧ショベルの通称。建設機械。" },
       { word: "つんぼ", display: "聾", meaning: "耳の聞こえない人を指した古い語。現在は使われない差別語で、辞書の見出しとして引く。" }
@@ -2471,8 +2458,7 @@ const WORD_ROUNDS = [
       { word: "はざい", display: "端材", meaning: "切り取ったあとに残る材木や材料。" },
       { word: "はあい", display: "はあい", meaning: "のんびりした返事の声。" },
       { word: "はつい", display: "発意", meaning: "思いつくこと。言い出すこと。" },
-      { word: "はいい", display: "廃位", meaning: "王位などから退けられること。" },
-      { word: "はきい", display: "波木井", meaning: "姓の一つ。「波木井」など。" }
+      { word: "はいい", display: "廃位", meaning: "王位などから退けられること。" }
     ]
   },
   {
@@ -2758,7 +2744,6 @@ const WORD_ROUNDS = [
       { word: "りんぼう", display: "輪宝", meaning: "仏具の一つ。車輪の形をした法具。" },
       { word: "みんぼう", display: "民望", meaning: "民衆の希望・信望。" },
       { word: "もんぼう", display: "聞法", meaning: "仏の教えを聞くこと。" },
-      { word: "げんぼう", display: "玄房", meaning: "人名の一つ。「玄房」など。" },
       { word: "でんぼう", display: "伝法", meaning: "勇み肌で乱暴なこと。「伝法な口をきく」。" }
     ]
   },
@@ -2975,8 +2960,7 @@ const WORD_ROUNDS = [
       { word: "せんきゅう", display: "センキュー", meaning: "ありがとう。thank you の音写。「サンキュー」とも。" },
       { word: "ねんきゅう", display: "年給", meaning: "一年いくらで支払う給与。" },
       { word: "ぜんきゅう", display: "全休", meaning: "まるまる休むこと。" },
-      { word: "へんきゅう", display: "返球", meaning: "球を投げ返すこと／球技でボールを返すこと。" },
-      { word: "まんきゅう", display: "万久", meaning: "姓の一つ。「万久」など。" }
+      { word: "へんきゅう", display: "返球", meaning: "球を投げ返すこと／球技でボールを返すこと。" }
     ]
   },
   {
@@ -3896,7 +3880,6 @@ const WORD_ROUNDS = [
       { word: "げんな", display: "元和", meaning: "江戸初期の年号。「元和偃武」。" },
       { word: "てんな", display: "天和", meaning: "江戸前期の年号。" },
       { word: "ぶんな", display: "文和", meaning: "北朝の年号「文和」（1352～1356年）。" },
-      { word: "るんな", display: "るん菜", meaning: "女性の名の一つ。「るん菜」など。" },
       { word: "をんな", display: "女", meaning: "「おんな」の歴史的仮名遣い。" }
     ]
   },
@@ -3927,7 +3910,6 @@ const WORD_ROUNDS = [
       { word: "でんば", display: "電場", meaning: "電気の力が働く空間。電界。" },
       { word: "しんば", display: "新馬", meaning: "まだ勝ったことのない競走馬。「新馬戦」。" },
       { word: "まんば", display: "漫罵", meaning: "むやみに悪口を浴びせること。" },
-      { word: "にんば", display: "荷場", meaning: "地名の一つ。「荷場」など。" },
       { word: "めんば", display: "面罵", meaning: "面と向かってののしること。" },
       { word: "いんば", display: "印旛", meaning: "千葉県の地名。「印旛沼」。" },
       { word: "やんば", display: "八ッ場", meaning: "群馬県の地名。「八ッ場ダム」。" },
@@ -4243,7 +4225,6 @@ const WORD_ROUNDS = [
       { word: "みだい", display: "御台", meaning: "将軍や大臣の正妻。「御台所」。" },
       { word: "みさい", display: "未済", meaning: "未完了・未払い・未決済であること。" },
       { word: "みよい", display: "見好い", meaning: "見た目がよい／見やすい。" },
-      { word: "みとい", display: "三十一", meaning: "姓の一つ。「三十一」など。" },
       { word: "みれい", display: "三礼", meaning: "三度礼拝すること。" }
     ]
   },
@@ -4289,9 +4270,7 @@ const WORD_ROUNDS = [
       { word: "おまい", display: "おまい", meaning: "「おまえ」のくだけた言い方。" },
       { word: "おさい", display: "お菜", meaning: "飯に添えるおかず。" },
       { word: "おんい", display: "恩威", meaning: "めぐみと威厳。「恩威並び行う」。" },
-      { word: "おくい", display: "奥意", meaning: "心の奥にある本当の意図。" },
-      { word: "おけい", display: "桶井", meaning: "姓の一つ。「桶井」など。" },
-      { word: "おてい", display: "小堤", meaning: "姓の一つ。「小堤」など。" }
+      { word: "おくい", display: "奥意", meaning: "心の奥にある本当の意図。" }
     ]
   },
   {
@@ -4335,9 +4314,8 @@ const WORD_ROUNDS = [
       { word: "つたい", display: "伝い", meaning: "沿って行くこと。「壁伝いに歩く」。" },
       { word: "つどい", display: "集い", meaning: "人の集まり。会合。" },
       { word: "つつい", display: "筒井", meaning: "筒型の井戸。姓・地名。「筒井筒」「筒井順慶」。" },
-      { word: "つぼい", display: "坪井", meaning: "姓の一つ。「坪井」。" },
-      { word: "つくい", display: "津久井", meaning: "神奈川県の地名。「津久井湖」。" },
-      { word: "つもい", display: "千万億", meaning: "姓の一つ。「千万億」など。" }
+      { word: "つぼい", display: "坪井", meaning: "地名からできた姓。各地にあり、坪井忠二（地球物理学者）など。" },
+      { word: "つくい", display: "津久井", meaning: "神奈川県の地名。「津久井湖」。" }
     ]
   },
   {
@@ -4359,7 +4337,7 @@ const WORD_ROUNDS = [
       { word: "ふざい", display: "不在", meaning: "その場にいないこと。「不在票」。" },
       { word: "ふぜい", display: "風情", meaning: "おもむき。あじわい。「風情がある」。" },
       { word: "ふへい", display: "不平", meaning: "不満に思う気持ち。「不平不満」。" },
-      { word: "ふじい", display: "藤井", meaning: "日本に多い姓。「藤井聡太」など。" },
+      { word: "ふじい", display: "藤井", meaning: "日本に多い姓。将棋の藤井聡太など。" },
       { word: "ふずい", display: "付随", meaning: "主となるものに伴って起こること。" },
       { word: "ふだい", display: "譜代", meaning: "代々その主家に仕えること。「譜代大名」。" },
       { word: "ふがい", display: "不甲斐", meaning: "「不甲斐ない」の形で、情けないこと。" },
@@ -4367,7 +4345,6 @@ const WORD_ROUNDS = [
       { word: "ふえい", display: "賦詠", meaning: "詩歌を作ること／作った詩。" },
       { word: "ふうい", display: "風位", meaning: "風の吹いてくる方角。" },
       { word: "ふでい", display: "腐泥", meaning: "有機物が腐敗してできた泥（腐泥）。" },
-      { word: "ふりい", display: "布莉以", meaning: "女性の名の一つ。「布莉以」など。" },
       { word: "ふれい", display: "不例", meaning: "体調不良・病気。" }
     ]
   },
@@ -4452,9 +4429,7 @@ const WORD_ROUNDS = [
       { word: "なだい", display: "名代", meaning: "名高いこと。「名代の品」。" },
       { word: "なつい", display: "なつい", meaning: "「懐かしい」を縮めた若者語。" },
       { word: "なるい", display: "なるい", meaning: "傾きがゆるやかだ。手ぬるい。" },
-      { word: "ないい", display: "内意", meaning: "表に出さない意向。「内意を伝える」。" },
-      { word: "なあい", display: "菜愛", meaning: "女性の名の一つ。「菜愛」など。" },
-      { word: "なりい", display: "菜里衣", meaning: "姓の一つ。「菜里衣」など。" }
+      { word: "ないい", display: "内意", meaning: "表に出さない意向。「内意を伝える」。" }
     ]
   },
   {
