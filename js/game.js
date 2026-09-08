@@ -103,6 +103,25 @@ function buildStages(){
   }
   return stages;
 }
+/* ステージには名前を付ける。番号だけだと、どのステージも同じに見えるため。
+ * 北から南へ、日本を旅していく並びにした。ステージが増えても足りるよう
+ * 多めに用意し、それでも足りなければ番号に戻る。 */
+const STAGE_NAMES = [
+  ["札幌", "さっぽろ"], ["函館", "はこだて"], ["青森", "あおもり"], ["盛岡", "もりおか"],
+  ["仙台", "せんだい"], ["会津", "あいづ"], ["日光", "にっこう"], ["東京", "とうきょう"],
+  ["横浜", "よこはま"], ["鎌倉", "かまくら"], ["富士", "ふじ"], ["松本", "まつもと"],
+  ["金沢", "かなざわ"], ["名古屋", "なごや"], ["伊勢", "いせ"], ["京都", "きょうと"],
+  ["奈良", "なら"], ["大阪", "おおさか"], ["神戸", "こうべ"], ["岡山", "おかやま"],
+  ["広島", "ひろしま"], ["出雲", "いずも"], ["高松", "たかまつ"], ["高知", "こうち"],
+  ["博多", "はかた"], ["長崎", "ながさき"], ["熊本", "くまもと"], ["鹿児島", "かごしま"],
+  ["屋久島", "やくしま"], ["那覇", "なは"]
+];
+function stageName(si){
+  const n = STAGE_NAMES[si];
+  if (!n) return `ステージ ${si + 1}`;
+  return mode === "kids" ? n[1] : n[0];
+}
+
 const STAGES = buildStages();
 const STAGE_OF = new Map();
 STAGES.forEach((rounds, si) => rounds.forEach(i => STAGE_OF.set(i, si)));
@@ -148,6 +167,7 @@ function serializeProgress(){
     v: 5,
     roundTemplate: ROUND_DATA[roundIndex] && ROUND_DATA[roundIndex].template,
     stars, soundOn, score, maxCombo,
+    celebrated: [...celebrated],
     rounds: roundStates.map((s, i) => ({
       template: ROUND_DATA[i].template,
       found: [...s.found], discovered: [...s.discovered], used: [...s.used],
@@ -203,6 +223,7 @@ function loadProgress(){
   if (typeof x.soundOn === "boolean") soundOn = x.soundOn;
   if (Number.isFinite(x.score)) score = x.score;
   if (Number.isFinite(x.maxCombo)) maxCombo = x.maxCombo;
+  if (Array.isArray(x.celebrated)) celebrated = new Set(x.celebrated.filter(Number.isInteger));
 }
 /* 旧アドレス（GitHub Pages）から運ばれてきたセーブを、このドメインのセーブへ
  * 合流させる。localStorage はドメインごとに別なので、移転のあいだだけ URL で
@@ -527,7 +548,7 @@ function renderDoneBar(){
 }
 
 function render(){
-  $("#stageChip").textContent = `ステージ ${currentStage() + 1}`;
+  $("#stageChip").textContent = `${currentStage() + 1}　${stageName(currentStage())}`;
   $("#roundLabel").textContent = roundName();
   $("#roundLabel").classList.toggle("special", isSpecial());
   $("#difficulty").textContent = difficultyLabel(roundIndex);
@@ -1124,8 +1145,8 @@ function finishStage(si){
   document.body.classList.add("celebrate");
   setTimeout(() => document.body.classList.remove("celebrate"), 1200);
 
-  showBurst({mark: `STAGE ${si + 1}`, word: "STAGE CLEAR", sub: `${STAGES[si].length}問すべてクリア`,
-    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, char: "good", ms: 3000});
+  showBurst({mark: `ステージ ${si + 1}　${stageName(si)}`, word: "STAGE CLEAR", sub: `${STAGES[si].length}問すべてクリア`,
+    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, char: "good", ms: 1400});
 
   confetti(110, colors, 3400);
   // 中央から一発、そのあと左右からも上げる
@@ -1136,14 +1157,47 @@ function finishStage(si){
   setTimeout(() => particles(null, 40, colors), 760);
   setTimeout(() => { mascotPose("spin", 1320); mascotSay("やったー！", "gold", 2200); }, 200);
 
-  setTimeout(() => { viewStage = Math.min(si + 1, STAGES.length - 1); openRoundList(); }, 3100);
+  celebrated.add(si);
+  saveProgress();
+
+  const done = STAGES[si].filter(i => roundStates[i].perfect).length;
+  setTimeout(() => {
+    // バーストの暗幕はクリア画面より手前に出るので、先に片づける
+    clearTimeout(burstTimer);
+    $("#burst").classList.remove("show");
+    $("#scStage").textContent = `ステージ ${si + 1}　${stageName(si)}`;
+    $("#scStats").innerHTML = mode === "kids"
+      ? `${STAGES[si].length}もん ぜんぶ クリア！<br>PERFECT は <b>${done}</b> / ${STAGES[si].length} もん`
+      : `${STAGES[si].length}問すべてクリア　・　PERFECT <b>${done}</b> / ${STAGES[si].length}`;
+    $("#scNextBtn").hidden = si >= STAGES.length - 1;
+    $("#scStayBtn").textContent = mode === "kids"
+      ? "このステージを つづける（ぜんもん せいかい を ねらう）"
+      : "このステージを続ける（PERFECT を狙う）";
+    if (mode === "kids") $("#scNextBtn").textContent = "つぎの ステージへ →";
+    openModal("#stageClearModal");
+  }, 1500);
+}
+
+// ステージクリア画面の選択
+function goNextStage(){
+  const si = currentStage();
+  const next = Math.min(si + 1, STAGES.length - 1);
+  closeModals({force: true});
+  viewStage = next;
+  const first = STAGES[next].find(i => !roundStates[i].cleared);
+  selectRound(first === undefined ? STAGES[next][0] : first);
+}
+function stayInStage(){
+  closeModals({force: true});
+  viewStage = currentStage();
+  openRoundList();
 }
 
 
 function nextRound(){
   const si = currentStage();
   if (stageCleared(si)) {
-    if (si >= STAGES.length - 1) { viewStage = si; openRoundList(); return; }
+    if (celebrated.has(si) || si >= STAGES.length - 1) { viewStage = si; openRoundList(); return; }
     finishStage(si);
     return;
   }
@@ -1233,6 +1287,7 @@ function closeModals(opts){
 }
 
 let viewStage = 0;
+let celebrated = new Set();   // 祝い終えたステージ
 function openRoundList(){
   if (viewStage < 0 || viewStage >= STAGES.length) viewStage = currentStage();
   // ステージ選びは、すごろくの道にする。番号の羅列だと、どこまで来たのかが
@@ -1247,11 +1302,13 @@ function openRoundList(){
       stageCleared(si) ? "done" : "",
       si === here ? "here" : ""
     ].join(" ");
-    const face = stageCleared(si) ? "★" : open ? si + 1 : "";
+    const cleared = stageCleared(si);
+    const face = cleared ? "★" : open ? si + 1 : "";
+    const foot = cleared ? "CLEAR" : open ? stageName(si) : "？";
     return `<button class="stageStop ${cls}" data-stage="${si}" title="ステージ ${si + 1}">
       ${si === here ? '<img class="stopChar" src="img/maru-run.png" alt="">' : ""}
       <span class="stopDot"><b>${face}</b></span>
-      <small>${open ? done + "/" + all : "？"}</small>
+      <small>${foot}</small>
     </button>`;
   }).join("") + '<div class="stageGoal"><span>🏁</span><small>ゴール</small></div>';
 
@@ -1296,9 +1353,10 @@ function openRoundList(){
         ★はステージを越えるたびに満タンに戻ります。</div>`;
 
   $("#stageStrip").innerHTML = strip;
+  const doneNow = stageDone(viewStage), allNow = STAGES[viewStage].length;
   $("#stageTitle").textContent = mode === "kids"
-    ? `ステージ ${viewStage + 1}`
-    : `ステージ ${viewStage + 1} / ${STAGES.length}`;
+    ? `ステージ ${viewStage + 1}　${stageName(viewStage)}`
+    : `ステージ ${viewStage + 1}　${stageName(viewStage)} ・ ${doneNow}/${allNow}`;
   $("#roundList").innerHTML = head + list;
   $("#stageStrip").querySelectorAll(".stageStop").forEach(b =>
     b.addEventListener("click", () => { viewStage = Number(b.dataset.stage); openRoundList(); }));
@@ -1353,6 +1411,8 @@ $("#mGiveupBtn").addEventListener("click", () => { closeModals(); giveUp(); });
 $("#resetBtn").addEventListener("click", () => resetAll(false));
 $("#gResetBtn").addEventListener("click", () => resetAll(false));
 $("#reviveBtn").addEventListener("click", revive);
+$("#scNextBtn").addEventListener("click", goNextStage);
+$("#scStayBtn").addEventListener("click", stayInStage);
 $("#gAnswerBtn").addEventListener("click", openAnswers);
 $("#soundBtn").addEventListener("click", () => {
   soundOn = !soundOn;
