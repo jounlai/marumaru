@@ -803,7 +803,22 @@ function shake(){
 }
 
 let burstTimer = 0;
-function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, ms = 900}){
+/* 祝いの画面に出す選択。まだ探せる語が残っているときだけ「続ける」を出す。
+   全部見つけたあとに「続ける」を出しても、押しても何もできないため。 */
+function roundActions(){
+  const acts = [];
+  const s = state();
+  const more = !roundLocked() && s.discovered.size < current().answers.length;
+  if (more) {
+    const goal = !s.great ? "GREAT" : (canPerfect() ? "PERFECT" : "");
+    acts.push({label: mode === "kids"
+      ? (goal ? `つづける（${goal} を ねらう）` : "つづける")
+      : (goal ? `このラウンドを続ける（${goal} を狙う）` : "このラウンドを続ける")});
+  }
+  acts.push({label: mode === "kids" ? "つぎへ →" : "次のラウンドへ →", primary: true, run: nextRound});
+  return acts;
+}
+function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, actions, ms = 900}){
   const box = $("#burst");
   clearTimeout(burstTimer);
   const bc = $("#burstChar");
@@ -814,11 +829,38 @@ function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, ms =
   $("#burstSub").textContent = sub || "";
   $("#burstMeaning").textContent = meaning || "";
   $("#burstBonus").textContent = bonus || "";
-  box.className = "burst" + (dim ? " dim" : "") + (gold ? " gold" : "") + (long ? " long" : "");
-  $("#burstInner").className = "burstInner" + (long ? " long" : "");
+  const acts = $("#burstActions");
+  acts.className = "burstActions";
+  acts.innerHTML = "";
+  const hasActions = actions && actions.length;
+  box.className = "burst" + (dim ? " dim" : "") + (gold ? " gold" : "") + (long ? " long" : "") +
+    (hasActions ? " hasActions" : "");
+  $("#burstInner").className = "burstInner" + (long ? " long" : "") + (hasActions ? " hold" : "");
   void box.offsetWidth;
   box.classList.add("show");
-  burstTimer = setTimeout(() => box.classList.remove("show"), ms);
+
+  if (!hasActions) {
+    burstTimer = setTimeout(() => box.classList.remove("show"), ms);
+    return;
+  }
+  // 祝いが済んでからボタンを出す。演出はそのまま残す。
+  for (const a of actions) {
+    const b = document.createElement("button");
+    b.className = "btn" + (a.primary ? " primary" : "");
+    b.textContent = a.label;
+    b.addEventListener("click", () => { hideBurst(); if (a.run) a.run(); });
+    acts.appendChild(b);
+  }
+  // 画面いっぱいを覆うので、外側を押しても閉じられるようにする
+  box.onclick = e => { if (e.target === box) hideBurst(); };
+  burstTimer = setTimeout(() => acts.classList.add("show"), ms);
+}
+function hideBurst(){
+  clearTimeout(burstTimer);
+  const box = $("#burst");
+  box.onclick = null;
+  box.classList.remove("show", "hasActions");
+  $("#burstActions").className = "burstActions";
 }
 
 /* --- ひらがな棒人間：進捗バーの上を歩き、ゴール旗（クリア地点）を目指す --- */
@@ -1106,7 +1148,7 @@ function finishRound(silent){
     confetti(34, colors, 2200);
     setTimeout(() => {
       showBurst({mark: roundName(), word: "ROUND CLEAR", sub: `${s.discovered.size} / ${current().answers.length} 語発見`,
-        bonus, dim: true, long: true, char: "pose", ms: 2000});
+        bonus, dim: true, long: true, char: "pose", actions: roundActions(), ms: 1600});
       particles(null, 36, colors);
     }, 320);
   }
@@ -1132,7 +1174,7 @@ function greatRound(){
   confetti(85, colors, 3000);
   setTimeout(() => {
     showBurst({mark: roundName(), word: "GREAT!!", sub: `${s.discovered.size} / ${current().answers.length} 語発見`,
-      bonus, dim: true, gold: true, long: true, char: "pose", ms: 2600});
+      bonus, dim: true, gold: true, long: true, char: "pose", actions: roundActions(), ms: 1900});
     particles(null, 54, colors);
     setTimeout(() => particles(null, 34, colors), 360);
     setTimeout(() => particles(null, 26, colors), 720);
@@ -1160,7 +1202,7 @@ function perfectRound(){
   const corner = (x, y) => ({getBoundingClientRect: () => ({left: x, top: y, width: 0, height: 0})});
   setTimeout(() => {
     showBurst({mark: roundName(), word: "PERFECT!!", sub: `全 ${current().answers.length} 語を発見`,
-      bonus, dim: true, gold: true, long: true, char: "pose", ms: 3000});
+      bonus, dim: true, gold: true, long: true, char: "pose", actions: roundActions(), ms: 2200});
     particles(null, 70, colors);
     setTimeout(() => particles(corner(innerWidth * .2, innerHeight * .6), 40, colors), 260);
     setTimeout(() => particles(corner(innerWidth * .8, innerHeight * .6), 40, colors), 440);
@@ -1253,8 +1295,20 @@ function finishStage(si){
   document.body.classList.add("celebrate");
   setTimeout(() => document.body.classList.remove("celebrate"), 1200);
 
-  showBurst({mark: `ステージ ${si + 1}　${stageName(si)}`, word: "STAGE CLEAR", sub: `${STAGES[si].length}問すべてクリア`,
-    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, char: "good", ms: 1400});
+  // このステージにまだ探せる語が残っているときだけ「続ける」を出す
+  const more = STAGES[si].some(i => roundStates[i].discovered.size < ROUND_DATA[i].answers.length);
+  const perfectCountHere = STAGES[si].filter(i => roundStates[i].perfect).length;
+  const acts = [];
+  if (more) acts.push({label: mode === "kids"
+    ? "このステージを つづける" : "このステージを続ける（PERFECT を狙う）", run: stayInStage});
+  if (si < STAGES.length - 1) acts.push({label: mode === "kids"
+    ? "つぎの ステージへ →" : "次のステージへ →", primary: true, run: goNextStage});
+  if (!acts.length) acts.push({label: mode === "kids" ? "いちらんを 見る" : "ステージ一覧を見る", primary: true, run: stayInStage});
+
+  showBurst({mark: `ステージ ${si + 1}　${stageName(si)}`, word: "STAGE CLEAR",
+    sub: `${STAGES[si].length}問すべてクリア　・　PERFECT ${perfectCountHere} / ${STAGES[si].length}`,
+    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, char: "good",
+    actions: acts, ms: 2000});
 
   confetti(110, colors, 3400);
   // 中央から一発、そのあと左右からも上げる
@@ -1267,23 +1321,6 @@ function finishStage(si){
 
   celebrated.add(si);
   saveProgress();
-
-  const done = STAGES[si].filter(i => roundStates[i].perfect).length;
-  setTimeout(() => {
-    // バーストの暗幕はクリア画面より手前に出るので、先に片づける
-    clearTimeout(burstTimer);
-    $("#burst").classList.remove("show");
-    $("#scStage").textContent = `ステージ ${si + 1}　${stageName(si)}`;
-    $("#scStats").innerHTML = mode === "kids"
-      ? `${STAGES[si].length}もん ぜんぶ クリア！<br>PERFECT は <b>${done}</b> / ${STAGES[si].length} もん`
-      : `${STAGES[si].length}問すべてクリア　・　PERFECT <b>${done}</b> / ${STAGES[si].length}`;
-    $("#scNextBtn").hidden = si >= STAGES.length - 1;
-    $("#scStayBtn").textContent = mode === "kids"
-      ? "このステージを つづける（ぜんもん せいかい を ねらう）"
-      : "このステージを続ける（PERFECT を狙う）";
-    if (mode === "kids") $("#scNextBtn").textContent = "つぎの ステージへ →";
-    openModal("#stageClearModal");
-  }, 1500);
 }
 
 // ステージクリア画面の選択
@@ -1291,12 +1328,14 @@ function goNextStage(){
   const si = currentStage();
   const next = Math.min(si + 1, STAGES.length - 1);
   closeModals({force: true});
+  hideBurst();
   viewStage = next;
   const first = STAGES[next].find(i => !roundStates[i].cleared);
   selectRound(first === undefined ? STAGES[next][0] : first);
 }
 function stayInStage(){
   closeModals({force: true});
+  hideBurst();
   viewStage = currentStage();
   openRoundList();
 }
@@ -1413,7 +1452,9 @@ function openRoundList(){
     const cleared = stageCleared(si);
     const face = cleared ? "★" : open ? si + 1 : "";
     // 土地の名前はクリアしても消さない。どこを通ってきたかが分かるように。
-    const foot = open ? stageName(si) : "？";
+    // まだ開いていないステージも、おとな版は名前を出す（旅の行き先が見える）。
+    // こども版だけ「？」にして、着くまでの楽しみを残す。
+    const foot = open || mode !== "kids" ? stageName(si) : "？";
     return `<button class="stageStop ${cls}" data-stage="${si}" title="ステージ ${si + 1}">
       ${si === here ? '<img class="stopChar" src="img/maru-run.png" alt="">' : ""}
       <span class="stopDot"><b>${face}</b></span>
@@ -1530,8 +1571,6 @@ $("#mGiveupBtn").addEventListener("click", () => { closeModals(); giveUp(); });
 $("#resetBtn").addEventListener("click", () => resetAll(false));
 $("#gResetBtn").addEventListener("click", () => resetAll(false));
 $("#reviveBtn").addEventListener("click", revive);
-$("#scNextBtn").addEventListener("click", goNextStage);
-$("#scStayBtn").addEventListener("click", stayInStage);
 $("#gAnswerBtn").addEventListener("click", openAnswers);
 $("#soundBtn").addEventListener("click", () => {
   soundOn = !soundOn;

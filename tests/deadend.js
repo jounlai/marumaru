@@ -93,6 +93,11 @@ const line = (t, ok, extra) => console.log(`   ${ok ? " ok " : "FAIL"}  ${t}${ex
     ck("その状態は PERFECT として扱われる", st.perfect, `cleared=${st.cleared} exhausted=${st.exhausted}`);
     ck("下部バーが出ている", await page.isVisible("#doneBar"), (await page.textContent("#doneMsg")).trim());
     ck("「やり直す」が出ている", await page.isVisible("#retryBtn"));
+    // 祝いの画面が画面いっぱいに出ているあいだは下部バーを押せない。先に閉じる
+    if (await page.evaluate(() => document.querySelector("#burst").classList.contains("hasActions"))) {
+      await page.evaluate(() => hideBurst());
+      await page.waitForTimeout(200);
+    }
     await page.click("#retryBtn");
     await page.waitForTimeout(300);
     await page.click(".kana:not([disabled])");

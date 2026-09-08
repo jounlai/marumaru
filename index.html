@@ -56,14 +56,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=f350d60e">
+<link rel="stylesheet" href="css/styles.css?v=e6ff8589">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=f350d60e" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=e6ff8589" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -83,7 +83,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand"><img src="img/logo-small.png?v=f350d60e" alt="まるまる 〇〇ことば" width="320" height="104"></div>
+    <div class="brand"><img src="img/logo-small.png?v=e6ff8589" alt="まるまる 〇〇ことば" width="320" height="104"></div>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -226,6 +226,7 @@
     <div class="burstSub" id="burstSub"></div>
     <div class="burstMeaning" id="burstMeaning"></div>
     <div class="burstBonus" id="burstBonus"></div>
+    <div class="burstActions" id="burstActions"></div>
   </div>
 </div>
 
@@ -305,19 +306,6 @@
   </div>
 </div>
 
-<div class="modal" id="stageClearModal" data-persistent>
-  <div class="modalCard narrow scCard">
-    <img class="scChar" src="img/maru-good.png" alt="" aria-hidden="true">
-    <div class="scTitle">STAGE CLEAR</div>
-    <div class="scStage" id="scStage"></div>
-    <div class="scStats" id="scStats"></div>
-    <div class="menuList">
-      <button class="btn primary" id="scNextBtn">次のステージへ →</button>
-      <button class="btn" id="scStayBtn">このステージを続ける（PERFECT を狙う）</button>
-    </div>
-  </div>
-</div>
-
 <div class="modal" id="gameoverModal" data-persistent>
   <div class="modalCard narrow goCard">
     <div class="goStars" aria-hidden="true"><i>☆</i><i>☆</i><i>☆</i><i>☆</i><i>☆</i></div>
@@ -337,8 +325,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=f350d60e"></script>
-<script src="js/kids.js?v=f350d60e"></script>
-<script src="js/game.js?v=f350d60e"></script>
+<script src="js/data.js?v=e6ff8589"></script>
+<script src="js/kids.js?v=e6ff8589"></script>
+<script src="js/game.js?v=e6ff8589"></script>
 </body>
 </html>

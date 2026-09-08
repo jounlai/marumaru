@@ -1154,3 +1154,27 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
   40%{filter:brightness(1.7) saturate(1.4)}
   100%{filter:brightness(1)}
 }
+
+/* ------------------------------------- 19) 祝いの画面に出す選択ボタン */
+.burst.hasActions{pointer-events:auto}
+/* ボタンを出すときは、演出のあと消えずにその場に残す */
+.burstInner.hold{animation:burstPopHold .9s cubic-bezier(.16,.9,.28,1) both}
+.burstInner.hold.long{animation-duration:1.5s}
+@keyframes burstPopHold{
+  0%{opacity:0;transform:scale(.55) rotate(-2deg);filter:blur(9px)}
+  20%{opacity:1;transform:scale(1.09) rotate(.5deg);filter:blur(0)}
+  34%{transform:scale(.97)}46%{transform:scale(1.02)}
+  100%{opacity:1;transform:scale(1)}
+}
+.burstActions{
+  display:none;flex-direction:column;gap:8px;align-items:stretch;
+  max-width:min(360px,86vw);margin:16px auto 0;
+}
+.burstActions.show{display:flex;animation:actionsIn .45s ease-out both}
+@keyframes actionsIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.burstActions .btn{font-size:14px;padding:11px 14px}
+.kidsMode .burstActions .btn{font-size:15px;padding:13px 14px}
+.burstActions .btn.primary{
+  background:var(--gold);color:#3a2606;border-color:#fff;font-weight:900;
+  animation:nextGlow 1.5s .3s ease-in-out infinite;
+}
