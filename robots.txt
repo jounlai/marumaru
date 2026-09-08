@@ -1,0 +1,5 @@
+# 〇〇ことば — すべてのクローラに開放している
+User-agent: *
+Allow: /
+
+Sitemap: https://marumaru.heuron.com/sitemap.xml

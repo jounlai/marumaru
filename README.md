@@ -93,6 +93,25 @@
 lint を通っても読みが正しいかは分からない。清濁や拍数の取り違え
 （探訪＝たんぼう、頒布＝はんぷ）は人が確かめること。
 
+## SNSに貼られたときの見え方
+
+`index.html` の `<head>` に OGP と `twitter:card` を置いている。画像は
+[img/ogp.png](img/ogp.png)（1200×630、`img/logo-hero.png` から作る）。
+
+題は名前ではなく問いにしてある。カードの画像にロゴが出るので、題まで名前を
+繰り返すと情報が増えないため。
+
+**カードが出ないとき**は、たいてい X 側のキャッシュ。OGP を入れる前にその URL が
+一度でも貼られていると、しばらく「カード無し」の結果が残る。次の順で確かめる。
+
+```bash
+curl -s -A "Twitterbot/1.0" https://marumaru.heuron.com/ | grep -i "og:\|twitter:"
+curl -s -o /dev/null -w "%{http_code} %{content_type}\n" https://marumaru.heuron.com/img/ogp.png
+```
+
+どちらも通るなら、こちら側の問題ではない。`https://marumaru.heuron.com/?1` のように
+末尾を変えた URL で投稿すると、その URL は新しく読み直されるので確かめられる。
+
 ## 引っ越しについて
 
 配信元を GitHub Pages から marumaru.heuron.com へ移した。旧アドレスは
