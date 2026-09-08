@@ -587,9 +587,20 @@ const AUTHOR = "@jounlai";
 function xIntent(text){
   return "https://x.com/intent/tweet?text=" + encodeURIComponent(text + "\n" + SITE_URL);
 }
-/* 投稿を読んだ人は、たいていこのゲームを知らない。お題の記号だけ貼っても
-   何のことか伝わらないので、遊び方の1行と、そのラウンドの実例を添える。 */
-function gameBlurb(round = current()){
+/* 投稿は「結果」より先に「問題」を見せる。読んだ人はこのゲームを知らないので、
+   お題と例を先に置いて、その場で解ける形にしないと素通りされる。
+   ゲーム名は行頭ではなくハッシュタグで最後に置く（行頭の「〇〇ことば」は
+   伏せ字に見えて、名前だと伝わらないため）。 */
+function puzzleLines(round = current(), exCount = 3){
+  const rule = round.group === "word"
+    ? `「${round.template}」の 〇 にかなを1つ入れて、ことばにする遊び。`
+    : round.group === "special"
+      ? `「${round.template}」の前の 〇 にかなを入れる。後ろは同じかなの濁音になる。`
+      : `「${round.template}」の 〇 に同じかなを入れて、ことばにする遊び。`;
+  const ex = blurbExamples(round, exCount).map(a => `${kanaForWord(a.word)}→${answerDisplay(a)}`);
+  return ex.length ? `${rule}\n${ex.join("、")}…` : rule;
+}
+function blurbExamples(round, n){
   // 例に出す語は、知らない人が見ても分かるものを選ぶ。データの先頭から取ると
   // anan や 殷々 のような珍しい語が並んで、かえって分からなくなるため。
   const score = a => {
@@ -601,7 +612,7 @@ function gameBlurb(round = current()){
     return [...d].length === 2 ? 3 : 2;                 // 暗記・元気 のような2字熟語
   };
   const seen = new Set();
-  const ex = [...round.answers]
+  return [...round.answers]
     .map((a, i) => ({a, i, s: score(a)}))
     .sort((x, y) => y.s - x.s || x.i - y.i)
     .filter(({a}) => {
@@ -610,14 +621,8 @@ function gameBlurb(round = current()){
       seen.add(k);
       return true;
     })
-    .slice(0, 2)
-    .map(({a}) => `「${kanaForWord(a.word)}」なら ${answerDisplay(a)}`);
-  const rule = round.group === "word"
-    ? "〇 にかなを1つ入れて、成り立つことばを探すゲームです"
-    : round.group === "special"
-      ? "前の 〇 にかなを入れると後ろが同じかなの濁音になる、ことば探しです"
-      : "〇 ぜんぶに同じかなを入れて、成り立つことばを探すゲームです";
-  return ex.length ? `${rule}。${ex.join("、")}。` : `${rule}。`;
+    .slice(0, n)
+    .map(({a}) => a);
 }
 /* はずれたとき。収録漏れかもしれないので、その場から作者へ報告できるようにする。
    こども版では作った文字列自体を見せないため、報告の導線も出さない。 */
@@ -628,9 +633,10 @@ function flashMiss(word){
     `<span class="fw">${esc(word)}</span>` +
     `<span class="fm">${esc(pick(BAD_MSGS))}</span>` +
     `<a class="reportLink" target="_blank" rel="noopener" href="${esc(xIntent(
-      `${AUTHOR} 〇〇ことば：「${word}」が通じませんでした。\n` +
-      `${gameBlurb()}\n` +
-      `辞書に無いのか、私の記憶に無いのか。`))}">` +
+      `「${word}」は無い、と言われました。\n` +
+      `${puzzleLines(current(), 2)}\n` +
+      `辞書に無いのか、私の記憶に無いのか。収録漏れなら ${AUTHOR} まで。\n` +
+      `#〇〇ことば`))}">` +
     `いや、これはことばだ。作者に言う →</a>`;
 }
 
@@ -864,12 +870,12 @@ function roundActions(){
   if (s.perfect) {
     const n = current().answers.length;
     const closing = pick([
-      "辞書の底が見えました。",
+      "辞書の底が見えた。",
       "日本語、まだ隠し持っていた。",
       "こんなにあるとは思わなかった。"
     ]);
-    const brag = `〇〇ことば「${current().template}」、全${n}語ぜんぶ見つけました。\n` +
-      `${gameBlurb()}\n${closing}`;
+    const brag = `${puzzleLines()}\n\n答えは${n}語ありました。ぜんぶ見つけた。\n` +
+      `${closing}\n#〇〇ことば`;
     acts.push({label: mode === "kids" ? "X で しらせる" : "X で共有する", keepOpen: true,
       run: () => window.open(xIntent(brag), "_blank", "noopener")});
   }
@@ -1422,6 +1428,7 @@ function selectRound(i){
   if (i < 0 || i >= ROUND_DATA.length) return;
   roundIndex = i;
   viewStage = currentStage();
+  syncHash();
   combo = 0;
   lastFoundWord = null;
   flash("info", "");
@@ -1500,8 +1507,32 @@ function closeModals(opts){
 
 let viewStage = 0;
 let celebrated = new Set();   // 祝い終えたステージ
+
+/* いま開いているステージとラウンドを URL に持たせる。読み込み直しても
+   同じところへ戻れるようにするため。ラウンドはテンプレートで指す（添字は
+   モードや語の増減でずれるが、テンプレートは変わらないため）。 */
+function syncHash(){
+  const r = ROUND_DATA[roundIndex];
+  const h = `#s${viewStage + 1}` + (r ? "&r=" + encodeURIComponent(r.template) : "");
+  try { history.replaceState(null, "", location.pathname + location.search + h); } catch (e) {}
+}
+// URL の指す場所へ移す。戻せたラウンドがあれば true
+function applyHash(){
+  const m = /#s(\d+)(?:&r=([^&]*))?/.exec(location.hash);
+  if (!m) return false;
+  viewStage = Math.min(Math.max(0, Number(m[1]) - 1), STAGES.length - 1);
+  if (!m[2]) return false;
+  const i = ROUND_DATA.findIndex(r => r.template === decodeURIComponent(m[2]));
+  if (i < 0) return false;
+  const si = STAGE_OF.get(i);
+  if (si === undefined || !stageUnlocked(si)) return false;   // 施錠中には飛ばさない
+  roundIndex = i;
+  viewStage = si;
+  return true;
+}
 function openRoundList(){
   if (viewStage < 0 || viewStage >= STAGES.length) viewStage = currentStage();
+  syncHash();
   // ステージ選びは、すごろくの道にする。番号の羅列だと、どこまで来たのかが
   // 数字でしか分からず味気ないため。いまいる所にはキャラクターが立つ。
   const here = currentStage();
@@ -1722,7 +1753,10 @@ if (!mode) {
     roundIndex = next === undefined ? STAGES[si][0] : next;
   }
   viewStage = currentStage();
+  // URL が場所を指していれば、そこへ戻す（読み込み直しても同じ画面になる）
+  const fromHash = applyHash();
   render();
+  syncHash();
   if (bootNotice) flash("info", bootNotice);
-  openRoundList();
+  if (!fromHash) openRoundList();
 }
