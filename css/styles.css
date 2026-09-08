@@ -131,6 +131,24 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 }
 .goal.reached{background:var(--gold);animation:flagWave .7s ease-in-out infinite alternate}
 .goal.reached::after{border-left-color:var(--gold);border-top-color:var(--gold)}
+/* 旗の下に、何の旗かを書く。GREAT・PERFECT がどこにあるか分かるように */
+.goal span{
+  position:absolute;left:50%;top:-11px;transform:translateX(-50%);
+  font-size:8px;font-weight:900;letter-spacing:.04em;color:#7d7d7d;white-space:nowrap;
+  transition:color .3s;
+}
+.goal.reached span{color:var(--gold)}
+.goal.great{background:#3d7a68}
+.goal.great::after{border-left-color:#3d7a68;border-top-color:#3d7a68}
+.goal.great.reached{background:var(--fever)}
+.goal.great.reached::after{border-left-color:var(--fever);border-top-color:var(--fever)}
+.goal.great.reached span{color:var(--fever)}
+.goal.perfect{background:#7a6420}
+.goal.perfect::after{border-left-color:#7a6420;border-top-color:#7a6420}
+.goal.perfect.reached{background:var(--gold)}
+.goal.perfect.reached::after{border-left-color:var(--gold);border-top-color:var(--gold)}
+.goal[hidden]{display:none}
+.kidsMode .goal span{font-size:9px}
 @keyframes flagWave{
   from{transform:translateX(-50%) rotate(-5deg)}
   to{transform:translateX(-50%) rotate(5deg)}

@@ -799,6 +799,7 @@ function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, ms =
 
 /* --- ひらがな棒人間：進捗バーの上を歩き、ゴール旗（クリア地点）を目指す --- */
 const mascotEl = $("#mascot"), mRigEl = $("#mRig"), mHeadEl = $("#mHead"), mCharEl = $("#mChar"),
+      goalGreatEl = $("#goalGreat"), goalPerfectEl = $("#goalPerfect"),
       mBubbleEl = $("#mBubble"), goalEl = $("#goal");
 const trackPos = ratio => (4 + Math.max(0, Math.min(1, ratio)) * 92) + "%";
 let mascotLeft = null, mascotWalkTimer = 0, mascotPoseTimer = 0, mBubbleTimer = 0;
@@ -842,8 +843,15 @@ function updateMascot(){
   const total = current().answers.length;
   const ratio = state().discovered.size / total;
   const left = trackPos(ratio);
+  const found = state().discovered.size;
   goalEl.style.left = trackPos(clearTarget() / total);
   goalEl.classList.toggle("reached", state().cleared);
+  // GREAT と PERFECT の旗も立てる。どこまで行けばよいかが道の上で分かる。
+  goalGreatEl.style.left = trackPos(greatTarget() / total);
+  goalGreatEl.classList.toggle("reached", found >= greatTarget());
+  goalPerfectEl.hidden = !canPerfect() || greatTarget() >= total;
+  goalPerfectEl.style.left = trackPos(1);
+  goalPerfectEl.classList.toggle("reached", found >= total);
   mascotEl.classList.toggle("fever", isFever());
   if (left !== mascotLeft) {
     const moving = mascotLeft !== null;

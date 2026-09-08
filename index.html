@@ -56,14 +56,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=67cfda88">
+<link rel="stylesheet" href="css/styles.css?v=609c1d18">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=67cfda88" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=609c1d18" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -83,7 +83,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand"><img src="img/logo-small.png?v=67cfda88" alt="まるまる 〇〇ことば" width="320" height="104"></div>
+    <div class="brand"><img src="img/logo-small.png?v=609c1d18" alt="まるまる 〇〇ことば" width="320" height="104"></div>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -112,7 +112,10 @@
         <div class="progress">
           <!-- ひらがな棒人間。バーの上を歩き、ゴール旗（クリア地点）を目指す -->
           <div class="track" id="track">
-            <div class="goal" id="goal"></div>
+            <!-- 道しるべの旗。クリア → GREAT → PERFECT の順に立つ -->
+            <div class="goal" id="goal"><span>クリア</span></div>
+            <div class="goal great" id="goalGreat"><span>GREAT</span></div>
+            <div class="goal perfect" id="goalPerfect"><span>PERFECT</span></div>
             <div class="mBubble" id="mBubble"></div>
             <!-- mascot=横位置 / mRig=ジャンプ・転倒などの姿勢 / mBob=歩行の上下動と呼吸 -->
             <div class="mascot" id="mascot">
@@ -334,8 +337,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=67cfda88"></script>
-<script src="js/kids.js?v=67cfda88"></script>
-<script src="js/game.js?v=67cfda88"></script>
+<script src="js/data.js?v=609c1d18"></script>
+<script src="js/kids.js?v=609c1d18"></script>
+<script src="js/game.js?v=609c1d18"></script>
 </body>
 </html>
