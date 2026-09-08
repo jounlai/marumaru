@@ -552,20 +552,24 @@ function renderDoneBar(){
   if (!show) return;
 
   const msg = $("#doneMsg");
+  const kids = mode === "kids";
   if (dead) {
-    msg.innerHTML = "<b>★が尽きました</b> — ★5で再開できます。見つけたことばは消えません。";
+    msg.innerHTML = kids ? "<b>★が なくなった</b>" : "<b>★が尽きました</b> — ★5で再開できます。見つけたことばは消えません。";
   } else if (exhausted) {
-    msg.innerHTML = `<b>押せるかなが尽きました</b> — ${s.discovered.size} / ${total} 語。やり直すか、次のラウンドへ。`;
+    msg.innerHTML = kids ? `<b>おしまい</b> ${s.discovered.size} / ${total} 語` : `<b>押せるかなが尽きました</b> — ${s.discovered.size} / ${total} 語。やり直すか、次のラウンドへ。`;
   } else if (s.perfect) {
-    msg.innerHTML = `<b>PERFECT</b> — 全${total}語を発見しました。`;
+    msg.innerHTML = kids ? `<b>PERFECT</b> ${total}語` : `<b>PERFECT</b> — 全${total}語を発見しました。`;
   } else if (roundExhaustedAll()) {
-    msg.innerHTML = `<b>GREAT</b> — 全${total}語を発見しました。`;
+    msg.innerHTML = kids ? `<b>GREAT</b> ${total}語` : `<b>GREAT</b> — 全${total}語を発見しました。`;
   } else if (s.great) {
-    msg.innerHTML = `<b>GREAT</b> — 残り ${total - s.discovered.size} 語。${canPerfect() ? "続ければ <b>PERFECT（★+2）</b>。" : ""}`;
+    msg.innerHTML = kids ? `<b>GREAT</b> のこり ${total - s.discovered.size} 語` : `<b>GREAT</b> — 残り ${total - s.discovered.size} 語。${canPerfect() ? "続ければ <b>PERFECT（★+2）</b>。" : ""}`;
   } else if (s.gaveUp) {
-    msg.innerHTML = "<b>降参したラウンド</b>です。かなは押せません — やり直すか、次のラウンドへ。";
+    msg.innerHTML = kids ? "<b>こうさん</b>したよ" : "<b>降参したラウンド</b>です。かなは押せません — やり直すか、次のラウンドへ。";
   } else {
-    msg.innerHTML = `<b>クリア済み</b> — あと ${Math.max(0, greatTarget() - s.discovered.size)} 語で <b>GREAT（★+1）</b>、はずせば ★−1。`;
+    const toGreat = Math.max(0, greatTarget() - s.discovered.size);
+    msg.innerHTML = kids
+      ? `<b>クリア！</b> あと ${toGreat} 語で GREAT`
+      : `<b>クリア済み</b> — あと ${toGreat} 語で <b>GREAT（★+1）</b>、はずせば ★−1。`;
   }
 
   $("#reviveBarBtn").hidden = !dead;

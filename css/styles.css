@@ -496,8 +496,10 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
 .doneMsg b{color:var(--gold)}
-.doneBtns{display:flex;gap:6px;flex:none}
-.doneBtns .btn{flex:none}
+.doneBtns{display:flex;gap:6px;flex:0 0 auto;min-width:0}
+.doneBtns .btn{flex:0 0 auto;white-space:nowrap}
+/* 文言は残りの幅にだけ広がる。長くてもボタンを画面の外へ押し出さない */
+.doneMsg{flex:1 1 auto}
 
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:40;display:none;padding:14px;overflow:auto}
 .modal.show{display:grid;place-items:center}
@@ -673,7 +675,8 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
   .modalCard{--cardPad:11px;border-radius:14px}
   .answerRow{grid-template-columns:minmax(120px,42%) minmax(0,1fr);gap:8px}
   .doneBar{gap:6px;padding:5px 7px;height:48px}
-  .doneBtns .btn{flex:1}
+  .doneBtns .btn{flex:0 0 auto;font-size:12.5px;padding:8px 10px}
+  .kidsMode .doneBtns .btn{font-size:13px;padding:8px 10px}
   .floatText{font-size:15px}
 }
 @media(max-width:420px){
@@ -1185,3 +1188,32 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
 }
 .reportLink:hover{color:#fff}
 @media(min-width:961px){ .reportLink{font-size:12px} }
+
+/* Xのアプリ内ブラウザなど、縦が少し短い端末。こども版は字が大きいぶん
+   場所を食うので、語釈の欄を先に詰めて盤面を残す */
+@media(max-height:780px){
+  .kidsMode .flash{height:70px}
+  .kidsMode .flash .fw{font-size:19px}
+  .kidsMode .flash .fm{font-size:15px}
+  .kidsMode .doneMsg{font-size:12px}
+}
+
+/* Xのアプリ内ブラウザなど、縦が短いところで入り口が画面から流れ落ちていた。
+   絵を縦に合わせて縮め、余白と字も詰める。 */
+.mgLogo.hero{max-height:34vh;object-fit:contain}
+@media(max-height:760px){
+  .mgLogo.hero{width:min(330px,66vw);margin-bottom:8px}
+  .mgLead{margin-bottom:14px}
+  .mgBtn{padding:16px 14px}
+  .mgBtn b{font-size:clamp(18px,4.2vw,22px);margin-bottom:6px}
+  .mgNote{margin-top:14px}
+}
+@media(max-height:640px){
+  .mgLogo.hero{width:min(250px,54vw);margin-bottom:4px;max-height:26vh}
+  .mgLead{font-size:12px;margin-bottom:10px}
+  .mgBtns{gap:9px}
+  .mgBtn{padding:11px 12px}
+  .mgBtn b{font-size:17px;margin-bottom:3px}
+  .mgBtn small{font-size:11px;line-height:1.5}
+  .mgNote{margin-top:10px;font-size:10px;line-height:1.6}
+}
