@@ -596,8 +596,9 @@ function flashMiss(word){
     `<span class="fw">${esc(word)}</span>` +
     `<span class="fm">${esc(pick(BAD_MSGS))}</span>` +
     `<a class="reportLink" target="_blank" rel="noopener" href="${esc(xIntent(
-      `${AUTHOR} 〇〇ことば：「${word}」（${current().template}）が未収録でした。`))}">` +
-    `この語を作者に報告する →</a>`;
+      `${AUTHOR} 〇〇ことば：「${word}」（${current().template}）が通じませんでした。` +
+      `辞書に無いのか、私の記憶に無いのか。`))}">` +
+    `いや、これはことばだ。作者に言う →</a>`;
 }
 
 function flash(kind, text){
@@ -829,9 +830,13 @@ function roundActions(){
   const s = state();
   if (s.perfect) {
     const n = current().answers.length;
-    acts.push({label: mode === "kids" ? "X で じまんする" : "X で自慢する", keepOpen: true,
-      run: () => window.open(xIntent(
-        `〇〇ことば「${current().template}」を PERFECT！全${n}語ぜんぶ見つけました。`), "_blank", "noopener")});
+    const brag = pick([
+      `〇〇ことば「${current().template}」、全${n}語を発掘。辞書の底が見えました。`,
+      `〇〇ことば「${current().template}」で PERFECT。日本語、まだ隠し持っていた。`,
+      `〇〇ことば「${current().template}」を制覇。${n}語、ぜんぶ〇に入れました。`
+    ]);
+    acts.push({label: mode === "kids" ? "X で しらせる" : "X で共有する", keepOpen: true,
+      run: () => window.open(xIntent(brag), "_blank", "noopener")});
   }
   const more = !roundLocked() && s.discovered.size < current().answers.length;
   if (more) {
@@ -1070,8 +1075,8 @@ function flashRemaining(){
 }
 
 /* --------------------------------------------------------- 6) ゲーム進行 */
-const GOOD_MSGS = ["いた。日本語にいた。", "正解。辞書がうなずいた。", "発見！〇が仕事をした。", "それ、あります。", "語彙力が静かに暴れている。"];
-const BAD_MSGS = ["ない。★をいただきます。", "惜しい顔をしても、ないものはない。", "辞書：『存じません』", "その日本語、今回は未確認。", "〇に無茶をさせましたね。"];
+const GOOD_MSGS = ["いた。日本語にいた。", "正解。辞書がうなずいた。", "発見！〇が仕事をした。", "それ、あります。", "語彙力が静かに暴れている。", "辞書、ページをめくる音。", "〇が満たされました。", "よく出てきた、その語。"];
+const BAD_MSGS = ["ない。★をいただきます。", "惜しい顔をしても、ないものはない。", "辞書：『存じません』", "その日本語、今回は未確認。", "〇に無茶をさせましたね。", "その並び、日本語の外にあります。", "〇が首をかしげています。", "字は合っている。語ではない。"];
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
 function guess(kana){

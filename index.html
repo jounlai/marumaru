@@ -5,7 +5,25 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>〇〇ことば — かな穴埋めサバイバル</title>
+<meta name="description" content="〇 に同じかなを入れて、成り立つことばを探すゲーム。〇ん〇ん なら「かんかん」「ぷんぷん」。全179ラウンド・3,667語。">
 <link rel="canonical" href="https://marumaru.heuron.com/">
+<link rel="icon" href="img/icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+
+<!-- SNSに貼られたときの見え方 -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="〇〇ことば">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://marumaru.heuron.com/">
+<meta property="og:title" content="〇〇ことば — かな穴埋めサバイバル">
+<meta property="og:description" content="〇 に同じかなを入れて、成り立つことばを探す。「かんかん」も「ぷんぷん」も正解。日本語がどれだけ広いかを、★5個の残機で確かめるゲーム。">
+<meta property="og:image" content="https://marumaru.heuron.com/img/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="〇〇ことば">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@jounlai">
+<meta name="twitter:creator" content="@jounlai">
 
 <!-- 引っ越し先へ誘導する。GitHub Pages（旧アドレス）で開かれたときだけ転送する。
      localStorage はドメインをまたげず、そのまま飛ばすと★もスコアも消えるので、
@@ -56,14 +74,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=2162c96c">
+<link rel="stylesheet" href="css/styles.css?v=0aa015a4">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=2162c96c" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=0aa015a4" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -83,7 +101,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand"><img src="img/logo-small.png?v=2162c96c" alt="まるまる 〇〇ことば" width="320" height="104"></div>
+    <div class="brand"><img src="img/logo-small.png?v=0aa015a4" alt="まるまる 〇〇ことば" width="320" height="104"></div>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -325,8 +343,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=2162c96c"></script>
-<script src="js/kids.js?v=2162c96c"></script>
-<script src="js/game.js?v=2162c96c"></script>
+<script src="js/data.js?v=0aa015a4"></script>
+<script src="js/kids.js?v=0aa015a4"></script>
+<script src="js/game.js?v=0aa015a4"></script>
 </body>
 </html>

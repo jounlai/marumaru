@@ -73,7 +73,7 @@
 |---|---|
 | [index.html](index.html) | 画面のDOM。CSS/JS は `?v=` 付きで読み込む |
 | [css/styles.css](css/styles.css) | 全スタイル。棒人間「まるくん」もCSSだけで動く |
-| [img/](img/) | ロゴ（入り口用・ヘッダー用）とキャラクター4ポーズ（`maru-think/run/pose/good.png`） |
+| [img/](img/) | ロゴ・キャラクター4ポーズ・OGP画像（`ogp.png`）・アイコン |
 | [js/data.js](js/data.js) | 出題データ（全ラウンド・全語・語釈） |
 | [js/kids.js](js/kids.js) | こども版に出す語の一覧（`tests/make-kids.js` が生成） |
 | [js/game.js](js/game.js) | ゲーム進行・演出・効果音（WebAudioで合成、音声ファイルなし） |
