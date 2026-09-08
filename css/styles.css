@@ -1145,3 +1145,12 @@ body.celebrate .app{animation:celebrateFlash 1.2s ease-out}
 .kidsMode .roundChoice.great .rcMark{border-color:#2c8a72;color:#2c8a72}
 .rcMark.done.great{border-color:#2c8a72;color:#2c8a72}
 .rcMark.done.gold{border-color:#8a6a00;color:#8a6a00}
+/* PERFECT はさらに強く光らせる */
+body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
+@keyframes celebrateFlashStrong{
+  0%{filter:brightness(1)}
+  10%{filter:brightness(2) saturate(1.6)}
+  26%{filter:brightness(1.25) saturate(1.2)}
+  40%{filter:brightness(1.7) saturate(1.4)}
+  100%{filter:brightness(1)}
+}

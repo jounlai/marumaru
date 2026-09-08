@@ -706,6 +706,30 @@ function sfxClearFanfare(){
   [0, 4, 7].forEach((semi, i) =>
     tone(base * 2 * Math.pow(2, semi / 12), {type: "sine", vol: .04, dur: .8, at: .36 + i * .02}));
 }
+// GREAT の音。クリアより高く駆け上がり、和音を伸ばして締める
+function sfxGreat(){
+  const base = 523.25;
+  [0, 4, 7, 12, 16].forEach((semi, i) => {
+    const f = base * Math.pow(2, semi / 12);
+    tone(f, {type: "triangle", vol: .075, dur: .2, at: i * .07});
+    tone(f * 2, {type: "sine", vol: .028, dur: .18, at: i * .07 + .01});
+  });
+  [0, 4, 7, 12].forEach((semi, i) =>
+    tone(base * 2 * Math.pow(2, semi / 12), {type: "sine", vol: .04, dur: 1, at: .38 + i * .02}));
+}
+// PERFECT の音。駆け上がったあと、上でもう一度きらめかせる
+function sfxPerfectFanfare(){
+  const base = 523.25;
+  [0, 4, 7, 12, 16, 19, 24].forEach((semi, i) => {
+    const f = base * Math.pow(2, semi / 12);
+    tone(f, {type: "triangle", vol: .075, dur: .22, at: i * .065});
+    tone(f * 2, {type: "sine", vol: .026, dur: .2, at: i * .065 + .01});
+  });
+  [0, 4, 7, 12].forEach((semi, i) =>
+    tone(base * 2 * Math.pow(2, semi / 12), {type: "sine", vol: .045, dur: 1.3, at: .5 + i * .02}));
+  [24, 28, 31].forEach((semi, i) =>
+    tone(base * Math.pow(2, semi / 12), {type: "sine", vol: .03, dur: .5, at: .78 + i * .09}));
+}
 function sfxPerfect(){ [0, 4, 7, 12, 16, 19, 24].forEach((s, i) => tone(523.25 * Math.pow(2, s / 12), {type: "triangle", vol: .07, dur: .6, at: i * .085})); }
 function sfxHint(){ tone(880, {type: "sine", vol: .05, dur: .1}); tone(660, {type: "sine", vol: .05, dur: .14, at: .09}); }
 function buzz(ms){ if (soundOn && navigator.vibrate) { try { navigator.vibrate(ms); } catch (e) {} } }
@@ -1059,18 +1083,15 @@ function finishRound(silent){
   saveProgress();
   if (!silent) {
     const colors = mode === "kids" ? KIDS_COLORS : ["#fff", "#ffd34d", "#bbb", "#7ef9d0"];
-    sfxClearFanfare(); buzz([30, 50, 30, 50, 90]);
+    sfxClearFanfare(); buzz([30, 50, 30]);
     mascotPose("cheer", 900);
-    mascotSay("ゴール！", "gold", 2200);
-    document.body.classList.add("celebrate");
-    setTimeout(() => document.body.classList.remove("celebrate"), 1200);
-    confetti(55, colors, 2600);
+    mascotSay("ゴール！", "gold", 2000);
+    confetti(34, colors, 2200);
     setTimeout(() => {
       showBurst({mark: roundName(), word: "ROUND CLEAR", sub: `${s.discovered.size} / ${current().answers.length} 語発見`,
-        bonus, dim: true, gold: true, long: true, char: "pose", ms: 2200});
-      particles(null, 46, colors);
-      setTimeout(() => particles(null, 30, colors), 380);
-    }, 340);
+        bonus, dim: true, long: true, char: "pose", ms: 2000});
+      particles(null, 36, colors);
+    }, 320);
   }
 }
 
@@ -1085,15 +1106,19 @@ function greatRound(){
     bonus = `★ +1　+${num(GREAT_BONUS)}`;
   }
   saveProgress();
-  const colors = mode === "kids" ? KIDS_COLORS : ["#7ef9d0", "#fff", "#ffd34d"];
-  sfxClearFanfare(); buzz([30, 50, 30, 60]);
-  mascotPose("cheer", 900);
-  mascotSay("すごい！", "gold", 2000);
-  confetti(40, colors, 2200);
+  const colors = mode === "kids" ? KIDS_COLORS : ["#7ef9d0", "#fff", "#ffd34d", "#a8ffe6"];
+  sfxGreat(); buzz([40, 60, 40, 60, 90]);
+  mascotPose("cheer", 1100);
+  mascotSay("すごい！", "gold", 2400);
+  document.body.classList.add("celebrate");
+  setTimeout(() => document.body.classList.remove("celebrate"), 1200);
+  confetti(85, colors, 3000);
   setTimeout(() => {
     showBurst({mark: roundName(), word: "GREAT!!", sub: `${s.discovered.size} / ${current().answers.length} 語発見`,
-      bonus, dim: true, long: true, char: "pose", ms: 1800});
-    particles(null, 40, colors);
+      bonus, dim: true, gold: true, long: true, char: "pose", ms: 2600});
+    particles(null, 54, colors);
+    setTimeout(() => particles(null, 34, colors), 360);
+    setTimeout(() => particles(null, 26, colors), 720);
   }, 340);
 }
 
@@ -1108,13 +1133,22 @@ function perfectRound(){
     bonus = `★ +2　+${num(PERFECT_BONUS)}`;
   }
   saveProgress();
-  sfxPerfect(); buzz([40, 60, 40, 60, 80]);
+  const colors = mode === "kids" ? KIDS_COLORS : ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8", "#ffb347"];
+  sfxPerfectFanfare(); buzz([50, 60, 50, 60, 50, 60, 140]);
   mascotPose("spin", 1320);
-  mascotSay("パーフェクト！", "gold", 2600);
+  mascotSay("パーフェクト！", "gold", 2800);
+  document.body.classList.add("celebrate", "strong");
+  setTimeout(() => document.body.classList.remove("celebrate", "strong"), 1500);
+  confetti(140, colors, 3800);
+  const corner = (x, y) => ({getBoundingClientRect: () => ({left: x, top: y, width: 0, height: 0})});
   setTimeout(() => {
     showBurst({mark: roundName(), word: "PERFECT!!", sub: `全 ${current().answers.length} 語を発見`,
-      bonus, dim: true, gold: true, long: true, char: "pose", ms: 1600});
-    particles(null, 60, mode === "kids" ? KIDS_COLORS : ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8"]);
+      bonus, dim: true, gold: true, long: true, char: "pose", ms: 3000});
+    particles(null, 70, colors);
+    setTimeout(() => particles(corner(innerWidth * .2, innerHeight * .6), 40, colors), 260);
+    setTimeout(() => particles(corner(innerWidth * .8, innerHeight * .6), 40, colors), 440);
+    setTimeout(() => particles(null, 50, colors), 780);
+    setTimeout(() => particles(null, 40, colors), 1150);
   }, 360);
 }
 
