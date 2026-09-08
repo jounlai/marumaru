@@ -698,6 +698,9 @@ function enablePlaybackAudio(){
 function audio(){
   if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
   if (actx.state === "suspended") actx.resume();
+  // 復帰の合図を取り逃していても、無音ループが止まっていれば掛け直す。
+  // これが止まったままだと、iOS では鳴っているつもりで無音になる。
+  if (soundOn && silentEl && silentEl.paused) enablePlaybackAudio();
   return actx;
 }
 
@@ -714,12 +717,44 @@ function unlockAudio(){
 ["pointerdown", "touchstart", "keydown"].forEach(ev =>
   addEventListener(ev, unlockAudio, {once: true, passive: true}));
 
-// バックグラウンドから戻ると suspended のままなので鳴らし直せるようにする
-addEventListener("visibilitychange", () => {
-  if (document.visibilityState !== "visible" || !actx) return;
-  if (actx.state === "suspended") actx.resume().catch(() => {});
-  if (silentEl && silentEl.paused) silentEl.play().catch(() => {});
+/* ホーム画面へ回してから戻ると、iOS では音が戻らないことがある。
+ * 原因は2つ重なる。
+ *   ・AudioContext がバックグラウンドで suspended になり、戻っても
+ *     ユーザーの操作なしの resume() は拒否されることがある
+ *   ・playback 扱いを保っていた無音ループが止まり、これも操作なしでは
+ *     再生し直せない。止まったままだと WebAudio は鳴っているつもりで無音になる
+ * どちらも「次に画面へ触れたとき」に必ずやり直せば直る。resume を試し、
+ * 400ms 後にまだ止まっていれば、次の操作を待って掛け直す。 */
+let waitingForGesture = false;
+function armGestureResume(){
+  if (waitingForGesture) return;
+  waitingForGesture = true;
+  const onGesture = () => {
+    waitingForGesture = false;
+    ["pointerdown", "touchstart", "keydown"].forEach(ev => removeEventListener(ev, onGesture));
+    resumeAudio();
+  };
+  ["pointerdown", "touchstart", "keydown"].forEach(ev =>
+    addEventListener(ev, onGesture, {passive: true}));
+}
+function resumeAudio(){
+  if (!soundOn) return;
+  enablePlaybackAudio();
+  if (!actx) return;
+  if (actx.state === "suspended") actx.resume().catch(() => armGestureResume());
+  setTimeout(() => {
+    if (!actx) return;
+    if (actx.state === "suspended" || (silentEl && silentEl.paused)) armGestureResume();
+  }, 400);
+}
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") resumeAudio();
 });
+// ホーム画面から戻したときは visibilitychange が来ないことがある
+addEventListener("pageshow", resumeAudio);
+addEventListener("focus", resumeAudio);
+// 離れるときに無音ループを止めておく（バックグラウンドで鳴り続けないように）
+addEventListener("pagehide", () => { if (silentEl) silentEl.pause(); });
 function tone(freq, {dur = .14, type = "triangle", vol = .06, at = 0, glide = 0} = {}){
   if (!soundOn) return;
   try {
@@ -1719,7 +1754,7 @@ $("#gAnswerBtn").addEventListener("click", openAnswers);
 $("#soundBtn").addEventListener("click", () => {
   soundOn = !soundOn;
   $("#soundBtn").textContent = soundOn ? "♪ 効果音 ON" : "♪ 効果音 OFF";
-  if (soundOn) { unlockAudio(); sfxHint(); }
+  if (soundOn) { unlockAudio(); resumeAudio(); sfxHint(); }
   else if (silentEl) silentEl.pause();   // OFF のあいだは無音ループも止める
   saveProgress();
 });
