@@ -1591,6 +1591,27 @@ function closeModals(opts){
 let viewStage = 0;
 let celebrated = new Set();   // 祝い終えたステージ
 
+/* いま開いている停留所を道の真ん中に置く。端に寄っていると、前後の街が
+   見えず、どこまで来たのか分からないため。
+   モーダルを出したあとに測る（display:none のあいだは幅が 0 で、
+   scrollIntoView も位置の計算もできない）。 */
+function centerStageStrip(){
+  const strip = $("#stageStrip");
+  if (!strip) return;
+  const go = () => {
+    const el = strip.querySelector(".stageStop.on");
+    if (!el || !strip.clientWidth || !el.getBoundingClientRect) return;
+    // 位置は実測の差で出す。offsetLeft は基準になる親が道とは限らず、ずれるため
+    const sr = strip.getBoundingClientRect(), er = el.getBoundingClientRect();
+    const delta = (er.left + er.width / 2) - (sr.left + sr.width / 2);
+    const max = strip.scrollWidth - strip.clientWidth;
+    strip.scrollLeft = Math.max(0, Math.min(strip.scrollLeft + delta, max));
+  };
+  go();
+  // 開いた直後は幅がまだ確定していないことがあるので、描画後にもう一度
+  if (typeof requestAnimationFrame === "function") requestAnimationFrame(go);
+}
+
 /* いま開いているステージとラウンドを URL に持たせる。読み込み直しても
    同じところへ戻れるようにするため。ラウンドはテンプレートで指す（添字は
    モードや語の増減でずれるが、テンプレートは変わらないため）。 */
@@ -1699,13 +1720,10 @@ function openRoundList(){
   $("#roundList").innerHTML = head + list;
   $("#stageStrip").querySelectorAll(".stageStop").forEach(b =>
     b.addEventListener("click", () => { viewStage = Number(b.dataset.stage); openRoundList(); }));
-  // いまいる停留所が見えるところまで道をずらす
-  const hereEl = $("#stageStrip").querySelector(".stageStop.on");
-  // jsdom には scrollIntoView が無いので、あるときだけ呼ぶ
-  if (hereEl && hereEl.scrollIntoView) hereEl.scrollIntoView({block: "nearest", inline: "center"});
   $("#roundList").querySelectorAll(".roundChoice").forEach(b =>
     b.addEventListener("click", () => selectRound(Number(b.dataset.round))));
   openModal("#roundModal");
+  centerStageStrip();
 }
 
 function openAnswers(){
