@@ -837,23 +837,33 @@ function mascotSay(text, kind, ms = 1200){
 // 姿勢は mRig に当てる（横位置の translate と競合させないため）
 // 棒人間のポーズ名を、キャラクターの絵に読み替える
 const CHAR_POSE = {cheer: "cheer", spin: "good", down: "idle"};
-function setChar(pose){
+function setChar(pose, force){
   if (!mCharEl) return;
   const aim = mCharEl.classList.contains("aim") ? " aim" : "";
+  const want = "mChar is-" + pose + aim;
+  if (!force && mCharEl.className === want) return;
   mCharEl.className = "mChar";
   void mCharEl.offsetWidth;   // 同じポーズを続けて出しても動きが再生されるように
-  mCharEl.className = "mChar is-" + pose + aim;
+  mCharEl.className = want;
+}
+/* 動いていないときの顔。終わったラウンドで「？」のままだと、
+   やり遂げた直後なのに困っているように見えるため、段に応じて変える。 */
+function restPose(){
+  const s = state();
+  if (s.perfect || roundExhaustedAll()) return "good";
+  if (s.great || s.cleared) return "cheer";
+  return "idle";
 }
 function mascotPose(cls, ms){
   clearTimeout(mascotPoseTimer);
   mRigEl.classList.remove("cheer", "down", "spin");
   void mRigEl.offsetWidth;
-  if (!cls) { setChar("idle"); return; }
+  if (!cls) { setChar(restPose(), true); return; }
   mRigEl.classList.add(cls);
-  setChar(CHAR_POSE[cls] || "idle");
+  setChar(CHAR_POSE[cls] || "idle", true);
   mascotPoseTimer = setTimeout(() => {
     mRigEl.classList.remove(cls);
-    setChar(mascotEl.classList.contains("walking") ? "run" : "idle");
+    setChar(mascotEl.classList.contains("walking") ? "run" : restPose(), true);
   }, ms);
 }
 // 棒人間の頭は常にひらがな1文字。待機中は「の」、狙っているときはそのかな
@@ -888,9 +898,16 @@ function updateMascot(){
       clearTimeout(mascotWalkTimer);
       mascotWalkTimer = setTimeout(() => {
         mascotEl.classList.remove("walking");
-        if (!mRigEl.className.includes("cheer") && !mRigEl.className.includes("spin")) setChar("idle");
+        if (!mRigEl.className.includes("cheer") && !mRigEl.className.includes("spin")) setChar(restPose());
       }, 520);
     }
+    return;
+  }
+  // 歩いていないときは、いまの段に合った顔にしておく（ラウンドを開き直した
+  // ときや、読み込み直したときにも合うように）
+  if (!mascotEl.classList.contains("walking") &&
+      !mRigEl.className.includes("cheer") && !mRigEl.className.includes("spin")) {
+    setChar(restPose());
   }
 }
 
@@ -1529,7 +1546,8 @@ $("#foundChips").addEventListener("click", e => {
   const chip = e.target.closest(".chip");
   if (!chip) return;
   const a = answerMap().get(chip.dataset.word);
-  if (a) flash("info", `${answerDisplay(a)}：${a.meaning}`);
+  // 当てたときと同じ見せ方にする（表記・読み・語釈）
+  if (a) flashAnswer(a);
 });
 
 document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closeModals));
