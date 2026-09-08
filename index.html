@@ -56,14 +56,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=d297ee25">
+<link rel="stylesheet" href="css/styles.css?v=67cfda88">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=d297ee25" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=67cfda88" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -83,7 +83,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand"><img src="img/logo-small.png?v=d297ee25" alt="まるまる 〇〇ことば" width="320" height="104"></div>
+    <div class="brand"><img src="img/logo-small.png?v=67cfda88" alt="まるまる 〇〇ことば" width="320" height="104"></div>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -171,14 +171,15 @@
         <h2>ルール</h2>
         <div class="rules adultOnly">
           ★は<b>5個</b>から。はずすたびに<b class="key">★−1</b>、0でゲームオーバー。<br>
-          正解の<b>60％</b>を見つけたらクリア＆<b class="key">★＋1</b>。<br>
-          そこで止めても、<b class="key">全問正解（PERFECT）</b>を狙って続けてもいい。<br>
+          正解の<b>60％</b>でクリア＆<b class="key">★＋1</b>、<b>80％</b>で<b class="key">GREAT（★＋1）</b>、<br>
+          全問正解で<b class="key">PERFECT（★＋2）</b>。正解が10語未満のラウンドは GREAT まで。<br>
           連続正解で<b class="key">コンボ</b>、5連続で<b class="key">FEVER（スコア2倍）</b>。
         </div>
         <div class="rules kidsOnly">
           おなじ<b>かな</b>を、あいている<b class="key">〇</b>ぜんぶに入れて、ことばを作ってね。<br>
           まちがえると<b class="key">★が1つ</b>へるよ。ぜんぶなくなったら、そのステージをもう一度。<br>
-          <b>60％</b>見つけたらクリア。ステージの<b>ぜんぶ</b>をクリアすると次のステージへ！<br>
+          <b>40％</b>で クリア、<b>80％</b>で <b class="key">GREAT</b>、ぜんぶ見つけたら <b class="key">PERFECT</b>！<br>
+          ステージの もんだいを ぜんぶ クリアすると つぎの ステージへ！<br>
           こまったら<b class="key">ヒント</b>を押していいよ。
         </div>
         <div class="actions">
@@ -281,7 +282,7 @@
 
     <div class="rules" style="margin-top:12px">
       ★は<b>5個</b>から。はずすたびに<b class="key">★−1</b>、0でゲームオーバー。<br>
-      正解の<b>60％</b>でクリア＆<b class="key">★＋1</b>。全問正解の<b class="key">PERFECT</b>で<b class="key">★＋2</b>。<br>
+      <b>60％</b>でクリア（★＋1）→ <b>80％</b>で<b class="key">GREAT</b>（★＋1）→ 全問で<b class="key">PERFECT</b>（★＋2）。<br>
       連続正解でコンボ、5連続で<b class="key">FEVER（スコア2倍）</b>。<br>
       <b>SPECIAL</b>は清音だけを選択。後半の「〇」は自動で濁音になります。<br>
       <b>WORD</b>は穴が1つだけ。擬音語ではない、ふつうの3〜4文字ことばを探します。
@@ -333,8 +334,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=d297ee25"></script>
-<script src="js/kids.js?v=d297ee25"></script>
-<script src="js/game.js?v=d297ee25"></script>
+<script src="js/data.js?v=67cfda88"></script>
+<script src="js/kids.js?v=67cfda88"></script>
+<script src="js/game.js?v=67cfda88"></script>
 </body>
 </html>

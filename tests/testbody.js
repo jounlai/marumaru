@@ -97,7 +97,13 @@
     if (b && !b.disabled) click(b);
   }
   check("PERFECT判定", roundStates[0].perfect);
-  check("PERFECTで★+2", stars === starsBeforePerfect + 2, "stars=" + stars);
+  check("GREAT も通る", roundStates[0].great);
+  // クリアの上に GREAT(+1)、その上に PERFECT(+2) がある
+  check("GREAT+PERFECT で★+3", stars === starsBeforePerfect + 3, "stars=" + stars);
+  check("正解が少ないラウンドは PERFECT にしない", (() => {
+    const small = ROUND_DATA.find(r => r.answers.length < PERFECT_MIN);
+    return small ? canPerfect(small) === false : true;
+  })());
   check("PERFECT後は盤面ロック", q(`.kana[data-kana="${kanaOf(r0, first.word)}"]`).disabled);
   check("全語発見", roundStates[0].discovered.size === r0.answers.length);
 

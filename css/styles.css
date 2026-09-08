@@ -1115,3 +1115,15 @@ body.celebrate .app{animation:celebrateFlash 1.2s ease-out}
 /* こども版は名前をもう少し大きく */
 .kidsMode .stageStop small{font-size:13px}
 .kidsMode .stopClear{font-size:10px}
+
+/* --------------------------------------------- 18) GREAT（クリアとPERFECTの間） */
+.badge.greatBadge{color:#06281f;background:var(--fever);border-color:var(--fever)}
+.roundChoice.great{background:linear-gradient(160deg,#bff3e2,#eafff8);border-color:var(--fever);box-shadow:0 0 0 1px var(--fever);color:#06281f}
+.roundChoice.great .rcTop,.roundChoice.great .rcMeta{color:#2c5e51}
+.roundChoice.great .rcPattern{color:#06281f}
+.roundChoice.great .rcPattern .hole{color:#2c8a72}
+.roundChoice.great .rcBar{background:rgba(0,0,0,.16)}
+.roundChoice.great .rcBar i{background:#2c8a72}
+.kidsMode .roundChoice.great .rcMark{border-color:#2c8a72;color:#2c8a72}
+.rcMark.done.great{border-color:#2c8a72;color:#2c8a72}
+.rcMark.done.gold{border-color:#8a6a00;color:#8a6a00}

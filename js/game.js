@@ -133,7 +133,10 @@ const BASE_POINT = 100;      // 1正解の基礎点
 const COMBO_STEP = 20;       // コンボ1つごとの加点
 const FEVER_AT = 5;          // 何連続でFEVERか
 const FEVER_MULT = 2;        // FEVER中の倍率
+const GREAT_RATE = 0.8;        // クリアと PERFECT のあいだの段
+const PERFECT_MIN = 10;        // これ未満の正解数のラウンドは、GREAT を上限にする
 const CLEAR_BONUS = 500;
+const GREAT_BONUS = 1000;
 const PERFECT_BONUS = 2000;
 const HINT_COST_ADULT = 300;
 
@@ -159,7 +162,7 @@ let maxCombo = 0;
 
 const roundStates = ROUND_DATA.map(() => ({
   found: new Set(), discovered: new Set(), used: new Set(),
-  cleared: false, rewarded: false, gaveUp: false, perfect: false, perfectRewarded: false
+  cleared: false, rewarded: false, gaveUp: false, great: false, greatRewarded: false, perfect: false, perfectRewarded: false
 }));
 
 function serializeProgress(){
@@ -172,6 +175,7 @@ function serializeProgress(){
       template: ROUND_DATA[i].template,
       found: [...s.found], discovered: [...s.discovered], used: [...s.used],
       cleared: s.cleared, rewarded: s.rewarded, gaveUp: s.gaveUp,
+      great: s.great, greatRewarded: s.greatRewarded,
       perfect: s.perfect, perfectRewarded: s.perfectRewarded
     }))
   };
@@ -201,6 +205,7 @@ function loadProgress(){
       s.discovered = new Set(Array.isArray(r.discovered) ? r.discovered : []);
       s.used = new Set(Array.isArray(r.used) ? r.used : []);
       s.cleared = !!r.cleared; s.rewarded = !!r.rewarded; s.gaveUp = !!r.gaveUp;
+      s.great = !!r.great; s.greatRewarded = !!r.greatRewarded;
       s.perfect = !!r.perfect; s.perfectRewarded = !!r.perfectRewarded;
       // 旧セーブに perfect が無い場合、全問発見済みなら補完（★は後追いで配らない）
       if (!s.perfect && s.discovered.size >= ROUND_DATA[i].answers.length) {
@@ -261,6 +266,7 @@ function normalizeRounds(x){
       discovered,
       used: Array.isArray(r.used) ? r.used : [],
       cleared: !!r.cleared, rewarded: !!r.rewarded, gaveUp: !!r.gaveUp,
+      great: !!r.great, greatRewarded: !!r.greatRewarded,
       perfect: !!r.perfect, perfectRewarded: !!r.perfectRewarded
     };
   }).filter(Boolean);
@@ -276,6 +282,8 @@ function mergeProgress(mine, other){
     cur.used = [...new Set([...cur.used, ...r.used])];
     cur.cleared = cur.cleared || r.cleared;
     cur.rewarded = cur.rewarded || r.rewarded;
+    cur.great = cur.great || r.great;
+    cur.greatRewarded = cur.greatRewarded || r.greatRewarded;
     cur.perfect = cur.perfect || r.perfect;
     cur.perfectRewarded = cur.perfectRewarded || r.perfectRewarded;
     cur.gaveUp = cur.gaveUp && r.gaveUp;   // 片方で降参していなければ降参扱いにしない
@@ -311,6 +319,15 @@ function fillWord(round, kana){
   return round.template.replaceAll("○", kana);
 }
 function clearTarget(round = current()){ return Math.max(1, Math.ceil(round.answers.length * clearRate())); }
+// GREAT は「クリアより1語でも多い」ところから。少ないラウンドで
+// クリアと同時に GREAT になってしまわないようにする。
+function greatTarget(round = current()){
+  const n = round.answers.length;
+  return Math.min(n, Math.max(clearTarget(round) + 1, Math.ceil(n * GREAT_RATE)));
+}
+// 正解が少ないラウンドは、全部見つけても PERFECT にしない。60語のラウンドと
+// 4語のラウンドが同じ扱いでは釣り合わないため、GREAT を上限にする。
+function canPerfect(round = current()){ return round.answers.length >= PERFECT_MIN; }
 function answerMap(){ return new Map(current().answers.map(a => [a.word, a])); }
 function answerDisplay(a){ return a.display || a.word; }
 function kanaForWord(word){
@@ -327,7 +344,8 @@ function rankName(){
   for (const [need, label] of RANKS) if (score >= need) name = label;
   return name;
 }
-function roundLocked(){ return state().gaveUp || state().perfect || stars <= 0; }
+function roundExhaustedAll(){ return state().discovered.size >= current().answers.length; }
+function roundLocked(){ return state().gaveUp || roundExhaustedAll() || stars <= 0; }
 // そのラウンドで実際に押せる仮名（SPECIAL は濁点にできる清音だけ）
 function pressableKanas(round = current()){
   return inputKanasForRound(round).filter(k => !(isSpecial(round) && !DAKUTEN_BASE_KANA.has(k)));
@@ -535,10 +553,14 @@ function renderDoneBar(){
     msg.innerHTML = `<b>押せるかなが尽きました</b> — ${s.discovered.size} / ${total} 語。やり直すか、次のラウンドへ。`;
   } else if (s.perfect) {
     msg.innerHTML = `<b>PERFECT</b> — 全${total}語を発見しました。`;
+  } else if (roundExhaustedAll()) {
+    msg.innerHTML = `<b>GREAT</b> — 全${total}語を発見しました。`;
+  } else if (s.great) {
+    msg.innerHTML = `<b>GREAT</b> — 残り ${total - s.discovered.size} 語。${canPerfect() ? "続ければ <b>PERFECT（★+2）</b>。" : ""}`;
   } else if (s.gaveUp) {
     msg.innerHTML = "<b>降参したラウンド</b>です。かなは押せません — やり直すか、次のラウンドへ。";
   } else {
-    msg.innerHTML = `<b>クリア済み</b> — 残り ${total - s.discovered.size} 語。続ければ<b> PERFECT（★+2）</b>、はずせば ★−1。`;
+    msg.innerHTML = `<b>クリア済み</b> — あと ${Math.max(0, greatTarget() - s.discovered.size)} 語で <b>GREAT（★+1）</b>、はずせば ★−1。`;
   }
 
   $("#reviveBarBtn").hidden = !dead;
@@ -556,6 +578,7 @@ function render(){
   renderFound(); renderProgress(); renderCombo(); renderDoneBar();
   $("#hintBtn").disabled = $("#hintBtnM").disabled = roundLocked();
   $("#giveupBtn").disabled = $("#giveupBtnM").disabled = state().cleared || state().gaveUp;
+  document.body.classList.toggle("isGreat", state().great && !state().perfect);
 }
 
 function flash(kind, text){
@@ -962,16 +985,19 @@ function guess(kana){
     buzz(18);
     flashAnswer(a, pick(GOOD_MSGS));
 
-    const willPerfect = state().discovered.size >= total;
-    if (!state().cleared && state().discovered.size >= clearTarget()) finishRound(willPerfect);
-    else if (!willPerfect) showBurst({
+    const st0 = state();
+    const willTop = canPerfect() ? st0.discovered.size >= total : st0.discovered.size >= greatTarget();
+    if (!st0.cleared && st0.discovered.size >= clearTarget()) finishRound(willTop);
+    else if (!willTop && !(!st0.great && st0.discovered.size >= greatTarget())) showBurst({
       mark: mode === "kids" ? (combo >= 2 ? `${combo} れんぞく！` : "せいかい！")
                             : (combo >= 2 ? `COMBO ×${combo}` : "CORRECT"),
       word: answerDisplay(a),
       sub: (a.display && a.display !== a.word) ? a.word : "",
       long: true, ms: 1400
     });
-    if (willPerfect && !state().perfect) perfectRound();
+    // クリアの上に GREAT、正解の多いラウンドだけ その上に PERFECT を置く
+    if (!state().great && state().discovered.size >= greatTarget()) greatRound();
+    if (canPerfect() && state().discovered.size >= total && !state().perfect) perfectRound();
 
   } else {
     combo = 0;
@@ -1040,6 +1066,29 @@ function finishRound(silent){
   }
 }
 
+function greatRound(){
+  const s = state();
+  s.great = true;
+  let bonus = "";
+  if (!s.greatRewarded) {
+    s.greatRewarded = true;
+    stars++;
+    score += GREAT_BONUS;
+    bonus = `★ +1　+${num(GREAT_BONUS)}`;
+  }
+  saveProgress();
+  const colors = mode === "kids" ? KIDS_COLORS : ["#7ef9d0", "#fff", "#ffd34d"];
+  sfxClearFanfare(); buzz([30, 50, 30, 60]);
+  mascotPose("cheer", 900);
+  mascotSay("すごい！", "gold", 2000);
+  confetti(40, colors, 2200);
+  setTimeout(() => {
+    showBurst({mark: roundName(), word: "GREAT!!", sub: `${s.discovered.size} / ${current().answers.length} 語発見`,
+      bonus, dim: true, long: true, char: "pose", ms: 1800});
+    particles(null, 40, colors);
+  }, 340);
+}
+
 function perfectRound(){
   const s = state();
   s.perfect = true;
@@ -1095,7 +1144,7 @@ function retryRound(){
   if (!roundLocked() && s.used.size > 0 &&
       !confirm("このラウンドの発見済みのことばを消して、最初からやり直しますか？")) return;
   s.found.clear(); s.discovered.clear(); s.used.clear();
-  s.cleared = false; s.gaveUp = false; s.perfect = false;
+  s.cleared = false; s.gaveUp = false; s.great = false; s.perfect = false;
   combo = 0;
   lastFoundWord = null;
   mascotEl.classList.add("noAnim");
@@ -1266,7 +1315,7 @@ function resetAll(skipConfirm){
   roundIndex = 0; stars = 5; score = 0; combo = 0; maxCombo = 0; scoreShown = 0; starsShown = -1;
   roundStates.forEach(s => {
     s.found.clear(); s.discovered.clear(); s.used.clear();
-    s.cleared = s.rewarded = s.gaveUp = s.perfect = s.perfectRewarded = false;
+    s.cleared = s.rewarded = s.gaveUp = s.great = s.greatRewarded = s.perfect = s.perfectRewarded = false;
   });
   clearSavedProgress();
   closeModals({force: true});
@@ -1321,11 +1370,13 @@ function openRoundList(){
   const list = rounds.map((i, n) => {
     const r = ROUND_DATA[i], st = roundStates[i];
     const total = r.answers.length, target = clearTarget(r);
-    const cls = `${st.perfect ? "perfect " : st.cleared ? "cleared " : ""}${i === roundIndex ? "current" : ""}`;
+    const cls = `${st.perfect ? "perfect " : st.great ? "great " : st.cleared ? "cleared " : ""}${i === roundIndex ? "current" : ""}`;
     const pct = Math.min(100, st.discovered.size / total * 100);
 
     if (mode === "kids") {
-      const mark = st.cleared ? '<span class="rcMark done">★</span>'
+      const mark = st.perfect ? '<span class="rcMark done gold">★</span>'
+        : st.great ? '<span class="rcMark done great">★</span>'
+        : st.cleared ? '<span class="rcMark done">★</span>'
         : st.gaveUp ? '<span class="rcMark">…</span>'
         : `<span class="rcMark">${n + 1}</span>`;
       return `<button class="roundChoice kid ${cls}" data-round="${i}" ${locked ? "disabled" : ""}>
@@ -1336,13 +1387,14 @@ function openRoundList(){
     }
 
     const badge = st.perfect ? '<span class="badge gold">PERFECT</span>'
+      : st.great ? '<span class="badge greatBadge">GREAT</span>'
       : st.cleared ? '<span class="badge">✓ クリア</span>'
       : st.gaveUp ? '<span class="badge">降参</span>'
       : `<span class="badge">${st.discovered.size}/${target}</span>`;
     return `<button class="roundChoice ${cls}" data-round="${i}" ${locked ? "disabled" : ""}>
       <div class="rcTop"><span>${roundName(i)}</span>${badge}</div>
       <div class="rcPattern">${templateHTML(r.template)}</div>
-      <div class="rcMeta">${difficultyLabel(i)} ・ 全${total}語 ・ ${target}語でクリア</div>
+      <div class="rcMeta">全${total}語 ・ ${target}語でクリア ・ ${greatTarget(r)}語で GREAT${canPerfect(r) ? ` ・ ${total}語で PERFECT` : "（この数ではPERFECT無し）"}</div>
       <div class="rcBar"><i style="width:${pct}%"></i></div>
     </button>`;
   }).join("");
