@@ -1592,7 +1592,8 @@ const WORD_ROUNDS = [
       { word: "おんじ", display: "音字", meaning: "音だけを表す文字。表音文字。" },
       { word: "ごんじ", display: "郷司", meaning: "姓の一つ。「郷司」など。" },
       { word: "やんじ", display: "良枝", meaning: "人名の一つ。「良枝」など。" },
-      { word: "ねんじ", display: "年次", meaning: "年ごと。「年次計画」「年次休暇」。" }
+      { word: "ねんじ", display: "年次", meaning: "年ごと。「年次計画」「年次休暇」。" },
+      { word: "ひんじ", display: "ヒンジ／賓辞", meaning: "扉やふたの蝶番／論理学で、判断の述語。" }
     ]
   },
   {
@@ -3956,7 +3957,8 @@ const WORD_ROUNDS = [
       { word: "ぜんぱ", display: "全波", meaning: "すべての波長域。「全波受信機」。" },
       { word: "もんぱ", display: "門派", meaning: "宗派・学派の一分派。" },
       { word: "ねんぱ", display: "念波", meaning: "思念を伝える波、テレパシー。" },
-      { word: "わんぱ", display: "ワンパ", meaning: "ワンパターンの略。同じ展開ややり方の繰り返し。「わんぱな攻め」。" }
+      { word: "わんぱ", display: "ワンパ", meaning: "ワンパターンの略。同じ展開ややり方の繰り返し。「わんぱな攻め」。" },
+      { word: "ぱんぱ", display: "パンパ", meaning: "南米・アルゼンチンに広がる大草原。" }
     ]
   },
   {
@@ -4593,7 +4595,8 @@ const WORD_ROUNDS = [
       { word: "みんぐ", display: "民具", meaning: "庶民が暮らしの中で使ってきた道具。" },
       { word: "にんぐ", display: "忍具", meaning: "忍者が使う道具。手裏剣や鉤縄など。" },
       { word: "ごんぐ", display: "欣求", meaning: "喜び求めること。「厭離穢土欣求浄土」。" },
-      { word: "ちんぐ", display: "チング（친구）", meaning: "韓国語で「友だち」。同年の親しい間柄をいう。" }
+      { word: "ちんぐ", display: "チング（친구）", meaning: "韓国語で「友だち」。同年の親しい間柄をいう。" },
+      { word: "らんぐ", display: "ラング", meaning: "言語学で、社会に共有される言語の体系。パロールの対。" }
     ]
   }
 ];
