@@ -1078,10 +1078,10 @@ function useHint(){
   if (btn) {
     btn.classList.add("hintGlow");
     if (HINT_COST()) floatText(`−${HINT_COST()}`, btn, "bad");
-    setTimeout(() => btn.classList.remove("hintGlow"), 5000);
+    setTimeout(() => btn.classList.remove("hintGlow"), mode === "kids" ? 6000 : 5000);
   }
   sfxHint();
-  flash("info", `ヒント：${a.meaning}`);
+  flash("info", mode === "kids" ? `ヒント　${a.meaning}` : `ヒント：${a.meaning}`);
   saveProgress();
   renderScore();
   closeModals();
@@ -1304,11 +1304,13 @@ function openRoundList(){
     ].join(" ");
     const cleared = stageCleared(si);
     const face = cleared ? "★" : open ? si + 1 : "";
-    const foot = cleared ? "CLEAR" : open ? stageName(si) : "？";
+    // 土地の名前はクリアしても消さない。どこを通ってきたかが分かるように。
+    const foot = open ? stageName(si) : "？";
     return `<button class="stageStop ${cls}" data-stage="${si}" title="ステージ ${si + 1}">
       ${si === here ? '<img class="stopChar" src="img/maru-run.png" alt="">' : ""}
       <span class="stopDot"><b>${face}</b></span>
       <small>${foot}</small>
+      <em class="stopClear">CLEAR</em>
     </button>`;
   }).join("") + '<div class="stageGoal"><span>🏁</span><small>ゴール</small></div>';
 
@@ -1346,7 +1348,13 @@ function openRoundList(){
   }).join("");
 
   const head = locked
-    ? `<div class="stageNote peek">${mode === "kids" ? "どんな もんだいか だけ 見られるよ。まえのステージをクリアするとあそべる！" : "どんな問題かは見られます。前のステージをぜんぶクリアすると遊べます。"}</div>`
+    ? `<div class="lockNote">
+         <span class="lockMark" aria-hidden="true"></span>
+         <b>${mode === "kids" ? "このステージは まだ あそべないよ" : "このステージはまだ遊べません"}</b>
+         <small>${mode === "kids"
+           ? `ステージ ${viewStage}　${stageName(viewStage - 1)} を ぜんぶ クリアすると あそべる！<br>どんな もんだいか だけ 見てね。`
+           : `ステージ ${viewStage}　${stageName(viewStage - 1)} をぜんぶクリアすると開きます。<br>どんな問題かはここで見られます。`}</small>
+       </div>`
     : mode === "kids"
       ? ""
       : `<div class="stageNote">この ${rounds.length} 問をぜんぶクリアすると、次のステージへ進めます。

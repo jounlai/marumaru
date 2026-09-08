@@ -514,7 +514,25 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 .roundChoice.current{border-color:#fff}
 .roundChoice.cleared{background:#f2f2f2;color:#000;border-color:#fff}
 .roundChoice.cleared .rcTop,.roundChoice.cleared .rcMeta{color:#3a3a3a}
-.roundChoice.perfect{background:linear-gradient(160deg,#ffe9a8,#fff);border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+/* PERFECT の札は背景が金～白なので、文字も黒系に落とす（白のままだと読めない） */
+.roundChoice.perfect{
+  background:linear-gradient(160deg,#ffe9a8,#fff);border-color:var(--gold);
+  box-shadow:0 0 0 1px var(--gold);color:#2a1d00;
+}
+.roundChoice.perfect .rcTop,
+.roundChoice.perfect .rcMeta{color:#6b5200}
+.roundChoice.perfect .rcPattern{color:#2a1d00}
+.roundChoice.perfect .rcPattern .hole{color:#8a6a00}
+.roundChoice.perfect .rcBar{background:rgba(0,0,0,.16)}
+.roundChoice.perfect .rcBar i{background:#8a6a00}
+.roundChoice.perfect .badge{color:#6b5200;border-color:#c9a227}
+.roundChoice.perfect .badge.gold{color:#3a2b00;background:var(--gold);border-color:#c9a227}
+.kidsMode .roundChoice.perfect .rcMark{border-color:#8a6a00;color:#8a6a00}
+.kidsMode .roundChoice.perfect .rcMark.done{border-color:#3f7a12;color:#3f7a12}
+/* クリア済みの札も、かなの色を落として読めるようにする */
+.roundChoice.cleared .rcPattern{color:#111}
+.roundChoice.cleared .rcPattern .hole{color:#555}
+.kidsMode .roundChoice.cleared .rcMark{border-color:#3f7a12;color:#3f7a12}
 .rcTop{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:10px;color:#888;font-weight:800}
 .rcPattern{font-size:21px;font-weight:900;letter-spacing:.04em;margin:3px 0 2px}
 .rcMeta{font-size:10px;color:#777}
@@ -687,7 +705,7 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
    いまいる所にキャラクターが立つ。 */
 .stageStrip{
   display:flex;align-items:flex-end;gap:0;overflow-x:auto;
-  padding:34px 4px 12px;margin-bottom:6px;border-bottom:1px solid var(--line);
+  padding:34px 4px 8px;margin-bottom:6px;border-bottom:1px solid var(--line);
   scrollbar-width:none;
 }
 .stageStrip::-webkit-scrollbar{display:none}
@@ -728,7 +746,30 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 /* 施錠されたステージでも、どんな問題かは読めるようにする */
 .roundChoice[disabled]{opacity:.72;cursor:not-allowed}
 .roundChoice[disabled] .rcPattern{opacity:1}
-.stageNote.peek{border-color:#4a3a12;background:#141005;color:#d9c9a0}
+/* 施錠されたステージの見出し。問題の上に大きく出す */
+.lockNote{
+  grid-column:1/-1;display:grid;place-items:center;gap:4px;text-align:center;
+  padding:14px 12px;border:2px dashed #6b5220;border-radius:12px;
+  background:linear-gradient(180deg,#181205,#0d0a04);
+}
+.lockNote b{font-size:15px;font-weight:900;color:var(--gold);letter-spacing:.02em}
+.lockNote small{font-size:11.5px;color:#cbb98e;line-height:1.7}
+.kidsMode .lockNote b{font-size:17px}
+.kidsMode .lockNote small{font-size:13px}
+/* 南京錠を字を使わずに描く（絵文字は環境によって出ないため） */
+.lockMark{
+  position:relative;display:block;width:22px;height:17px;border-radius:3px;
+  background:var(--gold);margin-bottom:2px;
+}
+.lockMark::before{
+  content:"";position:absolute;left:50%;bottom:15px;width:13px;height:11px;
+  transform:translateX(-50%);border:3px solid var(--gold);border-bottom:0;
+  border-radius:7px 7px 0 0;
+}
+.lockMark::after{
+  content:"";position:absolute;left:50%;top:5px;width:3px;height:7px;
+  transform:translateX(-50%);background:#181205;border-radius:2px;
+}
 .stageNote{
   grid-column:1/-1;color:var(--muted);font-size:11px;line-height:1.7;
   padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#0b0b0b;
@@ -1023,8 +1064,10 @@ body.celebrate .app{animation:celebrateFlash 1.2s ease-out}
 .kidsMode .goCard::before{background:radial-gradient(closest-side,rgba(255,212,42,.22),transparent)}
 .kidsMode #gameoverModal .modalSub{font-size:14px}
 .kidsMode #gameoverModal .statGrid{display:none}
-/* クリア済みのステージは、数字ではなく CLEAR と出す */
-.stageStop.done small{color:var(--gold);font-weight:900;font-size:9.5px;letter-spacing:.06em}
+/* クリア済みは、土地の名前の下に CLEAR を足す（名前は消さない） */
+.stageStop.done small{color:var(--gold);font-weight:800}
+.stopClear{display:none;font-style:normal;font-size:8px;font-weight:900;letter-spacing:.08em;color:var(--gold);line-height:1.4}
+.stageStop.done .stopClear{display:block}
 /* 停留所の名前は、まだ行っていない土地の名前として見せる */
 .stageStop small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:56px}
 .stageStop.on small{color:#fff}
@@ -1056,3 +1099,14 @@ body.celebrate .app{animation:celebrateFlash 1.2s ease-out}
 .scStats{font-size:12px;color:var(--muted);margin:6px 0 14px;line-height:1.7}
 .scStats b{color:var(--gold)}
 .kidsMode .scStats{font-size:13.5px}
+
+/* こども版のヒントは、字が小さく灰色で読みにくかった。大きく明るくする */
+.kidsMode .flash.info{color:var(--k-cream);font-weight:800;font-size:15px;line-height:1.5}
+@media(min-width:961px){ .kidsMode .flash.info{font-size:17px} }
+@media(max-height:680px){ .kidsMode .flash.info{font-size:13.5px} }
+/* ヒントで光るかなも、色枠の中で埋もれないよう強くする */
+.kidsMode .kana.hintGlow{animation:hintGlowKids 1.1s ease-in-out 5}
+@keyframes hintGlowKids{
+  0%,100%{box-shadow:none;background:#150f08}
+  50%{background:#3a2c05;box-shadow:0 0 0 4px var(--k-yellow),0 0 22px rgba(255,212,42,.95)}
+}
