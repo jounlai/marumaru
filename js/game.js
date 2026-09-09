@@ -435,15 +435,24 @@ function roundExhausted(){ return pressableKanas().every(k => state().used.has(k
 /* 語釈。訳が用意できている語だけ差し替え、無ければ日本語のまま出す。
    3,660語すべてを4言語に訳すのは一度には終わらないので、少しずつ増やせる
    作りにしてある（js/meanings-i18n.js）。 */
-function meaningOf(a){
+/* 鍵はかな。ただし同じかなが別のラウンドに別の語釈で入っていることがある
+   （〇ん〇ん の「しんしん＝雪が静かに降る」と 〇んしん の「しんしん＝心身」）。
+   その12語だけ「テンプレート＋タブ＋かな」の鍵を先に見る。 */
+function meaningKeys(a, round){
+  const r = round || current();
+  return [r.template + "\t" + a.word, a.word];
+}
+function meaningOf(a, round){
   if (lang === "ja") return a.meaning;
   const m = typeof MEANINGS_I18N !== "undefined" ? MEANINGS_I18N[lang] : null;
-  return (m && m[a.word]) || a.meaning;
+  if (!m) return a.meaning;
+  for (const k of meaningKeys(a, round)) if (m[k]) return m[k];
+  return a.meaning;
 }
-function hasTranslatedMeaning(a){
+function hasTranslatedMeaning(a, round){
   if (lang === "ja") return true;
   const m = typeof MEANINGS_I18N !== "undefined" ? MEANINGS_I18N[lang] : null;
-  return !!(m && m[a.word]);
+  return !!m && meaningKeys(a, round).some(k => !!m[k]);
 }
 // まだ訳の無い語には、辞書を引く道をそえる。日本語のまま放り出さないため
 function lookupUrl(a){
