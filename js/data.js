@@ -2247,7 +2247,8 @@ const WORD_ROUNDS = [
       { word: "まろい", display: "円い", meaning: "「丸い」の古風な言い方。角がなく穏やか。" },
       { word: "ませい", display: "磨製", meaning: "石を磨いて作ること。" },
       { word: "まじい", meaning: "「してはならない・するはずがない」の意を表す古風な語。" },
-      { word: "まづい", display: "不味い", meaning: "「まずい」の古い書き方。味が悪い/都合が悪い。" }
+      { word: "まづい", display: "不味い", meaning: "「まずい」の古い書き方。味が悪い/都合が悪い。" },
+      { word: "まうい", display: "マウイ", meaning: "ハワイ諸島の島。ハワイ島に次いで大きい。" }
     ]
   },
   {

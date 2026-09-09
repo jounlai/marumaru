@@ -3678,7 +3678,8 @@ zhTW: {
 "まふう": "傳說由魔物掀起的暴風、令人毛骨悚然的風。",
 "でんま": "電動按摩器的簡稱。俗語中也指性玩具。",
 "ぎんじ": "吟詠詩歌，帶著腔調誦讀。「吟一首詩」。",
-"けんばい": "售票、售餐券。「券売機」（售票機）。"
+"けんばい": "售票、售餐券。「券売機」（售票機）。",
+"まうい": "夏威夷群島中的島嶼，面積僅次於夏威夷島。"
 },
 en: {
 "あんあん": "Whimpering or moaning. / anan is a women's magazine from Magazine House.",
@@ -7338,7 +7339,8 @@ en: {
 "まふう": "A storm or eerie wind said to be raised by demons.",
 "でんま": "Short for an electric massager. In slang, also a sex toy.",
 "ぎんじ": "Reciting a poem aloud with a lilt. As in 「一句吟じる」, to recite a verse.",
-"けんばい": "Selling tickets or meal vouchers. As in 「券売機」, a ticket machine."
+"けんばい": "Selling tickets or meal vouchers. As in 「券売機」, a ticket machine.",
+"まうい": "Maui, an island in Hawaii. The second largest after the island of Hawaiʻi."
 },
 
 zh: {
@@ -10999,7 +11001,8 @@ zh: {
 "まふう": "传说由魔物掀起的暴风、令人毛骨悚然的风。",
 "でんま": "电动按摩器的简称。俗语中也指性玩具。",
 "ぎんじ": "吟咏诗歌，带着腔调诵读。「吟一首诗」。",
-"けんばい": "售票、售餐券。「券売機」（售票机）。"
+"けんばい": "售票、售餐券。「券売機」（售票机）。",
+"まうい": "夏威夷群岛中的岛屿，面积仅次于夏威夷岛。"
 },
 
 vi: {
@@ -14660,7 +14663,8 @@ vi: {
 "まふう": "Cơn bão hay ngọn gió rợn người mà người ta nói là do ma quỷ gây ra.",
 "でんま": "Viết tắt của máy massage điện. Trong tiếng lóng còn chỉ đồ chơi tình dục.",
 "ぎんじ": "Ngâm thơ, đọc lên có ngân nga. Như 「一句吟じる」, ngâm một câu thơ.",
-"けんばい": "Bán vé, bán phiếu ăn. Như 「券売機」, máy bán vé."
+"けんばい": "Bán vé, bán phiếu ăn. Như 「券売機」, máy bán vé.",
+"まうい": "Maui, một đảo thuộc quần đảo Hawaii. Lớn thứ hai sau đảo Hawaiʻi."
 },
 
 ko: {
@@ -18321,6 +18325,7 @@ ko: {
 "まふう": "마물이 일으킨다는 폭풍, 으스스한 바람.",
 "でんま": "전기 마사지기의 준말. 속어로는 성인용품을 가리키기도 한다.",
 "ぎんじ": "시가를 가락을 붙여 읊는 것. 「一句吟じる」(한 구절 읊다).",
-"けんばい": "표나 식권을 파는 것. 「券売機」(발매기)."
+"けんばい": "표나 식권을 파는 것. 「券売機」(발매기).",
+"まうい": "하와이 제도의 섬. 하와이섬 다음으로 크다."
 }
 };
