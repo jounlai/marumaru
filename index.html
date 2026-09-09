@@ -78,26 +78,41 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=53e458f5">
+<link rel="stylesheet" href="css/styles.css?v=008daf2d">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=53e458f5" alt="まるまる 〇〇ことば">
-    <div class="mgLead">どちらであそびますか？</div>
-    <div class="mgBtns">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=008daf2d" alt="まるまる 〇〇ことば">
+    <div class="mgLead" data-i18n="gate_lead">どちらであそびますか？</div>
+    <div class="mgBtns" id="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
-        <b>こども版</b>
-        <small>小学生〜中学生むけ<br>やさしいことばだけ・大きな文字</small>
+        <b data-i18n="gate_kids">こども版</b>
+        <small data-i18n-html="gate_kids_sub">小学生〜中学生むけ<br>やさしいことばだけ・大きな文字</small>
       </button>
       <button class="mgBtn" data-mode="adult">
-        <b>おとな版</b>
-        <small>すべてのことば<br>スコア・コンボあり</small>
+        <b data-i18n="gate_adult">おとな版</b>
+        <small data-i18n-html="gate_adult_sub">すべてのことば<br>スコア・コンボあり</small>
+      </button>
+      <!-- 3枚目。押すと言語えらびに入れ替わる（外国語の版はここから） -->
+      <button class="mgBtn world" id="mgWorldBtn">
+        <b data-i18n="gate_world">For learners</b>
+        <small data-i18n-html="gate_world_sub">English · 中文<br>Tiếng Việt · 한국어</small>
       </button>
     </div>
-    <div class="mgNote">あとから ⚙ メニューでいつでも変えられます。<br>それぞれの記録は別々に残ります。</div>
+    <div class="mgLangs" id="mgLangs" hidden>
+      <div class="mgLangLead">Choose your language</div>
+      <div class="mgLangGrid">
+        <button class="mgLangBtn" data-lang="en">English</button>
+        <button class="mgLangBtn" data-lang="zh">中文</button>
+        <button class="mgLangBtn" data-lang="vi">Tiếng Việt</button>
+        <button class="mgLangBtn" data-lang="ko">한국어</button>
+      </div>
+      <button class="backLink" id="mgLangBack">← Back</button>
+    </div>
+    <div class="mgNote" data-i18n-html="gate_note">あとから ⚙ メニューでいつでも変えられます。<br>それぞれの記録は別々に残ります。</div>
   </div>
 </div>
 
@@ -105,16 +120,16 @@
      分からず戸惑うため、まず立つ場所を作る。基本は前回の続きから始める。 -->
 <div class="startGate" id="startGate" hidden>
   <div class="sgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=53e458f5" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=008daf2d" alt="まるまる 〇〇ことば">
     <div class="sgLead" id="sgLead"></div>
 
     <div class="sgHere" id="sgHere">
       <div class="sgBerg" id="sgBerg">
         <span class="sgSea"></span>
-        <span class="sgYou"><img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=53e458f5" alt=""></span>
+        <span class="sgYou"><img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=008daf2d" alt=""></span>
       </div>
       <div class="sgWhere">
-        <em class="sgTag">ことばの氷山</em>
+        <em class="sgTag" data-i18n="home_tag">ことばの氷山</em>
         <span class="sgConcept" id="sgConcept"></span>
         <small id="sgWhereLabel">いまいる層</small>
         <b id="sgLayer">氷の頂</b>
@@ -129,10 +144,20 @@
       <button class="btn" id="sgMenuBtn">あそびかた</button>
     </div>
     <div class="sgModes" id="sgModes" role="group" aria-label="遊ぶモード">
-      <button class="sgMode" data-mode="kids">こども版</button>
-      <button class="sgMode" data-mode="adult">おとな版</button>
+      <button class="sgMode" id="sgMode-kids" data-mode="kids">こども版</button>
+      <button class="sgMode" id="sgMode-adult" data-mode="adult">おとな版</button>
     </div>
     <div class="sgModeNote" id="sgModeNote"></div>
+    <div class="sgLangRow">
+      <select class="langSelect" id="sgLangSel" aria-label="Language">
+        <option value="ja">日本語</option>
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="vi">Tiếng Việt</option>
+        <option value="ko">한국어</option>
+      </select>
+    </div>
+    <div class="sgLangNote" id="sgLangNote" hidden></div>
     <div class="sgNote" id="sgNote" hidden></div>
   </div>
 </div>
@@ -141,7 +166,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <button class="brand" id="homeBtn" title="ホーム画面へ" aria-label="ホーム画面へ"><img src="img/logo-small.png?v=53e458f5" alt="まるまる 〇〇ことば" width="320" height="104"></button>
+    <button class="brand" id="homeBtn" data-i18n-title="nav_home" title="ホーム画面へ" aria-label="ホーム画面へ"><img src="img/logo-small.png?v=008daf2d" alt="まるまる 〇〇ことば" width="320" height="104"></button>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -150,8 +175,8 @@
       </div>
     </div>
     <div class="topBtns">
-      <button class="iconBtn" id="roundListBtn">☰ 一覧</button>
-      <button class="iconBtn" id="menuBtn" aria-label="メニュー">⚙</button>
+      <button class="iconBtn" id="roundListBtn" data-i18n="nav_list">☰ 一覧</button>
+      <button class="iconBtn" id="menuBtn" data-i18n-title="nav_menu" aria-label="メニュー">⚙</button>
     </div>
   </header>
 
@@ -171,7 +196,7 @@
           <!-- ひらがな棒人間。バーの上を歩き、ゴール旗（クリア地点）を目指す -->
           <div class="track" id="track">
             <!-- 道しるべの旗。クリア → GREAT → PERFECT の順に立つ -->
-            <div class="goal" id="goal"><span>クリア</span></div>
+            <div class="goal" id="goal"><span data-i18n="goal_clear">クリア</span></div>
             <div class="goal great" id="goalGreat"><span>GREAT</span></div>
             <div class="goal perfect" id="goalPerfect"><span>PERFECT</span></div>
             <div class="mBubble" id="mBubble"></div>
@@ -211,11 +236,11 @@
         <div class="kanaGrid" id="kanaGrid">
           <!-- 清音/濁音セクションは JS が描画。右下の空きスペースをポケットとして使う -->
           <div class="pocket" id="pocket">
-            <div class="pocketTitle" id="pocketTitle">見つけたことば</div>
+            <div class="pocketTitle" id="pocketTitle" data-i18n="found_title">見つけたことば</div>
             <div class="chips" id="foundChips"></div>
             <div class="pocketBtns">
-              <button class="btn" id="hintBtnM">ヒント −300</button>
-              <button class="btn" id="giveupBtnM">降参</button>
+              <button class="btn" id="hintBtnM" data-i18n="hint">ヒント −300</button>
+              <button class="btn" id="giveupBtnM" data-i18n="giveup">降参</button>
             </div>
           </div>
         </div>
@@ -225,18 +250,18 @@
     <!-- デスクトップ用サイドパネル -->
     <aside class="aside">
       <div class="panel panelFound">
-        <h2>見つけたことば <span id="foundTally"></span></h2>
+        <h2><span data-i18n="found_title">見つけたことば</span> <span id="foundTally"></span></h2>
         <div class="found" id="foundList"></div>
       </div>
       <div class="panel">
-        <h2>ルール</h2>
-        <div class="rules adultOnly">
+        <h2 data-i18n="rules_title">ルール</h2>
+        <div class="rules adultOnly" data-i18n-html="rules_side_html">
           ★は<b>5個</b>から。はずすたびに<b class="key">★−1</b>、0でゲームオーバー。<br>
           正解の<b>60％</b>でクリア＆<b class="key">★＋1</b>、<b>80％</b>で<b class="key">GREAT（★＋1）</b>、<br>
           全問正解で<b class="key">PERFECT（★＋2）</b>。正解が10語未満のラウンドは GREAT まで。<br>
           連続正解で<b class="key">コンボ</b>、5連続で<b class="key">FEVER（スコア2倍）</b>。
         </div>
-        <div class="rules kidsOnly">
+        <div class="rules kidsOnly" data-i18n-html="rules_side_html">
           おなじ<b>かな</b>を、あいている<b class="key">〇</b>ぜんぶに入れて、ことばを作ってね。<br>
           まちがえると<b class="key">★が1つ</b>へるよ。ぜんぶなくなったら、そのステージをもう一度。<br>
           <b>40％</b>で クリア、<b>80％</b>で <b class="key">GREAT</b>、ぜんぶ見つけたら <b class="key">PERFECT</b>！<br>
@@ -244,8 +269,8 @@
           こまったら<b class="key">ヒント</b>を押していいよ。
         </div>
         <div class="actions">
-          <button class="btn" id="hintBtn">ヒント −300</button>
-          <button class="btn" id="giveupBtn">降参して答えを見る</button>
+          <button class="btn" id="hintBtn" data-i18n="hint">ヒント −300</button>
+          <button class="btn" id="giveupBtn" data-i18n="giveup_full">降参して答えを見る</button>
         </div>
         <div class="credits">
           <span class="creditsAsk">抜けている単語があれば
@@ -263,10 +288,10 @@
   <div class="doneBar" id="doneBar">
     <div class="doneMsg" id="doneMsg"></div>
     <div class="doneBtns">
-      <button class="btn primary" id="reviveBarBtn">★5で再開</button>
-      <button class="btn" id="retryBtn">やり直す</button>
-      <button class="btn" id="revealBtn">答えを見る</button>
-      <button class="btn primary" id="nextBtn">終わる →</button>
+      <button class="btn primary" id="reviveBarBtn" data-i18n="revive">★5で再開</button>
+      <button class="btn" id="retryBtn" data-i18n="retry">やり直す</button>
+      <button class="btn" id="revealBtn" data-i18n="reveal">答えを見る</button>
+      <button class="btn primary" id="nextBtn" data-i18n="finish_arrow">終わる →</button>
     </div>
   </div>
 
@@ -309,11 +334,11 @@
   <div class="modalCard">
     <div class="modalHead">
       <div>
-        <button class="backLink" id="listHomeBtn">← ホーム</button>
+        <button class="backLink" id="listHomeBtn" data-i18n="back_home">← ホーム</button>
         <div class="modalTitle" id="stageTitle">ステージ</div>
-        <div class="modalSub">ことばの氷山。上は誰でも知っていることば、深いほど数が減って見慣れなくなります。</div>
+        <div class="modalSub" data-i18n="list_sub">ことばの氷山。上は誰でも知っていることば、深いほど数が減って見慣れなくなります。</div>
       </div>
-      <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
+      <div class="topBtns"><button class="iconBtn" data-close data-i18n="close">閉じる</button></div>
     </div>
     <div class="stageStrip" id="stageStrip"></div>
     <div class="roundList" id="roundList"></div>
@@ -327,7 +352,7 @@
         <div class="modalTitle" id="answerTitle">正解一覧</div>
         <div class="modalSub" id="answerSub"></div>
       </div>
-      <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
+      <div class="topBtns"><button class="iconBtn" data-close data-i18n="close">閉じる</button></div>
     </div>
     <div id="answerList"></div>
   </div>
@@ -337,30 +362,40 @@
   <div class="modalCard narrow">
     <div class="modalHead">
       <div>
-        <div class="modalTitle">メニュー</div>
+        <div class="modalTitle" data-i18n="menu_title">メニュー</div>
         <div class="modalSub"><span id="modeName">おとな版</span> ・ <span id="menuRank"></span></div>
       </div>
-      <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
+      <div class="topBtns"><button class="iconBtn" data-close data-i18n="close">閉じる</button></div>
     </div>
 
     <div class="statGrid">
       <div class="stat"><small>SCORE</small><b id="mScore">0</b></div>
       <div class="stat"><small>MAX COMBO</small><b id="mCombo">0</b></div>
-      <div class="stat"><small>発見したことば</small><b id="mFound">0</b></div>
-      <div class="stat"><small>クリア</small><b id="mCleared">0</b></div>
+      <div class="stat"><small data-i18n="menu_found">発見したことば</small><b id="mFound">0</b></div>
+      <div class="stat"><small data-i18n="menu_cleared">クリア</small><b id="mCleared">0</b></div>
     </div>
 
     <div class="menuList">
-      <button class="btn" id="mHintBtn">ヒント（スコア −300）</button>
-      <button class="btn" id="mGiveupBtn">降参して答えを見る</button>
-      <button class="btn" id="mRetryBtn">このラウンドをやり直す</button>
+      <button class="btn" id="mHintBtn" data-i18n="hint_menu">ヒント（スコア −300）</button>
+      <button class="btn" id="mGiveupBtn" data-i18n="giveup_full">降参して答えを見る</button>
+      <button class="btn" id="mRetryBtn" data-i18n="retry_menu">このラウンドをやり直す</button>
       <button class="btn" id="soundBtn">♪ 効果音 ON</button>
-      <button class="btn" id="startPageBtn">ホーム画面へ戻る</button>
+      <button class="btn" id="startPageBtn" data-i18n="menu_home">ホーム画面へ戻る</button>
       <button class="btn" id="switchModeBtn">こども版に切り替える</button>
-      <button class="btn danger" id="resetBtn">記録をすべてリセット</button>
+      <div class="menuLang">
+        <label for="mLangSel" data-i18n="lang_label">言語</label>
+        <select class="langSelect" id="mLangSel" aria-label="Language">
+          <option value="ja">日本語</option>
+          <option value="en">English</option>
+          <option value="zh">中文</option>
+          <option value="vi">Tiếng Việt</option>
+          <option value="ko">한국어</option>
+        </select>
+      </div>
+      <button class="btn danger" id="resetBtn" data-i18n="reset_all">記録をすべてリセット</button>
     </div>
 
-    <div class="rules" style="margin-top:12px">
+    <div class="rules" style="margin-top:12px" data-i18n-html="rules_html">
       ★は<b>5個</b>から。はずすたびに<b class="key">★−1</b>、0でゲームオーバー。<br>
       <b>60％</b>でクリア（★＋1）→ <b>80％</b>で<b class="key">GREAT</b>（★＋1）→ 全問で<b class="key">PERFECT</b>（★＋2）。<br>
       連続正解でコンボ、5連続で<b class="key">FEVER（スコア2倍）</b>。<br>
@@ -393,16 +428,18 @@
       <div class="stat"><small>MAX COMBO</small><b id="gCombo">0</b></div>
     </div>
     <div class="menuList">
-      <button class="btn primary" id="reviveBtn">★5で再開（記録はそのまま）</button>
-      <button class="btn" id="gAnswerBtn">このラウンドの答えを見る</button>
-      <button class="btn danger" id="gResetBtn">最初からやり直す</button>
+      <button class="btn primary" id="reviveBtn" data-i18n="revive_full">★5で再開（記録はそのまま）</button>
+      <button class="btn" id="gAnswerBtn" data-i18n="go_answers">このラウンドの答えを見る</button>
+      <button class="btn danger" id="gResetBtn" data-i18n="go_reset">最初からやり直す</button>
     </div>
   </div>
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=53e458f5"></script>
-<script src="js/kids.js?v=53e458f5"></script>
-<script src="js/game.js?v=53e458f5"></script>
+<script src="js/i18n.js?v=008daf2d"></script>
+<script src="js/meanings-i18n.js?v=008daf2d"></script>
+<script src="js/data.js?v=008daf2d"></script>
+<script src="js/kids.js?v=008daf2d"></script>
+<script src="js/game.js?v=008daf2d"></script>
 </body>
 </html>

@@ -1,0 +1,129 @@
+# 語釈の多言語化 — 指示書（Codex 向け）
+
+〇〇ことば（https://marumaru.heuron.com/）に外国語版を入れた。画面の文字は
+英語・中国語・ベトナム語・韓国語に訳し終えている（`js/i18n.js`）。
+残っているのは **語釈（3,660語の意味）** で、いま訳があるのは
+`ROUND 01「〇ん〇ん」` の 64語だけ。この文書は、その続きを頼むための仕様書。
+
+## 0. なぜ語釈を訳すのか（訳すときの拠り所）
+
+このゲームは**日本語のかなを当てる**遊びなので、お題・答え・表記は日本語のまま。
+外国語版で訳すのは「当てた語が何なのか」を伝える語釈だけ。
+
+読み手は **日本語を学んでいる人**。だから語釈は、
+
+- **やさしい語彙で短く**。1語につき 1〜2文、80字以内を目安
+- **日本語の語釈と同じ順・同じ区切り（`/`）** で書く。日本語と見くらべたときに
+  どこがどこに当たるか分かるようにするため
+- 擬音語・擬態語は「音」か「ようす」かを最初に言う。訳語を1語だけ置くより、
+  **どんな場面で使うか**が分かる説明のほうが役に立つ
+- 固有名詞（作品名・地名・人名）は、**それが何であるか**を言えば足りる。
+  訳さずローマ字・原語表記のままでよい
+- 差別語・古い俗称は、日本語の語釈が「差別語」と断っているならその断りも訳す。
+  黙って中立の訳にしない
+
+## 1. いまの形
+
+```
+js/meanings-i18n.js     訳のある語だけを持つ。無い語は日本語のまま出る
+js/i18n.js              画面の文字（訳し終えている。触らなくてよい）
+js/data.js              出題データ。word / display / meaning（日本語）
+```
+
+```js
+const MEANINGS_I18N = {
+  en: { "かんかん": "Furious. / The clang of something hard.", … },
+  zh: { "かんかん": "大发雷霆。/硬物相击的响声。", … },
+  vi: { … },
+  ko: { … }
+};
+```
+
+- **鍵は答えのかな**（`js/data.js` の `word`）。`display`（漢字）ではない
+- 4言語すべてに同じ鍵を入れる。**1言語だけ入れるのは不可**
+- 訳が無い語は、画面に日本語の語釈がそのまま出て、右に辞書へのリンク（↗）が付く。
+  だから**途中まででも壊れない**。ただし「入れたのに片言語だけ」は避けること
+
+## 2. 頼みたいこと
+
+`js/data.js` の全 3,660語のうち、まだ `js/meanings-i18n.js` に無い **3,596語** を
+4言語で埋める。**一度に全部でなくてよい**。次の順で進めてほしい。
+
+| 順 | 範囲 | 語数の目安 | 理由 |
+|---|---|---:|---|
+| 1 | 通常ラウンド（`ROUND_DATA`）の上位10ラウンド | 約400 | 遊び始めて最初に当たる |
+| 2 | 通常ラウンドの残り | 約500 | |
+| 3 | `WORD_ROUNDS` の正解が多い順に半分 | 約1,400 | |
+| 4 | 残り全部 | 約1,300 | |
+
+1回のコミットは **1つの区切りぶん**にすること。3,600語を一度に足すと、
+目で確かめられない。
+
+## 3. 書き方の実例
+
+```js
+// 日本語（js/data.js）
+{ word: "かんかん", meaning: "激しく怒るさま/硬い物が響く音。" }
+
+// en   ← 順も区切りも合わせる
+"かんかん": "Furious. / The clang of something hard.",
+// zh
+"かんかん": "大发雷霆。/硬物相击的响声。",
+// vi
+"かんかん": "Giận điên người. / Tiếng va leng keng của vật cứng.",
+// ko
+"かんかん": "몹시 화가 난 모양. / 단단한 것이 부딪히는 소리."
+```
+
+- 英語の `/` の前後は**半角スペースを空ける**。中国語・韓国語は空けない
+- 日本語の語釈にある「〜のさま」は、英語なら `-ing` の名詞句
+  （`Snow falling silently.`）にすると短く収まる
+- 作品名・雑誌名などは**原題のまま**（`Non Non Biyori`、`月刊少年ガンガン` →
+  英語では `Gangan`）
+
+## 4. やってはいけないこと
+
+- **`js/data.js` の日本語を書き換えない**。訳は別ファイルに足すだけ
+- 機械翻訳をそのまま貼らない。擬音語は直訳すると意味を成さない
+  （「じんじん」を "gin gin" と書くなど）
+- 鍵を `display`（漢字）にしない。同じ読みで表記が複数ある語があるため
+- 日本語の語釈に無い情報を足さない。語源の講義は要らない
+- 4言語のどれかを空にしない
+
+## 5. 終わったら
+
+```bash
+node tests/lint-data.js     # ?v= の値を出す。index.html を一括置換
+node tests/lint-data.js && node tests/smoke.js && node tests/deadend.js
+```
+
+`js/meanings-i18n.js` は `?v=` の対象に入っているので、**足したら必ず版を上げる**。
+上げ忘れると、すでに遊んだ人のブラウザが古い訳を使い続ける。
+
+確認：
+
+- [ ] 4言語すべてに同じ鍵が入っている（下のスクリプトで数える）
+- [ ] テスト3本が通る
+- [ ] `index.html` の `?v=` が lint の出す値と一致
+- [ ] 外国語で遊び、訳した語に辞書リンク（↗）が付いていないこと
+
+```bash
+node -e '
+const fs=require("fs"),vm=require("vm");
+const m={};vm.runInNewContext(fs.readFileSync("js/meanings-i18n.js","utf8")+";this.M=MEANINGS_I18N",m);
+const d={};vm.runInNewContext(fs.readFileSync("js/data.js","utf8")+";this.O={ROUND_DATA,SPECIAL_ROUNDS,WORD_ROUNDS}",d);
+const all=new Set();for(const rs of Object.values(d.O))for(const r of rs)for(const a of r.answers)all.add(a.word);
+const L=["en","zh","vi","ko"];
+const ks=L.map(l=>Object.keys(m.M[l]));
+console.log("全語",all.size);
+L.forEach((l,i)=>console.log(l,"訳",ks[i].length,"／鍵が data.js に無い:",ks[i].filter(k=>!all.has(k)).join(",")||"なし"));
+const base=new Set(ks[0]);
+L.slice(1).forEach((l,i)=>{const d1=ks[i+1].filter(k=>!base.has(k)),d2=[...base].filter(k=>!ks[i+1].includes(k));
+  if(d1.length||d2.length)console.log(l,"en とずれ:",[...d1,...d2].slice(0,10).join(","));});
+'
+```
+
+## 6. 参考
+
+`js/meanings-i18n.js` に入っている 64語（ROUND 01）が手本。同じ調子で書けば、
+文体が揃う。迷ったら**短いほうを選ぶ**。画面の語釈欄は狭い。

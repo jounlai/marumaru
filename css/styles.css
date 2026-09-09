@@ -32,6 +32,14 @@ body{
   -webkit-text-size-adjust:100%;
   -webkit-tap-highlight-color:transparent;
 }
+/* ベトナム語の声調記号は、日本語フォントに字が無く、合成で崩れる。
+   ラテン字を持つフォントを先に置く（CJK は持たないので、かなと漢字は
+   これまでどおり日本語フォントへ落ちる）。中国語・韓国語はそのままで、
+   お題の漢字が日本語の字体で出るようにしておく。 */
+html[lang="vi"] body{
+  font-family:"Noto Sans","Segoe UI",system-ui,-apple-system,
+    "Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",sans-serif;
+}
 button{font:inherit;color:inherit}
 h1,h2{margin:0}
 
@@ -85,6 +93,12 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
   font-size:12px;font-weight:700;color:var(--muted);
 }
 .backLink:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+/* まだ訳の無い語釈に添える、辞書への小さな導線 */
+.lookup{
+  display:inline-block;margin-left:4px;color:#7fb6d8;text-decoration:none;
+  font-weight:900;font-size:11px;vertical-align:1px;
+}
+.lookup:hover{color:#fff}
 .kidsMode .backLink{font-size:13px}
 
 /* ------------------------------------------------------------ 3) ステージ */
@@ -776,6 +790,22 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 .mgBtn small{display:block;color:var(--muted);font-size:12px;font-weight:600;line-height:1.6}
 .mgBtn.kids{border-color:#3c6f5c;background:#0c1512}
 .mgBtn.kids b{color:var(--fever)}
+.mgBtn.world{border-color:#3d5570;background:#0b1119}
+.mgBtn.world b{color:#9fd8f5}
+/* 3枚並ぶと1枚が細くなるので、狭い画面では縦積みにする（下の指定で1列） */
+@media(min-width:521px){ .mgBtns{grid-template-columns:repeat(3,1fr)} }
+/* 言語えらび。入り口の札と入れ替えて出す */
+.mgLangs[hidden]{display:none}
+.mgLangLead{color:var(--muted);font-size:13px;font-weight:700;margin-bottom:12px}
+.mgLangGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mgLangBtn{
+  border:1px solid var(--line);background:var(--panel);border-radius:14px;
+  padding:16px 12px;cursor:pointer;font-size:16px;font-weight:800;color:#fff;
+  touch-action:manipulation;transition:transform .1s,border-color .12s,background .12s;
+}
+.mgLangBtn:hover{border-color:#7fb6d8;background:#111820}
+.mgLangBtn:active{transform:scale(.98)}
+#mgLangBack{margin-top:14px}
 .mgNote{margin-top:20px;color:#6f6f6f;font-size:11px;line-height:1.8}
 
 /* ------------------------------------------------- 9b) スタート画面 */
@@ -873,6 +903,17 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 .sgMode.on{background:#f2f2f2;color:#000;cursor:default}
 .kidsMode .sgMode.on{background:var(--k-green);color:#08210a}
 .sgModeNote{margin-top:6px;font-size:11px;font-weight:600;color:#6f6f6f;line-height:1.7}
+/* 言語えらび。ホームと⚙メニューの両方に同じものを置く */
+.sgLangRow{margin-top:10px}
+.langSelect{
+  background:#0a0a0a;color:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:7px 12px;font-size:13px;font-weight:800;cursor:pointer;
+}
+.langSelect:hover{border-color:#8a8a8a}
+.sgLangNote{margin-top:8px;font-size:11px;font-weight:600;color:#7fb6d8;line-height:1.7}
+.sgLangNote[hidden]{display:none}
+.menuLang{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 2px 0}
+.menuLang label{font-size:13px;font-weight:800;color:var(--muted)}
 .kidsMode .sgMode{font-size:14px}
 .kidsMode .sgModeNote{font-size:12px}
 .sgNote{margin-top:12px;font-size:12px;font-weight:700;color:var(--gold);line-height:1.7}
@@ -977,14 +1018,21 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 .stageStop.on .stopDot b{color:#fff}
 .stageStop.locked .stopDot{border-style:dashed;opacity:.5}
 .stageStop.locked .stopDepth,.stageStop.locked small{opacity:.62}
-.stageStop.here .stopText{padding-right:40px}
+.stageStop.here .stopText{padding-right:56px}
+/* 潜っている人は、氷山のすぐ横に置く。帯の右端に貼り付けると、
+   広い画面では氷山から遠く離れて、誰がどこにいるのか分からなくなる。 */
 .stopChar{
-  position:absolute;right:8px;top:50%;width:32px;height:auto;z-index:3;
-  transform:translateY(-50%);pointer-events:none;
+  position:absolute;left:calc(50% + 118px);top:50%;width:44px;height:auto;z-index:3;
+  transform:translate(-50%,-50%);pointer-events:none;
   animation:stopFloat 2.6s ease-in-out infinite;
-  filter:drop-shadow(0 2px 5px rgba(0,0,0,.8));
+  /* 水の中の小さな白い絵は輪郭が溶ける。黒で縁を締め、青い光で浮かせる */
+  filter:drop-shadow(0 0 2px rgba(0,0,0,.95)) drop-shadow(0 3px 7px rgba(0,0,0,.85))
+         drop-shadow(0 0 14px rgba(140,225,255,.6));
 }
-@keyframes stopFloat{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 5px))}}
+@keyframes stopFloat{
+  0%,100%{transform:translate(-50%,-50%)}
+  50%{transform:translate(-50%,calc(-50% - 5px))}
+}
 .stageGoal{padding:6px 10px 8px 100px;color:rgba(255,255,255,.5)}
 .stageGoal small{font-size:11px;font-weight:700;letter-spacing:.04em}
 @media (max-height:700px){.stageStrip{max-height:148px}}

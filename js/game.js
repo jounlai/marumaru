@@ -61,6 +61,42 @@ const MODE_KEY = "maruanagame-mode";
 let mode = null;
 try { const m = localStorage.getItem(MODE_KEY); if (m === "kids" || m === "adult") mode = m; } catch (e) {}
 
+/* 画面の言語。遊びそのものは日本語のかなを当てるものなので、お題と語釈は
+   日本語のまま。訳すのは操作に必要な文字だけ（js/i18n.js を参照）。 */
+const LANG_KEY = "maruanagame-lang";
+let lang = "ja";
+try {
+  const l = localStorage.getItem(LANG_KEY);
+  if (l && STRINGS[l]) lang = l;
+} catch (e) {}
+// 鍵を引く。日本語のこども版だけ言い換えを持ち、他の言語は1つの文言で足りる
+function t(key, vars){
+  let v;
+  if (lang === "ja") v = (mode === "kids" && STRINGS.jaKids[key] !== undefined)
+    ? STRINGS.jaKids[key] : STRINGS.ja[key];
+  else v = STRINGS[lang][key];
+  if (v === undefined) v = STRINGS.ja[key];
+  if (v === undefined) return key;
+  if (vars) for (const k in vars) v = v.split("{" + k + "}").join(vars[k]);
+  return v;
+}
+function setLang(l){
+  if (!STRINGS[l] || l === lang) return;
+  try { localStorage.setItem(LANG_KEY, l); } catch (e) {}
+  location.reload();
+}
+// 画面に直接書いてある文字を、選んだ言語で置き換える
+function applyStaticText(){
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const v = t(el.dataset.i18nTitle);
+    el.title = v;
+    if (el.hasAttribute("aria-label")) el.setAttribute("aria-label", v);
+  });
+  document.documentElement.lang = lang;
+}
+
 // こども版で外すのは、子供に見せたくない語だけにする。難しい語も正解のまま
 // 残す。正解を減らすと「押しても当たらない」ことが増えて、★ばかり減るため。
 function applyMode(){
@@ -138,7 +174,8 @@ const STAGE_LAYERS = [
 const KEEL_INDEX = 8;
 function stageName(si){
   const n = STAGE_LAYERS[si];
-  if (!n) return `ステージ ${si + 1}`;
+  if (!n) return t("stage_n", {n: si + 1});
+  if (lang !== "ja") return (LAYER_I18N[lang] || [])[si] || n[0];
   return mode === "kids" ? n[1] : n[0];
 }
 // 層の深さ（m）。用意した層より先へ伸びたときは、同じ調子で下へ延ばす
@@ -383,9 +420,9 @@ function groupClearedCount(g){ return roundStates.filter((s, i) => s.cleared && 
 function perfectCount(){ return roundStates.filter(s => s.perfect).length; }
 function isFever(){ return combo >= FEVER_AT; }
 function rankName(){
-  let name = RANKS[0][1];
-  for (const [need, label] of RANKS) if (score >= need) name = label;
-  return name;
+  let i = 0;
+  RANKS.forEach(([need], n) => { if (score >= need) i = n; });
+  return lang === "ja" ? RANKS[i][1] : (RANK_I18N[lang] || [])[i] || RANKS[i][1];
 }
 function roundExhaustedAll(){ return state().discovered.size >= current().answers.length; }
 function roundLocked(){ return state().gaveUp || roundExhaustedAll() || stars <= 0; }
@@ -395,6 +432,25 @@ function pressableKanas(round = current()){
 }
 // 押せる仮名を使い切ってしまい、もう手が無い状態か
 function roundExhausted(){ return pressableKanas().every(k => state().used.has(k)); }
+/* 語釈。訳が用意できている語だけ差し替え、無ければ日本語のまま出す。
+   3,660語すべてを4言語に訳すのは一度には終わらないので、少しずつ増やせる
+   作りにしてある（js/meanings-i18n.js）。 */
+function meaningOf(a){
+  if (lang === "ja") return a.meaning;
+  const m = typeof MEANINGS_I18N !== "undefined" ? MEANINGS_I18N[lang] : null;
+  return (m && m[a.word]) || a.meaning;
+}
+function hasTranslatedMeaning(a){
+  if (lang === "ja") return true;
+  const m = typeof MEANINGS_I18N !== "undefined" ? MEANINGS_I18N[lang] : null;
+  return !!(m && m[a.word]);
+}
+// まだ訳の無い語には、辞書を引く道をそえる。日本語のまま放り出さないため
+function lookupUrl(a){
+  const w = encodeURIComponent(a.display ? String(a.display).split("/")[0] : a.word);
+  return lang === "en" ? `https://jisho.org/search/${w}`
+    : `https://translate.google.com/?sl=ja&tl=${lang}&text=${w}&op=translate`;
+}
 function esc(v){
   return String(v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 }
@@ -402,9 +458,9 @@ function num(n){ return n.toLocaleString("ja-JP"); }
 
 function difficultyLabel(idx){
   const g = groupOf(idx);
-  if (g === "special") return "SPECIAL — 連濁トラップ";
-  if (g === "word") return `WORD — ふつうの${[...ROUND_DATA[idx].template].length}文字ことば`;
-  return "同じかなを全部の穴に";
+  if (g === "special") return t("diff_special");
+  if (g === "word") return t("diff_word", {n: [...ROUND_DATA[idx].template].length});
+  return t("diff_main");
 }
 function roundName(i = roundIndex){
   const g = groupOf(i);
@@ -551,7 +607,7 @@ function renderFound(){
   list.innerHTML = ordered.map(a => `
     <div class="foundRow${a.word === lastFoundWord ? " isNew" : ""}">
       <div class="word">${esc(answerDisplay(a))}${a.display && a.display !== a.word ? `<span class="reading">${esc(a.word)}</span>` : ""}</div>
-      <div class="meaning">${esc(a.meaning)}</div>
+      <div class="meaning">${esc(meaningOf(a))}</div>
     </div>`).join("");
   chips.innerHTML = ordered.map(a =>
     `<button class="chip${a.word === lastFoundWord ? " isNew" : ""}" data-word="${esc(a.word)}">${esc(answerDisplay(a))}</button>`).join("");
@@ -567,12 +623,12 @@ function renderProgress(){
   bar.classList.toggle("done", state().cleared);
   bar.classList.toggle("reach", !state().cleared && got === target - 1);
   updateMascot();
-  $("#foundCount").innerHTML = `<b>${got}</b> / ${total} 発見`;
+  $("#foundCount").innerHTML = t("found_count", {got, total});
   const left = target - got;
   $("#toClear").innerHTML = state().perfect ? '<span class="reachText">PERFECT</span>'
-    : state().cleared ? `残り ${total - got} 語で PERFECT`
-    : left === 1 ? '<span class="reachText">あと1語でクリア！</span>'
-    : `クリアまであと ${left} 語`;
+    : state().cleared ? t("to_perfect", {n: total - got})
+    : left === 1 ? `<span class="reachText">${t("to_clear_1")}</span>`
+    : t("to_clear", {n: left});
 }
 
 function renderCombo(){
@@ -599,7 +655,7 @@ function renderDoneBar(){
   if (dead) {
     msg.innerHTML = kids ? "<b>★が なくなった</b>" : "<b>★が尽きました</b> — ★5で再開できます。見つけたことばは消えません。";
   } else if (exhausted) {
-    msg.innerHTML = kids ? `<b>おしまい</b> ${s.discovered.size} / ${total} 語` : `<b>押せるかなが尽きました</b> — ${s.discovered.size} / ${total} 語。やり直すか、一覧へ戻ってください。`;
+    msg.innerHTML = t("msg_exhausted", {got: s.discovered.size, total});
   } else if (s.perfect) {
     msg.innerHTML = kids ? `<b>PERFECT</b> ${total}語` : `<b>PERFECT</b> — 全${total}語を発見しました。`;
   } else if (roundExhaustedAll()) {
@@ -607,7 +663,7 @@ function renderDoneBar(){
   } else if (s.great) {
     msg.innerHTML = kids ? `<b>GREAT</b> のこり ${total - s.discovered.size} 語` : `<b>GREAT</b> — 残り ${total - s.discovered.size} 語。${canPerfect() ? "続ければ <b>PERFECT（★+2）</b>。" : ""}`;
   } else if (s.gaveUp) {
-    msg.innerHTML = kids ? "<b>こうさん</b>したよ" : "<b>降参したラウンド</b>です。かなは押せません — やり直すか、一覧へ戻ってください。";
+    msg.innerHTML = t("msg_gaveup");
   } else {
     const toGreat = Math.max(0, greatTarget() - s.discovered.size);
     msg.innerHTML = kids
@@ -623,6 +679,7 @@ function renderDoneBar(){
 
 function render(){
   $("#stageChip").textContent = `${currentStage() + 1}　${stageName(currentStage())}`;
+  $("#rankLabel").textContent = rankName();
   $("#roundLabel").textContent = roundName();
   $("#roundLabel").classList.toggle("special", isSpecial());
   $("#difficulty").textContent = difficultyLabel(roundIndex);
@@ -704,7 +761,7 @@ function flashAnswer(a, note){
   flashEl.innerHTML =
     `<span class="fw">${esc(answerDisplay(a))}</span>${reading}` +
     (note ? `<span class="fn">${esc(note)}</span>` : "") +
-    `<span class="fm">${esc(a.meaning)}</span>`;
+    `<span class="fm">${esc(meaningOf(a))}</span>`;
 }
 
 /* ------------------------------------------------------------- 5) 演出 */
@@ -967,18 +1024,16 @@ function roundActions(){
     ]);
     const brag = `${puzzleLines()}\n\n答えは${n}語ありました。ぜんぶ見つけた。\n` +
       `${closing}\n#〇〇ことば`;
-    acts.push({label: mode === "kids" ? "X で しらせる" : "X で共有する", keepOpen: true,
+    acts.push({label: t("share_x"), keepOpen: true,
       run: () => window.open(xIntent(brag), "_blank", "noopener")});
   }
   const more = !roundLocked() && s.discovered.size < current().answers.length;
   if (more) {
     const goal = !s.great ? "GREAT" : (canPerfect() ? "PERFECT" : "");
-    acts.push({label: mode === "kids"
-      ? (goal ? `つづける（${goal} を ねらう）` : "つづける")
-      : (goal ? `続ける（${goal} を狙う）` : "このラウンドを続ける")});
+    acts.push({label: goal ? t("continue_goal", {goal}) : t("continue_plain")});
   }
   // ここで一区切り。残りの数は戻った先の一覧に出るので、ボタンは短くする
-  acts.push({label: mode === "kids" ? "おわる" : "終わる", primary: true, run: nextRound});
+  acts.push({label: t("finish"), primary: true, run: nextRound});
   return acts;
 }
 function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, actions, ms = 900}){
@@ -1244,7 +1299,8 @@ function guess(kana){
     const willTop = canPerfect() ? st0.discovered.size >= total : st0.discovered.size >= greatTarget();
     if (!st0.cleared && st0.discovered.size >= clearTarget()) finishRound(willTop);
     else if (!willTop && !(!st0.great && st0.discovered.size >= greatTarget())) showBurst({
-      mark: mode === "kids" ? (combo >= 2 ? `${combo} れんぞく！` : "せいかい！")
+      mark: mode === "kids" || lang !== "ja"
+        ? (combo >= 2 ? t("combo_n", {n: combo}) : t("correct"))
                             : (combo >= 2 ? `COMBO ×${combo}` : "CORRECT"),
       word: answerDisplay(a),
       sub: (a.display && a.display !== a.word) ? a.word : "",
@@ -1311,7 +1367,8 @@ function finishRound(silent){
     mascotSay("ゴール！", "gold", 2000);
     confetti(34, colors, 2200);
     setTimeout(() => {
-      showBurst({mark: roundName(), word: "ROUND CLEAR", sub: `${s.discovered.size} / ${current().answers.length} 語発見`,
+      showBurst({mark: roundName(), word: "ROUND CLEAR",
+      sub: t("words_found", {got: s.discovered.size, total: current().answers.length}),
         bonus, dim: true, long: true, char: "pose", actions: roundActions(), ms: 1600});
       particles(null, 36, colors);
     }, 320);
@@ -1337,7 +1394,8 @@ function greatRound(){
   setTimeout(() => document.body.classList.remove("celebrate"), 1200);
   confetti(85, colors, 3000);
   setTimeout(() => {
-    showBurst({mark: roundName(), word: "GREAT!!", sub: `${s.discovered.size} / ${current().answers.length} 語発見`,
+    showBurst({mark: roundName(), word: "GREAT!!",
+      sub: t("words_found", {got: s.discovered.size, total: current().answers.length}),
       bonus, dim: true, gold: true, long: true, char: "pose", actions: roundActions(), ms: 1900});
     particles(null, 54, colors);
     setTimeout(() => particles(null, 34, colors), 360);
@@ -1365,7 +1423,8 @@ function perfectRound(){
   confetti(140, colors, 3800);
   const corner = (x, y) => ({getBoundingClientRect: () => ({left: x, top: y, width: 0, height: 0})});
   setTimeout(() => {
-    showBurst({mark: roundName(), word: "PERFECT!!", sub: `全 ${current().answers.length} 語を発見`,
+    showBurst({mark: roundName(), word: "PERFECT!!",
+      sub: t("words_found_all", {total: current().answers.length}),
       bonus, dim: true, gold: true, long: true, char: "pose", actions: roundActions(), ms: 2200});
     particles(null, 70, colors);
     setTimeout(() => particles(corner(innerWidth * .2, innerHeight * .6), 40, colors), 260);
@@ -1376,14 +1435,14 @@ function perfectRound(){
 }
 
 function useHint(){
-  if (roundLocked()) { flash("info", "このラウンドはもう終わっています。"); return; }
+  if (roundLocked()) { flash("info", t("msg_round_over")); return; }
   const pool = current().answers.filter(a => {
     if (state().discovered.has(a.word)) return false;
     const k = kanaForWord(a.word);
     return k && !state().used.has(k);
   });
-  if (!pool.length) { flash("info", "もうヒントの出しようがありません。"); return; }
-  if (score < HINT_COST()) { flash("bad", `ヒントには ${HINT_COST()} スコア必要です（現在 ${num(score)}）。`); return; }
+  if (!pool.length) { flash("info", t("msg_no_hint")); return; }
+  if (score < HINT_COST()) { flash("bad", t("msg_need_score", {cost: HINT_COST(), score: num(score)})); return; }
 
   score -= HINT_COST();
   const a = pick(pool);
@@ -1395,7 +1454,7 @@ function useHint(){
     setTimeout(() => btn.classList.remove("hintGlow"), mode === "kids" ? 6000 : 5000);
   }
   sfxHint();
-  flash("info", mode === "kids" ? `ヒント　${a.meaning}` : `ヒント：${a.meaning}`);
+  flash("info", t("msg_hint", {meaning: meaningOf(a)}));
   saveProgress();
   renderScore();
   closeModals();
@@ -1418,7 +1477,7 @@ function retryRound(){
   closeModals();
   render();
   requestAnimationFrame(() => mascotEl.classList.remove("noAnim"));
-  flash("info", s.rewarded ? "このラウンドをやり直します（★ボーナスは取得済み）。" : "このラウンドを最初からやり直します。");
+  flash("info", s.rewarded ? t("msg_retry_done") : t("msg_retry"));
 }
 
 function giveUp(){
@@ -1427,7 +1486,7 @@ function giveUp(){
   combo = 0;
   current().answers.forEach(a => state().found.add(a.word));
   inputKanasForRound().forEach(k => state().used.add(k));
-  flash("info", "全回答を公開しました。★ボーナスはありません。");
+  flash("info", t("msg_revealed"));
   saveProgress();
   render();
   openAnswers();
@@ -1463,17 +1522,15 @@ function finishStage(si){
   const more = STAGES[si].some(i => roundStates[i].discovered.size < ROUND_DATA[i].answers.length);
   const perfectCountHere = STAGES[si].filter(i => roundStates[i].perfect).length;
   const acts = [];
-  if (more) acts.push({label: mode === "kids"
-    ? "このステージを つづける" : "このステージを続ける（PERFECT を狙う）", run: stayInStage});
-  if (si < STAGES.length - 1) acts.push({label: mode === "kids"
-    ? `もっと ふかく「${stageName(si + 1)}」へ ↓`
-    : `もっと深く「${stageName(si + 1)}」${depthText(si + 1)} へ ↓`,
+  if (more) acts.push({label: t("continue_goal", {goal: "PERFECT"}), run: stayInStage});
+  if (si < STAGES.length - 1) acts.push({
+    label: t("dive_next", {name: stageName(si + 1), depth: depthText(si + 1)}),
     primary: true, run: goNextStage});
-  if (!acts.length) acts.push({label: mode === "kids" ? "いちらんを 見る" : "ステージ一覧を見る", primary: true, run: stayInStage});
+  if (!acts.length) acts.push({label: t("see_list"), primary: true, run: stayInStage});
 
   showBurst({mark: `${stageName(si)}　${depthText(si)}`, word: "STAGE CLEAR",
-    sub: `${STAGES[si].length}問すべてクリア　・　PERFECT ${perfectCountHere} / ${STAGES[si].length}`,
-    bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, char: "good",
+    sub: t("stage_clear_sub", {n: STAGES[si].length, p: perfectCountHere}),
+    bonus: t("stars_restored"), dim: true, gold: true, long: true, char: "good",
     actions: acts, ms: 2000});
 
   confetti(110, colors, 3400);
@@ -1514,7 +1571,7 @@ function travelTo(from, to){
   $("#tvTo").textContent = stageName(to);
   $("#tvToName").textContent = stageName(to);
   $("#tvToNo").textContent = to + 1;
-  $("#tvNote").textContent = mode === "kids" ? "もぐって います…" : "もぐっています…";
+  $("#tvNote").textContent = t("travel_note");
   $("#tvDepth").textContent = depthText(from);
 
   // 先の層の1問目を選んでおく（一覧を閉じたらそこから遊べる）
@@ -1609,7 +1666,7 @@ function gameOver(){
   if (stars > 0) return;
   const found = totalCorrectCount();
   if (mode === "kids") {
-    $("#gameoverTitle").textContent = "★がなくなった！";
+    $("#gameoverTitle").textContent = t("go_title");
     $("#gameoverText").innerHTML =
       `でも、見つけた <b>${found}</b> こ の ことばは きえないよ。<br>★5こ で もういちど やってみよう！`;
   } else {
@@ -1640,7 +1697,7 @@ function revive(){
   closeModals({force: true});
   saveProgress();
   render();
-  flash("info", "★5で再開します。見つけたことばはそのままです。");
+  flash("info", t("msg_revived"));
 }
 function resetAll(skipConfirm){
   if (!skipConfirm && !confirm("★・スコア・発見語・クリア履歴をすべて消去しますか？")) return;
@@ -1766,8 +1823,7 @@ function openRoundList(opts){
       <span class="stopDot"><b>${face}</b></span>
       <span class="stopText"><small>${foot}</small><em class="stopClear">CLEAR</em></span>
     </button>`;
-  }).join("") + `<div class="stageGoal"><small>${
-    mode === "kids" ? "まだ そこは 見えない" : "底はまだ見えない"}</small></div>`;
+  }).join("") + `<div class="stageGoal"><small>${t("goal_bottom")}</small></div>`;
 
   const rounds = STAGES[viewStage];
   const locked = !stageUnlocked(viewStage);
@@ -1794,7 +1850,7 @@ function openRoundList(opts){
         : st.great ? '<span class="rcMark done great">★</span>'
         : st.cleared ? '<span class="rcMark done">★</span>'
         : st.gaveUp ? '<span class="rcMark">…</span>'
-        : `<span class="rcMark">${n + 1}</span>`;
+        : `<span class="rcMark">${n + 1}</span>`;   // 数字は訳さない
       return `<button class="roundChoice kid ${cls}" data-round="${i}"${stampAttr} ${locked ? "disabled" : ""}>
         ${mark}
         <div class="rcPattern">${templateHTML(r.template)}</div>
@@ -1804,13 +1860,13 @@ function openRoundList(opts){
 
     const badge = st.perfect ? '<span class="badge gold">PERFECT</span>'
       : st.great ? '<span class="badge greatBadge">GREAT</span>'
-      : st.cleared ? '<span class="badge">✓ クリア</span>'
-      : st.gaveUp ? '<span class="badge">降参</span>'
+      : st.cleared ? `<span class="badge">${t("badge_clear")}</span>`
+      : st.gaveUp ? `<span class="badge">${t("badge_gaveup")}</span>`
       : `<span class="badge">${st.discovered.size}/${target}</span>`;
     return `<button class="roundChoice ${cls}" data-round="${i}"${stampAttr} ${locked ? "disabled" : ""}>
       <div class="rcTop"><span>${roundName(i)}</span>${badge}</div>
       <div class="rcPattern">${templateHTML(r.template)}</div>
-      <div class="rcMeta">全${total}語</div>
+      <div class="rcMeta">${t("list_words", {n: total})}</div>
       <div class="rcBar"><i style="width:${pct}%"></i></div>
     </button>`;
   }).join("");
@@ -1818,29 +1874,23 @@ function openRoundList(opts){
   const head = locked
     ? `<div class="lockNote">
          <span class="lockMark" aria-hidden="true"></span>
-         <b>${mode === "kids" ? "ここには まだ もぐれないよ" : "この層にはまだ潜れません"}</b>
-         <small>${mode === "kids"
-           ? `ひとつ うえの「${stageName(viewStage - 1)}」を ぜんぶ クリアすると、ここまで もぐれる！<br>どんな もんだいか だけ 見てね。`
-           : `ひとつ上の層「${stageName(viewStage - 1)}」${depthText(viewStage - 1)} をぜんぶクリアすると、ここまで潜れます。<br>どんな問題かはここで見られます。`}</small>
+         <b>${t("lock_title")}</b>
+         <small>${t("lock_note", {name: stageName(viewStage - 1), depth: depthText(viewStage - 1)})}</small>
        </div>`
     // 長い説明は、その層に初めて来たときだけ。クリアのたびに
     // ここへ戻ってくるので、毎回読ませると邪魔になる。
     : mode === "kids" || restCount < rounds.length
       ? ""
-      : `<div class="stageNote">この ${rounds.length} 問をぜんぶクリアすると、ひとつ下の層へ潜れます。
-        深いほど正解の数が減り、見慣れないことばになります。★は層を越えるたびに満タンに戻ります。</div>`;
+      : `<div class="stageNote">${t("stage_note", {n: rounds.length})}</div>`;
 
   $("#stageStrip").innerHTML =
     `<div class="stripInner" style="--water:${seaLevelRatio()}%;--keel:${keelRatio()}%">${strip}</div>`;
-  $("#stageTitle").textContent = mode === "kids"
-    ? `${stageName(viewStage)}　ふかさ ${depthText(viewStage)}`
-    // 数は下の「のこり N 問」に出るので、題は短く保つ（狭い画面で折り返すため）
-    : `ステージ ${viewStage + 1}　${stageName(viewStage)}　${depthText(viewStage)}`;
+  // 数は下の「のこり N 問」に出るので、題は短く保つ（狭い画面で折り返すため）
+  $("#stageTitle").textContent =
+    `${t("stage_n", {n: viewStage + 1})}　${stageName(viewStage)}　${depthText(viewStage)}`;
   // この層にあと何問あるか。一覧へ戻ってくるたび、ここが目当てになる
   const progress = locked ? "" : `<div class="stageProgress">
-      <b>${restCount
-        ? (mode === "kids" ? `のこり ${restCount}もん` : `のこり ${restCount} 問`)
-        : (mode === "kids" ? "ぜんぶ クリア！" : "この層はぜんぶクリア")}</b>
+      <b>${restCount ? t("list_remaining", {n: restCount}) : t("list_allclear")}</b>
       <span>${rounds.length - restCount} / ${rounds.length}</span>
     </div>`;
   $("#roundList").innerHTML = progress + head + list;
@@ -1871,14 +1921,17 @@ function sfxStamp(){
 
 function openAnswers(){
   const total = current().answers.length;
-  $("#answerTitle").textContent = `${roundName()} の正解一覧`;
-  $("#answerSub").textContent = `全${total}語中 ${state().discovered.size}語を発見。赤字は見逃したことば。`;
+  $("#answerTitle").textContent = t("answers_title", {round: roundName()});
+  $("#answerSub").textContent = t("answers_sub", {total, got: state().discovered.size});
   $("#answerList").innerHTML = current().answers.map(a => {
     const missed = !state().discovered.has(a.word);
     const reading = a.display && a.display !== a.word ? `<span class="reading">${esc(a.word)}</span>` : "";
+    // 訳がまだ無い語は、日本語の語釈のまま辞書への道をそえる
+    const look = hasTranslatedMeaning(a) ? ""
+      : ` <a class="lookup" href="${lookupUrl(a)}" target="_blank" rel="noopener">↗</a>`;
     return `<div class="answerRow${missed ? " missed" : ""}">
       <div class="word">${esc(answerDisplay(a))}${reading}</div>
-      <div class="meaning">${esc(a.meaning)}</div>
+      <div class="meaning">${esc(meaningOf(a))}${look}</div>
     </div>`;
   }).join("");
   openModal("#answerModal");
@@ -1890,8 +1943,8 @@ function openMenu(){
   $("#mFound").textContent = num(totalCorrectCount());
   $("#mCleared").textContent =
     `${groupClearedCount("main")}/${groupCount("main")}・${groupClearedCount("special")}/${groupCount("special")}・${groupClearedCount("word")}/${groupCount("word")}`;
-  $("#menuRank").textContent = `${rankName()} ・ PERFECT ${perfectCount()} ラウンド`;
-  $("#soundBtn").textContent = soundOn ? "♪ 効果音 ON" : "♪ 効果音 OFF";
+  $("#menuRank").textContent = t("menu_rank", {rank: rankName(), n: perfectCount()});
+  $("#soundBtn").textContent = t(soundOn ? "sound_on" : "sound_off");
   openModal("#menuModal");
 }
 
@@ -1914,7 +1967,7 @@ $("#reviveBtn").addEventListener("click", revive);
 $("#gAnswerBtn").addEventListener("click", openAnswers);
 $("#soundBtn").addEventListener("click", () => {
   soundOn = !soundOn;
-  $("#soundBtn").textContent = soundOn ? "♪ 効果音 ON" : "♪ 効果音 OFF";
+  $("#soundBtn").textContent = t(soundOn ? "sound_on" : "sound_off");
   if (soundOn) { unlockAudio(); resumeAudio(); sfxHint(); }
   else if (silentEl) silentEl.pause();   // OFF のあいだは無音ループも止める
   saveProgress();
@@ -1961,9 +2014,7 @@ function showStart(notice){
   const sum = progressSummary();
   const fresh = sum.found === 0;
 
-  $("#sgLead").innerHTML = kids
-    ? "〇に ひらがなを 1つ 入れて、ことばに する あそび。<br>ぜんぶの 〇 に <b>おなじ ひらがな</b>を 入れてね。"
-    : "〇 に かなを1つ入れて、ことばにする遊び。<br><b>すべての〇に同じ仮名</b>を入れる（〇ん〇ん → かんかん）。";
+  $("#sgLead").innerHTML = t("home_lead");
 
   // 氷山そのものを小さく描き、そのどこにいるかを点で示す。
   // 「深いほど数が減る」という前提は、文字より絵のほうが早い。
@@ -1973,35 +2024,36 @@ function showStart(notice){
     berg.style.setProperty("--keel", keelRatio() + "%");
     berg.style.setProperty("--you", (si + 0.5) / STAGES.length * 100 + "%");
   }
-  $("#sgConcept").textContent = kids
-    ? "うえは みんなが しってる ことば。ふかいほど かずが へって、むずかしくなるよ。"
-    : "上は誰でも知っていることば。深いほど数が減り、見慣れなくなる。";
+  $("#sgConcept").textContent = t("home_concept");
 
   // いまいる層を、深さとキャラクターの姿で見せる
   $("#sgChar").src = diverImg(si);
-  $("#sgWhereLabel").textContent = fresh
-    ? (kids ? "ここから もぐる" : "ここから潜る")
-    : (kids ? "いま いる ふかさ" : "いまいる層");
+  $("#sgWhereLabel").textContent = t(fresh ? "home_here_fresh" : "home_here");
   $("#sgLayer").textContent = stageName(si);
   $("#sgDepth").textContent = depthText(si);
 
   const stats = $("#sgStats");
   stats.hidden = fresh;
-  stats.innerHTML = fresh ? "" : (kids
-    ? `みつけた ことば <b>${comma(sum.found)}</b>`
-    : `見つけたことば <b>${comma(sum.found)}</b> / ${comma(sum.total)}　・　クリアした層 <b>${sum.cleared}</b> / ${STAGES.length}`);
+  stats.innerHTML = fresh ? "" : t("home_stats", {
+    found: comma(sum.found), total: comma(sum.total),
+    cleared: sum.cleared, stages: STAGES.length});
 
-  $("#sgStartLabel").textContent = fresh ? "はじめる" : (kids ? "つづきから" : "つづきから");
+  $("#sgStartLabel").textContent = t(fresh ? "home_start" : "home_continue");
   $("#sgStartSub").textContent = `${roundName()}　${templateText(current().template)}`;
-  $("#sgListBtn").textContent = kids ? "ばしょを えらぶ" : "層をえらぶ";
-  $("#sgMenuBtn").textContent = kids ? "あそびかた" : "あそびかた・設定";
+  $("#sgListBtn").textContent = t("home_list");
+  $("#sgMenuBtn").textContent = t("home_menu");
 
   // モードはここでも選べるようにする。⚙メニューの中だけだと見つからない
   $("#sgModes").querySelectorAll(".sgMode").forEach(b =>
     b.classList.toggle("on", b.dataset.mode === mode));
-  $("#sgModeNote").textContent = kids
-    ? "きろくは べつべつ。もどれば つづきから あそべるよ。"
-    : "記録はモードごとに別々に残ります。戻せば続きから遊べます。";
+  $("#sgModeNote").textContent = t("home_modenote");
+  $("#sgMode-kids").textContent = t("mode_kids");
+  $("#sgMode-adult").textContent = t("mode_adult");
+  // 語釈まで訳すと質を保てないので、日本語のままだと断っておく
+  const ln = $("#sgLangNote");
+  ln.textContent = t("home_langnote");
+  ln.hidden = !ln.textContent;
+  $("#sgLangSel").value = lang;
 
   const note = $("#sgNote");
   note.hidden = !notice;
@@ -2034,30 +2086,50 @@ function chooseMode(m){
 }
 document.querySelectorAll("[data-mode]").forEach(b =>
   b.addEventListener("click", () => chooseMode(b.dataset.mode)));
+
+/* 外国語で遊ぶ人の入り口。入り口の3枚目を押すと、札の並びが言語えらびに
+   入れ替わる。言語を選んだ時点でおとな版として始める（こども版の
+   やさしい言い換えは日本語にしか無いため）。 */
+$("#mgWorldBtn").addEventListener("click", () => {
+  $("#mgBtns").hidden = true;
+  $("#mgLangs").hidden = false;
+});
+$("#mgLangBack").addEventListener("click", () => {
+  $("#mgLangs").hidden = true;
+  $("#mgBtns").hidden = false;
+});
+document.querySelectorAll("[data-lang]").forEach(b =>
+  b.addEventListener("click", () => {
+    try {
+      localStorage.setItem(LANG_KEY, b.dataset.lang);
+      if (!mode) localStorage.setItem(MODE_KEY, "adult");
+    } catch (e) {}
+    location.reload();
+  }));
+document.querySelectorAll(".langSelect").forEach(sel => {
+  sel.value = lang;
+  sel.addEventListener("change", () => setLang(sel.value));
+});
 $("#switchModeBtn").addEventListener("click", () => {
-  const to = mode === "kids" ? "おとな版" : "こども版";
-  if (!confirm(`${to}に切り替えますか？\nそれぞれの記録は別々に残るので、戻せば続きから遊べます。`)) return;
+  const to = t(mode === "kids" ? "mode_adult" : "mode_kids");
+  if (!confirm(t("confirm_switch", {to}))) return;
   chooseMode(mode === "kids" ? "adult" : "kids");
 });
 
 importHandoffSave();
 
+applyStaticText();
 if (!mode) {
   $("#modeGate").hidden = false;
 } else {
   document.documentElement.classList.remove("noMode");
   document.documentElement.classList.toggle("kidsMode", mode === "kids");
-  $("#modeName").textContent = mode === "kids" ? "こども版" : "おとな版";
-  $("#switchModeBtn").textContent = mode === "kids" ? "おとな版に切り替える" : "こども版に切り替える";
-  if (mode === "kids") {
-    ["#hintBtn", "#hintBtnM", "#mHintBtn"].forEach(sel => { const b = $(sel); if (b) b.textContent = "ヒント"; });
-    $("#nextBtn").textContent = "おわる →";
-    $("#retryBtn").textContent = "やりなおす";
-    $("#revealBtn").textContent = "こたえを見る";
-    $("#reviveBtn").textContent = "★5こ で もういちど";
-    $("#reviveBarBtn").textContent = "★5こ で もういちど";
-    $("#gAnswerBtn").textContent = "こたえを見る";
-    $("#gResetBtn").textContent = "はじめから やりなおす";
+  applyStaticText();
+  $("#modeName").textContent = t(mode === "kids" ? "mode_kids" : "mode_adult");
+  $("#switchModeBtn").textContent = t(mode === "kids" ? "to_adult" : "to_kids");
+  // こども版は同じ意味をやさしい言葉で言い直す。ヒントの点数も出さない
+  if (mode === "kids" && lang === "ja") {
+    ["#hintBtn", "#hintBtnM", "#mHintBtn"].forEach(sel => { const b = $(sel); if (b) b.textContent = t("hint_kids"); });
   }
   loadProgress();
 
@@ -2065,7 +2137,7 @@ if (!mode) {
   let bootNotice = "";
   if (stars <= 0) {
     stars = 5;
-    bootNotice = "前回★が尽きていました。★5から再開します。";
+    bootNotice = t("msg_boot_stars");
     saveProgress();
   }
   // 済んだラウンドから始めても押せるかなが無い。手つかずの問題へ寄せて、
