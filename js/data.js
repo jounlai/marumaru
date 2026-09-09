@@ -2223,7 +2223,8 @@ const WORD_ROUNDS = [
       { word: "ぶんばい", display: "分売", meaning: "ひとそろいの物を分けて売ること。" },
       { word: "よんばい", display: "四倍", meaning: "四つ分の量。" },
       { word: "なんばい", display: "何倍", meaning: "いくつ分か。「何倍にもふくらむ」。" },
-      { word: "むんばい", display: "ムンバイ", meaning: "インド最大の都市。旧称ボンベイ。" }
+      { word: "むんばい", display: "ムンバイ", meaning: "インド最大の都市。旧称ボンベイ。" },
+      { word: "けんばい", display: "券売", meaning: "切符や食券を売ること。「券売機」。" }
     ]
   },
   {
