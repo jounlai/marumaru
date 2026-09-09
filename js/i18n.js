@@ -13,9 +13,13 @@
 "use strict";
 
 const LANGS = [
-  ["ja", "日本語"], ["en", "English"], ["zh", "中文"],
+  ["ja", "日本語"], ["en", "English"], ["zh", "简体中文"], ["zhTW", "繁體中文"],
   ["vi", "Tiếng Việt"], ["ko", "한국어"]
 ];
+/* 訳が無い鍵の落とし先。繁体字は簡体字へ落とす（日本語へ落とすより読める）。 */
+const LANG_FALLBACK = { zhTW: "zh" };
+/* html の lang 属性。中国語は簡繁を書き分ける */
+const HTML_LANG = { zh: "zh-Hans", zhTW: "zh-Hant" };
 
 const STRINGS = {
 ja: {
@@ -303,6 +307,90 @@ zh: {
   rules_side_html: "起始 <b>★5</b>。每答错一次 <b class=\"key\">★−1</b>，归零即结束。<br>找到 <b>60%</b> 通关并 <b class=\"key\">★+1</b>，<b>80%</b> 为 <b class=\"key\">GREAT（★+1）</b>，<br>全部找到为 <b class=\"key\">PERFECT（★+2）</b>。答案少于 10 个的关卡最高到 GREAT。<br>连续答对形成<b class=\"key\">连击</b>，5 连触发 <b class=\"key\">FEVER（双倍分数）</b>。"
 },
 
+/* 繁体字（台湾）。語彙も台湾の言い方に寄せる（菜单→選單、记录→紀錄、
+   设置→設定）。ここに無い鍵は zh（簡体字）に落ちる。 */
+zhTW: {
+  gate_lead: "選擇版本",
+  gate_kids: "兒童版", gate_kids_sub: "小學至國中<br>只用簡單詞・大字體",
+  gate_adult: "成人版", gate_adult_sub: "全部詞彙<br>有分數與連擊",
+  gate_world: "For learners", gate_world_sub: "English · 中文<br>Tiếng Việt · 한국어",
+  gate_note: "之後可隨時在 ⚙ 選單中更改。<br>各版本的紀錄分開保存。",
+  gate_lang_lead: "請選擇語言",
+  gate_back: "← 返回",
+  home_lead: "在 〇 裡填入<b>一個假名</b>，湊成一個真詞。<br>所有 〇 都填<b>同一個假名</b>（〇ん〇ん → かんかん）。",
+  home_tag: "詞語冰山",
+  home_concept: "水面之上是人人皆知的詞。越往深處，詞越少，也越陌生。",
+  home_here: "目前層", home_here_fresh: "從這裡下潛",
+  home_start: "開始", home_continue: "繼續上次",
+  home_list: "選擇層", home_menu: "玩法與設定",
+  home_stats: "已找到 <b>{found}</b> / {total}　·　已通關層 <b>{cleared}</b> / {stages}",
+  home_modenote: "各版本的紀錄分開保存，切換回來即可繼續。",
+  home_langnote: "題目和詞義均為日語，只有介面是中文。",
+  nav_list: "☰ 層", nav_menu: "選單", nav_home: "回首頁", back_home: "← 首頁",
+  close: "關閉",
+  stage_n: "第 {n} 層",
+  rank_label: "等級",
+  found_title: "已找到的詞",
+  found_count: "<b>{got}</b> / {total} 已找到",
+  to_clear: "再找 {n} 個即可通關",
+  to_clear_1: "再找 1 個就通關！",
+  to_perfect: "再找 {n} 個即可 PERFECT",
+  goal_clear: "通關",
+  hint: "提示 −300", hint_kids: "提示", hint_menu: "提示（−300 分）",
+  giveup: "放棄", giveup_full: "放棄並看答案",
+  retry: "重來", retry_menu: "重玩這一關",
+  reveal: "看答案", revive: "★5 重新開始", revive_full: "★5 重新開始（紀錄保留）",
+  finish: "結束", finish_arrow: "結束 →",
+  list_sub: "詞語冰山。水面之上是人人皆知的詞，越深詞越少、也越陌生。",
+  list_remaining: "還剩 {n} 題", list_allclear: "本層已全部通關",
+  list_words: "共 {n} 詞",
+  lock_title: "還不能潛到這一層",
+  lock_note: "先通關上一層「{name}」{depth} 的全部題目，才能潛到這裡。<br>題目現在也可以先看。",
+  stage_note: "通關這 {n} 題即可下潛一層。越深，每題的答案越少、越陌生。每下潛一層，★ 都會補滿。",
+  badge_clear: "✓ 通關", badge_gaveup: "已放棄",
+  goal_bottom: "還看不到底",
+  correct: "答對了！", combo_n: "{n} 連擊！",
+  round_clear: "ROUND CLEAR", words_found: "已找到 {got} / {total}",
+  words_found_all: "全部 {total} 個都找到了",
+  continue_goal: "繼續（衝 {goal}）", continue_plain: "繼續這一關",
+  share_x: "分享到 X",
+  stage_clear_sub: "{n} 題全部通關　·　PERFECT {p} / {n}",
+  stars_restored: "★ 已全部恢復",
+  dive_next: "繼續下潛到「{name}」{depth} ↓",
+  see_list: "查看層清單",
+  travel_note: "下潛中…",
+  msg_round_over: "這一關已經結束了。",
+  msg_no_hint: "沒有可給的提示了。",
+  msg_need_score: "提示需要 {cost} 分（現有 {score}）。",
+  msg_hint: "提示：{meaning}",
+  msg_retry_done: "重玩這一關（★ 獎勵已到手）。",
+  msg_retry: "從頭重玩這一關。",
+  msg_revealed: "已公開全部答案，本關沒有 ★ 獎勵。",
+  msg_revived: "以 ★5 重新開始。已找到的詞會保留。",
+  msg_boot_stars: "上次 ★ 已用完，現在以 ★5 重新開始。",
+  msg_exhausted: "<b>可按的假名用完了</b> — {got} / {total}。重來，或回到清單。",
+  msg_gaveup: "<b>這一關已放棄。</b>重來，或回到清單。",
+  go_title: "★ 用完了！",
+  go_answers: "看這一關的答案", go_reset: "從頭重新開始",
+  menu_title: "選單", menu_score: "SCORE", menu_combo: "MAX COMBO",
+  menu_found: "已找到的詞", menu_cleared: "已通關",
+  menu_rank: "{rank} · PERFECT {n} 關",
+  sound_on: "♪ 音效 ON", sound_off: "♪ 音效 OFF",
+  to_kids: "切換到兒童版", to_adult: "切換到成人版",
+  reset_all: "清除全部紀錄", menu_home: "回到首頁",
+  mode_kids: "兒童版", mode_adult: "成人版",
+  lang_label: "語言",
+  confirm_switch: "要切換到{to}嗎？\n各版本的紀錄分開保存，切換回來還能繼續。",
+  answers_title: "{round} 的答案",
+  answers_sub: "共 {total} 個，你找到了 {got} 個。紅色是沒找到的。",
+  rules_title: "規則",
+  diff_special: "SPECIAL — 連濁陷阱",
+  diff_word: "WORD — 普通的 {n} 字詞",
+  diff_main: "所有 〇 填同一個假名",
+  rules_html: "起始 <b>★5</b>。每答錯一次 <b class=\"key\">★−1</b>，歸零即結束。<br>找到 <b>60%</b> 通關（★+1）→ <b>80%</b> 為 <b class=\"key\">GREAT</b>（★+1）→ 全部找到為 <b class=\"key\">PERFECT</b>（★+2）。<br>連續答對形成連擊，5 連觸發 <b class=\"key\">FEVER（雙倍分數）</b>。<br><b>SPECIAL</b>：只選清音，後半的「〇」會自動變成濁音。<br><b>WORD</b>：只有一個 〇，找的是普通的 3〜4 字詞，不是擬聲詞。",
+  rules_side_html: "起始 <b>★5</b>。每答錯一次 <b class=\"key\">★−1</b>，歸零即結束。<br>找到 <b>60%</b> 通關並 <b class=\"key\">★+1</b>，<b>80%</b> 為 <b class=\"key\">GREAT（★+1）</b>，<br>全部找到為 <b class=\"key\">PERFECT（★+2）</b>。答案少於 10 個的關卡最高到 GREAT。<br>連續答對形成<b class=\"key\">連擊</b>，5 連觸發 <b class=\"key\">FEVER（雙倍分數）</b>。"
+},
+
 vi: {
   gate_lead: "Chọn phiên bản",
   gate_kids: "Cho trẻ em", gate_kids_sub: "6–15 tuổi<br>Từ dễ, chữ to",
@@ -478,6 +566,9 @@ en: ["Iceberg Peak","Sunlit Face","Waterline","Surface","Shallows","Sunlight Zon
 zh: ["冰山之巅","向阳面","浪缘","水面","浅滩","光层","藻场","蓝暗","冰山底","群青","微光带",
   "夜海","无光层","深海","冷壁","寂静","深海平原","泥底","骨层","漆黑","超深渊带","海沟口",
   "裂缝","冷光","遗忘层","海渊","最深处","底之底","未至之地","词语之底"],
+zhTW: ["冰山之巔","向陽面","浪緣","水面","淺灘","光層","藻場","藍暗","冰山底","群青","微光帶",
+  "夜海","無光層","深海","冷壁","寂靜","深海平原","泥底","骨層","漆黑","超深淵帶","海溝口",
+  "裂縫","冷光","遺忘層","海淵","最深處","底之底","未至之地","詞語之底"],
 vi: ["Đỉnh băng","Mặt nắng","Mép sóng","Mặt nước","Vùng nông","Tầng ánh sáng","Bãi rong",
   "Xanh mờ","Đáy băng","Xanh thẫm","Vùng chạng vạng","Biển đêm","Tầng không sáng","Biển sâu",
   "Vách lạnh","Tĩnh lặng","Đồng bằng thẳm","Đáy bùn","Tầng xương","Đen kịt","Vùng siêu sâu",
@@ -494,6 +585,7 @@ const RANK_I18N = {
 en: ["Novice","Word Picker","Word Handler","Apprentice Lexicographer","Word Connoisseur",
   "Vocabulary Adept","Word Master","Vocabulary King","God of 〇〇"],
 zh: ["新手","拾词人","词汇好手","词典学徒","词语行家","词汇高手","词语达人","词汇之王","〇〇之神"],
+zhTW: ["新手","拾詞人","詞彙好手","詞典學徒","詞語行家","詞彙高手","詞語達人","詞彙之王","〇〇之神"],
 vi: ["Tập sự","Người nhặt chữ","Người dùng từ","Học việc từ điển","Người sành chữ",
   "Cao thủ từ vựng","Bậc thầy chữ","Vua từ vựng","Thần 〇〇"],
 ko: ["견습","낱말 줍기","어휘 사용자","사전 견습","말의 감정가","어휘 능수","말의 달인","어휘왕","〇〇의 신"]

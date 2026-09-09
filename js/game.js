@@ -75,6 +75,8 @@ function t(key, vars){
   if (lang === "ja") v = (mode === "kids" && STRINGS.jaKids[key] !== undefined)
     ? STRINGS.jaKids[key] : STRINGS.ja[key];
   else v = STRINGS[lang][key];
+  // 繁体字に無い鍵は簡体字へ落とす。日本語へ落とすより読めるため
+  if (v === undefined && LANG_FALLBACK[lang]) v = STRINGS[LANG_FALLBACK[lang]][key];
   if (v === undefined) v = STRINGS.ja[key];
   if (v === undefined) return key;
   if (vars) for (const k in vars) v = v.split("{" + k + "}").join(vars[k]);
@@ -94,7 +96,7 @@ function applyStaticText(){
     el.title = v;
     if (el.hasAttribute("aria-label")) el.setAttribute("aria-label", v);
   });
-  document.documentElement.lang = lang;
+  document.documentElement.lang = HTML_LANG[lang] || lang;
 }
 
 // こども版で外すのは、子供に見せたくない語だけにする。難しい語も正解のまま
@@ -175,7 +177,8 @@ const KEEL_INDEX = 8;
 function stageName(si){
   const n = STAGE_LAYERS[si];
   if (!n) return t("stage_n", {n: si + 1});
-  if (lang !== "ja") return (LAYER_I18N[lang] || [])[si] || n[0];
+  if (lang !== "ja") return (LAYER_I18N[lang] || [])[si]
+    || (LAYER_I18N[LANG_FALLBACK[lang]] || [])[si] || n[0];
   return mode === "kids" ? n[1] : n[0];
 }
 // 層の深さ（m）。用意した層より先へ伸びたときは、同じ調子で下へ延ばす
@@ -422,7 +425,8 @@ function isFever(){ return combo >= FEVER_AT; }
 function rankName(){
   let i = 0;
   RANKS.forEach(([need], n) => { if (score >= need) i = n; });
-  return lang === "ja" ? RANKS[i][1] : (RANK_I18N[lang] || [])[i] || RANKS[i][1];
+  if (lang === "ja") return RANKS[i][1];
+  return (RANK_I18N[lang] || [])[i] || (RANK_I18N[LANG_FALLBACK[lang]] || [])[i] || RANKS[i][1];
 }
 function roundExhaustedAll(){ return state().discovered.size >= current().answers.length; }
 function roundLocked(){ return state().gaveUp || roundExhaustedAll() || stars <= 0; }
@@ -442,23 +446,27 @@ function meaningKeys(a, round){
   const r = round || current();
   return [r.template + "\t" + a.word, a.word];
 }
+// 繁体字の訳がまだ無い語は簡体字へ落とす。日本語のまま出すより読めるため
+function meaningTables(){
+  if (typeof MEANINGS_I18N === "undefined") return [];
+  return [MEANINGS_I18N[lang], MEANINGS_I18N[LANG_FALLBACK[lang]]].filter(Boolean);
+}
 function meaningOf(a, round){
   if (lang === "ja") return a.meaning;
-  const m = typeof MEANINGS_I18N !== "undefined" ? MEANINGS_I18N[lang] : null;
-  if (!m) return a.meaning;
-  for (const k of meaningKeys(a, round)) if (m[k]) return m[k];
+  for (const m of meaningTables())
+    for (const k of meaningKeys(a, round)) if (m[k]) return m[k];
   return a.meaning;
 }
 function hasTranslatedMeaning(a, round){
   if (lang === "ja") return true;
-  const m = typeof MEANINGS_I18N !== "undefined" ? MEANINGS_I18N[lang] : null;
-  return !!m && meaningKeys(a, round).some(k => !!m[k]);
+  return meaningTables().some(m => meaningKeys(a, round).some(k => !!m[k]));
 }
 // まだ訳の無い語には、辞書を引く道をそえる。日本語のまま放り出さないため
 function lookupUrl(a){
   const w = encodeURIComponent(a.display ? String(a.display).split("/")[0] : a.word);
+  const tl = lang === "zhTW" ? "zh-TW" : lang;
   return lang === "en" ? `https://jisho.org/search/${w}`
-    : `https://translate.google.com/?sl=ja&tl=${lang}&text=${w}&op=translate`;
+    : `https://translate.google.com/?sl=ja&tl=${tl}&text=${w}&op=translate`;
 }
 function esc(v){
   return String(v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
