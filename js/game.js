@@ -414,6 +414,14 @@ function greatTarget(round = current()){
 // 正解が少ないラウンドは、全部見つけても PERFECT にしない。60語のラウンドと
 // 4語のラウンドが同じ扱いでは釣り合わないため、GREAT を上限にする。
 function canPerfect(round = current()){ return round.answers.length >= PERFECT_MIN; }
+/* そのラウンドに、まだ得るものが残っているか。GREAT が上限のラウンドで
+   GREAT まで取ったら、続けても★も点も増えない。「続ける」を出しても
+   押し損になるので、その札は引っ込める。 */
+function moreToEarn(i = roundIndex){
+  const st = roundStates[i], r = ROUND_DATA[i];
+  if (st.discovered.size >= r.answers.length) return false;
+  return !(st.great && !canPerfect(r));
+}
 function answerMap(){ return new Map(current().answers.map(a => [a.word, a])); }
 function answerDisplay(a){ return a.display || a.word; }
 function kanaForWord(word){
@@ -1037,7 +1045,7 @@ function roundActions(){
     acts.push({label: t("share_x"), keepOpen: true,
       run: () => window.open(xIntent(brag), "_blank", "noopener")});
   }
-  const more = !roundLocked() && s.discovered.size < current().answers.length;
+  const more = !roundLocked() && moreToEarn();
   if (more) {
     const goal = !s.great ? "GREAT" : (canPerfect() ? "PERFECT" : "");
     acts.push({label: goal ? t("continue_goal", {goal}) : t("continue_plain")});
@@ -1535,7 +1543,7 @@ function finishStage(si){
   setTimeout(() => document.body.classList.remove("celebrate"), 1200);
 
   // このステージにまだ探せる語が残っているときだけ「続ける」を出す
-  const more = STAGES[si].some(i => roundStates[i].discovered.size < ROUND_DATA[i].answers.length);
+  const more = STAGES[si].some(moreToEarn);
   const perfectCountHere = STAGES[si].filter(i => roundStates[i].perfect).length;
   const acts = [];
   if (more) acts.push({label: t("continue_goal", {goal: "PERFECT"}), run: stayInStage});
