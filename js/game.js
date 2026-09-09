@@ -2015,7 +2015,8 @@ $("#sgStartBtn").addEventListener("click", () => { hideStart(); render(); syncHa
 // 閉じたときに戻る先が盤面になり、始めた覚えのないラウンドが出てくる。
 $("#sgListBtn").addEventListener("click", () => { viewStage = currentStage(); openRoundList(); });
 $("#sgMenuBtn").addEventListener("click", () => openModal("#menuModal"));
-// スタート画面へ戻る道は3つ。ヘッダーのロゴ、一覧の START、⚙メニュー。
+// ホーム（スタート画面）へ戻る道は3つ。ヘッダーのロゴ、一覧の戻り、⚙メニュー。
+// 「START」とだけ書くとそれが何なのか分からないので、行き先の名前で書く。
 // 遊んでいる最中に戻れないと、いまどこにいるのかを確かめる先が無くなる。
 const goHome = () => { hideBurst(); showStart(); closeModals({force: true}); showStart(); };
 $("#startPageBtn").addEventListener("click", goHome);
