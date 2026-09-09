@@ -3676,7 +3676,8 @@ zhTW: {
 "まがう": "極為相似而分辨不出。如「紛うことなき」。",
 "まごう": "與「まがう」相同。如「見紛う」。",
 "まふう": "傳說由魔物掀起的暴風、令人毛骨悚然的風。",
-"でんま": "電動按摩器的簡稱。俗語中也指性玩具。"
+"でんま": "電動按摩器的簡稱。俗語中也指性玩具。",
+"ぎんじ": "吟詠詩歌，帶著腔調誦讀。「吟一首詩」。"
 },
 en: {
 "あんあん": "Whimpering or moaning. / anan is a women's magazine from Magazine House.",
@@ -7334,7 +7335,8 @@ en: {
 "まがう": "To resemble so closely that one cannot tell them apart. As in 「紛うことなき」.",
 "まごう": "The same as 「まがう」. As in 「見紛う」.",
 "まふう": "A storm or eerie wind said to be raised by demons.",
-"でんま": "Short for an electric massager. In slang, also a sex toy."
+"でんま": "Short for an electric massager. In slang, also a sex toy.",
+"ぎんじ": "Reciting a poem aloud with a lilt. As in 「一句吟じる」, to recite a verse."
 },
 
 zh: {
@@ -10993,7 +10995,8 @@ zh: {
 "まがう": "极为相似而分辨不出。如「紛うことなき」。",
 "まごう": "与「まがう」相同。如「見紛う」。",
 "まふう": "传说由魔物掀起的暴风、令人毛骨悚然的风。",
-"でんま": "电动按摩器的简称。俗语中也指性玩具。"
+"でんま": "电动按摩器的简称。俗语中也指性玩具。",
+"ぎんじ": "吟咏诗歌，带着腔调诵读。「吟一首诗」。"
 },
 
 vi: {
@@ -14652,7 +14655,8 @@ vi: {
 "まがう": "Giống đến mức không phân biệt nổi. Như 「紛うことなき」.",
 "まごう": "Giống như 「まがう」. Như 「見紛う」.",
 "まふう": "Cơn bão hay ngọn gió rợn người mà người ta nói là do ma quỷ gây ra.",
-"でんま": "Viết tắt của máy massage điện. Trong tiếng lóng còn chỉ đồ chơi tình dục."
+"でんま": "Viết tắt của máy massage điện. Trong tiếng lóng còn chỉ đồ chơi tình dục.",
+"ぎんじ": "Ngâm thơ, đọc lên có ngân nga. Như 「一句吟じる」, ngâm một câu thơ."
 },
 
 ko: {
@@ -18311,6 +18315,7 @@ ko: {
 "まがう": "너무 비슷해서 분간이 되지 않다. 「紛うことなき」처럼 쓴다.",
 "まごう": "「まがう」와 같다. 「見紛う」처럼 쓴다.",
 "まふう": "마물이 일으킨다는 폭풍, 으스스한 바람.",
-"でんま": "전기 마사지기의 준말. 속어로는 성인용품을 가리키기도 한다."
+"でんま": "전기 마사지기의 준말. 속어로는 성인용품을 가리키기도 한다.",
+"ぎんじ": "시가를 가락을 붙여 읊는 것. 「一句吟じる」(한 구절 읊다)."
 }
 };

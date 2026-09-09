@@ -1594,7 +1594,8 @@ const WORD_ROUNDS = [
       { word: "おんじ", display: "音字", meaning: "音だけを表す文字。表音文字。" },
       { word: "ねんじ", display: "年次", meaning: "年ごと。「年次計画」「年次休暇」。" },
       { word: "ひんじ", display: "ヒンジ/賓辞", meaning: "扉やふたの蝶番/論理学で、判断の述語。" },
-      { word: "がんじ", display: "雁字", meaning: "雁が一列に並んで飛ぶさまを文字に見立てた語/手紙。「雁字搦め」。" }
+      { word: "がんじ", display: "雁字", meaning: "雁が一列に並んで飛ぶさまを文字に見立てた語/手紙。「雁字搦め」。" },
+      { word: "ぎんじ", display: "吟じ", meaning: "詩歌に節をつけて口ずさむこと。「一句吟じる」。" }
     ]
   },
   {
