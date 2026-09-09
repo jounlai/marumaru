@@ -78,14 +78,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=5ad2ad9a">
+<link rel="stylesheet" href="css/styles.css?v=229de42d">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=5ad2ad9a" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=229de42d" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -105,7 +105,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand"><img src="img/logo-small.png?v=5ad2ad9a" alt="まるまる 〇〇ことば" width="320" height="104"></div>
+    <div class="brand"><img src="img/logo-small.png?v=229de42d" alt="まるまる 〇〇ことば" width="320" height="104"></div>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -236,16 +236,18 @@
 
 </div>
 
-<!-- ステージ間の移動。街から街へ歩いて渡る -->
+<!-- ステージ間の移動。ひとつ下の層へ、沈んでもぐる -->
 <div class="travel" id="travel" hidden aria-hidden="true">
   <div class="tvInner">
-    <div class="tvLabel"><span id="tvFrom"></span><i>→</i><b id="tvTo"></b></div>
-    <div class="tvRoad">
+    <div class="tvLabel"><span id="tvFrom"></span><i>↓</i><b id="tvTo"></b></div>
+    <div class="tvShaft">
       <span class="tvStop from"><b>★</b><small id="tvFromName"></small></span>
       <span class="tvLine"></span>
-      <span class="tvStop to"><b id="tvToNo"></b><small id="tvToName"></small></span>
+      <i class="tvBub b1"></i><i class="tvBub b2"></i><i class="tvBub b3"></i>
       <img class="tvChar" src="img/maru-run.png" alt="">
+      <span class="tvStop to"><b id="tvToNo"></b><small id="tvToName"></small></span>
     </div>
+    <div class="tvDepth" id="tvDepth"></div>
     <div class="tvNote" id="tvNote"></div>
   </div>
 </div>
@@ -272,7 +274,7 @@
     <div class="modalHead">
       <div>
         <div class="modalTitle" id="stageTitle">ステージ</div>
-        <div class="modalSub">ステージの問題をぜんぶクリアすると、次のステージが開きます。</div>
+        <div class="modalSub">ことばの氷山。上は誰でも知っていることば、深いほど数が減って見慣れなくなります。</div>
       </div>
       <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
     </div>
@@ -361,8 +363,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=5ad2ad9a"></script>
-<script src="js/kids.js?v=5ad2ad9a"></script>
-<script src="js/game.js?v=5ad2ad9a"></script>
+<script src="js/data.js?v=229de42d"></script>
+<script src="js/kids.js?v=229de42d"></script>
+<script src="js/game.js?v=229de42d"></script>
 </body>
 </html>

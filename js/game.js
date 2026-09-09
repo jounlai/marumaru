@@ -104,22 +104,54 @@ function buildStages(){
   return stages;
 }
 /* ステージには名前を付ける。番号だけだと、どのステージも同じに見えるため。
- * 北から南へ、日本を旅していく並びにした。ステージが増えても足りるよう
- * 多めに用意し、それでも足りなければ番号に戻る。 */
-const STAGE_NAMES = [
-  ["札幌", "さっぽろ"], ["函館", "はこだて"], ["青森", "あおもり"], ["盛岡", "もりおか"],
-  ["仙台", "せんだい"], ["会津", "あいづ"], ["日光", "にっこう"], ["東京", "とうきょう"],
-  ["横浜", "よこはま"], ["鎌倉", "かまくら"], ["富士", "ふじ"], ["松本", "まつもと"],
-  ["金沢", "かなざわ"], ["名古屋", "なごや"], ["伊勢", "いせ"], ["京都", "きょうと"],
-  ["奈良", "なら"], ["大阪", "おおさか"], ["神戸", "こうべ"], ["岡山", "おかやま"],
-  ["広島", "ひろしま"], ["出雲", "いずも"], ["高松", "たかまつ"], ["高知", "こうち"],
-  ["博多", "はかた"], ["長崎", "ながさき"], ["熊本", "くまもと"], ["鹿児島", "かごしま"],
-  ["屋久島", "やくしま"], ["那覇", "なは"]
+ *
+ * 名前は「ことばの氷山」の層にした。ラウンドは正解数の多い順に並んでいて、
+ * 進むほど正解が減り、見慣れない語ばかりになる。この並びは
+ * 「水の上は誰でも知っている・下ほど数が減って奇妙になる」という氷山
+ * そのものなので、深さを名前にすると、難しくなる理由がそのまま絵になる。
+ * 土地の名前では、札幌と那覇のあいだに難しくなる理由が無かった。
+ *
+ * [おとな版の名前, こども版の名前, 深さ（m。正の数は水の上）] */
+const STAGE_LAYERS = [
+  ["氷の頂",   "てっぺん",       40], ["日向",   "ひなた",         25],
+  ["波際",     "なみぎわ",        8], ["水面",   "すいめん",        0],
+  ["浅瀬",     "あさせ",        -15], ["光の層", "ひかり",        -40],
+  ["藻場",     "もば",          -80], ["青闇",   "あおやみ",     -150],
+  ["群青",     "ぐんじょう",   -260], ["薄明",   "うすあかり",   -420],
+  ["無光層",   "まっくら",     -650], ["冷水塊", "つめたい",     -900],
+  ["氷の胴",   "こおりのなか",-1200], ["亀裂",   "ひびわれ",    -1600],
+  ["深藍",     "ふかいあお",  -2100], ["沈黙帯", "しずか",      -2700],
+  ["古氷",     "ふるいこおり",-3400], ["化石層", "かせき",      -4200],
+  ["漆黒",     "まっくろ",    -5100], ["骨の層", "ほね",        -6100],
+  ["海溝",     "かいこう",    -7200], ["氷の根", "こおりのね",  -8400],
+  ["岩盤",     "がんばん",    -9700], ["底知れず","そこなし",  -11000],
+  ["忘却層",   "わすれもの", -12400], ["最深部", "いちばんした",-13900],
+  ["地の底",   "ちのそこ",   -15500], ["太古",   "たいこ",     -17200],
+  ["始まり",   "はじまり",   -19000], ["底",     "そこ",       -21000]
 ];
 function stageName(si){
-  const n = STAGE_NAMES[si];
+  const n = STAGE_LAYERS[si];
   if (!n) return `ステージ ${si + 1}`;
   return mode === "kids" ? n[1] : n[0];
+}
+// 層の深さ（m）。用意した層より先へ伸びたときは、同じ調子で下へ延ばす
+function stageDepth(si){
+  const n = STAGE_LAYERS[si];
+  if (n) return n[2];
+  const last = STAGE_LAYERS[STAGE_LAYERS.length - 1][2];
+  return last - (si - STAGE_LAYERS.length + 1) * 2000;
+}
+// −1,200m のように書く。水の上は + を付けて、水面（0m）を境目に見せる
+function depthLabel(d){
+  const n = Math.abs(d).toString().replace(/\B(?=(\d{3})+$)/g, ",");
+  return d > 0 ? `+${n}m` : d === 0 ? "0m" : `−${n}m`;
+}
+function depthText(si){ return depthLabel(stageDepth(si)); }
+// 水面がどのステージに来るか。氷山の絵で水の線を引く位置に使う
+function seaLevelRatio(){
+  let i = 0;
+  while (i < STAGES.length && stageDepth(i) >= 0) i++;
+  return Math.max(0, Math.min(100, (i - 0.5) / STAGES.length * 100));
 }
 
 const STAGES = buildStages();
@@ -1418,11 +1450,12 @@ function finishStage(si){
   if (more) acts.push({label: mode === "kids"
     ? "このステージを つづける" : "このステージを続ける（PERFECT を狙う）", run: stayInStage});
   if (si < STAGES.length - 1) acts.push({label: mode === "kids"
-    ? `つぎの まち「${stageName(si + 1)}」へ →` : `次の街「${stageName(si + 1)}」へ →`,
+    ? `もっと ふかく「${stageName(si + 1)}」へ ↓`
+    : `もっと深く「${stageName(si + 1)}」${depthText(si + 1)} へ ↓`,
     primary: true, run: goNextStage});
   if (!acts.length) acts.push({label: mode === "kids" ? "いちらんを 見る" : "ステージ一覧を見る", primary: true, run: stayInStage});
 
-  showBurst({mark: `ステージ ${si + 1}　${stageName(si)}`, word: "STAGE CLEAR",
+  showBurst({mark: `${stageName(si)}　${depthText(si)}`, word: "STAGE CLEAR",
     sub: `${STAGES[si].length}問すべてクリア　・　PERFECT ${perfectCountHere} / ${STAGES[si].length}`,
     bonus: "★ ぜんぶ回復", dim: true, gold: true, long: true, char: "good",
     actions: acts, ms: 2000});
@@ -1450,8 +1483,8 @@ function goNextStage(){
   travelTo(si, next);
 }
 
-/* 街から街へ歩いて渡る。ステージが変わったことを、数字ではなく移動で見せる。
-   着いたらラウンド選択（ステージ一覧）に立つ。 */
+/* ひとつ下の層へもぐる。ステージが変わったことを、数字ではなく
+   「沈んでいく」動きで見せる。着いたらラウンド選択（層の一覧）に立つ。 */
 function travelTo(from, to){
   const el = $("#travel");
   $("#tvFrom").textContent = stageName(from);
@@ -1459,9 +1492,10 @@ function travelTo(from, to){
   $("#tvTo").textContent = stageName(to);
   $("#tvToName").textContent = stageName(to);
   $("#tvToNo").textContent = to + 1;
-  $("#tvNote").textContent = mode === "kids" ? "つぎの まちへ むかっています…" : "次の街へ向かっています…";
+  $("#tvNote").textContent = mode === "kids" ? "もぐって います…" : "もぐっています…";
+  $("#tvDepth").textContent = depthText(from);
 
-  // 先の街の1問目を選んでおく（一覧を閉じたらそこから遊べる）
+  // 先の層の1問目を選んでおく（一覧を閉じたらそこから遊べる）
   const first = STAGES[to].find(i => !roundStates[i].cleared);
   roundIndex = first === undefined ? STAGES[to][0] : first;
   viewStage = to;
@@ -1473,6 +1507,8 @@ function travelTo(from, to){
   void el.offsetWidth;
   el.classList.add("go");
   sfxTravel();
+  // 数え下ろしは幕を出してから。隠れているうちに始めると1回で止まる
+  runDepthMeter(stageDepth(from), stageDepth(to));
   setTimeout(() => {
     el.hidden = true;
     el.classList.remove("go");
@@ -1480,12 +1516,30 @@ function travelTo(from, to){
     openRoundList();
   }, 2300);
 }
-// 歩いていく音。軽く弾んで、着いたところで開ける
+/* 深さの数字を、出発の層から着く層まで数え下ろす。落ちている感じは
+   絵だけでは弱く、数字が動くほうが「深くなった」と伝わるため。 */
+function runDepthMeter(d0, d1){
+  const el = $("#tvDepth");
+  if (!el) return;
+  const dur = 1900;
+  const t0 = Date.now();
+  const step = () => {
+    const t = Math.min(1, (Date.now() - t0) / dur);
+    const e = 1 - Math.pow(1 - t, 3);
+    el.textContent = depthLabel(Math.round(d0 + (d1 - d0) * e));
+    if (t < 1 && !$("#travel").hidden && typeof requestAnimationFrame === "function")
+      requestAnimationFrame(step);
+  };
+  if (typeof requestAnimationFrame === "function") step();
+  else el.textContent = depthLabel(d1);
+}
+
+// 沈んでいく音。音が下へ落ちて、着いたところで低く開ける
 function sfxTravel(){
-  [0, 2, 4, 5, 7].forEach((semi, i) =>
-    tone(392 * Math.pow(2, semi / 12), {type: "triangle", vol: .05, dur: .16, at: i * .3}));
-  [0, 4, 7, 12].forEach((semi, i) =>
-    tone(523.25 * Math.pow(2, semi / 12), {type: "sine", vol: .045, dur: .9, at: 1.55 + i * .03}));
+  [0, -2, -4, -5, -7].forEach((semi, i) =>
+    tone(392 * Math.pow(2, semi / 12), {type: "sine", vol: .05, dur: .22, at: i * .3}));
+  [0, 3, 7].forEach((semi, i) =>
+    tone(196 * Math.pow(2, semi / 12), {type: "triangle", vol: .05, dur: 1.1, at: 1.55 + i * .03}));
 }
 function stayInStage(){
   closeModals({force: true});
@@ -1591,21 +1645,21 @@ function closeModals(opts){
 let viewStage = 0;
 let celebrated = new Set();   // 祝い終えたステージ
 
-/* いま開いている停留所を道の真ん中に置く。端に寄っていると、前後の街が
-   見えず、どこまで来たのか分からないため。
-   モーダルを出したあとに測る（display:none のあいだは幅が 0 で、
+/* いま開いている層を、氷山の真ん中に置く。端に寄っていると、上下の層が
+   見えず、どこまで潜ったのか分からないため。
+   モーダルを出したあとに測る（display:none のあいだは高さが 0 で、
    scrollIntoView も位置の計算もできない）。 */
 function centerStageStrip(){
   const strip = $("#stageStrip");
   if (!strip) return;
   const go = () => {
     const el = strip.querySelector(".stageStop.on");
-    if (!el || !strip.clientWidth || !el.getBoundingClientRect) return;
-    // 位置は実測の差で出す。offsetLeft は基準になる親が道とは限らず、ずれるため
+    if (!el || !strip.clientHeight || !el.getBoundingClientRect) return;
+    // 位置は実測の差で出す。offsetTop は基準になる親が氷山とは限らず、ずれるため
     const sr = strip.getBoundingClientRect(), er = el.getBoundingClientRect();
-    const delta = (er.left + er.width / 2) - (sr.left + sr.width / 2);
-    const max = strip.scrollWidth - strip.clientWidth;
-    strip.scrollLeft = Math.max(0, Math.min(strip.scrollLeft + delta, max));
+    const delta = (er.top + er.height / 2) - (sr.top + sr.height / 2);
+    const max = strip.scrollHeight - strip.clientHeight;
+    strip.scrollTop = Math.max(0, Math.min(strip.scrollTop + delta, max));
   };
   go();
   // 開いた直後は幅がまだ確定していないことがあるので、描画後にもう一度
@@ -1637,8 +1691,9 @@ function applyHash(){
 function openRoundList(){
   if (viewStage < 0 || viewStage >= STAGES.length) viewStage = currentStage();
   syncHash();
-  // ステージ選びは、すごろくの道にする。番号の羅列だと、どこまで来たのかが
-  // 数字でしか分からず味気ないため。いまいる所にはキャラクターが立つ。
+  // ステージ選びは、縦に積んだ氷山にする。番号の羅列だと、どこまで来たのかが
+  // 数字でしか分からず味気ないため。深いほど水が濃くなり、正解の少ない
+  // ラウンドが並ぶ。いまいる層にはキャラクターが浮かぶ。
   const here = currentStage();
   const strip = STAGES.map((rounds, si) => {
     const done = stageDone(si), all = rounds.length;
@@ -1651,17 +1706,18 @@ function openRoundList(){
     ].join(" ");
     const cleared = stageCleared(si);
     const face = cleared ? "★" : open ? si + 1 : "";
-    // 土地の名前はクリアしても消さない。どこを通ってきたかが分かるように。
-    // まだ開いていないステージも、おとな版は名前を出す（旅の行き先が見える）。
+    // 層の名前はクリアしても消さない。どこまで潜ってきたかが分かるように。
+    // まだ開いていない層も、おとな版は名前を出す（この先の深さが見える）。
     // こども版だけ「？」にして、着くまでの楽しみを残す。
     const foot = open || mode !== "kids" ? stageName(si) : "？";
-    return `<button class="stageStop ${cls}" data-stage="${si}" title="ステージ ${si + 1}">
+    return `<button class="stageStop ${cls}" data-stage="${si}" title="ステージ ${si + 1}　${depthText(si)}">
       ${si === here ? '<img class="stopChar" src="img/maru-run.png" alt="">' : ""}
+      <span class="stopDepth">${depthText(si)}</span>
       <span class="stopDot"><b>${face}</b></span>
-      <small>${foot}</small>
-      <em class="stopClear">CLEAR</em>
+      <span class="stopText"><small>${foot}</small><em class="stopClear">CLEAR</em></span>
     </button>`;
-  }).join("") + '<div class="stageGoal"><span>🏁</span><small>ゴール</small></div>';
+  }).join("") + `<div class="stageGoal"><small>${
+    mode === "kids" ? "まだ そこは 見えない" : "底はまだ見えない"}</small></div>`;
 
   const rounds = STAGES[viewStage];
   const locked = !stageUnlocked(viewStage);
@@ -1702,21 +1758,22 @@ function openRoundList(){
   const head = locked
     ? `<div class="lockNote">
          <span class="lockMark" aria-hidden="true"></span>
-         <b>${mode === "kids" ? "このステージは まだ あそべないよ" : "このステージはまだ遊べません"}</b>
+         <b>${mode === "kids" ? "ここには まだ もぐれないよ" : "この層にはまだ潜れません"}</b>
          <small>${mode === "kids"
-           ? `ステージ ${viewStage}　${stageName(viewStage - 1)} を ぜんぶ クリアすると あそべる！<br>どんな もんだいか だけ 見てね。`
-           : `ステージ ${viewStage}　${stageName(viewStage - 1)} をぜんぶクリアすると開きます。<br>どんな問題かはここで見られます。`}</small>
+           ? `ひとつ うえの「${stageName(viewStage - 1)}」を ぜんぶ クリアすると、ここまで もぐれる！<br>どんな もんだいか だけ 見てね。`
+           : `ひとつ上の層「${stageName(viewStage - 1)}」${depthText(viewStage - 1)} をぜんぶクリアすると、ここまで潜れます。<br>どんな問題かはここで見られます。`}</small>
        </div>`
     : mode === "kids"
       ? ""
-      : `<div class="stageNote">この ${rounds.length} 問をぜんぶクリアすると、次のステージへ進めます。
-        ★はステージを越えるたびに満タンに戻ります。</div>`;
+      : `<div class="stageNote">この ${rounds.length} 問をぜんぶクリアすると、ひとつ下の層へ潜れます。
+        深いほど正解の数が減り、見慣れないことばになります。★は層を越えるたびに満タンに戻ります。</div>`;
 
-  $("#stageStrip").innerHTML = strip;
+  $("#stageStrip").innerHTML =
+    `<div class="stripInner" style="--water:${seaLevelRatio()}%">${strip}</div>`;
   const doneNow = stageDone(viewStage), allNow = STAGES[viewStage].length;
   $("#stageTitle").textContent = mode === "kids"
-    ? `ステージ ${viewStage + 1}　${stageName(viewStage)}`
-    : `ステージ ${viewStage + 1}　${stageName(viewStage)} ・ ${doneNow}/${allNow}`;
+    ? `${stageName(viewStage)}　ふかさ ${depthText(viewStage)}`
+    : `ステージ ${viewStage + 1}　${stageName(viewStage)}　${depthText(viewStage)} ・ ${doneNow}/${allNow}`;
   $("#roundList").innerHTML = head + list;
   $("#stageStrip").querySelectorAll(".stageStop").forEach(b =>
     b.addEventListener("click", () => { viewStage = Number(b.dataset.stage); openRoundList(); }));
