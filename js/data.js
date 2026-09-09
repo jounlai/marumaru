@@ -1510,7 +1510,8 @@ const WORD_ROUNDS = [
       { word: "れんたい", display: "連帯/連隊", meaning: "共に責任を負うこと/軍の編制単位。" },
       { word: "がんたい", display: "眼帯", meaning: "目を保護するために当てる布や器具。" },
       { word: "そんたい", display: "尊体", meaning: "相手の体を敬っていう語/仏像などの敬称。" },
-      { word: "さんたい", display: "三体", meaning: "三つの体・書体。書道の楷書・行書・草書/天体力学の三体問題。" }
+      { word: "さんたい", display: "三体", meaning: "三つの体・書体。書道の楷書・行書・草書/天体力学の三体問題。" },
+      { word: "ぼんたい", display: "凡退", meaning: "野球で、打者が打ち取られて塁に出られないこと。" }
     ]
   },
   {
@@ -1658,7 +1659,8 @@ const WORD_ROUNDS = [
       { word: "かばい", display: "庇い", meaning: "かばうこと。多く「かばい立て」「かばい手」の形で使う。" },
       { word: "かえい", display: "嘉永", meaning: "江戸末期の元号（1848〜1854）。ペリー来航の頃。" },
       { word: "かげい", display: "家芸", meaning: "その家に代々伝わる得意な芸。「お家芸」。" },
-      { word: "かかい", display: "歌会", meaning: "人々が集まって和歌を詠み、披露する会。" }
+      { word: "かかい", display: "歌会", meaning: "人々が集まって和歌を詠み、披露する会。" },
+      { word: "かろい", display: "軽い", meaning: "「軽い」の古風な言い方。" }
     ]
   },
   {
@@ -2753,7 +2755,8 @@ const WORD_ROUNDS = [
       { word: "りんぼう", display: "輪宝", meaning: "仏具の一つ。車輪の形をした法具。" },
       { word: "みんぼう", display: "民望", meaning: "民衆の希望・信望。" },
       { word: "もんぼう", display: "聞法", meaning: "仏の教えを聞くこと。" },
-      { word: "でんぼう", display: "伝法", meaning: "勇み肌で乱暴なこと。「伝法な口をきく」。" }
+      { word: "でんぼう", display: "伝法", meaning: "勇み肌で乱暴なこと。「伝法な口をきく」。" },
+      { word: "とんぼう", display: "蜻蛉", meaning: "「とんぼ」の古い言い方。" }
     ]
   },
   {
