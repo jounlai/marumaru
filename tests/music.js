@@ -85,9 +85,10 @@ function wav(channels, rate){
       IcebergMusic.arrangement({mode:"adult",stage:20}),
       IcebergMusic.arrangement({mode:"kids",stage:20})
     ]);
-    assert.ok(arrangements[1].cutoff < arrangements[0].cutoff);
-    assert.ok(arrangements[1].bpm < arrangements[0].bpm);
-    assert.equal(arrangements[2].dark,false);
+    assert.ok(arrangements.every(a => a.bpm >= 128 && a.cutoff >= 6000), "全モード・深度で明るく軽快");
+    assert.ok(arrangements[1].bpm >= arrangements[0].bpm, "深海でもテンポを落とさない");
+    assert.equal(arrangements[1].sparkle,true);
+    assert.equal(arrangements[2].sparkle,true);
 
     // 小節の継ぎ目を含む実音声を描画。無音・NaN・クリッピングを検出する。
     for (const [name, scene] of [

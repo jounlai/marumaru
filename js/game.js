@@ -2162,6 +2162,8 @@ function showEnding(){
     window.open(xIntent(t("share_ending", {total: num(total)})), "_blank", "noopener"));
   $("#endRestart").addEventListener("click", () => resetAll(false));
   // 画面の下から流し始める
+  $("#endStage").classList.remove("flat");
+  roll.style.transition = "";
   endY = $("#ending").clientHeight;
   roll.style.transform = `translateY(${endY}px)`;
   sfxFanfare();
@@ -2170,12 +2172,14 @@ function showEnding(){
   const step = now => {
     if (!last) last = now;
     const dt = Math.min(64, now - last); last = now;
-    endY -= 42 * endSpeed * dt / 1000;          // 1秒に42px。読める速さ
+    endY -= 120 * endSpeed * dt / 1000;         // 1秒に120px。全部で1分半ほど
     // 巻物の下端が画面の下端に来たら止める。endActions の下余白のぶん、
     // 「おわり」と共有ボタンが画面の中ほどに残る。
     const stop = Math.min(0, -(roll.scrollHeight - $("#ending").clientHeight));
     if (endY < stop) endY = stop;               // 最後は止めて、押せるようにする
     roll.style.transform = `translateY(${endY}px)`;
+    // 終わりまで来たら板を起こす。寝かせたままだと、最後の札が遠くて押せない
+    if (endY <= stop) $("#endStage").classList.add("flat");
     if (endY > stop && !$("#ending").hidden) endTimer = requestAnimationFrame(step);
   };
   if (typeof requestAnimationFrame === "function") endTimer = requestAnimationFrame(step);

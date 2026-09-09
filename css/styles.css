@@ -1642,20 +1642,35 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
   background:linear-gradient(180deg,#01060c 0%,#03121f 40%,#062435 100%);
 }
 .ending[hidden]{display:none}
-/* 横は左右いっぱいに広げ、中身のほうを中央へ寄せる。
-   left:50% と負の margin で寄せると、負の値では min() の大小が逆になって
-   幅の広い側に張り付いてしまう（実際に左へずれた）。 */
+/* 奥行き。遠くへ行くほど小さく薄くなる。
+   板（endTilt）は画面に貼ったまま寝かせ、流すのは中身だけにする。
+   板ごと動かすと、消失点まで一緒に動いて遠近が崩れる。 */
+.endStage{
+  position:absolute;inset:0;overflow:hidden;
+  perspective:620px;perspective-origin:50% 100%;
+  /* 奥ほど薄く。上端は完全に溶ける */
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.18) 12%,rgba(0,0,0,.62) 26%,#000 46%);
+  mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.18) 12%,rgba(0,0,0,.62) 26%,#000 46%);
+}
+.endTilt{
+  position:absolute;inset:0;transform-origin:50% 100%;
+  transform:rotateX(26deg);
+}
+.endStage.flat{-webkit-mask-image:none;mask-image:none}
+.endStage.flat .endTilt{transform:none;transition:transform .9s ease}
 .endRoll{
   position:absolute;left:0;right:0;top:0;
   padding:0 max(16px,4vw);text-align:center;will-change:transform;
 }
-.endRoll > *{max-width:760px;margin-left:auto;margin-right:auto}
+/* 中身は 760px までにして中央へ。個々の margin の一括指定が
+   ここの auto を打ち消さないよう、下でも auto を書いてある。 */
+.endRoll > *{max-width:760px;margin-inline:auto}
 .endLogo{width:min(260px,52vw);height:auto;display:block;margin:0 auto 10px}
 .endHead h2{font-size:clamp(22px,5.4vw,34px);font-weight:950;letter-spacing:.06em;color:#cfefff}
 .endHead p{margin:8px 0 0;font-size:13px;font-weight:700;color:rgba(255,255,255,.55)}
 .endHead{padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:36px}
 /* 層ごとに区切る。名前と深さが見出しで、下に見つけたことばが並ぶ */
-.endLayer{margin:0 0 30px}
+.endLayer{margin:0 auto 30px}
 .endLayer h3{
   font-size:clamp(15px,3.2vw,19px);font-weight:900;color:#9fd8f5;letter-spacing:.04em;
   margin:0 0 8px;display:flex;align-items:baseline;justify-content:center;gap:10px;
@@ -1666,15 +1681,15 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
   font-size:clamp(12px,2.4vw,15px);font-weight:700;color:rgba(255,255,255,.82);line-height:1.7;
 }
 .endStats{
-  margin:44px 0 0;padding:18px 12px;border-top:1px solid rgba(255,255,255,.12);
+  margin:44px auto 0;padding:18px 12px;border-top:1px solid rgba(255,255,255,.12);
   font-size:clamp(12px,2.6vw,15px);font-weight:800;color:#fff;line-height:2;
 }
 .endThanks{margin-top:34px;font-size:14px;font-weight:800;color:#fff;line-height:2.2}
 .endThanks small{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em}
 .endThanks span{display:inline-block;margin:0 8px;color:#9fd8f5}
 .endMade{margin-top:30px;font-size:12px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.1em}
-.endFin{margin:56px 0 0;font-size:clamp(20px,5vw,30px);font-weight:950;letter-spacing:.4em;color:#cfefff}
-.endActions{margin:30px 0 26vh}   /* 下に余白を残し、止まったとき画面の中ほどに来るように */
+.endFin{margin:56px auto 0;font-size:clamp(20px,5vw,30px);font-weight:950;letter-spacing:.4em;color:#cfefff}
+.endActions{margin:30px auto 26vh}   /* 下に余白を残し、止まったとき画面の中ほどに来るように */
 .endActions{display:flex;flex-direction:column;align-items:center;gap:10px}
 .endActions .btn{min-width:min(280px,80vw)}
 /* 速さと閉じるは、いつでも手の届くところに置く */
