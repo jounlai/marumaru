@@ -417,6 +417,15 @@ function canPerfect(round = current()){ return round.answers.length >= PERFECT_M
 /* そのラウンドに、まだ得るものが残っているか。GREAT が上限のラウンドで
    GREAT まで取ったら、続けても★も点も増えない。「続ける」を出しても
    押し損になるので、その札は引っ込める。 */
+/* あと1語で次の段（クリア・GREAT・PERFECT）に届くか。届くならその段の名前。
+   パチンコのリーチと同じで、ここがいちばん惜しくて、いちばん煽りどころ。 */
+function reachGoal(){
+  const st = state(), n = current().answers.length, got = st.discovered.size;
+  if (!st.cleared && got === clearTarget() - 1) return "CLEAR";
+  if (!st.great && got === greatTarget() - 1) return "GREAT";
+  if (canPerfect() && !st.perfect && got === n - 1) return "PERFECT";
+  return null;
+}
 function moreToEarn(i = roundIndex){
   const st = roundStates[i], r = ROUND_DATA[i];
   if (st.discovered.size >= r.answers.length) return false;
@@ -621,6 +630,7 @@ function renderGrid(){
 }
 
 let lastFoundWord = null;
+let atReach = false;   // いま出した演出がリーチか（得点の数字と重ねないため）
 function renderFound(){
   const amap = answerMap();
   const ordered = [...state().found].reverse().map(w => amap.get(w)).filter(Boolean);
@@ -1054,7 +1064,7 @@ function roundActions(){
   acts.push({label: t("finish"), primary: true, run: nextRound});
   return acts;
 }
-function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, actions, ms = 900}){
+function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, actions, tier, reach, ms = 900}){
   const box = $("#burst");
   clearTimeout(burstTimer);
   const bc = $("#burstChar");
@@ -1070,7 +1080,7 @@ function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, acti
   acts.innerHTML = "";
   const hasActions = actions && actions.length;
   box.className = "burst" + (dim ? " dim" : "") + (gold ? " gold" : "") + (long ? " long" : "") +
-    (hasActions ? " hasActions" : "");
+    (reach ? " reach" : "") + (tier ? " c" + tier : "") + (hasActions ? " hasActions" : "");
   $("#burstInner").className = "burstInner" + (long ? " long" : "") + (hasActions ? " hold" : "");
   void box.offsetWidth;
   box.classList.add("show");
@@ -1301,6 +1311,7 @@ function guess(kana){
   const amap = answerMap();
   const hit = amap.has(word);
   let pts = 0;
+  atReach = false;
 
   if (hit) {
     const a = amap.get(word);
@@ -1322,14 +1333,24 @@ function guess(kana){
     const st0 = state();
     const willTop = canPerfect() ? st0.discovered.size >= total : st0.discovered.size >= greatTarget();
     if (!st0.cleared && st0.discovered.size >= clearTarget()) finishRound(willTop);
-    else if (!willTop && !(!st0.great && st0.discovered.size >= greatTarget())) showBurst({
-      mark: mode === "kids" || lang !== "ja"
-        ? (combo >= 2 ? t("combo_n", {n: combo}) : t("correct"))
-                            : (combo >= 2 ? `COMBO ×${combo}` : "CORRECT"),
-      word: answerDisplay(a),
-      sub: (a.display && a.display !== a.word) ? a.word : "",
-      long: true, ms: 1400
-    });
+    else if (!willTop && !(!st0.great && st0.discovered.size >= greatTarget())) {
+      const reach = reachGoal();
+      atReach = !!reach;
+      if (reach) { sfxReach(); buzz([25, 45, 25, 45, 30, 45, 110]); }
+      showBurst({
+        mark: reach ? t("reach_mark")
+          : mode === "kids" || lang !== "ja"
+            ? (combo >= 2 ? t("combo_n", {n: combo}) : t("correct"))
+            : (combo >= 2 ? `COMBO ×${combo}` : "CORRECT"),
+        word: answerDisplay(a),
+        sub: (a.display && a.display !== a.word) ? a.word : "",
+        bonus: reach ? t("reach_sub", {goal: reach}) : "",
+        // コンボが伸びるほど字の色が上がる。5連続（FEVER）で金
+        tier: isFever() ? 5 : combo >= 3 ? 3 : 0,
+        reach: !!reach,
+        long: true, ms: reach ? 1900 : 1400
+      });
+    }
     // クリアの上に GREAT、正解の多いラウンドだけ その上に PERFECT を置く
     if (!state().great && state().discovered.size >= greatTarget()) greatRound();
     if (canPerfect() && state().discovered.size >= total && !state().perfect) perfectRound();
@@ -1353,7 +1374,8 @@ function guess(kana){
   if (btn && hit && mode === "kids") particles(btn, 10, KIDS_COLORS);
   if (btn && hit) {
     btn.classList.add("pop");
-    floatText(`+${pts}${combo >= 2 ? ` ×${combo}` : ""}`, btn, isFever() ? "gold" : "");
+    // リーチのときは点の数字を出さない。真ん中の煽りと重なって、どちらも読めなくなる
+    if (!atReach) floatText(`+${pts}${combo >= 2 ? ` ×${combo}` : ""}`, btn, isFever() ? "gold" : "");
     particles(btn, isFever() ? 16 : 10, isFever() ? ["#7ef9d0", "#fff", "#ffd34d"] : ["#fff", "#bbb"]);
     if (!state().perfect) {
       mascotPose("cheer", 820);
@@ -1635,6 +1657,15 @@ function runDepthMeter(d0, d1){
   };
   if (typeof requestAnimationFrame === "function") step();
   else el.textContent = depthLabel(d1);
+}
+
+/* リーチの音。半音ずつ上げて煽り、間をおいて開ける。
+   当たりの音（sfxCorrect）と重なるので、音量は控えめにする。 */
+function sfxReach(){
+  for (let i = 0; i < 7; i++)
+    tone(523.25 * Math.pow(2, i / 12), {type: "square", vol: .028, dur: .1, at: i * .07});
+  [0, 4, 7, 12].forEach((semi, i) =>
+    tone(1046.5 * Math.pow(2, semi / 12), {type: "sine", vol: .05, dur: .8, at: .62 + i * .04}));
 }
 
 // 沈んでいく音。音が下へ落ちて、着いたところで低く開ける

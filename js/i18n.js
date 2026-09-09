@@ -23,6 +23,7 @@ const HTML_LANG = { zh: "zh-Hans", zhTW: "zh-Hant" };
 
 const STRINGS = {
 ja: {
+  reach_mark: "リーチ！", reach_sub: "あと1語で {goal}",
   go_text: "ステージ {n} で★が尽きました。<br>★5で再開できます。<b>記録は消えません。</b><br>発見したことば <b>{found}</b> 語。",
   credits_ask: "抜けている単語があれば <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a> まで。",
   credits_src: "ソース：",
@@ -157,6 +158,7 @@ jaKids: {
 },
 
 en: {
+  reach_mark: "ONE MORE!", reach_sub: "One word from {goal}",
   go_text: "You ran out of ★ on layer {n}.<br>You can restart with ★5. <b>Your progress is kept.</b><br>Words found: <b>{found}</b>.",
   credits_ask: "Found a word that is missing? Tell <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a>.",
   credits_src: "Source: ",
@@ -252,6 +254,7 @@ en: {
 },
 
 zh: {
+  reach_mark: "就差一个！", reach_sub: "再找 1 个就 {goal}",
   go_text: "★ 在第 {n} 层用完了。<br>可以用 ★5 重新开始。<b>记录不会消失。</b><br>已找到的词：<b>{found}</b> 个。",
   credits_ask: "发现漏收的词，请告诉 <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a>。",
   credits_src: "源码：",
@@ -349,6 +352,7 @@ zh: {
 /* 繁体字（台湾）。語彙も台湾の言い方に寄せる（菜单→選單、记录→紀錄、
    设置→設定）。ここに無い鍵は zh（簡体字）に落ちる。 */
 zhTW: {
+  reach_mark: "就差一個！", reach_sub: "再找 1 個就 {goal}",
   go_text: "★ 在第 {n} 層用完了。<br>可以用 ★5 重新開始。<b>紀錄不會消失。</b><br>已找到的詞：<b>{found}</b> 個。",
   credits_ask: "發現漏收的詞，請告訴 <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a>。",
   credits_src: "原始碼：",
@@ -444,6 +448,7 @@ zhTW: {
 },
 
 vi: {
+  reach_mark: "CÒN MỘT!", reach_sub: "Còn 1 từ nữa là {goal}",
   go_text: "Đã hết ★ ở tầng {n}.<br>Có thể chơi lại với ★5. <b>Tiến độ vẫn còn nguyên.</b><br>Đã tìm được <b>{found}</b> từ.",
   credits_ask: "Có từ nào bị sót? Hãy nhắn cho <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a>.",
   credits_src: "Mã nguồn: ",
@@ -539,6 +544,7 @@ vi: {
 },
 
 ko: {
+  reach_mark: "하나 남았다!", reach_sub: "한 개만 더 찾으면 {goal}",
   go_text: "{n}층에서 ★가 바닥났습니다.<br>★5로 다시 시작할 수 있습니다. <b>기록은 사라지지 않습니다.</b><br>찾은 말 <b>{found}</b>개.",
   credits_ask: "빠진 낱말이 있으면 <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a>에게 알려 주세요.",
   credits_src: "소스: ",
