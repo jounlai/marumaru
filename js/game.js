@@ -29,8 +29,10 @@ const VOICED_ROWS = [
   ["ざ","じ","ず","ぜ","ぞ"],
   ["だ","ぢ","づ","で","ど"],
   ["ば","び","ぶ","べ","ぼ"],
-  ["ぱ","ぴ","ぷ","ぺ","ぽ"],
-  ["ゔ",null,null,null,null]
+  ["ぱ","ぴ","ぷ","ぺ","ぽ"]
+  // ゔ は置かない。3,660語のどこにも現れず、押せば必ず★が減るだけの
+  // 罠になっていた。ゔ を使う語を足したら lint が「盤面から入力できない」
+  // と言うので、そのとき行ごと戻すこと。
 ];
 const PLAIN_KANA = KANA_ROWS.flat().filter(Boolean);
 const ALL_KANA = [...PLAIN_KANA, ...VOICED_ROWS.flat()].filter(Boolean);

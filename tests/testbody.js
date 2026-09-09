@@ -43,7 +43,7 @@
     document.querySelector('#stageStrip .stageStop[data-stage="0"]').click();
     return ok;
   })());
-  check("かなボタン72個（清音46＋濁音半濁音26）", q("#kanaGrid").querySelectorAll(".kana").length === 72,
+  check("かなボタン71個（清音46＋濁音半濁音25）", q("#kanaGrid").querySelectorAll(".kana").length === 71,
     String(q("#kanaGrid").querySelectorAll(".kana").length));
   check("ポケットがグリッド内に残る", !!q("#kanaGrid #pocket"));
   check("3グループの合計 = 全ラウンド",
@@ -169,7 +169,7 @@
   check("WORDラウンドの穴は1つ", q("#pattern").querySelectorAll(".hole").length === 1,
     String(q("#pattern").querySelectorAll(".hole").length));
   check("WORDラウンドは3〜4文字", [...w0.answers[0].word].length === [...w0.template].length);
-  check("WORDでも全かな使える", q("#kanaGrid").querySelectorAll(".kana").length === 72);
+  check("WORDでも全かな使える", q("#kanaGrid").querySelectorAll(".kana").length === 71);
   const wk = kanaOf(w0, w0.answers[0].word);
   click(q(`.kana[data-kana="${wk}"]`));
   check("WORDラウンドで正解できる", roundStates[WORD_START].discovered.has(w0.answers[0].word), w0.answers[0].word);
