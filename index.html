@@ -78,14 +78,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=229de42d">
+<link rel="stylesheet" href="css/styles.css?v=e806b2ce">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=229de42d" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=e806b2ce" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -101,11 +101,37 @@
   </div>
 </div>
 
+<!-- スタート画面。いきなり層の一覧が開くと、何の遊びで自分がどこにいるのかが
+     分からず戸惑うため、まず立つ場所を作る。基本は前回の続きから始める。 -->
+<div class="startGate" id="startGate" hidden>
+  <div class="sgInner">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=e806b2ce" alt="まるまる 〇〇ことば">
+    <div class="sgLead" id="sgLead"></div>
+
+    <div class="sgHere" id="sgHere">
+      <img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=e806b2ce" alt="">
+      <div class="sgWhere">
+        <small id="sgWhereLabel">いまいる層</small>
+        <b id="sgLayer">氷の頂</b>
+        <span class="sgDepth" id="sgDepth">+40m</span>
+      </div>
+    </div>
+    <div class="sgStats" id="sgStats"></div>
+
+    <button class="sgBtn" id="sgStartBtn"><b id="sgStartLabel">つづきから</b><small id="sgStartSub"></small></button>
+    <div class="sgSub">
+      <button class="btn" id="sgListBtn">層をえらぶ</button>
+      <button class="btn" id="sgMenuBtn">あそびかた</button>
+    </div>
+    <div class="sgNote" id="sgNote" hidden></div>
+  </div>
+</div>
+
 <div class="app" id="app">
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand"><img src="img/logo-small.png?v=229de42d" alt="まるまる 〇〇ことば" width="320" height="104"></div>
+    <div class="brand"><img src="img/logo-small.png?v=e806b2ce" alt="まるまる 〇〇ことば" width="320" height="104"></div>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -230,7 +256,7 @@
       <button class="btn primary" id="reviveBarBtn">★5で再開</button>
       <button class="btn" id="retryBtn">やり直す</button>
       <button class="btn" id="revealBtn">答えを見る</button>
-      <button class="btn primary" id="nextBtn">次のラウンドへ →</button>
+      <button class="btn primary" id="nextBtn">一覧へ戻る →</button>
     </div>
   </div>
 
@@ -244,7 +270,7 @@
       <span class="tvStop from"><b>★</b><small id="tvFromName"></small></span>
       <span class="tvLine"></span>
       <i class="tvBub b1"></i><i class="tvBub b2"></i><i class="tvBub b3"></i>
-      <img class="tvChar" src="img/maru-run.png" alt="">
+      <img class="tvChar" src="img/maru-dive-1.png" alt="">
       <span class="tvStop to"><b id="tvToNo"></b><small id="tvToName"></small></span>
     </div>
     <div class="tvDepth" id="tvDepth"></div>
@@ -318,6 +344,7 @@
       <button class="btn" id="mGiveupBtn">降参して答えを見る</button>
       <button class="btn" id="mRetryBtn">このラウンドをやり直す</button>
       <button class="btn" id="soundBtn">♪ 効果音 ON</button>
+      <button class="btn" id="startPageBtn">スタート画面へ</button>
       <button class="btn" id="switchModeBtn">こども版に切り替える</button>
       <button class="btn danger" id="resetBtn">記録をすべてリセット</button>
     </div>
@@ -363,8 +390,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=229de42d"></script>
-<script src="js/kids.js?v=229de42d"></script>
-<script src="js/game.js?v=229de42d"></script>
+<script src="js/data.js?v=e806b2ce"></script>
+<script src="js/kids.js?v=e806b2ce"></script>
+<script src="js/game.js?v=e806b2ce"></script>
 </body>
 </html>

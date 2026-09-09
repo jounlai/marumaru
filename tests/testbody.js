@@ -13,8 +13,18 @@
     return pool.find(k => fillWord(round, k) === word);
   };
 
-  // ---- 起動時
-  check("起動時にラウンド一覧が開く", q("#roundModal").classList.contains("show"));
+  // ---- 起動時：まずスタート画面が立ち、そこから盤面か層の一覧へ入る
+  check("起動時にスタート画面が出る", !q("#startGate").hidden);
+  check("スタート画面がいまいる層を出す", q("#sgLayer").textContent === stageName(currentStage()),
+    q("#sgLayer").textContent);
+  check("起動時にラウンド一覧は開かない", !q("#roundModal").classList.contains("show"));
+  click(q("#sgStartBtn"));
+  check("「つづきから」で盤面に入る",
+    q("#startGate").hidden && !q("#roundModal").classList.contains("show"));
+  showStart();
+  click(q("#sgListBtn"));
+  check("「層をえらぶ」でラウンド一覧が開く",
+    q("#startGate").hidden && q("#roundModal").classList.contains("show"));
   check("一覧はいまのステージの問題を出す",
     document.querySelectorAll("#roundList .roundChoice").length === STAGES[0].length,
     `${document.querySelectorAll("#roundList .roundChoice").length}/${STAGES[0].length}`);

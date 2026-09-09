@@ -588,7 +588,7 @@ function renderDoneBar(){
   if (dead) {
     msg.innerHTML = kids ? "<b>★が なくなった</b>" : "<b>★が尽きました</b> — ★5で再開できます。見つけたことばは消えません。";
   } else if (exhausted) {
-    msg.innerHTML = kids ? `<b>おしまい</b> ${s.discovered.size} / ${total} 語` : `<b>押せるかなが尽きました</b> — ${s.discovered.size} / ${total} 語。やり直すか、次のラウンドへ。`;
+    msg.innerHTML = kids ? `<b>おしまい</b> ${s.discovered.size} / ${total} 語` : `<b>押せるかなが尽きました</b> — ${s.discovered.size} / ${total} 語。やり直すか、一覧へ戻ってください。`;
   } else if (s.perfect) {
     msg.innerHTML = kids ? `<b>PERFECT</b> ${total}語` : `<b>PERFECT</b> — 全${total}語を発見しました。`;
   } else if (roundExhaustedAll()) {
@@ -596,7 +596,7 @@ function renderDoneBar(){
   } else if (s.great) {
     msg.innerHTML = kids ? `<b>GREAT</b> のこり ${total - s.discovered.size} 語` : `<b>GREAT</b> — 残り ${total - s.discovered.size} 語。${canPerfect() ? "続ければ <b>PERFECT（★+2）</b>。" : ""}`;
   } else if (s.gaveUp) {
-    msg.innerHTML = kids ? "<b>こうさん</b>したよ" : "<b>降参したラウンド</b>です。かなは押せません — やり直すか、次のラウンドへ。";
+    msg.innerHTML = kids ? "<b>こうさん</b>したよ" : "<b>降参したラウンド</b>です。かなは押せません — やり直すか、一覧へ戻ってください。";
   } else {
     const toGreat = Math.max(0, greatTarget() - s.discovered.size);
     msg.innerHTML = kids
@@ -720,11 +720,14 @@ function enablePlaybackAudio(){
   try {
     if (navigator.audioSession) { navigator.audioSession.type = "playback"; return; }
   } catch (e) {}
-  if (silentEl) { if (silentEl.paused) silentEl.play().catch(() => {}); return; }
+  // play() は Promise を返さない実装もある（古い Safari、jsdom）。
+  // 返り値をそのまま .catch すると、そこで例外になって解錠が止まる。
+  const play = el => { try { const p = el.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} };
+  if (silentEl) { if (silentEl.paused) play(silentEl); return; }
   silentEl = new Audio(SILENT_WAV);
   silentEl.loop = true;
   silentEl.volume = 1;          // muted や volume=0 では playback に切り替わらない
-  silentEl.play().catch(() => {});
+  play(silentEl);
 }
 
 function audio(){
@@ -963,7 +966,12 @@ function roundActions(){
       ? (goal ? `つづける（${goal} を ねらう）` : "つづける")
       : (goal ? `このラウンドを続ける（${goal} を狙う）` : "このラウンドを続ける")});
   }
-  acts.push({label: mode === "kids" ? "つぎへ →" : "次のラウンドへ →", primary: true, run: nextRound});
+  // 「次へ」ではなく「一覧へ」。押した先で残りが見えるように、数も出す
+  const rest = STAGES[currentStage()].filter(i => !roundStates[i].cleared).length;
+  acts.push({label: !rest
+    ? (mode === "kids" ? "この ふかさは ぜんぶ クリア！ →" : "この層はぜんぶクリア →")
+    : (mode === "kids" ? `いちらんへ（あと ${rest}もん）` : `一覧へ戻る（この層はあと ${rest} 問）`),
+    primary: true, run: nextRound});
   return acts;
 }
 function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, actions, ms = 900}){
@@ -1485,8 +1493,14 @@ function goNextStage(){
 
 /* ひとつ下の層へもぐる。ステージが変わったことを、数字ではなく
    「沈んでいく」動きで見せる。着いたらラウンド選択（層の一覧）に立つ。 */
+// 潜るほど姿が変わる。こども版は装備が増え、最後まで元気なまま。
+function diverImg(si){
+  const t = si < 5 ? 1 : si < 10 ? 2 : si < 16 ? 3 : 4;
+  return `img/maru-${mode === "kids" ? "kids" : "dive"}-${t}.png`;
+}
 function travelTo(from, to){
   const el = $("#travel");
+  $(".tvChar").src = diverImg(to);
   $("#tvFrom").textContent = stageName(from);
   $("#tvFromName").textContent = stageName(from);
   $("#tvTo").textContent = stageName(to);
@@ -1556,9 +1570,11 @@ function nextRound(){
     finishStage(si);
     return;
   }
-  const rest = STAGES[si].filter(i => i !== roundIndex && !roundStates[i].cleared);
-  if (rest.length) { selectRound(rest[0]); return; }
-  openRoundList();
+  // 勝手に次のラウンドを始めない。この層にあと何問残っているのかが
+  // 見えないまま進んでしまい、どこまで来たのか分からなくなるため。
+  // 一覧へ戻し、いま片づけた札が変わるのを見せて、次は自分で選ばせる。
+  viewStage = si;
+  openRoundList({ justCleared: roundIndex });
 }
 
 function selectRound(i){
@@ -1688,7 +1704,11 @@ function applyHash(){
   viewStage = si;
   return true;
 }
-function openRoundList(){
+/* opts.justCleared に札の番号を渡すと、その札が「クリアに変わる」演出をし、
+   次にやる札を光らせる。クリアのたびにここへ戻ってくるので、
+   何が片づいて何が残っているかを、この画面だけで分かるようにする。 */
+function openRoundList(opts){
+  const just = opts && opts.justCleared != null ? opts.justCleared : null;
   if (viewStage < 0 || viewStage >= STAGES.length) viewStage = currentStage();
   syncHash();
   // ステージ選びは、縦に積んだ氷山にする。番号の羅列だと、どこまで来たのかが
@@ -1711,7 +1731,7 @@ function openRoundList(){
     // こども版だけ「？」にして、着くまでの楽しみを残す。
     const foot = open || mode !== "kids" ? stageName(si) : "？";
     return `<button class="stageStop ${cls}" data-stage="${si}" title="ステージ ${si + 1}　${depthText(si)}">
-      ${si === here ? '<img class="stopChar" src="img/maru-run.png" alt="">' : ""}
+      ${si === here ? `<img class="stopChar" src="${diverImg(si)}" alt="">` : ""}
       <span class="stopDepth">${depthText(si)}</span>
       <span class="stopDot"><b>${face}</b></span>
       <span class="stopText"><small>${foot}</small><em class="stopClear">CLEAR</em></span>
@@ -1721,12 +1741,17 @@ function openRoundList(){
 
   const rounds = STAGES[viewStage];
   const locked = !stageUnlocked(viewStage);
+  // 片づけた直後だけ、次にやる札を光らせる。常に光らせると、
+  // 自分で選ぶ画面なのに一つだけ勧められているように見えるため。
+  const nextPick = just != null ? rounds.find(i => !roundStates[i].cleared) : undefined;
+  const restCount = rounds.filter(i => !roundStates[i].cleared).length;
   // こども版は、お題と進み具合だけを見せる。数字と説明を減らして、
   // 何をすればいいかが一目で分かるようにする。
   const list = rounds.map((i, n) => {
     const r = ROUND_DATA[i], st = roundStates[i];
     const total = r.answers.length, target = clearTarget(r);
-    const cls = `${st.perfect ? "perfect " : st.great ? "great " : st.cleared ? "cleared " : ""}${i === roundIndex ? "current" : ""}`;
+    const cls = `${st.perfect ? "perfect " : st.great ? "great " : st.cleared ? "cleared " : ""}` +
+      `${i === roundIndex ? "current " : ""}${i === just ? "justCleared " : i === nextPick ? "nextPick" : ""}`;
     const pct = Math.min(100, st.discovered.size / total * 100);
 
     if (mode === "kids") {
@@ -1763,7 +1788,9 @@ function openRoundList(){
            ? `ひとつ うえの「${stageName(viewStage - 1)}」を ぜんぶ クリアすると、ここまで もぐれる！<br>どんな もんだいか だけ 見てね。`
            : `ひとつ上の層「${stageName(viewStage - 1)}」${depthText(viewStage - 1)} をぜんぶクリアすると、ここまで潜れます。<br>どんな問題かはここで見られます。`}</small>
        </div>`
-    : mode === "kids"
+    // 長い説明は、その層に初めて来たときだけ。クリアのたびに
+    // ここへ戻ってくるので、毎回読ませると邪魔になる。
+    : mode === "kids" || restCount < rounds.length
       ? ""
       : `<div class="stageNote">この ${rounds.length} 問をぜんぶクリアすると、ひとつ下の層へ潜れます。
         深いほど正解の数が減り、見慣れないことばになります。★は層を越えるたびに満タンに戻ります。</div>`;
@@ -1774,13 +1801,31 @@ function openRoundList(){
   $("#stageTitle").textContent = mode === "kids"
     ? `${stageName(viewStage)}　ふかさ ${depthText(viewStage)}`
     : `ステージ ${viewStage + 1}　${stageName(viewStage)}　${depthText(viewStage)} ・ ${doneNow}/${allNow}`;
-  $("#roundList").innerHTML = head + list;
+  // この層にあと何問あるか。一覧へ戻ってくるたび、ここが目当てになる
+  const progress = locked ? "" : `<div class="stageProgress">
+      <b>${restCount
+        ? (mode === "kids" ? `のこり ${restCount}もん` : `のこり ${restCount} 問`)
+        : (mode === "kids" ? "ぜんぶ クリア！" : "この層はぜんぶクリア")}</b>
+      <span>${rounds.length - restCount} / ${rounds.length}</span>
+    </div>`;
+  $("#roundList").innerHTML = progress + head + list;
   $("#stageStrip").querySelectorAll(".stageStop").forEach(b =>
     b.addEventListener("click", () => { viewStage = Number(b.dataset.stage); openRoundList(); }));
   $("#roundList").querySelectorAll(".roundChoice").forEach(b =>
     b.addEventListener("click", () => selectRound(Number(b.dataset.round))));
   openModal("#roundModal");
   centerStageStrip();
+  // 片づけた札を画面に入れ、音でも知らせる
+  if (just != null) {
+    const el = $(`#roundList .roundChoice[data-round="${just}"]`);
+    try { if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" }); } catch (e) {}
+    sfxStamp();
+  }
+}
+// 札がクリアに変わるときの音。短く、押した手応えだけ
+function sfxStamp(){
+  tone(659.25, {type: "triangle", vol: .05, dur: .09});
+  tone(987.77, {type: "sine", vol: .045, dur: .22, at: .08});
 }
 
 function openAnswers(){
@@ -1856,6 +1901,61 @@ document.addEventListener("keydown", e => {
 });
 
 /* ------------------------------------------------------------ 8) 入り口 */
+/* ------------------------------------------------- 21) スタート画面 */
+/* 開いてすぐ層の一覧が出ると、何の遊びなのか、自分がどこにいるのかが
+   分からず戸惑う。まず立つ場所を作り、そこから前回の続きへ入る。
+   共有された URL で来たときだけは、指されたラウンドへ直に入れる
+   （何を見に来たかが決まっているので、間に画面を挟まない）。 */
+function progressSummary(){
+  let found = 0, total = 0, cleared = 0;
+  ROUND_DATA.forEach((r, i) => { total += r.answers.length; found += roundStates[i].discovered.size; });
+  STAGES.forEach((_, si) => { if (stageCleared(si)) cleared++; });
+  return { found, total, cleared };
+}
+const comma = n => String(n).replace(/\B(?=(\d{3})+$)/g, ",");
+
+function showStart(notice){
+  const kids = mode === "kids";
+  const si = currentStage();
+  const sum = progressSummary();
+  const fresh = sum.found === 0;
+
+  $("#sgLead").innerHTML = kids
+    ? "〇に ひらがなを 1つ 入れて、ことばに する あそび。<br>ぜんぶの 〇 に <b>おなじ ひらがな</b>を 入れてね。"
+    : "〇 に かなを1つ入れて、ことばにする遊び。<br><b>すべての〇に同じ仮名</b>を入れる（〇ん〇ん → かんかん）。";
+
+  // いまいる層を、深さとキャラクターの姿で見せる
+  $("#sgChar").src = diverImg(si);
+  $("#sgWhereLabel").textContent = fresh
+    ? (kids ? "ここから もぐる" : "ここから潜る")
+    : (kids ? "いま いる ふかさ" : "いまいる層");
+  $("#sgLayer").textContent = stageName(si);
+  $("#sgDepth").textContent = depthText(si);
+
+  const stats = $("#sgStats");
+  stats.hidden = fresh;
+  stats.innerHTML = fresh ? "" : (kids
+    ? `みつけた ことば <b>${comma(sum.found)}</b>`
+    : `見つけたことば <b>${comma(sum.found)}</b> / ${comma(sum.total)}　・　クリアした層 <b>${sum.cleared}</b> / ${STAGES.length}`);
+
+  $("#sgStartLabel").textContent = fresh ? "はじめる" : (kids ? "つづきから" : "つづきから");
+  $("#sgStartSub").textContent = `${roundName()}　${templateText(current().template)}`;
+  $("#sgListBtn").textContent = kids ? "ばしょを えらぶ" : "層をえらぶ";
+  $("#sgMenuBtn").textContent = kids ? "あそびかた" : "あそびかた・設定";
+
+  const note = $("#sgNote");
+  note.hidden = !notice;
+  note.textContent = notice || "";
+
+  $("#startGate").hidden = false;
+}
+function hideStart(){ $("#startGate").hidden = true; }
+
+$("#sgStartBtn").addEventListener("click", () => { hideStart(); render(); syncHash(); });
+$("#sgListBtn").addEventListener("click", () => { hideStart(); viewStage = currentStage(); openRoundList(); });
+$("#sgMenuBtn").addEventListener("click", () => { hideStart(); openModal("#menuModal"); });
+$("#startPageBtn").addEventListener("click", () => { closeModals({force: true}); hideBurst(); showStart(); });
+
 // モードを選ぶまでゲームは始めない。選び直すとページを読み込み直す。
 // 盤面の語彙そのものが変わるので、途中から差し替えるより作り直すほうが確実。
 function chooseMode(m){
@@ -1881,7 +1981,7 @@ if (!mode) {
   $("#switchModeBtn").textContent = mode === "kids" ? "おとな版に切り替える" : "こども版に切り替える";
   if (mode === "kids") {
     ["#hintBtn", "#hintBtnM", "#mHintBtn"].forEach(sel => { const b = $(sel); if (b) b.textContent = "ヒント"; });
-    $("#nextBtn").textContent = "つぎへ →";
+    $("#nextBtn").textContent = "いちらんへ →";
     $("#retryBtn").textContent = "やりなおす";
     $("#revealBtn").textContent = "こたえを見る";
     $("#reviveBtn").textContent = "★5こ で もういちど";
@@ -1915,6 +2015,7 @@ if (!mode) {
   const fromHash = applyHash();
   render();
   syncHash();
-  if (bootNotice) flash("info", bootNotice);
-  if (!fromHash) openRoundList();
+  // 知らせはスタート画面に出す。盤面へ流しても、幕の裏で消えてしまうため
+  if (fromHash) { if (bootNotice) flash("info", bootNotice); }
+  else showStart(bootNotice);
 }

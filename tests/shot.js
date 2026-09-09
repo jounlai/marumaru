@@ -32,6 +32,9 @@ const DEVICES = [
     if (await page.isVisible("#modeGate")) {
       await page.click('[data-mode="adult"]');
       await page.waitForLoadState("load");
+      // スタート画面が立つので、そこから層の一覧へ入る
+      await page.waitForSelector("#startGate:not([hidden])");
+      await page.click("#sgListBtn");
       await page.waitForSelector("#roundModal.show");
       await page.waitForTimeout(200);
     }
