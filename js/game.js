@@ -113,22 +113,27 @@ function buildStages(){
  *
  * [おとな版の名前, こども版の名前, 深さ（m。正の数は水の上）] */
 const STAGE_LAYERS = [
-  ["氷の頂",   "てっぺん",       40], ["日向",   "ひなた",         25],
-  ["波際",     "なみぎわ",        8], ["水面",   "すいめん",        0],
-  ["浅瀬",     "あさせ",        -15], ["光の層", "ひかり",        -40],
-  ["藻場",     "もば",          -80], ["青闇",   "あおやみ",     -150],
-  ["群青",     "ぐんじょう",   -260], ["薄明",   "うすあかり",   -420],
-  ["無光層",   "まっくら",     -650], ["冷水塊", "つめたい",     -900],
-  ["氷の胴",   "こおりのなか",-1200], ["亀裂",   "ひびわれ",    -1600],
-  ["深藍",     "ふかいあお",  -2100], ["沈黙帯", "しずか",      -2700],
-  ["古氷",     "ふるいこおり",-3400], ["化石層", "かせき",      -4200],
-  ["漆黒",     "まっくろ",    -5100], ["骨の層", "ほね",        -6100],
-  ["海溝",     "かいこう",    -7200], ["氷の根", "こおりのね",  -8400],
-  ["岩盤",     "がんばん",    -9700], ["底知れず","そこなし",  -11000],
-  ["忘却層",   "わすれもの", -12400], ["最深部", "いちばんした",-13900],
-  ["地の底",   "ちのそこ",   -15500], ["太古",   "たいこ",     -17200],
-  ["始まり",   "はじまり",   -19000], ["底",     "そこ",       -21000]
+  ["氷の頂",   "てっぺん",       40], ["日向",     "ひなた",         25],
+  ["波際",     "なみぎわ",        8], ["水面",     "すいめん",        0],
+  ["浅瀬",     "あさせ",        -15], ["光の層",   "ひかり",        -40],
+  ["藻場",     "もば",          -80], ["青闇",     "あおやみ",     -130],
+  ["氷の底",   "こおりのそこ", -200],
+  // ここで氷山は終わる。実際の氷山は深くても200m台までしか沈んでいない。
+  // その先は氷を離れた海。見えていたのは一角で、ことばはまだ続く。
+  ["群青",     "ぐんじょう",   -320], ["薄明帯",   "うすあかり",   -500],
+  ["夜の海",   "よるのうみ",   -800], ["無光層",   "まっくら",    -1200],
+  ["深海",     "ふかいうみ", -1700], ["冷たい壁", "つめたいかべ",-2300],
+  ["沈黙",     "しずか",      -3000], ["深海平原", "ひろいそこ",  -3800],
+  ["泥の底",   "どろのそこ",  -4500], ["骨の層",   "ほね",        -5200],
+  ["漆黒",     "まっくろ",    -5900], ["超深海帯", "もっとふかい",-6500],
+  ["海溝の口", "かいこうのくち",-7200], ["亀裂",   "ひびわれ",    -7900],
+  ["冷たい灯", "つめたいひ",  -8500], ["忘却層",   "わすれもの",  -9100],
+  ["海淵",     "かいえん",    -9700], ["最深部",   "いちばんした",-10200],
+  ["底の底",   "そこのそこ", -10600], ["未踏",     "みとう",     -10900],
+  ["ことばの底","ことばのそこ",-11000]
 ];
+// 氷山が終わる層。ここより下はもう氷ではない
+const KEEL_INDEX = 8;
 function stageName(si){
   const n = STAGE_LAYERS[si];
   if (!n) return `ステージ ${si + 1}`;
@@ -139,7 +144,7 @@ function stageDepth(si){
   const n = STAGE_LAYERS[si];
   if (n) return n[2];
   const last = STAGE_LAYERS[STAGE_LAYERS.length - 1][2];
-  return last - (si - STAGE_LAYERS.length + 1) * 2000;
+  return last - (si - STAGE_LAYERS.length + 1) * 100;
 }
 // −1,200m のように書く。水の上は + を付けて、水面（0m）を境目に見せる
 function depthLabel(d){
@@ -147,6 +152,10 @@ function depthLabel(d){
   return d > 0 ? `+${n}m` : d === 0 ? "0m" : `−${n}m`;
 }
 function depthText(si){ return depthLabel(stageDepth(si)); }
+// 氷山が終わる位置（%）。ここより下は氷ではないので、絵も暗く沈める
+function keelRatio(){
+  return Math.max(0, Math.min(100, (KEEL_INDEX + 1) / STAGES.length * 100));
+}
 // 水面がどのステージに来るか。氷山の絵で水の線を引く位置に使う
 function seaLevelRatio(){
   let i = 0;
@@ -739,7 +748,7 @@ function audio(){
   return actx;
 }
 
-// 最初のタップ／キー操作で解錠する。iOS はユーザー操作の中でしか受け付けない
+// 最初のタップ/キー操作で解錠する。iOS はユーザー操作の中でしか受け付けない
 function unlockAudio(){
   enablePlaybackAudio();
   const c = audio();
@@ -964,14 +973,10 @@ function roundActions(){
     const goal = !s.great ? "GREAT" : (canPerfect() ? "PERFECT" : "");
     acts.push({label: mode === "kids"
       ? (goal ? `つづける（${goal} を ねらう）` : "つづける")
-      : (goal ? `このラウンドを続ける（${goal} を狙う）` : "このラウンドを続ける")});
+      : (goal ? `続ける（${goal} を狙う）` : "このラウンドを続ける")});
   }
-  // 「次へ」ではなく「一覧へ」。押した先で残りが見えるように、数も出す
-  const rest = STAGES[currentStage()].filter(i => !roundStates[i].cleared).length;
-  acts.push({label: !rest
-    ? (mode === "kids" ? "この ふかさは ぜんぶ クリア！ →" : "この層はぜんぶクリア →")
-    : (mode === "kids" ? `いちらんへ（あと ${rest}もん）` : `一覧へ戻る（この層はあと ${rest} 問）`),
-    primary: true, run: nextRound});
+  // ここで一区切り。残りの数は戻った先の一覧に出るので、ボタンは短くする
+  acts.push({label: mode === "kids" ? "おわる" : "終わる", primary: true, run: nextRound});
   return acts;
 }
 function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, actions, ms = 900}){
@@ -1007,8 +1012,9 @@ function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, acti
     b.addEventListener("click", () => { if (!a.keepOpen) hideBurst(); if (a.run) a.run(); });
     acts.appendChild(b);
   }
-  // 画面いっぱいを覆うので、外側を押しても閉じられるようにする
-  box.onclick = e => { if (e.target === box) hideBurst(); };
+  // 選ぶボタンがあるときは、外側を押しても閉じない。気づかないうちに
+  // 消えてしまい、何を選んだのか分からなくなるため。必ずどれかを押させる。
+  box.onclick = null;
   burstTimer = setTimeout(() => acts.classList.add("show"), ms);
 }
 function hideBurst(){
@@ -1586,6 +1592,7 @@ function selectRound(i){
   lastFoundWord = null;
   flash("info", "");
   saveProgress();
+  hideStart();
   closeModals();
   // 棒人間は歩かずに新しいラウンドの位置へ立ち直す
   mascotEl.classList.add("noAnim");
@@ -1652,10 +1659,19 @@ function openModal(sel){ closeModals({force: true}); document.querySelector(sel)
 // data-persistent（ゲームオーバー画面）は背景タップや Esc では閉じない。
 // 閉じられると★0のまま操作できない盤面だけが残ってしまうため。
 function closeModals(opts){
+  let hadList = false;
   document.querySelectorAll(".modal.show").forEach(m => {
     if (!(opts && opts.force) && m.hasAttribute("data-persistent")) return;
+    if (m.id === "roundModal") hadList = true;
     m.classList.remove("show");
   });
+  // 一覧を閉じたら盤面に戻る。URL もそこを指しておかないと、
+  // 読み込み直したときに別の画面が開いてしまう。
+  // スタート画面の上に重ねていたときは、戻る先はスタート画面。
+  if (hadList) {
+    if ($("#startGate").hidden) { viewStage = currentStage(); syncHash(); }
+    else syncHashStart();
+  }
 }
 
 let viewStage = 0;
@@ -1682,27 +1698,39 @@ function centerStageStrip(){
   if (typeof requestAnimationFrame === "function") requestAnimationFrame(go);
 }
 
-/* いま開いているステージとラウンドを URL に持たせる。読み込み直しても
-   同じところへ戻れるようにするため。ラウンドはテンプレートで指す（添字は
-   モードや語の増減でずれるが、テンプレートは変わらないため）。 */
-function syncHash(){
-  const r = ROUND_DATA[roundIndex];
-  const h = `#s${viewStage + 1}` + (r ? "&r=" + encodeURIComponent(r.template) : "");
+/* いまどの画面にいるかを URL に持たせる。読み込み直しても同じ場所へ戻る。
+ *   （無し）           スタート画面
+ *   #s6                6層目の一覧
+ *   #s6&r=〇んかい      そのラウンドの盤面
+ * ラウンドはテンプレートで指す（添字はモードや語の増減でずれるが、
+ * テンプレートは変わらないため）。 */
+function setHash(h){
   try { history.replaceState(null, "", location.pathname + location.search + h); } catch (e) {}
 }
-// URL の指す場所へ移す。戻せたラウンドがあれば true
+function syncHash(){
+  const r = ROUND_DATA[roundIndex];
+  setHash(`#s${viewStage + 1}` + (r ? "&r=" + encodeURIComponent(r.template) : ""));
+}
+function syncHashList(){ setHash(`#s${viewStage + 1}`); }
+function syncHashStart(){ setHash(""); }
+
+/* URL の指す場所を返す。"play" | "list" | "start" */
 function applyHash(){
   const m = /#s(\d+)(?:&r=([^&]*))?/.exec(location.hash);
-  if (!m) return false;
+  if (!m) return "start";
   viewStage = Math.min(Math.max(0, Number(m[1]) - 1), STAGES.length - 1);
-  if (!m[2]) return false;
+  if (!stageUnlocked(viewStage)) { viewStage = currentStage(); return "start"; }
+  if (!m[2]) return "list";
   const i = ROUND_DATA.findIndex(r => r.template === decodeURIComponent(m[2]));
-  if (i < 0) return false;
+  if (i < 0) return "list";
   const si = STAGE_OF.get(i);
-  if (si === undefined || !stageUnlocked(si)) return false;   // 施錠中には飛ばさない
+  if (si === undefined || !stageUnlocked(si)) return "start";   // 施錠中には飛ばさない
+  // 済んだラウンドの盤面へ戻しても、押せるかなが無くて手が止まる。
+  // ひと区切りついているので、スタート画面から選び直させる。
+  if (roundStates[i].cleared || roundStates[i].gaveUp) { viewStage = si; return "start"; }
   roundIndex = i;
   viewStage = si;
-  return true;
+  return "play";
 }
 /* opts.justCleared に札の番号を渡すと、その札が「クリアに変わる」演出をし、
    次にやる札を光らせる。クリアのたびにここへ戻ってくるので、
@@ -1710,7 +1738,7 @@ function applyHash(){
 function openRoundList(opts){
   const just = opts && opts.justCleared != null ? opts.justCleared : null;
   if (viewStage < 0 || viewStage >= STAGES.length) viewStage = currentStage();
-  syncHash();
+  syncHashList();
   // ステージ選びは、縦に積んだ氷山にする。番号の羅列だと、どこまで来たのかが
   // 数字でしか分からず味気ないため。深いほど水が濃くなり、正解の少ない
   // ラウンドが並ぶ。いまいる層にはキャラクターが浮かぶ。
@@ -1750,8 +1778,13 @@ function openRoundList(opts){
   const list = rounds.map((i, n) => {
     const r = ROUND_DATA[i], st = roundStates[i];
     const total = r.answers.length, target = clearTarget(r);
-    const cls = `${st.perfect ? "perfect " : st.great ? "great " : st.cleared ? "cleared " : ""}` +
+    // いま片づけた札だけは、クリアの見た目をまだ着せない。黒いまま出して、
+    // 一覧が開いたあとに白へ変える。変わる瞬間が見えないと、何が起きたのか
+    // 分からないため。着せる予定の見た目は data-stamp に持たせておく。
+    const stampCls = st.perfect ? "perfect" : st.great ? "great" : st.cleared ? "cleared" : "";
+    const cls = `${i === just ? "" : stampCls + " "}` +
       `${i === roundIndex ? "current " : ""}${i === just ? "justCleared " : i === nextPick ? "nextPick" : ""}`;
+    const stampAttr = i === just ? ` data-stamp="${stampCls}"` : "";
     const pct = Math.min(100, st.discovered.size / total * 100);
 
     if (mode === "kids") {
@@ -1760,7 +1793,7 @@ function openRoundList(opts){
         : st.cleared ? '<span class="rcMark done">★</span>'
         : st.gaveUp ? '<span class="rcMark">…</span>'
         : `<span class="rcMark">${n + 1}</span>`;
-      return `<button class="roundChoice kid ${cls}" data-round="${i}" ${locked ? "disabled" : ""}>
+      return `<button class="roundChoice kid ${cls}" data-round="${i}"${stampAttr} ${locked ? "disabled" : ""}>
         ${mark}
         <div class="rcPattern">${templateHTML(r.template)}</div>
         <div class="rcBar"><i style="width:${pct}%"></i></div>
@@ -1772,10 +1805,10 @@ function openRoundList(opts){
       : st.cleared ? '<span class="badge">✓ クリア</span>'
       : st.gaveUp ? '<span class="badge">降参</span>'
       : `<span class="badge">${st.discovered.size}/${target}</span>`;
-    return `<button class="roundChoice ${cls}" data-round="${i}" ${locked ? "disabled" : ""}>
+    return `<button class="roundChoice ${cls}" data-round="${i}"${stampAttr} ${locked ? "disabled" : ""}>
       <div class="rcTop"><span>${roundName(i)}</span>${badge}</div>
       <div class="rcPattern">${templateHTML(r.template)}</div>
-      <div class="rcMeta">全${total}語 ・ ${target}語でクリア ・ ${greatTarget(r)}語で GREAT${canPerfect(r) ? ` ・ ${total}語で PERFECT` : "（この数ではPERFECT無し）"}</div>
+      <div class="rcMeta">全${total}語</div>
       <div class="rcBar"><i style="width:${pct}%"></i></div>
     </button>`;
   }).join("");
@@ -1796,11 +1829,11 @@ function openRoundList(opts){
         深いほど正解の数が減り、見慣れないことばになります。★は層を越えるたびに満タンに戻ります。</div>`;
 
   $("#stageStrip").innerHTML =
-    `<div class="stripInner" style="--water:${seaLevelRatio()}%">${strip}</div>`;
-  const doneNow = stageDone(viewStage), allNow = STAGES[viewStage].length;
+    `<div class="stripInner" style="--water:${seaLevelRatio()}%;--keel:${keelRatio()}%">${strip}</div>`;
   $("#stageTitle").textContent = mode === "kids"
     ? `${stageName(viewStage)}　ふかさ ${depthText(viewStage)}`
-    : `ステージ ${viewStage + 1}　${stageName(viewStage)}　${depthText(viewStage)} ・ ${doneNow}/${allNow}`;
+    // 数は下の「のこり N 問」に出るので、題は短く保つ（狭い画面で折り返すため）
+    : `ステージ ${viewStage + 1}　${stageName(viewStage)}　${depthText(viewStage)}`;
   // この層にあと何問あるか。一覧へ戻ってくるたび、ここが目当てになる
   const progress = locked ? "" : `<div class="stageProgress">
       <b>${restCount
@@ -1815,17 +1848,23 @@ function openRoundList(opts){
     b.addEventListener("click", () => selectRound(Number(b.dataset.round))));
   openModal("#roundModal");
   centerStageStrip();
-  // 片づけた札を画面に入れ、音でも知らせる
+  // 片づけた札を画面に入れ、ひと呼吸おいて白へ変える
   if (just != null) {
     const el = $(`#roundList .roundChoice[data-round="${just}"]`);
     try { if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" }); } catch (e) {}
-    sfxStamp();
+    if (el) setTimeout(() => {
+      if (el.dataset.stamp) el.classList.add(el.dataset.stamp);
+      el.classList.add("stampIn");
+      sfxStamp();
+      buzz([25, 40, 70]);
+    }, 420);
   }
 }
-// 札がクリアに変わるときの音。短く、押した手応えだけ
+// 札が白に変わるときの音。低く一発、そのうえに明るい点をひとつ
 function sfxStamp(){
-  tone(659.25, {type: "triangle", vol: .05, dur: .09});
-  tone(987.77, {type: "sine", vol: .045, dur: .22, at: .08});
+  tone(98, {type: "sine", vol: .08, dur: .28});
+  tone(146.83, {type: "triangle", vol: .07, dur: .18});
+  tone(1174.66, {type: "sine", vol: .05, dur: .32, at: .05});
 }
 
 function openAnswers(){
@@ -1924,6 +1963,18 @@ function showStart(notice){
     ? "〇に ひらがなを 1つ 入れて、ことばに する あそび。<br>ぜんぶの 〇 に <b>おなじ ひらがな</b>を 入れてね。"
     : "〇 に かなを1つ入れて、ことばにする遊び。<br><b>すべての〇に同じ仮名</b>を入れる（〇ん〇ん → かんかん）。";
 
+  // 氷山そのものを小さく描き、そのどこにいるかを点で示す。
+  // 「深いほど数が減る」という前提は、文字より絵のほうが早い。
+  const berg = $("#sgBerg");
+  if (berg && berg.style) {
+    berg.style.setProperty("--water", seaLevelRatio() + "%");
+    berg.style.setProperty("--keel", keelRatio() + "%");
+    berg.style.setProperty("--you", (si + 0.5) / STAGES.length * 100 + "%");
+  }
+  $("#sgConcept").textContent = kids
+    ? "うえは みんなが しってる ことば。ふかいほど かずが へって、むずかしくなるよ。"
+    : "上は誰でも知っていることば。深いほど数が減り、見慣れなくなる。";
+
   // いまいる層を、深さとキャラクターの姿で見せる
   $("#sgChar").src = diverImg(si);
   $("#sgWhereLabel").textContent = fresh
@@ -1943,22 +1994,38 @@ function showStart(notice){
   $("#sgListBtn").textContent = kids ? "ばしょを えらぶ" : "層をえらぶ";
   $("#sgMenuBtn").textContent = kids ? "あそびかた" : "あそびかた・設定";
 
+  // モードはここでも選べるようにする。⚙メニューの中だけだと見つからない
+  $("#sgModes").querySelectorAll(".sgMode").forEach(b =>
+    b.classList.toggle("on", b.dataset.mode === mode));
+  $("#sgModeNote").textContent = kids
+    ? "きろくは べつべつ。もどれば つづきから あそべるよ。"
+    : "記録はモードごとに別々に残ります。戻せば続きから遊べます。";
+
   const note = $("#sgNote");
   note.hidden = !notice;
   note.textContent = notice || "";
 
   $("#startGate").hidden = false;
+  syncHashStart();
 }
 function hideStart(){ $("#startGate").hidden = true; }
 
 $("#sgStartBtn").addEventListener("click", () => { hideStart(); render(); syncHash(); });
-$("#sgListBtn").addEventListener("click", () => { hideStart(); viewStage = currentStage(); openRoundList(); });
-$("#sgMenuBtn").addEventListener("click", () => { hideStart(); openModal("#menuModal"); });
-$("#startPageBtn").addEventListener("click", () => { closeModals({force: true}); hideBurst(); showStart(); });
+// 一覧とメニューは、スタート画面を伏せずにその上へ重ねる。伏せてしまうと、
+// 閉じたときに戻る先が盤面になり、始めた覚えのないラウンドが出てくる。
+$("#sgListBtn").addEventListener("click", () => { viewStage = currentStage(); openRoundList(); });
+$("#sgMenuBtn").addEventListener("click", () => openModal("#menuModal"));
+// スタート画面へ戻る道は3つ。ヘッダーのロゴ、一覧の START、⚙メニュー。
+// 遊んでいる最中に戻れないと、いまどこにいるのかを確かめる先が無くなる。
+const goHome = () => { hideBurst(); showStart(); closeModals({force: true}); showStart(); };
+$("#startPageBtn").addEventListener("click", goHome);
+$("#homeBtn").addEventListener("click", goHome);
+$("#listHomeBtn").addEventListener("click", goHome);
 
 // モードを選ぶまでゲームは始めない。選び直すとページを読み込み直す。
 // 盤面の語彙そのものが変わるので、途中から差し替えるより作り直すほうが確実。
 function chooseMode(m){
+  if (m === mode) return;          // いま遊んでいるほうを押しても、何も起きない
   try { localStorage.setItem(MODE_KEY, m); } catch (e) {}
   location.reload();
 }
@@ -1981,7 +2048,7 @@ if (!mode) {
   $("#switchModeBtn").textContent = mode === "kids" ? "おとな版に切り替える" : "こども版に切り替える";
   if (mode === "kids") {
     ["#hintBtn", "#hintBtnM", "#mHintBtn"].forEach(sel => { const b = $(sel); if (b) b.textContent = "ヒント"; });
-    $("#nextBtn").textContent = "いちらんへ →";
+    $("#nextBtn").textContent = "おわる →";
     $("#retryBtn").textContent = "やりなおす";
     $("#revealBtn").textContent = "こたえを見る";
     $("#reviveBtn").textContent = "★5こ で もういちど";
@@ -1991,16 +2058,20 @@ if (!mode) {
   }
   loadProgress();
 
-  // 起動時に詰んだ状態（★0 のまま／入力できないラウンド）で放置しないための復旧
+  // 起動時に詰んだ状態（★0 のまま/入力できないラウンド）で放置しないための復旧
   let bootNotice = "";
   if (stars <= 0) {
     stars = 5;
     bootNotice = "前回★が尽きていました。★5から再開します。";
     saveProgress();
-  } else if (roundLocked()) {
-    bootNotice = state().gaveUp
-      ? "このラウンドは降参済みです。「やり直す」か、一覧から別のラウンドを選んでください。"
-      : "このラウンドは全問正解済みです。一覧から別のラウンドを選べます。";
+  }
+  // 済んだラウンドから始めても押せるかなが無い。手つかずの問題へ寄せて、
+  // スタート画面の「つづきから」がいつでも遊べる先を指すようにする。
+  if (roundLocked() || state().cleared) {
+    const fresh = si => STAGES[si].find(i => !roundStates[i].cleared && !roundStates[i].gaveUp);
+    const next = fresh(currentStage());
+    if (next !== undefined) roundIndex = next;
+    else { const n2 = fresh(highestUnlocked()); if (n2 !== undefined) roundIndex = n2; }
   }
 
   // 前のステージを終えていないのに、その先のラウンドから始まってしまうことがある
@@ -2012,10 +2083,12 @@ if (!mode) {
   }
   viewStage = currentStage();
   // URL が場所を指していれば、そこへ戻す（読み込み直しても同じ画面になる）
-  const fromHash = applyHash();
+  const where = applyHash();
   render();
-  syncHash();
   // 知らせはスタート画面に出す。盤面へ流しても、幕の裏で消えてしまうため
-  if (fromHash) { if (bootNotice) flash("info", bootNotice); }
-  else showStart(bootNotice);
+  if (where === "start") showStart(bootNotice);
+  else {
+    if (where === "play") syncHash(); else openRoundList();
+    if (bootNotice) flash("info", bootNotice);
+  }
 }

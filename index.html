@@ -78,14 +78,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=e806b2ce">
+<link rel="stylesheet" href="css/styles.css?v=04d4f292">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=e806b2ce" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=04d4f292" alt="まるまる 〇〇ことば">
     <div class="mgLead">どちらであそびますか？</div>
     <div class="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -105,12 +105,17 @@
      分からず戸惑うため、まず立つ場所を作る。基本は前回の続きから始める。 -->
 <div class="startGate" id="startGate" hidden>
   <div class="sgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=e806b2ce" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=04d4f292" alt="まるまる 〇〇ことば">
     <div class="sgLead" id="sgLead"></div>
 
     <div class="sgHere" id="sgHere">
-      <img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=e806b2ce" alt="">
+      <div class="sgBerg" id="sgBerg">
+        <span class="sgSea"></span>
+        <span class="sgYou"><img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=04d4f292" alt=""></span>
+      </div>
       <div class="sgWhere">
+        <em class="sgTag">ことばの氷山</em>
+        <span class="sgConcept" id="sgConcept"></span>
         <small id="sgWhereLabel">いまいる層</small>
         <b id="sgLayer">氷の頂</b>
         <span class="sgDepth" id="sgDepth">+40m</span>
@@ -123,6 +128,11 @@
       <button class="btn" id="sgListBtn">層をえらぶ</button>
       <button class="btn" id="sgMenuBtn">あそびかた</button>
     </div>
+    <div class="sgModes" id="sgModes" role="group" aria-label="遊ぶモード">
+      <button class="sgMode" data-mode="kids">こども版</button>
+      <button class="sgMode" data-mode="adult">おとな版</button>
+    </div>
+    <div class="sgModeNote" id="sgModeNote"></div>
     <div class="sgNote" id="sgNote" hidden></div>
   </div>
 </div>
@@ -131,7 +141,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <div class="brand"><img src="img/logo-small.png?v=e806b2ce" alt="まるまる 〇〇ことば" width="320" height="104"></div>
+    <button class="brand" id="homeBtn" title="スタート画面へ" aria-label="スタート画面へ"><img src="img/logo-small.png?v=04d4f292" alt="まるまる 〇〇ことば" width="320" height="104"></button>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -199,7 +209,7 @@
       <!-- 五十音パネル -->
       <section class="gridWrap">
         <div class="kanaGrid" id="kanaGrid">
-          <!-- 清音／濁音セクションは JS が描画。右下の空きスペースをポケットとして使う -->
+          <!-- 清音/濁音セクションは JS が描画。右下の空きスペースをポケットとして使う -->
           <div class="pocket" id="pocket">
             <div class="pocketTitle" id="pocketTitle">見つけたことば</div>
             <div class="chips" id="foundChips"></div>
@@ -256,7 +266,7 @@
       <button class="btn primary" id="reviveBarBtn">★5で再開</button>
       <button class="btn" id="retryBtn">やり直す</button>
       <button class="btn" id="revealBtn">答えを見る</button>
-      <button class="btn primary" id="nextBtn">一覧へ戻る →</button>
+      <button class="btn primary" id="nextBtn">終わる →</button>
     </div>
   </div>
 
@@ -302,7 +312,10 @@
         <div class="modalTitle" id="stageTitle">ステージ</div>
         <div class="modalSub">ことばの氷山。上は誰でも知っていることば、深いほど数が減って見慣れなくなります。</div>
       </div>
-      <div class="topBtns"><button class="iconBtn" data-close>閉じる</button></div>
+      <div class="topBtns">
+        <button class="iconBtn" id="listHomeBtn">START</button>
+        <button class="iconBtn" data-close>閉じる</button>
+      </div>
     </div>
     <div class="stageStrip" id="stageStrip"></div>
     <div class="roundList" id="roundList"></div>
@@ -390,8 +403,8 @@
 </div>
 
 <!-- ?v= は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/data.js?v=e806b2ce"></script>
-<script src="js/kids.js?v=e806b2ce"></script>
-<script src="js/game.js?v=e806b2ce"></script>
+<script src="js/data.js?v=04d4f292"></script>
+<script src="js/kids.js?v=04d4f292"></script>
+<script src="js/game.js?v=04d4f292"></script>
 </body>
 </html>

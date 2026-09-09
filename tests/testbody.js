@@ -23,8 +23,14 @@
     q("#startGate").hidden && !q("#roundModal").classList.contains("show"));
   showStart();
   click(q("#sgListBtn"));
-  check("「層をえらぶ」でラウンド一覧が開く",
-    q("#startGate").hidden && q("#roundModal").classList.contains("show"));
+  check("「層をえらぶ」でラウンド一覧が開く", q("#roundModal").classList.contains("show"));
+  // 一覧とメニューはスタート画面に重ねる。伏せると閉じた先が盤面になるため
+  check("一覧はスタート画面に重なる", !q("#startGate").hidden);
+  closeModals();
+  check("一覧を閉じるとスタート画面に戻る",
+    !q("#startGate").hidden && !q("#roundModal").classList.contains("show"));
+  hideStart();
+  openRoundList();
   check("一覧はいまのステージの問題を出す",
     document.querySelectorAll("#roundList .roundChoice").length === STAGES[0].length,
     `${document.querySelectorAll("#roundList .roundChoice").length}/${STAGES[0].length}`);
