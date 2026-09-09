@@ -1237,7 +1237,17 @@ button.brand{background:none;border:0;padding:0;cursor:pointer;line-height:0;bor
 button.brand:hover img{filter:brightness(1.15)}
 button.brand:active{transform:scale(.96)}
 @media(max-width:520px){ .brand img{height:32px;margin:-7px 0} }
-@media(max-width:380px){ .brand img{height:28px;margin:-6px 0} }
+@media(max-width:380px){
+  .brand img{height:28px;margin:-6px 0}
+  /* 狭い画面では一覧の字を畳んで絵だけにする。言語によっては字が長く
+     （Layers・Tầng）、スコアに重なる */
+  #roundListBtn span{display:none}
+  #roundListBtn{padding:6px 9px}
+  /* ★とスコアも少し詰める。ベトナム語はラテン字のフォントに差し替えて
+     いるぶん数字が広く、これが無いとボタンに触れる */
+  .hud{gap:6px}
+  .hudStars{font-size:14px;letter-spacing:-.03em}
+}
 .mgLogo{
   display:block;width:min(460px,84vw);height:auto;margin:0 auto 10px;
   animation:logoIn .7s cubic-bezier(.16,1.2,.3,1) both, logoBob 3.2s 1s ease-in-out infinite;

@@ -569,7 +569,6 @@ function popLostStar(){
 let scoreShown = 0, scoreRaf = 0;
 function renderScore(){
   const el = $("#scoreValue");
-  $("#rankLabel").textContent = rankName();
   cancelAnimationFrame(scoreRaf);
   const from = scoreShown, to = score, start = performance.now();
   if (from !== to) $("#hudScore").classList.add("bump");
@@ -727,7 +726,6 @@ function renderDoneBar(){
 
 function render(){
   $("#stageChip").textContent = `${currentStage() + 1}　${stageName(currentStage())}`;
-  $("#rankLabel").textContent = rankName();
   $("#roundLabel").textContent = roundName();
   $("#roundLabel").classList.toggle("special", isSpecial());
   $("#difficulty").textContent = difficultyLabel(roundIndex);

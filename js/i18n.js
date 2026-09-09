@@ -836,8 +836,8 @@ ko: [
 
 /* 段位。日本語は RANKS が持つ。 */
 const RANK_I18N = {
-en: ["Novice","Word Picker","Word Handler","Apprentice Lexicographer","Word Connoisseur",
-  "Vocabulary Adept","Word Master","Vocabulary King","God of 〇〇"],
+en: ["Novice","Word Picker","Word Handler","Word Scholar","Sharp Eye",
+  "Word Adept","Word Master","Word King","God of 〇〇"],
 zh: [
   "新手",
   "拾词人",
