@@ -92,7 +92,7 @@ if (orphans.length) errors.push(`js/kids.js に data.js から消えた語が残
 // （GitHub Pages は cache-control: max-age=600 で配信する）
 // 語数ではなく内容から作るのは、語彙を変えない修正でもキャッシュを切るため。
 const root = path.join(__dirname, "..");
-const ASSETS = ["css/styles.css", "js/i18n.js", "js/meanings-i18n.js", "js/data.js", "js/kids.js", "js/game.js"];
+const ASSETS = ["css/styles.css", "js/i18n.js", "js/meanings-i18n.js", "js/data.js", "js/kids.js", "js/music.js", "js/game.js"];
 const stamp = crypto.createHash("sha1")
   .update(ASSETS.map(f => fs.readFileSync(path.join(root, f))).join("\n"))
   .digest("hex").slice(0, 8);

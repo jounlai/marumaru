@@ -23,6 +23,7 @@ const src = [
   fs.readFileSync(ROOT + "/js/meanings-i18n.js", "utf8"),
   fs.readFileSync(ROOT + "/js/data.js", "utf8"),
   fs.readFileSync(ROOT + "/js/kids.js", "utf8"),
+  fs.readFileSync(ROOT + "/js/music.js", "utf8"),
   fs.readFileSync(ROOT + "/js/game.js", "utf8"),
   fs.readFileSync(__dirname + "/testbody.js", "utf8")
 ].join("\n;\n");

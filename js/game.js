@@ -244,6 +244,7 @@ function saveKeyFor(m){ return m === "kids" ? KIDS_SAVE_KEY : ADULT_SAVE_KEY; }
 let roundIndex = 0;
 let stars = 5;
 let soundOn = true;
+let musicOn = true;
 let score = 0;
 let combo = 0;
 let maxCombo = 0;
@@ -257,7 +258,7 @@ function serializeProgress(){
   return {
     v: 5,
     roundTemplate: ROUND_DATA[roundIndex] && ROUND_DATA[roundIndex].template,
-    stars, soundOn, score, maxCombo,
+    stars, soundOn, musicOn, score, maxCombo,
     celebrated: [...celebrated],
     rounds: roundStates.map((s, i) => ({
       template: ROUND_DATA[i].template,
@@ -314,6 +315,8 @@ function loadProgress(){
   }
   if (Number.isFinite(x.stars) && x.stars >= 0) stars = x.stars;
   if (typeof x.soundOn === "boolean") soundOn = x.soundOn;
+  // 以前から消音で遊んでいた人には、追加したBGMも鳴らさない。
+  musicOn = typeof x.musicOn === "boolean" ? x.musicOn : soundOn;
   if (Number.isFinite(x.score)) score = x.score;
   if (Number.isFinite(x.maxCombo)) maxCombo = x.maxCombo;
   if (Array.isArray(x.celebrated)) celebrated = new Set(x.celebrated.filter(Number.isInteger));
@@ -381,6 +384,9 @@ function mergeProgress(mine, other){
     roundTemplate: mine.roundTemplate || other.roundTemplate,
     stars: Math.max(n(mine.stars), n(other.stars)),
     soundOn: typeof mine.soundOn === "boolean" ? mine.soundOn : other.soundOn,
+    musicOn: typeof mine.musicOn === "boolean" ? mine.musicOn
+      : typeof mine.soundOn === "boolean" ? mine.soundOn
+      : typeof other.musicOn === "boolean" ? other.musicOn : other.soundOn,
     score: Math.max(n(mine.score), n(other.score)),
     maxCombo: Math.max(n(mine.maxCombo), n(other.maxCombo)),
     rounds: [...byTemplate.values()]
@@ -817,6 +823,23 @@ function flashAnswer(a, note){
 const SILENT_WAV = "data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA";
 
 let actx = null, silentEl = null;
+let musicPlayer = null, audioUnlocked = false, audioPageHidden = false;
+
+function syncMusic(){
+  if (!musicOn || !mode || !audioUnlocked || document.hidden || audioPageHidden) {
+    if (musicPlayer) musicPlayer.stop();
+    return;
+  }
+  if (!actx) return;
+  if (!musicPlayer) musicPlayer = IcebergMusic.create(actx, () => ({mode, stage: currentStage()}));
+  musicPlayer.start();
+}
+function syncAudioButtons(){
+  $("#soundBtn").textContent = t(soundOn ? "sound_on" : "sound_off");
+  $("#soundBtn").setAttribute("aria-pressed", String(soundOn));
+  $("#musicBtn").textContent = t(musicOn ? "music_on" : "music_off");
+  $("#musicBtn").setAttribute("aria-pressed", String(musicOn));
+}
 
 // 消音スイッチを無視して鳴らせる状態にする。最初のタップで一度だけ効かせる。
 // audioSession が使えるならそれで済ませる。無音ループは再生中の表示が
@@ -837,22 +860,27 @@ function enablePlaybackAudio(){
 
 function audio(){
   if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
-  if (actx.state === "suspended") actx.resume();
+  if (actx.state === "suspended") actx.resume().catch(() => armGestureResume());
   // 復帰の合図を取り逃していても、無音ループが止まっていれば掛け直す。
   // これが止まったままだと、iOS では鳴っているつもりで無音になる。
-  if (soundOn && silentEl && silentEl.paused) enablePlaybackAudio();
+  if ((soundOn || musicOn) && silentEl && silentEl.paused) enablePlaybackAudio();
   return actx;
 }
 
 // 最初のタップ/キー操作で解錠する。iOS はユーザー操作の中でしか受け付けない
 function unlockAudio(){
+  if ((!soundOn && !musicOn) || !mode) return;
+  try {
   enablePlaybackAudio();
   const c = audio();
+  audioUnlocked = true;
   // 無音を一発鳴らして、実際に音の出せる状態かを確定させる
   try {
     const b = c.createBuffer(1, 1, 22050), s = c.createBufferSource();
     s.buffer = b; s.connect(c.destination); s.start(0);
   } catch (e) {}
+  syncMusic();
+  } catch (e) {}  // WebAudioが無い環境でも、ことばのゲームは遊べる。
 }
 ["pointerdown", "touchstart", "keydown"].forEach(ev =>
   addEventListener(ev, unlockAudio, {once: true, passive: true}));
@@ -878,10 +906,11 @@ function armGestureResume(){
     addEventListener(ev, onGesture, {passive: true}));
 }
 function resumeAudio(){
-  if (!soundOn) return;
+  if ((!soundOn && !musicOn) || !mode || document.hidden || audioPageHidden || !audioUnlocked) return;
   enablePlaybackAudio();
   if (!actx) return;
   if (actx.state === "suspended") actx.resume().catch(() => armGestureResume());
+  syncMusic();
   setTimeout(() => {
     if (!actx) return;
     if (actx.state === "suspended" || (silentEl && silentEl.paused)) armGestureResume();
@@ -889,12 +918,20 @@ function resumeAudio(){
 }
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") resumeAudio();
+  else {
+    if (musicPlayer) musicPlayer.stop();
+    if (silentEl) silentEl.pause();
+  }
 });
 // ホーム画面から戻したときは visibilitychange が来ないことがある
-addEventListener("pageshow", resumeAudio);
+addEventListener("pageshow", () => { audioPageHidden = false; resumeAudio(); });
 addEventListener("focus", resumeAudio);
 // 離れるときに無音ループを止めておく（バックグラウンドで鳴り続けないように）
-addEventListener("pagehide", () => { if (silentEl) silentEl.pause(); });
+addEventListener("pagehide", () => {
+  audioPageHidden = true;
+  if (musicPlayer) musicPlayer.stop();
+  if (silentEl) silentEl.pause();
+});
 function tone(freq, {dur = .14, type = "triangle", vol = .06, at = 0, glide = 0} = {}){
   if (!soundOn) return;
   try {
@@ -1762,13 +1799,17 @@ function revive(){
   flash("info", t("msg_revived"));
 }
 function resetAll(skipConfirm){
-  if (!skipConfirm && !confirm("★・スコア・発見語・クリア履歴をすべて消去しますか？")) return;
+  if (!skipConfirm && !confirm(t("confirm_reset"))) return;
   roundIndex = 0; stars = 5; score = 0; combo = 0; maxCombo = 0; scoreShown = 0; starsShown = -1;
   roundStates.forEach(s => {
     s.found.clear(); s.discovered.clear(); s.used.clear();
     s.cleared = s.rewarded = s.gaveUp = s.great = s.greatRewarded = s.perfect = s.perfectRewarded = false;
   });
+  // 祝い済みの印も消す。残したままだと、やり直しても STAGE CLEAR が出ない
+  celebrated.clear();
+  viewStage = 0;
   clearSavedProgress();
+  hideEnding({silent: true});
   closeModals({force: true});
   flash("info", "");
   render();
@@ -2006,7 +2047,7 @@ function openMenu(){
   $("#mCleared").textContent =
     `${groupClearedCount("main")}/${groupCount("main")}・${groupClearedCount("special")}/${groupCount("special")}・${groupClearedCount("word")}/${groupCount("word")}`;
   $("#menuRank").textContent = t("menu_rank", {rank: rankName(), n: perfectCount()});
-  $("#soundBtn").textContent = t(soundOn ? "sound_on" : "sound_off");
+  syncAudioButtons();
   openModal("#menuModal");
 }
 
@@ -2029,9 +2070,17 @@ $("#reviveBtn").addEventListener("click", revive);
 $("#gAnswerBtn").addEventListener("click", openAnswers);
 $("#soundBtn").addEventListener("click", () => {
   soundOn = !soundOn;
-  $("#soundBtn").textContent = t(soundOn ? "sound_on" : "sound_off");
+  syncAudioButtons();
   if (soundOn) { unlockAudio(); resumeAudio(); sfxHint(); }
-  else if (silentEl) silentEl.pause();   // OFF のあいだは無音ループも止める
+  else if (!musicOn && silentEl) silentEl.pause();
+  saveProgress();
+});
+$("#musicBtn").addEventListener("click", () => {
+  musicOn = !musicOn;
+  syncAudioButtons();
+  if (musicOn) unlockAudio();
+  syncMusic();
+  if (!musicOn && !soundOn && silentEl) silentEl.pause();
   saveProgress();
 });
 
@@ -2094,6 +2143,7 @@ function endingHTML(){
     <div class="endFin">${esc(t("ending_end"))}</div>
     <div class="endActions">
       <button class="btn primary" id="endShare">${esc(t("share_x"))}</button>
+      <button class="btn" id="endRestart">${esc(t("restart_all"))}</button>
     </div>`;
 }
 
@@ -2110,6 +2160,7 @@ function showEnding(){
   const total = ROUND_DATA.reduce((n, r) => n + r.answers.length, 0);
   $("#endShare").addEventListener("click", () =>
     window.open(xIntent(t("share_ending", {total: num(total)})), "_blank", "noopener"));
+  $("#endRestart").addEventListener("click", () => resetAll(false));
   // 画面の下から流し始める
   endY = $("#ending").clientHeight;
   roll.style.transform = `translateY(${endY}px)`;
@@ -2129,10 +2180,11 @@ function showEnding(){
   };
   if (typeof requestAnimationFrame === "function") endTimer = requestAnimationFrame(step);
 }
-function hideEnding(){
+function hideEnding(opts){
   cancelAnimationFrame(endTimer);
   $("#ending").hidden = true;
-  showStart();
+  // やり直しから呼ばれたときは、そのまま一覧へ進むのでホームは出さない
+  if (!(opts && opts.silent)) showStart();
 }
 $("#endClose").addEventListener("click", hideEnding);
 $("#endSpeed").addEventListener("click", () => {
@@ -2204,10 +2256,10 @@ function showStart(notice){
   const nm = $("#sgName");
   nm.textContent = t("game_name");
   nm.hidden = !nm.textContent;
-  // 全部クリアした人だけ、いつでもエンディングを見られる
-  const eb = $("#sgEndingBtn");
-  eb.hidden = !allCleared();
-  eb.textContent = t("ending_replay");
+  // 全部クリアした人だけ、エンディングの見直しと、はじめからのやり直しを出す
+  $("#sgDone").hidden = !allCleared();
+  $("#sgEndingBtn").textContent = t("ending_replay");
+  $("#sgRestartBtn").textContent = t("restart_all");
 
   const note = $("#sgNote");
   note.hidden = !notice;
@@ -2224,6 +2276,7 @@ $("#sgStartBtn").addEventListener("click", () => { hideStart(); render(); syncHa
 $("#sgListBtn").addEventListener("click", () => { viewStage = currentStage(); openRoundList(); });
 $("#sgMenuBtn").addEventListener("click", () => openModal("#menuModal"));
 $("#sgEndingBtn").addEventListener("click", showEnding);
+$("#sgRestartBtn").addEventListener("click", () => resetAll(false));
 // ホーム（スタート画面）へ戻る道は3つ。ヘッダーのロゴ、一覧の戻り、⚙メニュー。
 // 「START」とだけ書くとそれが何なのか分からないので、行き先の名前で書く。
 // 遊んでいる最中に戻れないと、いまどこにいるのかを確かめる先が無くなる。
@@ -2287,6 +2340,7 @@ if (!mode) {
     ["#hintBtn", "#hintBtnM", "#mHintBtn"].forEach(sel => { const b = $(sel); if (b) b.textContent = t("hint_kids"); });
   }
   loadProgress();
+  syncAudioButtons();
 
   // 起動時に詰んだ状態（★0 のまま/入力できないラウンド）で放置しないための復旧
   let bootNotice = "";

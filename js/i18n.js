@@ -23,6 +23,8 @@ const HTML_LANG = { zh: "zh-Hans", zhTW: "zh-Hant" };
 
 const STRINGS = {
 ja: {
+  restart_all: "はじめから もう一度",
+  confirm_reset: "★・スコア・見つけたことば・クリアの記録を、すべて消しますか？\n氷の頂からやり直しになります。",
   game_name: "",
   all_clear: "ALL CLEAR", ending_open: "エンディングを見る", ending_close: "閉じる",
   ending_title: "ことばの底へ", ending_lead: "あなたが潜った層と、見つけたことば。",
@@ -118,6 +120,7 @@ ja: {
   menu_found: "発見したことば", menu_cleared: "クリア",
   menu_rank: "{rank} ・ PERFECT {n} ラウンド",
   sound_on: "♪ 効果音 ON", sound_off: "♪ 効果音 OFF",
+  music_on: "♫ BGM ON", music_off: "♫ BGM OFF",
   to_kids: "こども版に切り替える", to_adult: "おとな版に切り替える",
   reset_all: "記録をすべてリセット", menu_home: "ホーム画面へ戻る",
   mode_kids: "こども版", mode_adult: "おとな版",
@@ -136,6 +139,7 @@ ja: {
 },
 
 jaKids: {
+  music_on: "♫ おんがく ON", music_off: "♫ おんがく OFF",
   gate_lead: "どちらであそびますか？",
   home_lead: "〇に ひらがなを 1つ 入れて、ことばに する あそび。<br>ぜんぶの 〇 に <b>おなじ ひらがな</b>を 入れてね。",
   home_concept: "うえは みんなが しってる ことば。ふかいほど かずが へって、むずかしくなるよ。",
@@ -165,6 +169,8 @@ jaKids: {
 },
 
 en: {
+  restart_all: "Play again from the top",
+  confirm_reset: "Erase your ★, score, found words and clear history?\nYou will start again from the iceberg peak.",
   game_name: "Marumaru Kotoba — kana fill-in survival",
   all_clear: "ALL CLEAR", ending_open: "Watch the ending", ending_close: "Close",
   ending_title: "To the bottom of words", ending_lead: "The layers you dived, and the words you found.",
@@ -252,6 +258,7 @@ en: {
   menu_found: "Words found", menu_cleared: "Cleared",
   menu_rank: "{rank} · PERFECT on {n} rounds",
   sound_on: "♪ Sound ON", sound_off: "♪ Sound OFF",
+  music_on: "♫ Music ON", music_off: "♫ Music OFF",
   to_kids: "Switch to the kids edition", to_adult: "Switch to the adult edition",
   reset_all: "Erase all progress", menu_home: "Back to home",
   mode_kids: "Kids", mode_adult: "Adult",
@@ -268,6 +275,8 @@ en: {
 },
 
 zh: {
+  restart_all: "从头再玩一次",
+  confirm_reset: "要清除 ★、分数、已找到的词和通关记录吗？\n将从冰山之巅重新开始。",
   game_name: "Marumaru Kotoba — 假名填空生存游戏",
   all_clear: "ALL CLEAR", ending_open: "观看结局", ending_close: "关闭",
   ending_title: "抵达词语之底", ending_lead: "你下潜过的层，和找到的词。",
@@ -355,6 +364,7 @@ zh: {
   menu_found: "已找到的词", menu_cleared: "已通关",
   menu_rank: "{rank} · {n} 关 PERFECT",
   sound_on: "♪ 音效 ON", sound_off: "♪ 音效 OFF",
+  music_on: "♫ 背景音乐 ON", music_off: "♫ 背景音乐 OFF",
   to_kids: "切换到儿童版", to_adult: "切换到成人版",
   reset_all: "清除全部记录", menu_home: "回到首页",
   mode_kids: "儿童版", mode_adult: "成人版",
@@ -373,6 +383,8 @@ zh: {
 /* 繁体字（台湾）。語彙も台湾の言い方に寄せる（菜单→選單、记录→紀錄、
    设置→設定）。ここに無い鍵は zh（簡体字）に落ちる。 */
 zhTW: {
+  restart_all: "從頭再玩一次",
+  confirm_reset: "要清除 ★、分數、已找到的詞和通關紀錄嗎？\n將從冰山之巔重新開始。",
   game_name: "Marumaru Kotoba — 假名填空生存遊戲",
   all_clear: "ALL CLEAR", ending_open: "觀看結局", ending_close: "關閉",
   ending_title: "抵達詞語之底", ending_lead: "你下潛過的層，和找到的詞。",
@@ -460,6 +472,7 @@ zhTW: {
   menu_found: "已找到的詞", menu_cleared: "已通關",
   menu_rank: "{rank} · {n} 關 PERFECT",
   sound_on: "♪ 音效 ON", sound_off: "♪ 音效 OFF",
+  music_on: "♫ 背景音樂 ON", music_off: "♫ 背景音樂 OFF",
   to_kids: "切換到兒童版", to_adult: "切換到成人版",
   reset_all: "清除全部紀錄", menu_home: "回到首頁",
   mode_kids: "兒童版", mode_adult: "成人版",
@@ -476,6 +489,8 @@ zhTW: {
 },
 
 vi: {
+  restart_all: "Chơi lại từ đầu",
+  confirm_reset: "Xoá hết ★, điểm, các từ đã tìm và lịch sử đã qua?\nSẽ bắt đầu lại từ đỉnh băng.",
   game_name: "Marumaru Kotoba — điền kana sinh tồn",
   all_clear: "ALL CLEAR", ending_open: "Xem đoạn kết", ending_close: "Đóng",
   ending_title: "Tới đáy của ngôn từ", ending_lead: "Những tầng đã lặn qua, và những từ đã tìm được.",
@@ -563,6 +578,7 @@ vi: {
   menu_found: "Từ đã tìm", menu_cleared: "Đã qua",
   menu_rank: "{rank} · PERFECT ở {n} vòng",
   sound_on: "♪ Âm thanh BẬT", sound_off: "♪ Âm thanh TẮT",
+  music_on: "♫ Nhạc BẬT", music_off: "♫ Nhạc TẮT",
   to_kids: "Chuyển sang bản trẻ em", to_adult: "Chuyển sang bản người lớn",
   reset_all: "Xoá toàn bộ tiến độ", menu_home: "Về trang chính",
   mode_kids: "Trẻ em", mode_adult: "Người lớn",
@@ -579,6 +595,8 @@ vi: {
 },
 
 ko: {
+  restart_all: "처음부터 다시",
+  confirm_reset: "★, 점수, 찾은 말, 클리어 기록을 모두 지울까요?\n빙산 꼭대기부터 다시 시작합니다.",
   game_name: "마루마루 코토바 — 가나 채우기 서바이벌",
   all_clear: "ALL CLEAR", ending_open: "엔딩 보기", ending_close: "닫기",
   ending_title: "말의 바닥까지", ending_lead: "당신이 내려간 층과, 찾아낸 말들.",
@@ -666,6 +684,7 @@ ko: {
   menu_found: "찾은 말", menu_cleared: "클리어",
   menu_rank: "{rank} · PERFECT {n}라운드",
   sound_on: "♪ 효과음 ON", sound_off: "♪ 효과음 OFF",
+  music_on: "♫ 배경음악 ON", music_off: "♫ 배경음악 OFF",
   to_kids: "어린이판으로 바꾸기", to_adult: "어른판으로 바꾸기",
   reset_all: "기록 전체 지우기", menu_home: "홈으로 돌아가기",
   mode_kids: "어린이판", mode_adult: "어른판",

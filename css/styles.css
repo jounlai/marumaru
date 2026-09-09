@@ -1673,6 +1673,7 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
 .endMade{margin-top:30px;font-size:12px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.1em}
 .endFin{margin:56px 0 0;font-size:clamp(20px,5vw,30px);font-weight:950;letter-spacing:.4em;color:#cfefff}
 .endActions{margin:30px 0 26vh}   /* 下に余白を残し、止まったとき画面の中ほどに来るように */
+.endActions{display:flex;flex-direction:column;align-items:center;gap:10px}
 .endActions .btn{min-width:min(280px,80vw)}
 /* 速さと閉じるは、いつでも手の届くところに置く */
 .endBar{
