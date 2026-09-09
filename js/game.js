@@ -825,8 +825,20 @@ const SILENT_WAV = "data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAE
 let actx = null, silentEl = null;
 let musicPlayer = null, audioUnlocked = false, audioPageHidden = false;
 
+/* BGM が鳴ってよい場面か。遊んでいるあいだだけにする。
+   入り口・ホーム・層の一覧・メニュー・答え合わせ・ゲームオーバー・
+   エンディングでは止める。祝いの演出（.burst）と層の移動は盤面の続きなので、
+   そこは鳴らしたままにする。 */
+function inGame(){
+  if (!mode) return false;
+  for (const sel of ["#modeGate", "#startGate", "#ending"]) {
+    const el = $(sel);
+    if (el && !el.hidden) return false;
+  }
+  return !document.querySelector(".modal.show");
+}
 function syncMusic(){
-  if (!musicOn || !mode || !audioUnlocked || document.hidden || audioPageHidden) {
+  if (!musicOn || !inGame() || !audioUnlocked || document.hidden || audioPageHidden) {
     if (musicPlayer) musicPlayer.stop();
     return;
   }
@@ -1817,7 +1829,11 @@ function resetAll(skipConfirm){
 }
 
 /* --------------------------------------------------- 7) モーダル/イベント */
-function openModal(sel){ closeModals({force: true}); document.querySelector(sel).classList.add("show"); }
+function openModal(sel){
+  closeModals({force: true});
+  document.querySelector(sel).classList.add("show");
+  syncMusic();
+}
 // data-persistent（ゲームオーバー画面）は背景タップや Esc では閉じない。
 // 閉じられると★0のまま操作できない盤面だけが残ってしまうため。
 function closeModals(opts){
@@ -1834,6 +1850,7 @@ function closeModals(opts){
     if ($("#startGate").hidden) { viewStage = currentStage(); syncHash(); }
     else syncHashStart();
   }
+  syncMusic();
 }
 
 let viewStage = 0;
@@ -2157,6 +2174,7 @@ function showEnding(){
   $("#endClose").textContent = t("ending_close");
   endSpeed = 1;
   $("#ending").hidden = false;
+  syncMusic();
   const total = ROUND_DATA.reduce((n, r) => n + r.answers.length, 0);
   $("#endShare").addEventListener("click", () =>
     window.open(xIntent(t("share_ending", {total: num(total)})), "_blank", "noopener"));
@@ -2187,6 +2205,7 @@ function showEnding(){
 function hideEnding(opts){
   cancelAnimationFrame(endTimer);
   $("#ending").hidden = true;
+  syncMusic();
   // やり直しから呼ばれたときは、そのまま一覧へ進むのでホームは出さない
   if (!(opts && opts.silent)) showStart();
 }
@@ -2271,8 +2290,9 @@ function showStart(notice){
 
   $("#startGate").hidden = false;
   syncHashStart();
+  syncMusic();
 }
-function hideStart(){ $("#startGate").hidden = true; }
+function hideStart(){ $("#startGate").hidden = true; syncMusic(); }
 
 $("#sgStartBtn").addEventListener("click", () => { hideStart(); render(); syncHash(); });
 // 一覧とメニューは、スタート画面を伏せずにその上へ重ねる。伏せてしまうと、
