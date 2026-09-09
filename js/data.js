@@ -317,7 +317,8 @@ const ROUND_DATA = [
       { word: "げろげろ", meaning: "カエルの鳴き声／強い嫌悪や吐き気を表す口語。" },
       { word: "はろはろ", display: "ハロハロ", meaning: "かき氷に果物・豆・アイスなどを混ぜて食べるフィリピンのデザート。日本ではミニストップの商品名としても知られる。" },
       { word: "びろびろ", meaning: "薄く長い物が垂れ下がって揺れるさま。" },
-      { word: "ぱろぱろ", display: "パロパロ", meaning: "軽い物が続けて鳴るさま。" }
+      { word: "ぱろぱろ", display: "パロパロ", meaning: "軽い物が続けて鳴るさま。" },
+      { word: "ぴろぴろ", display: "ピロピロ", meaning: "息を吹くと伸びる紙笛。吹き戻し。" }
     ]
   },
   {
@@ -987,7 +988,8 @@ const ROUND_DATA = [
       { word: "それそれ", meaning: "相手の言葉に強く同意するときの語。" },
       { word: "むれむれ", display: "蒸れ蒸れ", meaning: "熱と湿気がこもってひどく蒸れたさま。" },
       { word: "ろれろれ", meaning: "舌が回らず、ことばがはっきりしないさま。" },
-      { word: "ぬれぬれ", display: "濡れ濡れ", meaning: "つやが出るほどよく濡れているさま。" }
+      { word: "ぬれぬれ", display: "濡れ濡れ", meaning: "つやが出るほどよく濡れているさま。" },
+      { word: "きれきれ", display: "キレキレ", meaning: "動きが鋭くよどみないさま。「キレキレのダンス」。" }
     ]
   },
   {
@@ -2172,7 +2174,8 @@ const WORD_ROUNDS = [
       { word: "なんち", display: "難治", meaning: "治りにくいこと。「難治性」。" },
       { word: "ごんち", display: "権智", meaning: "仏が相手に応じて使う、手だてとしての智慧。" },
       { word: "ぞんち", display: "存知", meaning: "知っていること。承知していること。" },
-      { word: "ぶんち", display: "文治", meaning: "武力によらず、学問や法で世を治めること。「文治政治」。" }
+      { word: "ぶんち", display: "文治", meaning: "武力によらず、学問や法で世を治めること。「文治政治」。" },
+      { word: "ろんち", display: "ロンチ", meaning: "商品やサービスを世に出すこと。ローンチとも。" }
     ]
   },
   {
@@ -2217,7 +2220,8 @@ const WORD_ROUNDS = [
       { word: "れんばい", display: "廉売", meaning: "安く売ること。「廉売所」。" },
       { word: "ぶんばい", display: "分売", meaning: "ひとそろいの物を分けて売ること。" },
       { word: "よんばい", display: "四倍", meaning: "四つ分の量。" },
-      { word: "なんばい", display: "何倍", meaning: "いくつ分か。「何倍にもふくらむ」。" }
+      { word: "なんばい", display: "何倍", meaning: "いくつ分か。「何倍にもふくらむ」。" },
+      { word: "むんばい", display: "ムンバイ", meaning: "インド最大の都市。旧称ボンベイ。" }
     ]
   },
   {
@@ -2375,7 +2379,8 @@ const WORD_ROUNDS = [
       { word: "ごんぼ", display: "ごんぼ", meaning: "ごぼうのこと。西日本などの言い方。" },
       { word: "おんぼ", display: "オンボ", meaning: "オンボードの略。パソコンの基板に機能が組み込まれていること。「オンボのグラフィック」。" },
       { word: "ゆんぼ", display: "ユンボ", meaning: "油圧ショベルの通称。建設機械。" },
-      { word: "つんぼ", display: "聾", meaning: "耳の聞こえない人を指した古い語。現在は使われない差別語で、辞書の見出しとして引く。" }
+      { word: "つんぼ", display: "聾", meaning: "耳の聞こえない人を指した古い語。現在は使われない差別語で、辞書の見出しとして引く。" },
+      { word: "だんぼ", display: "ダンボ", meaning: "耳の大きな子ゾウが主人公のディズニー映画。" }
     ]
   },
   {
@@ -2797,7 +2802,9 @@ const WORD_ROUNDS = [
       { word: "いんぱん", display: "印判", meaning: "はんこ。印章。" },
       { word: "れんぱん", display: "連判", meaning: "複数人が並べて署名・押印すること。「連判状」。" },
       { word: "ぱんぱん", display: "ぱんぱん", meaning: "はちきれそうに張っているさま。「腹がぱんぱん」。" },
-      { word: "ばんぱん", display: "万般", meaning: "物事のすべて。「万般にわたる」。" }
+      { word: "ばんぱん", display: "万般", meaning: "物事のすべて。「万般にわたる」。" },
+      { word: "わんぱん", display: "ワンパン", meaning: "一発で倒すこと。「ワンパンマン」。" },
+      { word: "らんぱん", display: "ランパン", meaning: "ランニングパンツ。陸上競技用の短パン。" }
     ]
   },
   {
@@ -3722,7 +3729,8 @@ const WORD_ROUNDS = [
       { word: "よんど", display: "４度", meaning: "四回／四色印刷（CMYK）。" },
       { word: "めんど", meaning: "「面倒」のくだけた言い方。「めんどくさい」。" },
       { word: "れんど", display: "練度", meaning: "訓練の習熟の度合い。「練度が高い」。" },
-      { word: "もんど", display: "主水", meaning: "武家の官名の一つ。「中村主水」。" }
+      { word: "もんど", display: "主水", meaning: "武家の官名の一つ。「中村主水」。" },
+      { word: "べんど", display: "ベンド", meaning: "曲げること。ギターで弦を押し上げて音を上げる奏法。" }
     ]
   },
   {
@@ -3807,7 +3815,8 @@ const WORD_ROUNDS = [
       { word: "さんさ", display: "三佐", meaning: "自衛隊の階級。旧軍の少佐にあたる。" },
       { word: "ざんさ", display: "残渣", meaning: "こしたあとに残るかす。" },
       { word: "せんさ", display: "センサ／センサー", meaning: "光・温度・圧力などを検出して、情報に変える装置。技術分野では「センサ」とも表記する。" },
-      { word: "なんさ", display: "南沙", meaning: "南シナ海の諸島。「南沙諸島」。" }
+      { word: "なんさ", display: "南沙", meaning: "南シナ海の諸島。「南沙諸島」。" },
+      { word: "めんさ", display: "メンサ", meaning: "高い知能指数の人が集まる国際的な団体。" }
     ]
   },
   {
@@ -3941,7 +3950,8 @@ const WORD_ROUNDS = [
       { word: "もんぱ", display: "門派", meaning: "宗派・学派の一分派。" },
       { word: "ねんぱ", display: "念波", meaning: "思念を伝える波、テレパシー。" },
       { word: "わんぱ", display: "ワンパ", meaning: "ワンパターンの略。同じ展開ややり方の繰り返し。「わんぱな攻め」。" },
-      { word: "ぱんぱ", display: "パンパ", meaning: "南米・アルゼンチンに広がる大草原。" }
+      { word: "ぱんぱ", display: "パンパ", meaning: "南米・アルゼンチンに広がる大草原。" },
+      { word: "だんぱ", display: "ダンパ", meaning: "ダンスパーティーの略／振動を抑える装置、ダンパー。" }
     ]
   },
   {
@@ -4148,7 +4158,8 @@ const WORD_ROUNDS = [
       { word: "ふんぴ", display: "奮飛", meaning: "勢いよく飛び立つこと。" },
       { word: "ぞんぴ", display: "存否", meaning: "あるかないか。「存否を確かめる」。" },
       { word: "にんぴ", display: "認否", meaning: "認めるか認めないか。「罪状認否」。" },
-      { word: "めんぴ", display: "面皮", meaning: "顔の皮。つらのかわ。「鉄面皮」。" }
+      { word: "めんぴ", display: "面皮", meaning: "顔の皮。つらのかわ。「鉄面皮」。" },
+      { word: "こんぴ", display: "コンピ", meaning: "コンピレーションの略。曲を集めたアルバム。" }
     ]
   },
   {
@@ -4301,7 +4312,9 @@ const WORD_ROUNDS = [
       { word: "すぱい", display: "スパイ", meaning: "ひそかに情報を探る者。" },
       { word: "すかい", display: "スカイ", meaning: "空。「スカイツリー」。" },
       { word: "すうい", display: "しわ胃", meaning: "反芻動物の第四胃。" },
-      { word: "すげい", meaning: "ものすごい、信じられないほど立派な。" }
+      { word: "すげい", meaning: "ものすごい、信じられないほど立派な。" },
+      { word: "すてい", display: "ステイ", meaning: "滞在すること。「ホームステイ」。" },
+      { word: "すたい", display: "スタイ", meaning: "赤ちゃんのよだれかけ。" }
     ]
   },
   {
@@ -4429,7 +4442,8 @@ const WORD_ROUNDS = [
       { word: "なだい", display: "名代", meaning: "名高いこと。「名代の品」。" },
       { word: "なつい", display: "なつい", meaning: "「懐かしい」を縮めた若者語。" },
       { word: "なるい", display: "なるい", meaning: "傾きがゆるやかだ。手ぬるい。" },
-      { word: "ないい", display: "内意", meaning: "表に出さない意向。「内意を伝える」。" }
+      { word: "ないい", display: "内意", meaning: "表に出さない意向。「内意を伝える」。" },
+      { word: "なうい", display: "ナウい", meaning: "今風でおしゃれなさま。1980年代の流行語。" }
     ]
   },
   {
