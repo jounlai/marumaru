@@ -3692,7 +3692,17 @@ zhTW: {
 "とらどら": "竹宮悠由子的輕小說《とらドラ！》，也改編成動畫的校園故事。",
 "すますま": "電視節目《SMAP×SMAP》的俗稱。",
 "こじこじ": "櫻桃子的漫畫《コジコジ》，也是宇宙出身的主角之名。",
-"べるべる": "住在北非的民族。「柏柏爾人」。"
+"べるべる": "住在北非的民族。「柏柏爾人」。",
+"れんぶ": "練習武術。/台灣等地產的水果，蓮霧。",
+"またい": "「マタイ」的漢字寫法。新約聖書的福音書作者馬太。",
+"くぐい": "天鵝的古稱。",
+"かわう": "住在河湖的大型水鳥，普通鸕鷀。",
+"ほかい": "棒球中進入延長後的局數。",
+"ほえい": "牛奶去掉脂肪等之後的液體，乳清。",
+"ずんば": "以「〜ずんば」的形式表示「若不〜」的古語。「不入虎穴，焉得虎子」。/隨拉丁音樂跳舞的健身課程Zumba。",
+"らんじ": "單腳向前跨出、下沉腰部的運動，弓箭步。",
+"まんな": "相對於假名而言的漢字。",
+"すんな": "「するな」的口語說法。「気にすんな」（別在意）。"
 },
 en: {
 "あんあん": "Whimpering or moaning. / anan is a women's magazine from Magazine House.",
@@ -7366,7 +7376,17 @@ en: {
 "とらどら": "Toradora!, a light novel by Takemiya Yuyuko. A school story, also made into an anime.",
 "すますま": "Sumasuma, the nickname of the TV show SMAP×SMAP.",
 "こじこじ": "Coji-Coji, a manga by Sakura Momoko, and the name of its space-born hero.",
-"べるべる": "The Berbers, a people of North Africa."
+"べるべる": "The Berbers, a people of North Africa.",
+"れんぶ": "Practising martial arts. / The wax apple, a fruit grown in Taiwan and elsewhere.",
+"またい": "The kanji spelling of Matai, Matthew, the evangelist of the New Testament.",
+"くぐい": "An old word for a swan.",
+"かわう": "The great cormorant, a large water bird of rivers and lakes.",
+"ほかい": "In baseball, an extra inning.",
+"ほえい": "Whey, what is left of milk once the fat and curds are taken out.",
+"ずんば": "In the form 「〜ずんば」, an old way of saying 'if one does not'. As in 「虎穴に入らずんば虎子を得ず」. / Zumba, a dance workout to Latin music.",
+"らんじ": "The lunge, an exercise stepping one leg forward and lowering the hips.",
+"まんな": "Kanji, as opposed to kana.",
+"すんな": "A colloquial form of suru na, don't do it. As in 「気にすんな」, never mind."
 },
 
 zh: {
@@ -11041,7 +11061,17 @@ zh: {
 "とらどら": "竹宫悠由子的轻小说《とらドラ！》，也改编成动画的校园故事。",
 "すますま": "电视节目《SMAP×SMAP》的俗称。",
 "こじこじ": "樱桃子的漫画《コジコジ》，也是宇宙出身的主角之名。",
-"べるべる": "住在北非的民族。「柏柏尔人」。"
+"べるべる": "住在北非的民族。「柏柏尔人」。",
+"れんぶ": "练习武术。/台湾等地产的水果，莲雾。",
+"またい": "「マタイ」的汉字写法。新约圣经的福音书作者马太。",
+"くぐい": "天鹅的古称。",
+"かわう": "住在河湖的大型水鸟，普通鸬鹚。",
+"ほかい": "棒球中进入延长后的局数。",
+"ほえい": "牛奶去掉脂肪等之后的液体，乳清。",
+"ずんば": "以「〜ずんば」的形式表示「若不〜」的古语。「不入虎穴，焉得虎子」。/随拉丁音乐跳舞的健身课程Zumba。",
+"らんじ": "单脚向前跨出、下沉腰部的运动，弓箭步。",
+"まんな": "相对于假名而言的汉字。",
+"すんな": "「するな」的口语说法。「気にすんな」（别在意）。"
 },
 
 vi: {
@@ -14716,7 +14746,17 @@ vi: {
 "とらどら": "Toradora!, tiểu thuyết của Takemiya Yuyuko. Chuyện học đường, cũng được dựng thành anime.",
 "すますま": "Sumasuma, tên gọi tắt của chương trình truyền hình SMAP×SMAP.",
 "こじこじ": "Coji-Coji, truyện tranh của Sakura Momoko, và tên nhân vật chính sinh ra từ vũ trụ.",
-"べるべる": "Người Berber, một dân tộc ở Bắc Phi."
+"べるべる": "Người Berber, một dân tộc ở Bắc Phi.",
+"れんぶ": "Luyện tập võ thuật. / Quả roi (mận), trái cây trồng ở Đài Loan và nơi khác.",
+"またい": "Cách viết Hán tự của Matai, tức Matthêu, tác giả sách Phúc Âm.",
+"くぐい": "Từ cổ chỉ con thiên nga.",
+"かわう": "Chim cốc đế, loài chim nước lớn sống ở sông hồ.",
+"ほかい": "Trong bóng chày, hiệp phụ.",
+"ほえい": "Whey, phần nước còn lại của sữa sau khi tách béo và sữa đông.",
+"ずんば": "Dạng 「〜ずんば」, lối nói cổ nghĩa là 'nếu không'. Như 「虎穴に入らずんば虎子を得ず」. / Zumba, bài tập nhảy theo nhạc Latin.",
+"らんじ": "Động tác lunge, bước một chân lên trước và hạ thấp hông.",
+"まんな": "Hán tự, đối lại với kana.",
+"すんな": "Dạng khẩu ngữ của suru na, đừng làm. Như 「気にすんな」, đừng bận tâm."
 },
 
 ko: {
@@ -18391,6 +18431,16 @@ ko: {
 "とらどら": "다케미야 유유코의 라이트노벨 『とらドラ！』. 애니메이션으로도 만들어진 학원물.",
 "すますま": "TV 프로그램 『SMAP×SMAP』의 통칭.",
 "こじこじ": "사쿠라 모모코의 만화 『コジコジ』. 우주에서 태어난 주인공의 이름.",
-"べるべる": "북아프리카에 사는 민족. 「베르베르인」."
+"べるべる": "북아프리카에 사는 민족. 「베르베르인」.",
+"れんぶ": "무술을 수련하는 것. / 대만 등지에서 나는 과일 왁스애플.",
+"またい": "「マタイ」의 한자 표기. 신약성서의 복음서 기자 마태.",
+"くぐい": "백조의 옛 이름.",
+"かわう": "강이나 호수에 사는 큰 물새, 민물가마우지.",
+"ほかい": "야구에서 연장에 들어간 뒤의 이닝.",
+"ほえい": "우유에서 지방 등을 걸러 낸 액체, 유청.",
+"ずんば": "「〜ずんば」의 꼴로 「〜하지 않으면」을 뜻하는 옛말. 「虎穴に入らずんば虎子を得ず」. / 라틴 음악에 맞춰 추는 운동 프로그램 줌바.",
+"らんじ": "한쪽 발을 앞으로 내딛고 허리를 낮추는 운동, 런지.",
+"まんな": "가나에 상대되는 말로서의 한자.",
+"すんな": "「するな」의 구어체. 「気にすんな」(신경 쓰지 마)."
 }
 };

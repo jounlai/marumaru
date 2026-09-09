@@ -1480,7 +1480,8 @@ const WORD_ROUNDS = [
       { word: "せんぶ", display: "宣撫", meaning: "占領地などで、方針を知らせて人心を安定させること。「宣撫工作」。" },
       { word: "たんぶ", display: "反歩", meaning: "田畑の面積の単位。一反はおよそ十アール。" },
       { word: "よんぶ", display: "四部", meaning: "四つの部分。「四部作」。" },
-      { word: "そんぶ", display: "孫武", meaning: "『孫子』を著したとされる中国古代の兵法家。" }
+      { word: "そんぶ", display: "孫武", meaning: "『孫子』を著したとされる中国古代の兵法家。" },
+      { word: "れんぶ", display: "練武/蓮霧", meaning: "武術の稽古をすること/台湾などで採れる果物。レンブ。" }
     ]
   },
   {
@@ -1600,7 +1601,8 @@ const WORD_ROUNDS = [
       { word: "ねんじ", display: "年次", meaning: "年ごと。「年次計画」「年次休暇」。" },
       { word: "ひんじ", display: "ヒンジ/賓辞", meaning: "扉やふたの蝶番/論理学で、判断の述語。" },
       { word: "がんじ", display: "雁字", meaning: "雁が一列に並んで飛ぶさまを文字に見立てた語/手紙。「雁字搦め」。" },
-      { word: "ぎんじ", display: "吟じ", meaning: "詩歌に節をつけて口ずさむこと。「一句吟じる」。" }
+      { word: "ぎんじ", display: "吟じ", meaning: "詩歌に節をつけて口ずさむこと。「一句吟じる」。" },
+      { word: "らんじ", display: "ランジ", meaning: "片足を前に踏み出して腰を落とす運動。" }
     ]
   },
   {
@@ -2000,7 +2002,8 @@ const WORD_ROUNDS = [
       { word: "かほう", display: "家宝/果報", meaning: "家に伝わる宝/幸運。「果報は寝て待て」。" },
       { word: "かばう", display: "庇う", meaning: "傷つかないように守る。" },
       { word: "かすう", display: "仮数", meaning: "対数の仮数/浮動小数点数の有効数字部。" },
-      { word: "かいう", display: "怪雨", meaning: "暗い色の雨や、魚などを伴って降るという怪異な雨。" }
+      { word: "かいう", display: "怪雨", meaning: "暗い色の雨や、魚などを伴って降るという怪異な雨。" },
+      { word: "かわう", display: "川鵜", meaning: "川や湖にすむ大型の水鳥。" }
     ]
   },
   {
@@ -2254,7 +2257,8 @@ const WORD_ROUNDS = [
       { word: "ませい", display: "磨製", meaning: "石を磨いて作ること。" },
       { word: "まじい", meaning: "「してはならない・するはずがない」の意を表す古風な語。" },
       { word: "まづい", display: "不味い", meaning: "「まずい」の古い書き方。味が悪い/都合が悪い。" },
-      { word: "まうい", display: "マウイ", meaning: "ハワイ諸島の島。ハワイ島に次いで大きい。" }
+      { word: "まうい", display: "マウイ", meaning: "ハワイ諸島の島。ハワイ島に次いで大きい。" },
+      { word: "またい", display: "馬太", meaning: "「マタイ」の漢字表記。新約聖書の福音書記者。" }
     ]
   },
   {
@@ -3905,7 +3909,9 @@ const WORD_ROUNDS = [
       { word: "てんな", display: "天和", meaning: "江戸前期の年号。" },
       { word: "ぶんな", display: "文和", meaning: "北朝の年号「文和」（1352～1356年）。" },
       { word: "をんな", display: "女", meaning: "「おんな」の歴史的仮名遣い。" },
-      { word: "せんな", display: "センナ", meaning: "マメ科の低木。葉を薬に使う。" }
+      { word: "せんな", display: "センナ", meaning: "マメ科の低木。葉を薬に使う。" },
+      { word: "まんな", display: "真名", meaning: "かなに対して、漢字のこと。" },
+      { word: "すんな", meaning: "「するな」のくだけた言い方。「気にすんな」。" }
     ]
   },
   {
@@ -3938,7 +3944,8 @@ const WORD_ROUNDS = [
       { word: "めんば", display: "面罵", meaning: "面と向かってののしること。" },
       { word: "いんば", display: "印旛", meaning: "千葉県の地名。「印旛沼」。" },
       { word: "やんば", display: "八ッ場", meaning: "群馬県の地名。「八ッ場ダム」。" },
-      { word: "ちんば", display: "跛", meaning: "足の不自由な人、また左右がそろわないことを指した古い語。現在は使われない差別語で、辞書の見出しとして引く。" }
+      { word: "ちんば", display: "跛", meaning: "足の不自由な人、また左右がそろわないことを指した古い語。現在は使われない差別語で、辞書の見出しとして引く。" },
+      { word: "ずんば", display: "ズンバ", meaning: "「〜ずんば」の形で「〜しなければ」を表す古い言い方。「虎穴に入らずんば虎子を得ず」/ラテン音楽に合わせて踊る運動プログラム。" }
     ]
   },
   {
@@ -4278,7 +4285,8 @@ const WORD_ROUNDS = [
       { word: "くめい", display: "苦鳴", meaning: "苦痛の叫び声。" },
       { word: "くれい", meaning: "粘土/クレー射撃/その標的。" },
       { word: "くせい", display: "区政", meaning: "区の行政。「区政報告会」。" },
-      { word: "くまい", display: "供米", meaning: "神仏に供える米/政府へ供出する米。" }
+      { word: "くまい", display: "供米", meaning: "神仏に供える米/政府へ供出する米。" },
+      { word: "くぐい", display: "鵠", meaning: "白鳥の古い呼び名。" }
     ]
   },
   {
@@ -4421,7 +4429,9 @@ const WORD_ROUNDS = [
       { word: "ほぜい", display: "保税", meaning: "関税を保留したままにする扱い。「保税地域」。" },
       { word: "ほだい", display: "補題", meaning: "補助定理・レンマ。" },
       { word: "ほるい", display: "堡塁", meaning: "とりで・要塞。" },
-      { word: "ほおい", meaning: "人を呼ぶ声/了解を表す声。" }
+      { word: "ほおい", meaning: "人を呼ぶ声/了解を表す声。" },
+      { word: "ほかい", display: "補回", meaning: "野球で、延長に入ってからの回。" },
+      { word: "ほえい", display: "ホエイ", meaning: "牛乳から脂肪などを除いた液。乳清。" }
     ]
   },
   {
