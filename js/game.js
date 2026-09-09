@@ -1687,8 +1687,7 @@ function gameOver(){
       `でも、見つけた <b>${found}</b> こ の ことばは きえないよ。<br>★5こ で もういちど やってみよう！`;
   } else {
     $("#gameoverTitle").textContent = "GAME OVER";
-    $("#gameoverText").innerHTML =
-      `ステージ ${currentStage() + 1} で★が尽きました。<br>★5で再開できます。<b>記録は消えません。</b><br>発見したことば <b>${found}</b> 語。`;
+    $("#gameoverText").innerHTML = t("go_text", {n: currentStage() + 1, found});
   }
   $("#goChar").src = "img/maru-think.png";
   $("#gScore").textContent = num(score);

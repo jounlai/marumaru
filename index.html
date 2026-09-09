@@ -81,14 +81,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=f21aa084">
+<link rel="stylesheet" href="css/styles.css?v=2e31c79f">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=f21aa084" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=2e31c79f" alt="まるまる 〇〇ことば">
     <div class="mgLead" data-i18n="gate_lead">どちらであそびますか？</div>
     <div class="mgBtns" id="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -124,13 +124,13 @@
      分からず戸惑うため、まず立つ場所を作る。基本は前回の続きから始める。 -->
 <div class="startGate" id="startGate" hidden>
   <div class="sgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=f21aa084" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=2e31c79f" alt="まるまる 〇〇ことば">
     <div class="sgLead" id="sgLead"></div>
 
     <div class="sgHere" id="sgHere">
       <div class="sgBerg" id="sgBerg">
         <span class="sgSea"></span>
-        <span class="sgYou"><img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=f21aa084" alt=""></span>
+        <span class="sgYou"><img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=2e31c79f" alt=""></span>
       </div>
       <div class="sgWhere">
         <em class="sgTag" data-i18n="home_tag">ことばの氷山</em>
@@ -171,7 +171,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <button class="brand" id="homeBtn" data-i18n-title="nav_home" title="ホーム画面へ" aria-label="ホーム画面へ"><img src="img/logo-small.png?v=f21aa084" alt="まるまる 〇〇ことば" width="320" height="104"></button>
+    <button class="brand" id="homeBtn" data-i18n-title="nav_home" title="ホーム画面へ" aria-label="ホーム画面へ"><img src="img/logo-small.png?v=2e31c79f" alt="まるまる 〇〇ことば" width="320" height="104"></button>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -278,7 +278,7 @@
           <button class="btn" id="giveupBtn" data-i18n="giveup_full">降参して答えを見る</button>
         </div>
         <div class="credits">
-          <span class="creditsAsk">抜けている単語があれば
+          <span class="creditsAsk" data-i18n-html="credits_ask">抜けている単語があれば
             <a href="https://x.com/jounlai" target="_blank" rel="noopener">X @jounlai</a>
             まで。</span><br>
           <a href="https://github.com/jounlai/marumaru" target="_blank" rel="noopener">GitHub</a>
@@ -408,16 +408,16 @@
       <b>SPECIAL</b>は清音だけを選択。後半の「〇」は自動で濁音になります。<br>
       <b>WORD</b>は穴が1つだけ。擬音語ではない、ふつうの3〜4文字ことばを探します。
     </div>
-    <div class="tiny">
+    <div class="tiny" data-i18n="vocab_note">
       内蔵語彙は辞書語に加え、擬音語・擬態語・口語・俗語・ネット表現・定着した流行語・著名な固有名詞まで広めに収録しています。
       表記ゆれや新語は増え続けるため完全列挙はできませんが、「普通に通じるのに不正解」を減らす方針で更新しています。
     </div>
 
     <div class="credits">
-      <span class="creditsAsk">抜けている単語があれば
+      <span class="creditsAsk" data-i18n-html="credits_ask">抜けている単語があれば
         <a href="https://x.com/jounlai" target="_blank" rel="noopener">X @jounlai</a>
         あてに連絡してください。</span><br>
-      ソース：<a href="https://github.com/jounlai/marumaru" target="_blank" rel="noopener">github.com/jounlai/marumaru</a>
+      <span data-i18n="credits_src">ソース：</span><a href="https://github.com/jounlai/marumaru" target="_blank" rel="noopener">github.com/jounlai/marumaru</a>
       <span class="madeBy">Made by Jounlai Cho</span>
     </div>
   </div>
@@ -441,11 +441,11 @@
   </div>
 </div>
 
-<!-- ?v=f21aa084 は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/i18n.js?v=f21aa084"></script>
-<script src="js/meanings-i18n.js?v=f21aa084"></script>
-<script src="js/data.js?v=f21aa084"></script>
-<script src="js/kids.js?v=f21aa084"></script>
-<script src="js/game.js?v=f21aa084"></script>
+<!-- ?v=2e31c79f は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
+<script src="js/i18n.js?v=2e31c79f"></script>
+<script src="js/meanings-i18n.js?v=2e31c79f"></script>
+<script src="js/data.js?v=2e31c79f"></script>
+<script src="js/kids.js?v=2e31c79f"></script>
+<script src="js/game.js?v=2e31c79f"></script>
 </body>
 </html>

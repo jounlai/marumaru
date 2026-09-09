@@ -23,6 +23,10 @@ const HTML_LANG = { zh: "zh-Hans", zhTW: "zh-Hant" };
 
 const STRINGS = {
 ja: {
+  go_text: "ステージ {n} で★が尽きました。<br>★5で再開できます。<b>記録は消えません。</b><br>発見したことば <b>{found}</b> 語。",
+  credits_ask: "抜けている単語があれば <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a> まで。",
+  credits_src: "ソース：",
+  vocab_note: "内蔵語彙は辞書語に加え、擬音語・擬態語・口語・俗語・ネット表現・定着した流行語・著名な固有名詞まで広めに収録しています。表記ゆれや新語は増え続けるため完全列挙はできませんが、「普通に通じるのに不正解」を減らす方針で更新しています。",
   page_title: "〇〇ことば — かな穴埋めサバイバル",
   m_goal: "ゴール！", m_great: "すごい！", m_perfect: "パーフェクト！",
   m_stage: "やったー！", m_dead: "ちからつきた…", m_miss: "はねかえされた！",
@@ -153,6 +157,10 @@ jaKids: {
 },
 
 en: {
+  go_text: "You ran out of ★ on layer {n}.<br>You can restart with ★5. <b>Your progress is kept.</b><br>Words found: <b>{found}</b>.",
+  credits_ask: "Found a word that is missing? Tell <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a>.",
+  credits_src: "Source: ",
+  vocab_note: "Beyond dictionary headwords, the list takes in onomatopoeia, colloquial and slang usage, internet expressions, catchphrases that stuck, and well-known proper nouns. Spellings vary and new words keep arriving, so it can never be complete — but it is updated to reduce the case where a perfectly ordinary word is marked wrong.",
   page_title: "〇〇ことば — Kana fill-in survival",
   m_goal: "Goal!", m_great: "Amazing!", m_perfect: "Perfect!",
   m_stage: "We did it!", m_dead: "Out of strength…", m_miss: "Bounced off!",
@@ -244,6 +252,10 @@ en: {
 },
 
 zh: {
+  go_text: "在第 {n} 层用完了 ★。<br>可以用 ★5 重新开始。<b>记录不会消失。</b><br>已找到的词：<b>{found}</b> 个。",
+  credits_ask: "发现漏收的词，请告诉 <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a>。",
+  credits_src: "源码：",
+  vocab_note: "除词典词条外，还广泛收录拟声拟态词、口语、俗语、网络用语、已扎根的流行语，以及知名专有名词。写法不一、新词不断，无法穷尽，但更新的方向是减少「明明说得通却算错」的情况。",
   page_title: "〇〇ことば — 假名填空生存游戏",
   m_goal: "到了！", m_great: "厉害！", m_perfect: "完美！",
   m_stage: "太棒了！", m_dead: "力气用尽了…", m_miss: "被弹回来了！",
@@ -337,6 +349,10 @@ zh: {
 /* 繁体字（台湾）。語彙も台湾の言い方に寄せる（菜单→選單、记录→紀錄、
    设置→設定）。ここに無い鍵は zh（簡体字）に落ちる。 */
 zhTW: {
+  go_text: "在第 {n} 層用完了 ★。<br>可以用 ★5 重新開始。<b>紀錄不會消失。</b><br>已找到的詞：<b>{found}</b> 個。",
+  credits_ask: "發現漏收的詞，請告訴 <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a>。",
+  credits_src: "原始碼：",
+  vocab_note: "除詞典詞條外，還廣泛收錄擬聲擬態詞、口語、俗語、網路用語、已扎根的流行語，以及知名專有名詞。寫法不一、新詞不斷，無法窮盡，但更新的方向是減少「明明說得通卻算錯」的情況。",
   page_title: "〇〇ことば — 假名填空生存遊戲",
   m_goal: "到了！", m_great: "厲害！", m_perfect: "完美！",
   m_stage: "太棒了！", m_dead: "力氣用盡了…", m_miss: "被彈回來了！",
@@ -428,6 +444,10 @@ zhTW: {
 },
 
 vi: {
+  go_text: "Bạn hết ★ ở tầng {n}.<br>Có thể chơi lại với ★5. <b>Tiến độ vẫn được giữ.</b><br>Số từ đã tìm: <b>{found}</b>.",
+  credits_ask: "Thấy một từ bị thiếu? Hãy báo cho <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a>.",
+  credits_src: "Mã nguồn: ",
+  vocab_note: "Ngoài mục từ trong từ điển, danh sách còn thu nhận từ tượng thanh tượng hình, khẩu ngữ, tiếng lóng, cách nói trên mạng, những câu cửa miệng đã bám rễ, và danh từ riêng nổi tiếng. Cách viết thì nhiều và từ mới không ngừng xuất hiện nên không thể liệt kê hết, nhưng vẫn cập nhật để bớt đi cảnh một từ hoàn toàn bình thường lại bị tính sai.",
   page_title: "〇〇ことば — Trò điền kana sinh tồn",
   m_goal: "Tới đích!", m_great: "Tuyệt vời!", m_perfect: "Hoàn hảo!",
   m_stage: "Làm được rồi!", m_dead: "Hết sức rồi…", m_miss: "Bị bật ra!",
@@ -519,6 +539,10 @@ vi: {
 },
 
 ko: {
+  go_text: "{n}층에서 ★가 바닥났습니다.<br>★5로 다시 시작할 수 있습니다. <b>기록은 사라지지 않습니다.</b><br>찾은 말 <b>{found}</b>개.",
+  credits_ask: "빠진 낱말을 찾으셨다면 <a href=\"https://x.com/jounlai\" target=\"_blank\" rel=\"noopener\">X @jounlai</a> 에게 알려 주세요.",
+  credits_src: "소스: ",
+  vocab_note: "사전 표제어에 더해 의성어·의태어, 구어, 속어, 인터넷 표현, 자리 잡은 유행어, 널리 알려진 고유명사까지 폭넓게 싣고 있습니다. 표기가 갈리고 새말도 계속 늘어 완전히 담을 수는 없지만, 「평범하게 통하는데 오답」이 되는 일을 줄이는 방향으로 고치고 있습니다.",
   page_title: "〇〇ことば — 가나 채우기 서바이벌",
   m_goal: "골인!", m_great: "대단해!", m_perfect: "퍼펙트!",
   m_stage: "해냈다!", m_dead: "힘이 다했다…", m_miss: "튕겨 나왔다!",
