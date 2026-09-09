@@ -97,6 +97,9 @@ function applyStaticText(){
     if (el.hasAttribute("aria-label")) el.setAttribute("aria-label", v);
   });
   document.documentElement.lang = HTML_LANG[lang] || lang;
+  // タブに出る題。SNS のカードはクローラが静的な HTML を読むので、
+  // そちらは日本語のまま（配信元が1つなので、貼る人ごとに変えられない）。
+  document.title = t("page_title");
 }
 
 // こども版で外すのは、子供に見せたくない語だけにする。難しい語も正解のまま
@@ -718,12 +721,10 @@ function xIntent(text){
    ゲーム名は行頭ではなくハッシュタグで最後に置く（行頭の「〇〇ことば」は
    伏せ字に見えて、名前だと伝わらないため）。 */
 function puzzleLines(round = current(), exCount = 3){
-  const t = templateText(round.template);
-  const rule = round.group === "word"
-    ? `「${t}」の 〇 にかなを1つ入れて、ことばにする遊び。`
-    : round.group === "special"
-      ? `「${t}」の前の 〇 にかなを入れる。後ろは同じかなの濁音になる。`
-      : `「${t}」の 〇 に同じかなを入れて、ことばにする遊び。`;
+  // 変数名は t を避ける。翻訳の t() を隠してしまうため
+  const tpl = templateText(round.template);
+  const rule = t(round.group === "word" ? "rule_word"
+    : round.group === "special" ? "rule_special" : "rule_main", {t: tpl});
   const ex = blurbExamples(round, exCount).map(a => `${kanaForWord(a.word)}→${answerDisplay(a)}`);
   return ex.length ? `${rule}\n${ex.join("、")}…` : rule;
 }
@@ -754,17 +755,14 @@ function blurbExamples(round, n){
 /* はずれたとき。収録漏れかもしれないので、その場から作者へ報告できるようにする。
    こども版では作った文字列自体を見せないため、報告の導線も出さない。 */
 function flashMiss(word){
-  if (mode === "kids") { flash("bad", pick(BAD_MSGS)); return; }
+  if (mode === "kids") { flash("bad", pickFrom(BAD_MSGS_I18N, BAD_MSGS)); return; }
   flashEl.className = "flash bad";
   flashEl.innerHTML =
     `<span class="fw">${esc(word)}</span>` +
-    `<span class="fm">${esc(pick(BAD_MSGS))}</span>` +
+    `<span class="fm">${esc(pickFrom(BAD_MSGS_I18N, BAD_MSGS))}</span>` +
     `<a class="reportLink" target="_blank" rel="noopener" href="${esc(xIntent(
-      `「${word}」は無い、と言われました。\n` +
-      `${puzzleLines(current(), 2)}\n` +
-      `辞書に無いのか、私の記憶に無いのか。収録漏れなら ${AUTHOR} まで。\n` +
-      `#〇〇ことば`))}">` +
-    `いや、これはことばだ。作者に言う →</a>`;
+      t("report_text", {word, puzzle: puzzleLines(current(), 2), author: AUTHOR})))}">` +
+    `${esc(t("report_link"))}</a>`;
 }
 
 function flash(kind, text){
@@ -1034,13 +1032,8 @@ function roundActions(){
   const s = state();
   if (s.perfect) {
     const n = current().answers.length;
-    const closing = pick([
-      "辞書の底が見えた。",
-      "日本語、まだ隠し持っていた。",
-      "こんなにあるとは思わなかった。"
-    ]);
-    const brag = `${puzzleLines()}\n\n答えは${n}語ありました。ぜんぶ見つけた。\n` +
-      `${closing}\n#〇〇ことば`;
+    const closing = pickFrom(CLOSING_I18N, CLOSING_I18N.ja);
+    const brag = t("share_perfect", {puzzle: puzzleLines(), n, closing});
     acts.push({label: t("share_x"), keepOpen: true,
       run: () => window.open(xIntent(brag), "_blank", "noopener")});
   }
@@ -1284,6 +1277,12 @@ function flashRemaining(){
 const GOOD_MSGS = ["いた。日本語にいた。", "正解。辞書がうなずいた。", "発見！〇が仕事をした。", "それ、あります。", "語彙力が静かに暴れている。", "辞書、ページをめくる音。", "〇が満たされました。", "よく出てきた、その語。"];
 const BAD_MSGS = ["ない。★をいただきます。", "惜しい顔をしても、ないものはない。", "辞書：『存じません』", "その日本語、今回は未確認。", "〇に無茶をさせましたね。", "その並び、日本語の外にあります。", "〇が首をかしげています。", "字は合っている。語ではない。"];
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+/* 言い回しの一覧は言語ごとに持つ。無い言語は落とし先へ、それも無ければ日本語。 */
+function pickFrom(table, jaList){
+  if (lang === "ja") return pick(jaList);
+  const a = table[lang] || table[LANG_FALLBACK[lang]] || jaList;
+  return pick(a);
+}
 
 function guess(kana){
   if (isSpecial() && !DAKUTEN_BASE_KANA.has(kana)) return;
@@ -1350,14 +1349,14 @@ function guess(kana){
     particles(btn, isFever() ? 16 : 10, isFever() ? ["#7ef9d0", "#fff", "#ffd34d"] : ["#fff", "#bbb"]);
     if (!state().perfect) {
       mascotPose("cheer", 820);
-      mascotSay(combo >= 3 ? `${combo}れんぞく！` : pick(["やった！", "いた！", "みつけた！", "せいかい！"]),
+      mascotSay(combo >= 3 ? t("combo_n", {n: combo}) : pickFrom(HIT_MSGS_I18N, HIT_MSGS_I18N.ja),
         isFever() ? "gold" : "", 1100);
     }
   } else if (btn) {
     btn.classList.add("shakeNo");
     floatText("★ −1", btn, "bad");
     mascotPose("down", 1520);
-    mascotSay(stars <= 0 ? "ちからつきた…" : "はねかえされた！", "bad", 1500);
+    mascotSay(t(stars <= 0 ? "m_dead" : "m_miss"), "bad", 1500);
   }
   if (!hit) {
     requestAnimationFrame(flashRemaining);
@@ -1381,7 +1380,7 @@ function finishRound(silent){
     const colors = mode === "kids" ? KIDS_COLORS : ["#fff", "#ffd34d", "#bbb", "#7ef9d0"];
     sfxClearFanfare(); buzz([30, 50, 30]);
     mascotPose("cheer", 900);
-    mascotSay("ゴール！", "gold", 2000);
+    mascotSay(t("m_goal"), "gold", 2000);
     confetti(34, colors, 2200);
     setTimeout(() => {
       showBurst({mark: roundName(), word: "ROUND CLEAR",
@@ -1406,7 +1405,7 @@ function greatRound(){
   const colors = mode === "kids" ? KIDS_COLORS : ["#7ef9d0", "#fff", "#ffd34d", "#a8ffe6"];
   sfxGreat(); buzz([40, 60, 40, 60, 90]);
   mascotPose("cheer", 1100);
-  mascotSay("すごい！", "gold", 2400);
+  mascotSay(t("m_great"), "gold", 2400);
   document.body.classList.add("celebrate");
   setTimeout(() => document.body.classList.remove("celebrate"), 1200);
   confetti(85, colors, 3000);
@@ -1434,7 +1433,7 @@ function perfectRound(){
   const colors = mode === "kids" ? KIDS_COLORS : ["#ffd34d", "#fff", "#7ef9d0", "#fff6c8", "#ffb347"];
   sfxPerfectFanfare(); buzz([50, 60, 50, 60, 50, 60, 140]);
   mascotPose("spin", 1320);
-  mascotSay("パーフェクト！", "gold", 2800);
+  mascotSay(t("m_perfect"), "gold", 2800);
   document.body.classList.add("celebrate", "strong");
   setTimeout(() => document.body.classList.remove("celebrate", "strong"), 1500);
   confetti(140, colors, 3800);
@@ -1557,7 +1556,7 @@ function finishStage(si){
   setTimeout(() => particles(corner(innerWidth * .18, innerHeight * .62), 34, colors), 260);
   setTimeout(() => particles(corner(innerWidth * .82, innerHeight * .62), 34, colors), 460);
   setTimeout(() => particles(null, 40, colors), 760);
-  setTimeout(() => { mascotPose("spin", 1320); mascotSay("やったー！", "gold", 2200); }, 200);
+  setTimeout(() => { mascotPose("spin", 1320); mascotSay(t("m_stage"), "gold", 2200); }, 200);
 
   celebrated.add(si);
   saveProgress();

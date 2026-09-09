@@ -23,6 +23,15 @@ const HTML_LANG = { zh: "zh-Hans", zhTW: "zh-Hant" };
 
 const STRINGS = {
 ja: {
+  page_title: "〇〇ことば — かな穴埋めサバイバル",
+  m_goal: "ゴール！", m_great: "すごい！", m_perfect: "パーフェクト！",
+  m_stage: "やったー！", m_dead: "ちからつきた…", m_miss: "はねかえされた！",
+  report_link: "いや、これはことばだ。作者に言う →",
+  report_text: "「{word}」は無い、と言われました。\n{puzzle}\n辞書に無いのか、私の記憶に無いのか。収録漏れなら {author} まで。\n#〇〇ことば",
+  share_perfect: "{puzzle}\n\n答えは{n}語ありました。ぜんぶ見つけた。\n{closing}\n#〇〇ことば",
+  rule_word: "「{t}」の 〇 にかなを1つ入れて、ことばにする遊び。",
+  rule_special: "「{t}」の前の 〇 にかなを入れる。後ろは同じかなの濁音になる。",
+  rule_main: "「{t}」の 〇 に同じかなを入れて、ことばにする遊び。",
   // 入り口
   gate_lead: "どちらであそびますか？",
   gate_kids: "こども版", gate_kids_sub: "小学生〜中学生むけ<br>やさしいことばだけ・大きな文字",
@@ -144,6 +153,15 @@ jaKids: {
 },
 
 en: {
+  page_title: "〇〇ことば — Kana fill-in survival",
+  m_goal: "Goal!", m_great: "Amazing!", m_perfect: "Perfect!",
+  m_stage: "We did it!", m_dead: "Out of strength…", m_miss: "Bounced off!",
+  report_link: "No, this is a word. Tell the author →",
+  report_text: "I was told 「{word}」 is not a word.\n{puzzle}\nIs it missing from the dictionary, or from my memory? If it is an omission, tell {author}.\n#〇〇ことば",
+  share_perfect: "{puzzle}\n\nThere were {n} answers. I found every one.\n{closing}\n#〇〇ことば",
+  rule_word: "A game: put one kana into the 〇 of 「{t}」 to make a real word.",
+  rule_special: "Put a kana in the first 〇 of 「{t}」; the second becomes its voiced form.",
+  rule_main: "A game: put the same kana into every 〇 of 「{t}」 to make a real word.",
   gate_lead: "Which edition?",
   gate_kids: "For kids", gate_kids_sub: "Ages 6–15<br>Simple words, big type",
   gate_adult: "For adults", gate_adult_sub: "Every word<br>Score and combos",
@@ -226,6 +244,15 @@ en: {
 },
 
 zh: {
+  page_title: "〇〇ことば — 假名填空生存游戏",
+  m_goal: "到了！", m_great: "厉害！", m_perfect: "完美！",
+  m_stage: "太棒了！", m_dead: "力气用尽了…", m_miss: "被弹回来了！",
+  report_link: "不，这是个词。告诉作者 →",
+  report_text: "有人说「{word}」不是词。\n{puzzle}\n是词典里没有，还是我记错了？若是收录遗漏，请告诉 {author}。\n#〇〇ことば",
+  share_perfect: "{puzzle}\n\n答案有 {n} 个，我全找到了。\n{closing}\n#〇〇ことば",
+  rule_word: "在「{t}」的 〇 里填一个假名，凑成一个词的游戏。",
+  rule_special: "在「{t}」前面的 〇 填清音，后面会变成同一个假名的浊音。",
+  rule_main: "在「{t}」的每个 〇 填同一个假名，凑成一个词的游戏。",
   gate_lead: "选择版本",
   gate_kids: "儿童版", gate_kids_sub: "小学至初中<br>只用简单词・大字体",
   gate_adult: "成人版", gate_adult_sub: "全部词汇<br>有分数与连击",
@@ -310,6 +337,15 @@ zh: {
 /* 繁体字（台湾）。語彙も台湾の言い方に寄せる（菜单→選單、记录→紀錄、
    设置→設定）。ここに無い鍵は zh（簡体字）に落ちる。 */
 zhTW: {
+  page_title: "〇〇ことば — 假名填空生存遊戲",
+  m_goal: "到了！", m_great: "厲害！", m_perfect: "完美！",
+  m_stage: "太棒了！", m_dead: "力氣用盡了…", m_miss: "被彈回來了！",
+  report_link: "不，這是個詞。告訴作者 →",
+  report_text: "有人說「{word}」不是詞。\n{puzzle}\n是詞典裡沒有，還是我記錯了？若是收錄遺漏，請告訴 {author}。\n#〇〇ことば",
+  share_perfect: "{puzzle}\n\n答案有 {n} 個，我全找到了。\n{closing}\n#〇〇ことば",
+  rule_word: "在「{t}」的 〇 裡填一個假名，湊成一個詞的遊戲。",
+  rule_special: "在「{t}」前面的 〇 填清音，後面會變成同一個假名的濁音。",
+  rule_main: "在「{t}」的每個 〇 填同一個假名，湊成一個詞的遊戲。",
   gate_lead: "選擇版本",
   gate_kids: "兒童版", gate_kids_sub: "小學至國中<br>只用簡單詞・大字體",
   gate_adult: "成人版", gate_adult_sub: "全部詞彙<br>有分數與連擊",
@@ -392,6 +428,15 @@ zhTW: {
 },
 
 vi: {
+  page_title: "〇〇ことば — Trò điền kana sinh tồn",
+  m_goal: "Tới đích!", m_great: "Tuyệt vời!", m_perfect: "Hoàn hảo!",
+  m_stage: "Làm được rồi!", m_dead: "Hết sức rồi…", m_miss: "Bị bật ra!",
+  report_link: "Không, đây là một từ. Báo cho tác giả →",
+  report_text: "Tôi bị báo là 「{word}」 không phải một từ.\n{puzzle}\nLà từ điển không có, hay trí nhớ tôi sai? Nếu là sót, hãy báo cho {author}.\n#〇〇ことば",
+  share_perfect: "{puzzle}\n\nCó {n} đáp án, và tôi tìm đủ cả.\n{closing}\n#〇〇ことば",
+  rule_word: "Trò chơi: điền một kana vào 〇 của 「{t}」 để thành một từ có thật.",
+  rule_special: "Điền một kana vào 〇 phía trước của 「{t}」; 〇 phía sau thành âm đục của nó.",
+  rule_main: "Trò chơi: điền cùng một kana vào mọi 〇 của 「{t}」 để thành một từ có thật.",
   gate_lead: "Chọn phiên bản",
   gate_kids: "Cho trẻ em", gate_kids_sub: "6–15 tuổi<br>Từ dễ, chữ to",
   gate_adult: "Cho người lớn", gate_adult_sub: "Toàn bộ từ vựng<br>Có điểm và combo",
@@ -474,6 +519,15 @@ vi: {
 },
 
 ko: {
+  page_title: "〇〇ことば — 가나 채우기 서바이벌",
+  m_goal: "골인!", m_great: "대단해!", m_perfect: "퍼펙트!",
+  m_stage: "해냈다!", m_dead: "힘이 다했다…", m_miss: "튕겨 나왔다!",
+  report_link: "아니, 이건 낱말이다. 만든 사람에게 알리기 →",
+  report_text: "「{word}」은 없는 말이라고 합니다.\n{puzzle}\n사전에 없는 걸까, 내 기억이 틀린 걸까. 빠뜨린 거라면 {author} 에게.\n#〇〇ことば",
+  share_perfect: "{puzzle}\n\n답은 {n}개였고, 전부 찾았다.\n{closing}\n#〇〇ことば",
+  rule_word: "「{t}」의 〇 에 가나 한 글자를 넣어 낱말을 만드는 놀이.",
+  rule_special: "「{t}」의 앞 〇 에 청음을 넣으면, 뒤는 같은 가나의 탁음이 된다.",
+  rule_main: "「{t}」의 모든 〇 에 같은 가나를 넣어 낱말을 만드는 놀이.",
   gate_lead: "어느 쪽으로 즐기시겠어요?",
   gate_kids: "어린이판", gate_kids_sub: "초·중학생용<br>쉬운 말만・큰 글씨",
   gate_adult: "어른판", gate_adult_sub: "모든 낱말<br>점수와 콤보 있음",
@@ -589,4 +643,48 @@ zhTW: ["新手","拾詞人","詞彙好手","詞典學徒","詞語行家","詞彙
 vi: ["Tập sự","Người nhặt chữ","Người dùng từ","Học việc từ điển","Người sành chữ",
   "Cao thủ từ vựng","Bậc thầy chữ","Vua từ vựng","Thần 〇〇"],
 ko: ["견습","낱말 줍기","어휘 사용자","사전 견습","말의 감정가","어휘 능수","말의 달인","어휘왕","〇〇의 신"]
+};
+
+/* 外したときに出ることば。日本語は game.js の BAD_MSGS に置いてある。 */
+const BAD_MSGS_I18N = {
+en: ["No such word. That will be one ★.", "Look as pained as you like — it still is not a word.",
+  "The dictionary says: never heard of it.", "That Japanese is unconfirmed, this time.",
+  "You asked rather a lot of that 〇.", "That sequence lives outside Japanese.",
+  "The 〇 is tilting its head at you.", "The characters are right. The word is not."],
+zh: ["没有这个词。★ 收下了。", "再怎么惋惜，没有就是没有。", "词典说：没听说过。",
+  "这个日语，这次没能确认。", "你让那个 〇 太为难了。", "这个排列在日语之外。",
+  "〇 正歪着头看你。", "字是对的，词不是。"],
+zhTW: ["沒有這個詞。★ 收下了。", "再怎麼惋惜，沒有就是沒有。", "詞典說：沒聽說過。",
+  "這個日語，這次沒能確認。", "你讓那個 〇 太為難了。", "這個排列在日語之外。",
+  "〇 正歪著頭看你。", "字是對的，詞不是。"],
+vi: ["Không có từ này. Xin nhận một ★.", "Có tiếc đến mấy thì vẫn là không có.",
+  "Từ điển bảo: chưa nghe bao giờ.", "Tiếng Nhật này, lần này chưa xác nhận được.",
+  "Bạn bắt cái 〇 đó làm quá sức rồi.", "Chuỗi này nằm ngoài tiếng Nhật.",
+  "Cái 〇 đang nghiêng đầu nhìn bạn.", "Chữ thì đúng. Từ thì không."],
+ko: ["그런 말은 없다. ★ 하나 받아 간다.", "아무리 아쉬운 얼굴을 해도, 없는 건 없다.",
+  "사전: 「모르는 말입니다」", "그 일본어, 이번엔 확인되지 않았다.",
+  "그 〇 에게 무리를 시켰군요.", "그 배열은 일본어 바깥에 있다.",
+  "〇 가 고개를 갸웃거리고 있다.", "글자는 맞다. 낱말이 아닐 뿐."]
+};
+
+/* 当てたときにキャラが言うひとこと。 */
+const HIT_MSGS_I18N = {
+ja: ["やった！", "いた！", "みつけた！", "せいかい！"],
+en: ["Got it!", "There!", "Found it!", "Correct!"],
+zh: ["太好了！", "有了！", "找到了！", "答对了！"],
+zhTW: ["太好了！", "有了！", "找到了！", "答對了！"],
+vi: ["Được rồi!", "Có này!", "Tìm ra rồi!", "Đúng rồi!"],
+ko: ["해냈다!", "있었다!", "찾았다!", "정답!"]
+};
+
+/* PERFECT を X に載せるときの締めの一行。 */
+const CLOSING_I18N = {
+ja: ["辞書の底が見えた。", "日本語、まだ隠し持っていた。", "こんなにあるとは思わなかった。"],
+en: ["I saw the bottom of the dictionary.", "Japanese was still hiding a few.",
+  "I had no idea there were this many."],
+zh: ["看见词典的底了。", "日语还藏着这些。", "没想到有这么多。"],
+zhTW: ["看見詞典的底了。", "日語還藏著這些。", "沒想到有這麼多。"],
+vi: ["Tôi đã thấy đáy cuốn từ điển.", "Tiếng Nhật vẫn còn giấu vài từ.",
+  "Không ngờ lại nhiều đến thế."],
+ko: ["사전의 바닥이 보였다.", "일본어, 아직 숨기고 있었구나.", "이렇게나 많을 줄은 몰랐다."]
 };
