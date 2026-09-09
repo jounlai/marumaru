@@ -18,6 +18,7 @@ npx playwright install chromium
 | `deadend.js` | 「かなが押せなくなる」行き止まりが無いか（★0・降参済み・盤面ロック時の復帰手段） | `node tests/deadend.js` |
 | `repro.js` | 旧セーブデータからの起動（★0／降参済み／クリア済み）で入力できるか | `node tests/repro.js` |
 | `shot.js` | 4 画面サイズでのスクロールあふれ計測とスクリーンショット | `node tests/shot.js` |
+| `music.js` | BGMの個別消音・設定保存・背景停止・復帰と実音声の検査。`--preview` で3つの試聴WAVも生成 | `node tests/music.js` |
 | `mascot.js` | 棒人間のアニメーションをコマ送りで撮影（`shots/` に出力） | `node tests/mascot.js` |
 
 `lint-data.js` は依存なしで動く。`smoke.js` は jsdom、それ以外は Chromium（Playwright）を使う。

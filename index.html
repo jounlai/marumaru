@@ -81,14 +81,14 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=971348f7">
+<link rel="stylesheet" href="css/styles.css?v=f5b71111">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=971348f7" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=f5b71111" alt="まるまる 〇〇ことば">
     <div class="gameName" id="mgName" hidden></div>
     <div class="mgLead" data-i18n="gate_lead">どちらであそびますか？</div>
     <div class="mgBtns" id="mgBtns">
@@ -125,14 +125,14 @@
      分からず戸惑うため、まず立つ場所を作る。基本は前回の続きから始める。 -->
 <div class="startGate" id="startGate" hidden>
   <div class="sgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=971348f7" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=f5b71111" alt="まるまる 〇〇ことば">
     <div class="gameName" id="sgName" hidden></div>
     <div class="sgLead" id="sgLead"></div>
 
     <div class="sgHere" id="sgHere">
       <div class="sgBerg" id="sgBerg">
         <span class="sgSea"></span>
-        <span class="sgYou"><img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=971348f7" alt=""></span>
+        <span class="sgYou"><img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=f5b71111" alt=""></span>
       </div>
       <div class="sgWhere">
         <em class="sgTag" data-i18n="home_tag">ことばの氷山</em>
@@ -177,7 +177,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <button class="brand" id="homeBtn" data-i18n-title="nav_home" title="ホーム画面へ" aria-label="ホーム画面へ"><img src="img/logo-small.png?v=971348f7" alt="まるまる 〇〇ことば" width="320" height="104"></button>
+    <button class="brand" id="homeBtn" data-i18n-title="nav_home" title="ホーム画面へ" aria-label="ホーム画面へ"><img src="img/logo-small.png?v=f5b71111" alt="まるまる 〇〇ことば" width="320" height="104"></button>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -186,8 +186,8 @@
       </div>
     </div>
     <div class="topBtns">
-      <button class="iconBtn" id="roundListBtn" data-i18n="nav_list">☰ 一覧</button>
-      <button class="iconBtn icoBtn" id="menuBtn" data-i18n-title="nav_menu" aria-label="メニュー"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm8.4-2.6l1.7 1.3-1.9 3.3-2-.8a7.6 7.6 0 0 1-1.7 1l-.3 2.1h-3.8l-.3-2.1a7.6 7.6 0 0 1-1.7-1l-2 .8-1.9-3.3 1.7-1.3a7.7 7.7 0 0 1 0-2l-1.7-1.3 1.9-3.3 2 .8a7.6 7.6 0 0 1 1.7-1L12.4 2h3.8l.3 2.1c.6.2 1.2.6 1.7 1l2-.8 1.9 3.3-1.7 1.3c.1.7.1 1.3 0 2z"/></svg></button>
+      <button class="iconBtn withIco" id="roundListBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="2.4" rx="1.2" fill="currentColor"/><rect x="5" y="10.8" width="14" height="2.4" rx="1.2" fill="currentColor"/><rect x="7" y="16.6" width="10" height="2.4" rx="1.2" fill="currentColor"/></svg><span data-i18n="nav_list">一覧</span></button>
+      <button class="iconBtn icoBtn" id="menuBtn" data-i18n-title="nav_menu" aria-label="メニュー"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="6.7" width="6.6" height="2.2" rx="1.1" fill="currentColor"/><rect x="16.4" y="6.7" width="4.6" height="2.2" rx="1.1" fill="currentColor"/><circle cx="13" cy="7.8" r="2.9" fill="currentColor"/><rect x="3" y="15.1" width="4.6" height="2.2" rx="1.1" fill="currentColor"/><rect x="14.4" y="15.1" width="6.6" height="2.2" rx="1.1" fill="currentColor"/><circle cx="11" cy="16.2" r="2.9" fill="currentColor"/></svg></button>
     </div>
   </header>
 
@@ -463,12 +463,12 @@
   </div>
 </div>
 
-<!-- ?v=971348f7 は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/i18n.js?v=971348f7"></script>
-<script src="js/meanings-i18n.js?v=971348f7"></script>
-<script src="js/data.js?v=971348f7"></script>
-<script src="js/kids.js?v=971348f7"></script>
-<script src="js/music.js?v=971348f7"></script>
-<script src="js/game.js?v=971348f7"></script>
+<!-- ?v=f5b71111 は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
+<script src="js/i18n.js?v=f5b71111"></script>
+<script src="js/meanings-i18n.js?v=f5b71111"></script>
+<script src="js/data.js?v=f5b71111"></script>
+<script src="js/kids.js?v=f5b71111"></script>
+<script src="js/music.js?v=f5b71111"></script>
+<script src="js/game.js?v=f5b71111"></script>
 </body>
 </html>

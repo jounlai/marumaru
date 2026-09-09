@@ -29,7 +29,7 @@ const IcebergMusic = (() => {
   function graph(c){
     const filter = c.createBiquadFilter(), gain = c.createGain();
     filter.type = "lowpass"; filter.Q.value = .45;
-    gain.gain.value = .48;
+    gain.gain.value = .85;
     filter.connect(gain).connect(c.destination);
     const g = { c, filter, gain, voices: new Set(), stopped: false };
     g.dispose = () => { filter.disconnect(); gain.disconnect(); };

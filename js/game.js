@@ -871,15 +871,15 @@ function audio(){
 function unlockAudio(){
   if ((!soundOn && !musicOn) || !mode) return;
   try {
-  enablePlaybackAudio();
-  const c = audio();
-  audioUnlocked = true;
-  // 無音を一発鳴らして、実際に音の出せる状態かを確定させる
-  try {
-    const b = c.createBuffer(1, 1, 22050), s = c.createBufferSource();
-    s.buffer = b; s.connect(c.destination); s.start(0);
-  } catch (e) {}
-  syncMusic();
+    enablePlaybackAudio();
+    const c = audio();
+    audioUnlocked = true;
+    // 無音を一発鳴らして、実際に音の出せる状態かを確定させる
+    try {
+      const b = c.createBuffer(1, 1, 22050), s = c.createBufferSource();
+      s.buffer = b; s.connect(c.destination); s.start(0);
+    } catch (e) {}
+    syncMusic();
   } catch (e) {}  // WebAudioが無い環境でも、ことばのゲームは遊べる。
 }
 ["pointerdown", "touchstart", "keydown"].forEach(ev =>

@@ -14,7 +14,8 @@ function wav(channels, rate){
   b.writeUInt16LE(4, 32); b.writeUInt16LE(16, 34); b.write("data", 36);
   b.writeUInt32LE(samples * 4, 40);
   for (let i = 0; i < samples; i++) for (let c = 0; c < 2; c++)
-    b.writeInt16LE(Math.round(Math.max(-1, Math.min(1, channels[c][i])) * 32767), 44 + (i * 2 + c) * 2);
+    // 試聴用は単独で聴きやすい音量にする。ゲーム内では効果音より控えめ。
+    b.writeInt16LE(Math.round(Math.max(-1, Math.min(1, channels[c][i] * 3)) * 32767), 44 + (i * 2 + c) * 2);
   return b;
 }
 

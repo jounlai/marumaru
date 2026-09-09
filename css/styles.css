@@ -113,8 +113,10 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 }
 .iconBtn:hover{border-color:#8a8a8a;background:#131313}
 /* 絵文字は環境で字面が変わり、大きさも揃わない。線画に置き換える */
-.ico{display:block;width:16px;height:16px}
-.icoBtn{display:grid;place-items:center;padding:7px 10px}
+/* 絵は塗りだけで描く。線幅の端数でぼやけないよう、棒と円だけにしてある */
+.ico{display:block;width:17px;height:17px;flex:0 0 auto}
+.icoBtn{display:grid;place-items:center;padding:6px 9px}
+.withIco{display:inline-flex;align-items:center;gap:6px}
 /* 矢印も文字ではなく線で描く。字より細く、字の大きさに追従する */
 .backLink::before,.reportLink::after,#nextBtn::after{
   content:"";display:inline-block;width:.42em;height:.42em;
