@@ -40,6 +40,32 @@ html[lang="vi"] body{
   font-family:"Noto Sans","Segoe UI",system-ui,-apple-system,
     "Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",sans-serif;
 }
+/* スクロールバー。既定のものは明るい灰色で、暗い盤面から浮いて見える。
+   掴める幅は残したまま、細く暗くする。出るのは PC だけで、指で触る端末には
+   影響しない。個別に隠している所（氷山の帯）は、そちらの指定が勝つ。
+
+   Chrome と Safari は ::-webkit-scrollbar で自前に描く（角を丸められる）。
+   ただし scrollbar-width / scrollbar-color をどちらか書くと、Chrome は
+   ::-webkit-scrollbar を無視してしまう。そこで標準プロパティのほうは、
+   ::-webkit-scrollbar を持たない Firefox にだけ当てる。 */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{
+  /* 透明な縁を内側に取って、細く見せつつ掴める幅を保つ */
+  background:#3a3a3a;border-radius:999px;
+  border:2px solid transparent;background-clip:padding-box;
+}
+::-webkit-scrollbar-thumb:hover{background:#606060;background-clip:padding-box}
+::-webkit-scrollbar-thumb:active{background:#7a7a7a;background-clip:padding-box}
+::-webkit-scrollbar-corner{background:transparent}
+/* こども版は盤面が明るいので、つまみも緑に寄せる */
+.kidsMode ::-webkit-scrollbar-thumb{background:#4a6b2a;background-clip:padding-box}
+.kidsMode ::-webkit-scrollbar-thumb:hover{background:#6a9440;background-clip:padding-box}
+@supports not selector(::-webkit-scrollbar){
+  *{scrollbar-width:thin;scrollbar-color:#3a3a3a transparent}
+  .kidsMode *{scrollbar-color:#4a6b2a transparent}
+}
+
 button{font:inherit;color:inherit}
 h1,h2{margin:0}
 

@@ -3675,7 +3675,8 @@ zhTW: {
 "まおう": "魔物之王。如「第六天魔王」。",
 "まがう": "極為相似而分辨不出。如「紛うことなき」。",
 "まごう": "與「まがう」相同。如「見紛う」。",
-"まふう": "傳說由魔物掀起的暴風、令人毛骨悚然的風。"
+"まふう": "傳說由魔物掀起的暴風、令人毛骨悚然的風。",
+"でんま": "電動按摩器的簡稱。俗語中也指性玩具。"
 },
 en: {
 "あんあん": "Whimpering or moaning. / anan is a women's magazine from Magazine House.",
@@ -7332,7 +7333,8 @@ en: {
 "まおう": "The king of demons. As in 「第六天魔王」.",
 "まがう": "To resemble so closely that one cannot tell them apart. As in 「紛うことなき」.",
 "まごう": "The same as 「まがう」. As in 「見紛う」.",
-"まふう": "A storm or eerie wind said to be raised by demons."
+"まふう": "A storm or eerie wind said to be raised by demons.",
+"でんま": "Short for an electric massager. In slang, also a sex toy."
 },
 
 zh: {
@@ -10990,7 +10992,8 @@ zh: {
 "まおう": "魔物之王。如「第六天魔王」。",
 "まがう": "极为相似而分辨不出。如「紛うことなき」。",
 "まごう": "与「まがう」相同。如「見紛う」。",
-"まふう": "传说由魔物掀起的暴风、令人毛骨悚然的风。"
+"まふう": "传说由魔物掀起的暴风、令人毛骨悚然的风。",
+"でんま": "电动按摩器的简称。俗语中也指性玩具。"
 },
 
 vi: {
@@ -14648,7 +14651,8 @@ vi: {
 "まおう": "Vua của loài ma quỷ. Như 「第六天魔王」.",
 "まがう": "Giống đến mức không phân biệt nổi. Như 「紛うことなき」.",
 "まごう": "Giống như 「まがう」. Như 「見紛う」.",
-"まふう": "Cơn bão hay ngọn gió rợn người mà người ta nói là do ma quỷ gây ra."
+"まふう": "Cơn bão hay ngọn gió rợn người mà người ta nói là do ma quỷ gây ra.",
+"でんま": "Viết tắt của máy massage điện. Trong tiếng lóng còn chỉ đồ chơi tình dục."
 },
 
 ko: {
@@ -18306,6 +18310,7 @@ ko: {
 "まおう": "마물의 왕, 마왕. 「第六天魔王」처럼 쓴다.",
 "まがう": "너무 비슷해서 분간이 되지 않다. 「紛うことなき」처럼 쓴다.",
 "まごう": "「まがう」와 같다. 「見紛う」처럼 쓴다.",
-"まふう": "마물이 일으킨다는 폭풍, 으스스한 바람."
+"まふう": "마물이 일으킨다는 폭풍, 으스스한 바람.",
+"でんま": "전기 마사지기의 준말. 속어로는 성인용품을 가리키기도 한다."
 }
 };
