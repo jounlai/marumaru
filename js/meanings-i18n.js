@@ -3682,7 +3682,17 @@ zhTW: {
 "まうい": "夏威夷群島中的島嶼，面積僅次於夏威夷島。",
 "ぼんたい": "棒球中，打者被輕易解決、未能上壘。",
 "かろい": "「軽い」的古雅說法。",
-"とんぼう": "「とんぼ」（蜻蜓）的古老說法。"
+"とんぼう": "「とんぼ」（蜻蜓）的古老說法。",
+"さんしょ": "芸香科灌木，果實與葉子當香料用。也讀作「さんしょう」。",
+"はのい": "越南的首都。",
+"こんが": "用手拍打的細長鼓，用於拉丁音樂。",
+"せんな": "豆科灌木，葉子可入藥。",
+"さんぱん": "中國等地使用的小型木船。",
+"のんたん": "以白貓為主角的繪本系列。",
+"とらどら": "竹宮悠由子的輕小說《とらドラ！》，也改編成動畫的校園故事。",
+"すますま": "電視節目《SMAP×SMAP》的俗稱。",
+"こじこじ": "櫻桃子的漫畫《コジコジ》，也是宇宙出身的主角之名。",
+"べるべる": "住在北非的民族。「柏柏爾人」。"
 },
 en: {
 "あんあん": "Whimpering or moaning. / anan is a women's magazine from Magazine House.",
@@ -7346,7 +7356,17 @@ en: {
 "まうい": "Maui, an island in Hawaii. The second largest after the island of Hawaiʻi.",
 "ぼんたい": "In baseball, a batter being retired without reaching base.",
 "かろい": "An old-fashioned way of saying karui, light.",
-"とんぼう": "An old word for tonbo, a dragonfly."
+"とんぼう": "An old word for tonbo, a dragonfly.",
+"さんしょ": "Japanese pepper, a citrus-family shrub. Its fruit and leaves are used as a spice. Also read sanshō.",
+"はのい": "Hanoi, the capital of Vietnam.",
+"こんが": "The conga, a tall hand drum used in Latin music.",
+"せんな": "Senna, a legume shrub whose leaves are used as medicine.",
+"さんぱん": "A sampan, a small wooden boat used in China and elsewhere.",
+"のんたん": "Non-tan, a picture-book series about a white cat.",
+"とらどら": "Toradora!, a light novel by Takemiya Yuyuko. A school story, also made into an anime.",
+"すますま": "Sumasuma, the nickname of the TV show SMAP×SMAP.",
+"こじこじ": "Coji-Coji, a manga by Sakura Momoko, and the name of its space-born hero.",
+"べるべる": "The Berbers, a people of North Africa."
 },
 
 zh: {
@@ -11011,7 +11031,17 @@ zh: {
 "まうい": "夏威夷群岛中的岛屿，面积仅次于夏威夷岛。",
 "ぼんたい": "棒球中，打者被轻易解决、未能上垒。",
 "かろい": "「軽い」的古雅说法。",
-"とんぼう": "「とんぼ」（蜻蜓）的古老说法。"
+"とんぼう": "「とんぼ」（蜻蜓）的古老说法。",
+"さんしょ": "芸香科灌木，果实与叶子当香料用。也读作「さんしょう」。",
+"はのい": "越南的首都。",
+"こんが": "用手拍打的细长鼓，用于拉丁音乐。",
+"せんな": "豆科灌木，叶子可入药。",
+"さんぱん": "中国等地使用的小型木船。",
+"のんたん": "以白猫为主角的绘本系列。",
+"とらどら": "竹宫悠由子的轻小说《とらドラ！》，也改编成动画的校园故事。",
+"すますま": "电视节目《SMAP×SMAP》的俗称。",
+"こじこじ": "樱桃子的漫画《コジコジ》，也是宇宙出身的主角之名。",
+"べるべる": "住在北非的民族。「柏柏尔人」。"
 },
 
 vi: {
@@ -14676,7 +14706,17 @@ vi: {
 "まうい": "Maui, một đảo thuộc quần đảo Hawaii. Lớn thứ hai sau đảo Hawaiʻi.",
 "ぼんたい": "Trong bóng chày, đánh bị loại mà không lên được chốt.",
 "かろい": "Cách nói cổ của karui, nhẹ.",
-"とんぼう": "Cách gọi cổ của tonbo, con chuồn chuồn."
+"とんぼう": "Cách gọi cổ của tonbo, con chuồn chuồn.",
+"さんしょ": "Cây tiêu Nhật, cây bụi họ cam quýt. Quả và lá dùng làm gia vị. Cũng đọc là sanshō.",
+"はのい": "Hà Nội, thủ đô Việt Nam.",
+"こんが": "Trống conga, trống dài đánh bằng tay trong nhạc Latin.",
+"せんな": "Cây senna, cây bụi họ đậu, lá dùng làm thuốc.",
+"さんぱん": "Thuyền sampan, thuyền gỗ nhỏ dùng ở Trung Quốc và nơi khác.",
+"のんたん": "Non-tan, bộ truyện tranh thiếu nhi về một chú mèo trắng.",
+"とらどら": "Toradora!, tiểu thuyết của Takemiya Yuyuko. Chuyện học đường, cũng được dựng thành anime.",
+"すますま": "Sumasuma, tên gọi tắt của chương trình truyền hình SMAP×SMAP.",
+"こじこじ": "Coji-Coji, truyện tranh của Sakura Momoko, và tên nhân vật chính sinh ra từ vũ trụ.",
+"べるべる": "Người Berber, một dân tộc ở Bắc Phi."
 },
 
 ko: {
@@ -18341,6 +18381,16 @@ ko: {
 "まうい": "하와이 제도의 섬. 하와이섬 다음으로 크다.",
 "ぼんたい": "야구에서 타자가 손쉽게 아웃되어 출루하지 못하는 것.",
 "かろい": "「軽い」의 예스러운 말투.",
-"とんぼう": "「とんぼ」(잠자리)의 옛 말투."
+"とんぼう": "「とんぼ」(잠자리)의 옛 말투.",
+"さんしょ": "운향과의 관목. 열매와 잎을 향신료로 쓴다. 「さんしょう」라고도 읽는다.",
+"はのい": "베트남의 수도 하노이.",
+"こんが": "손으로 두드리는 길쭉한 북. 라틴 음악에 쓴다.",
+"せんな": "콩과의 관목. 잎을 약으로 쓴다.",
+"さんぱん": "중국 등지에서 쓰는 작은 나무배.",
+"のんたん": "흰 고양이가 주인공인 그림책 시리즈.",
+"とらどら": "다케미야 유유코의 라이트노벨 『とらドラ！』. 애니메이션으로도 만들어진 학원물.",
+"すますま": "TV 프로그램 『SMAP×SMAP』의 통칭.",
+"こじこじ": "사쿠라 모모코의 만화 『コジコジ』. 우주에서 태어난 주인공의 이름.",
+"べるべる": "북아프리카에 사는 민족. 「베르베르인」."
 }
 };

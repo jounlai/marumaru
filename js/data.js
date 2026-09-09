@@ -480,7 +480,8 @@ const ROUND_DATA = [
       { word: "づるづる", meaning: "重い物をゆっくり引きずるさま/少しずつ滑る・後退するさま。" },
       { word: "えるえる", display: "ＬＬ", meaning: "衣服の特大サイズ（XL）/語学実習室（LL）。" },
       { word: "ねるねる", meaning: "知育菓子「ねるねるねるね」シリーズを指す略称。" },
-      { word: "ちるちる", meaning: "メーテルリンクの戯曲『青い鳥』の登場人物チルチル（男性名）。" }
+      { word: "ちるちる", meaning: "メーテルリンクの戯曲『青い鳥』の登場人物チルチル（男性名）。" },
+      { word: "べるべる", display: "ベルベル", meaning: "北アフリカに暮らす民族。「ベルベル人」。" }
     ]
   },
   {
@@ -929,7 +930,8 @@ const ROUND_DATA = [
       { word: "しましま", display: "縞々", meaning: "しま模様が並んださま。" },
       { word: "いまいま", display: "忌々", meaning: "「忌々しい」の形で、腹立たしいさま。" },
       { word: "だまだま", meaning: "粉が固まって粒になるさま。" },
-      { word: "ひまひま", display: "暇々", meaning: "合間合間。「暇々に本を読む」。" }
+      { word: "ひまひま", display: "暇々", meaning: "合間合間。「暇々に本を読む」。" },
+      { word: "すますま", display: "スマスマ", meaning: "テレビ番組『SMAP×SMAP』の通称。" }
     ]
   },
   {
@@ -1122,7 +1124,8 @@ const ROUND_DATA = [
       { word: "げじげじ", display: "蚰蜒", meaning: "足の多い虫。「げじげじ眉」。" },
       { word: "がじがじ", meaning: "硬いものを繰り返しかじるさま。" },
       { word: "つじつじ", display: "辻々", meaning: "あちこちの街角。" },
-      { word: "ねじねじ", meaning: "ねじれてよじれているさま。" }
+      { word: "ねじねじ", meaning: "ねじれてよじれているさま。" },
+      { word: "こじこじ", display: "コジコジ", meaning: "さくらももこの漫画。宇宙生まれの主人公の名。" }
     ]
   },
   {
@@ -1279,7 +1282,8 @@ const SPECIAL_ROUNDS = [
     answers: [
       { word: "しらじら", display: "白々", meaning: "夜が明けて白んでいくさま/見え透いてしらけるさま。" },
       { word: "からがら", display: "辛々", meaning: "やっとのことで。「命からがら逃げ出す」。" },
-      { word: "そらぞら", display: "空々", meaning: "「空々しい」の形で、見えすいたうそくさいさま。" }
+      { word: "そらぞら", display: "空々", meaning: "「空々しい」の形で、見えすいたうそくさいさま。" },
+      { word: "とらどら", display: "とらドラ！", meaning: "竹宮ゆゆこのライトノベル。アニメにもなった学園もの。" }
     ]
   },
   {
@@ -2469,7 +2473,8 @@ const WORD_ROUNDS = [
       { word: "はざい", display: "端材", meaning: "切り取ったあとに残る材木や材料。" },
       { word: "はあい", display: "はあい", meaning: "のんびりした返事の声。" },
       { word: "はつい", display: "発意", meaning: "思いつくこと。言い出すこと。" },
-      { word: "はいい", display: "廃位", meaning: "王位などから退けられること。" }
+      { word: "はいい", display: "廃位", meaning: "王位などから退けられること。" },
+      { word: "はのい", display: "ハノイ", meaning: "ベトナムの首都。" }
     ]
   },
   {
@@ -2585,7 +2590,8 @@ const WORD_ROUNDS = [
       { word: "ぜんたん", display: "前端", meaning: "いちばん前のはし。" },
       { word: "くんたん", display: "燻炭", meaning: "もみ殻をいぶして作る炭。土壌改良に使う。" },
       { word: "でんたん", display: "伝単", meaning: "戦時に空からまく宣伝ビラ。" },
-      { word: "えんたん", display: "鉛丹", meaning: "赤い顔料。さび止め塗料に使う。" }
+      { word: "えんたん", display: "鉛丹", meaning: "赤い顔料。さび止め塗料に使う。" },
+      { word: "のんたん", display: "ノンタン", meaning: "白いねこが主人公の絵本シリーズ。" }
     ]
   },
   {
@@ -2811,7 +2817,8 @@ const WORD_ROUNDS = [
       { word: "ぱんぱん", display: "ぱんぱん", meaning: "はちきれそうに張っているさま。「腹がぱんぱん」。" },
       { word: "ばんぱん", display: "万般", meaning: "物事のすべて。「万般にわたる」。" },
       { word: "わんぱん", display: "ワンパン", meaning: "一発で倒すこと。「ワンパンマン」。" },
-      { word: "らんぱん", display: "ランパン", meaning: "ランニングパンツ。陸上競技用の短パン。" }
+      { word: "らんぱん", display: "ランパン", meaning: "ランニングパンツ。陸上競技用の短パン。" },
+      { word: "さんぱん", display: "サンパン", meaning: "中国などで使われる小型の木造船。" }
     ]
   },
   {
@@ -3261,7 +3268,8 @@ const WORD_ROUNDS = [
       { word: "いんしょ", display: "印書", meaning: "タイプライターで印字すること。" },
       { word: "そんしょ", display: "尊書", meaning: "相手の手紙を敬っていう語。" },
       { word: "けんしょ", display: "賢所", meaning: "宮中で三種の神器の神鏡を祭る所。" },
-      { word: "ろんしょ", display: "論書", meaning: "仏教の論書を教材としてまとめた書物。" }
+      { word: "ろんしょ", display: "論書", meaning: "仏教の論書を教材としてまとめた書物。" },
+      { word: "さんしょ", display: "山椒", meaning: "ミカン科の低木。実や葉を香辛料に使う。「さんしょう」とも。" }
     ]
   },
   {
@@ -3896,7 +3904,8 @@ const WORD_ROUNDS = [
       { word: "げんな", display: "元和", meaning: "江戸初期の年号。「元和偃武」。" },
       { word: "てんな", display: "天和", meaning: "江戸前期の年号。" },
       { word: "ぶんな", display: "文和", meaning: "北朝の年号「文和」（1352～1356年）。" },
-      { word: "をんな", display: "女", meaning: "「おんな」の歴史的仮名遣い。" }
+      { word: "をんな", display: "女", meaning: "「おんな」の歴史的仮名遣い。" },
+      { word: "せんな", display: "センナ", meaning: "マメ科の低木。葉を薬に使う。" }
     ]
   },
   {
@@ -3986,7 +3995,8 @@ const WORD_ROUNDS = [
       { word: "ぼんが", display: "盆画", meaning: "盆の上に砂・石・植物などで景色を作る盆景。" },
       { word: "みんが", display: "民画", meaning: "庶民生活を描く絵・民俗的な絵画。" },
       { word: "けんが", display: "懸架", meaning: "車体をばねで支えること。サスペンション。" },
-      { word: "とんが", display: "トンガ", meaning: "南太平洋の島国。ポリネシアの王国。" }
+      { word: "とんが", display: "トンガ", meaning: "南太平洋の島国。ポリネシアの王国。" },
+      { word: "こんが", display: "コンガ", meaning: "手で叩く細長い太鼓。ラテン音楽に使う。" }
     ]
   },
   {
