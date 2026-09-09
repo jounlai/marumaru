@@ -35,8 +35,8 @@
 
 | | 置き場所 |
 |---|---|
-| 画面の文字 | [js/i18n.js](js/i18n.js) — 108鍵 × 5言語。層の名前30と段位9も |
-| 語釈 | [js/meanings-i18n.js](js/meanings-i18n.js) — 増やし方は [meanings-i18n.md](meanings-i18n.md) |
+| 画面の文字 | [js/i18n.js](js/i18n.js) — 121鍵 × 6言語。層の名前30・段位9・言い回しの一覧も |
+| 語釈 | [js/meanings-i18n.js](js/meanings-i18n.js) — **全3,660語**。書き方は [meanings-i18n.md](meanings-i18n.md) |
 
 **訳が無いときの落とし方**が3段ある。壊さずに少しずつ増やすため。
 
@@ -161,8 +161,10 @@ URL は**いまどの画面にいるか**を持つ。読み込み直しても同
 
 1. [js/data.js](js/data.js) の該当テンプレートに `{ word, display, meaning }` を足す
 2. `node tests/make-kids.js` で [js/kids.js](js/kids.js) を作り直す（やらないと こども版に出ない）
-3. `npm test`（`lint-data.js` と `check-readings.js`）を通す
-4. lint が出す `?v=` の値を [index.html](index.html) に反映する
+3. [js/meanings-i18n.js](js/meanings-i18n.js) に語釈の訳を5言語ぶん足す
+   （書き方と落とし穴は [meanings-i18n.md](meanings-i18n.md)）
+4. `npm test`（`lint-data.js` と `check-readings.js`）を通す
+5. lint が出す `?v=` の値を [index.html](index.html) に反映する
 
 `?v=` は css/js の内容から作るハッシュ。配信元がキャッシュを効かせるので、
 ここを上げ忘れると**すでに遊んだ人のブラウザが古い data.js を使い続け、
