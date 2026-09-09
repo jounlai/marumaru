@@ -137,9 +137,15 @@ const line = (t, ok, extra) => console.log(`   ${ok ? " ok " : "FAIL"}  ${t}${ex
     ck("メニューは背景タップで閉じる", !(await page.isVisible("#menuModal")));
     await page.click("#roundListBtn"); await page.waitForTimeout(200);
     await page.keyboard.press("Escape"); await page.waitForTimeout(200);
-    ck("ラウンド一覧はEscで閉じる", !(await page.isVisible("#roundModal")));
+    // 一覧は閉じられない。閉じても直前の盤面に戻るだけで意味が無いため、
+    // ラウンドを選ぶかホームへ戻るかの二択にしてある。
+    ck("ラウンド一覧はEscでは閉じない", await page.isVisible("#roundModal"));
+    // 出口はラウンドを選ぶか、ホームへ戻るかの二択
+    ck("一覧にホームへの戻り道がある", await page.isVisible("#listHomeBtn"));
+    await page.click('#roundList .roundChoice[data-round="0"]'); await page.waitForTimeout(200);
+    ck("ラウンドを選ぶと一覧が畳まれる", !(await page.isVisible("#roundModal")));
     await page.click(".kana:not([disabled])"); await page.waitForTimeout(200);
-    ck("閉じたあとかなを押せる", await page.evaluate(() => roundStates[roundIndex].used.size > 0));
+    ck("選んだあとかなを押せる", await page.evaluate(() => roundStates[roundIndex].used.size > 0));
     await ctx.close();
   }
 

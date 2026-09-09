@@ -81,14 +81,15 @@
 })();
 </script>
 
-<link rel="stylesheet" href="css/styles.css?v=fb844077">
+<link rel="stylesheet" href="css/styles.css?v=1103ae0c">
 </head>
 <body>
 
 <!-- 入り口。モードを選ぶまでゲームは動かさない -->
 <div class="modeGate" id="modeGate" hidden>
   <div class="mgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=fb844077" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=1103ae0c" alt="まるまる 〇〇ことば">
+    <div class="gameName" id="mgName" hidden></div>
     <div class="mgLead" data-i18n="gate_lead">どちらであそびますか？</div>
     <div class="mgBtns" id="mgBtns">
       <button class="mgBtn kids" data-mode="kids">
@@ -124,13 +125,14 @@
      分からず戸惑うため、まず立つ場所を作る。基本は前回の続きから始める。 -->
 <div class="startGate" id="startGate" hidden>
   <div class="sgInner">
-    <img class="mgLogo hero" src="img/logo-hero.png?v=fb844077" alt="まるまる 〇〇ことば">
+    <img class="mgLogo hero" src="img/logo-hero.png?v=1103ae0c" alt="まるまる 〇〇ことば">
+    <div class="gameName" id="sgName" hidden></div>
     <div class="sgLead" id="sgLead"></div>
 
     <div class="sgHere" id="sgHere">
       <div class="sgBerg" id="sgBerg">
         <span class="sgSea"></span>
-        <span class="sgYou"><img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=fb844077" alt=""></span>
+        <span class="sgYou"><img class="sgChar" id="sgChar" src="img/maru-dive-1.png?v=1103ae0c" alt=""></span>
       </div>
       <div class="sgWhere">
         <em class="sgTag" data-i18n="home_tag">ことばの氷山</em>
@@ -163,6 +165,7 @@
       </select>
     </div>
     <div class="sgLangNote" id="sgLangNote" hidden></div>
+    <button class="btn" id="sgEndingBtn" hidden></button>
     <div class="sgNote" id="sgNote" hidden></div>
   </div>
 </div>
@@ -171,7 +174,7 @@
 
   <!-- ヘッダー：ラウンド・★・スコア -->
   <header class="top">
-    <button class="brand" id="homeBtn" data-i18n-title="nav_home" title="ホーム画面へ" aria-label="ホーム画面へ"><img src="img/logo-small.png?v=fb844077" alt="まるまる 〇〇ことば" width="320" height="104"></button>
+    <button class="brand" id="homeBtn" data-i18n-title="nav_home" title="ホーム画面へ" aria-label="ホーム画面へ"><img src="img/logo-small.png?v=1103ae0c" alt="まるまる 〇〇ことば" width="320" height="104"></button>
     <div class="hud">
       <div class="hudStarsWrap"><div class="hudStars" id="stars"></div></div>
       <div class="hudScore" id="hudScore">
@@ -181,7 +184,7 @@
     </div>
     <div class="topBtns">
       <button class="iconBtn" id="roundListBtn" data-i18n="nav_list">☰ 一覧</button>
-      <button class="iconBtn" id="menuBtn" data-i18n-title="nav_menu" aria-label="メニュー">⚙</button>
+      <button class="iconBtn icoBtn" id="menuBtn" data-i18n-title="nav_menu" aria-label="メニュー"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm8.4-2.6l1.7 1.3-1.9 3.3-2-.8a7.6 7.6 0 0 1-1.7 1l-.3 2.1h-3.8l-.3-2.1a7.6 7.6 0 0 1-1.7-1l-2 .8-1.9-3.3 1.7-1.3a7.7 7.7 0 0 1 0-2l-1.7-1.3 1.9-3.3 2 .8a7.6 7.6 0 0 1 1.7-1L12.4 2h3.8l.3 2.1c.6.2 1.2.6 1.7 1l2-.8 1.9 3.3-1.7 1.3c.1.7.1 1.3 0 2z"/></svg></button>
     </div>
   </header>
 
@@ -339,8 +342,19 @@
   </div>
 </div>
 
+<!-- エンディング。潜った層をたどりながら、見つけたことばが全部流れる -->
+<div class="ending" id="ending" hidden>
+  <div class="endRoll" id="endRoll"></div>
+  <div class="endBar">
+    <button class="btn" id="endSpeed">×1</button>
+    <button class="btn" id="endClose">閉じる</button>
+  </div>
+</div>
+
 <!-- ============================== モーダル ============================== -->
-<div class="modal" id="roundModal">
+<!-- 一覧は閉じられない。閉じても直前の盤面に戻るだけで意味が無いので、
+     ラウンドを選ぶか、ホームへ戻るかの二択にする。 -->
+<div class="modal" id="roundModal" data-persistent>
   <div class="modalCard">
     <div class="modalHead">
       <div>
@@ -348,7 +362,6 @@
         <div class="modalTitle" id="stageTitle">ステージ</div>
         <div class="modalSub" data-i18n="list_sub">ことばの氷山。上は誰でも知っていることば、深いほど数が減って見慣れなくなります。</div>
       </div>
-      <div class="topBtns"><button class="iconBtn" data-close data-i18n="close">閉じる</button></div>
     </div>
     <div class="stageStrip" id="stageStrip"></div>
     <div class="roundList" id="roundList"></div>
@@ -446,11 +459,11 @@
   </div>
 </div>
 
-<!-- ?v=fb844077 は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
-<script src="js/i18n.js?v=fb844077"></script>
-<script src="js/meanings-i18n.js?v=fb844077"></script>
-<script src="js/data.js?v=fb844077"></script>
-<script src="js/kids.js?v=fb844077"></script>
-<script src="js/game.js?v=fb844077"></script>
+<!-- ?v=1103ae0c は css/js の内容から作るハッシュ。変更したら上げる（tests/lint-data.js が検査し、正しい値を教える） -->
+<script src="js/i18n.js?v=1103ae0c"></script>
+<script src="js/meanings-i18n.js?v=1103ae0c"></script>
+<script src="js/data.js?v=1103ae0c"></script>
+<script src="js/kids.js?v=1103ae0c"></script>
+<script src="js/game.js?v=1103ae0c"></script>
 </body>
 </html>

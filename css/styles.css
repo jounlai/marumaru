@@ -112,6 +112,17 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
   padding:6px 11px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;
 }
 .iconBtn:hover{border-color:#8a8a8a;background:#131313}
+/* 絵文字は環境で字面が変わり、大きさも揃わない。線画に置き換える */
+.ico{display:block;width:16px;height:16px}
+.icoBtn{display:grid;place-items:center;padding:7px 10px}
+/* 矢印も文字ではなく線で描く。字より細く、字の大きさに追従する */
+.backLink::before,.reportLink::after,#nextBtn::after{
+  content:"";display:inline-block;width:.42em;height:.42em;
+  border-top:2px solid currentColor;border-right:2px solid currentColor;
+  vertical-align:.04em;
+}
+.backLink::before{transform:rotate(-135deg);margin-right:.55em}
+.reportLink::after,#nextBtn::after{transform:rotate(45deg);margin-left:.55em}
 .iconBtn.danger{border-color:#5b2424;color:#ffb0b0}
 /* 見出しの上に置く戻り道。丸ボタンで並べると、閉じるの隣で唐突に見える */
 .backLink{
@@ -1621,6 +1632,62 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
   .mgBtn small{font-size:11px;line-height:1.5}
   .mgNote{margin-top:10px;font-size:10px;line-height:1.6}
 }
+
+/* ------------------------------------------ 19b) エンディング */
+/* 潜った層をたどりながら、見つけたことばが流れる。海の底から見上げる色。 */
+.ending{
+  position:fixed;inset:0;z-index:95;overflow:hidden;
+  background:linear-gradient(180deg,#01060c 0%,#03121f 40%,#062435 100%);
+}
+.ending[hidden]{display:none}
+/* 横は左右いっぱいに広げ、中身のほうを中央へ寄せる。
+   left:50% と負の margin で寄せると、負の値では min() の大小が逆になって
+   幅の広い側に張り付いてしまう（実際に左へずれた）。 */
+.endRoll{
+  position:absolute;left:0;right:0;top:0;
+  padding:0 max(16px,4vw);text-align:center;will-change:transform;
+}
+.endRoll > *{max-width:760px;margin-left:auto;margin-right:auto}
+.endLogo{width:min(260px,52vw);height:auto;display:block;margin:0 auto 10px}
+.endHead h2{font-size:clamp(22px,5.4vw,34px);font-weight:950;letter-spacing:.06em;color:#cfefff}
+.endHead p{margin:8px 0 0;font-size:13px;font-weight:700;color:rgba(255,255,255,.55)}
+.endHead{padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:36px}
+/* 層ごとに区切る。名前と深さが見出しで、下に見つけたことばが並ぶ */
+.endLayer{margin:0 0 30px}
+.endLayer h3{
+  font-size:clamp(15px,3.2vw,19px);font-weight:900;color:#9fd8f5;letter-spacing:.04em;
+  margin:0 0 8px;display:flex;align-items:baseline;justify-content:center;gap:10px;
+}
+.endLayer h3 small{font-size:11px;font-weight:800;color:rgba(255,255,255,.4);font-variant-numeric:tabular-nums}
+.endLayer p{
+  margin:0;display:flex;flex-wrap:wrap;justify-content:center;gap:5px 12px;
+  font-size:clamp(12px,2.4vw,15px);font-weight:700;color:rgba(255,255,255,.82);line-height:1.7;
+}
+.endStats{
+  margin:44px 0 0;padding:18px 12px;border-top:1px solid rgba(255,255,255,.12);
+  font-size:clamp(12px,2.6vw,15px);font-weight:800;color:#fff;line-height:2;
+}
+.endThanks{margin-top:34px;font-size:14px;font-weight:800;color:#fff;line-height:2.2}
+.endThanks small{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em}
+.endThanks span{display:inline-block;margin:0 8px;color:#9fd8f5}
+.endMade{margin-top:30px;font-size:12px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.1em}
+.endFin{margin:56px 0 0;font-size:clamp(20px,5vw,30px);font-weight:950;letter-spacing:.4em;color:#cfefff}
+.endActions{margin:30px 0 26vh}   /* 下に余白を残し、止まったとき画面の中ほどに来るように */
+.endActions .btn{min-width:min(280px,80vw)}
+/* 速さと閉じるは、いつでも手の届くところに置く */
+.endBar{
+  position:absolute;right:12px;bottom:12px;display:flex;gap:8px;z-index:2;
+}
+.endBar .btn{padding:9px 14px;font-size:13px;background:rgba(0,0,0,.6)}
+#endSpeed{min-width:56px;font-variant-numeric:tabular-nums}
+.kidsMode .endLayer p{font-size:clamp(13px,2.8vw,17px)}
+
+/* ロゴは日本語なので、外国語では読める名前を添える */
+.gameName{
+  margin:-4px 0 12px;font-size:clamp(12px,2.6vw,15px);font-weight:800;
+  letter-spacing:.04em;color:#9fd8f5;
+}
+.gameName[hidden]{display:none}
 
 /* --------------------------------------------- 20) ステージ間の移動 */
 /* ひとつ下の層へ沈む。横に歩いて渡る絵では「深くなった」が伝わらないので、

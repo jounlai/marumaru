@@ -97,6 +97,8 @@ function applyStaticText(){
     if (el.hasAttribute("aria-label")) el.setAttribute("aria-label", v);
   });
   document.documentElement.lang = HTML_LANG[lang] || lang;
+  const mn = $("#mgName");
+  if (mn) { mn.textContent = t("game_name"); mn.hidden = !mn.textContent; }
   // タブに出る題。SNS のカードはクローラが静的な HTML を読むので、
   // そちらは日本語のまま（配信元が1つなので、貼る人ごとに変えられない）。
   document.title = t("page_title");
@@ -426,6 +428,8 @@ function reachGoal(){
   if (canPerfect() && !st.perfect && got === n - 1) return "PERFECT";
   return null;
 }
+// 全ラウンドをクリアしたか。エンディングの入り口
+function allCleared(){ return STAGES.every((_, si) => stageCleared(si)); }
 function moreToEarn(i = roundIndex){
   const st = roundStates[i], r = ROUND_DATA[i];
   if (st.discovered.size >= r.answers.length) return false;
@@ -1572,9 +1576,11 @@ function finishStage(si){
   if (si < STAGES.length - 1) acts.push({
     label: t("dive_next", {name: stageName(si + 1), depth: depthText(si + 1)}),
     primary: true, run: goNextStage});
+  const done = allCleared();
+  if (done) acts.push({label: t("ending_open"), primary: true, run: showEnding});
   if (!acts.length) acts.push({label: t("see_list"), primary: true, run: stayInStage});
 
-  showBurst({mark: `${stageName(si)}　${depthText(si)}`, word: "STAGE CLEAR",
+  showBurst({mark: `${stageName(si)}　${depthText(si)}`, word: done ? t("all_clear") : "STAGE CLEAR",
     sub: t("stage_clear_sub", {n: STAGES[si].length, p: perfectCountHere}),
     bonus: t("stars_restored"), dim: true, gold: true, long: true, char: "good",
     actions: acts, ms: 2000});
@@ -1686,7 +1692,9 @@ function stayInStage(){
 function nextRound(){
   const si = currentStage();
   if (stageCleared(si)) {
-    if (celebrated.has(si) || si >= STAGES.length - 1) { viewStage = si; openRoundList(); return; }
+    // 最後のステージも祝う。以前は「次の層が無い」を理由に飛ばしていて、
+    // 3,661語を踏破しても何も起きなかった。
+    if (celebrated.has(si)) { viewStage = si; openRoundList(); return; }
     finishStage(si);
     return;
   }
@@ -1707,7 +1715,7 @@ function selectRound(i){
   flash("info", "");
   saveProgress();
   hideStart();
-  closeModals();
+  closeModals({force: true});   // 一覧は data-persistent なので force で畳む
   // 棒人間は歩かずに新しいラウンドの位置へ立ち直す
   mascotEl.classList.add("noAnim");
   mascotLeft = null;
@@ -2049,6 +2057,89 @@ document.addEventListener("keydown", e => {
 });
 
 /* ------------------------------------------------------------ 8) 入り口 */
+/* --------------------------------------------------- 20b) エンディング
+ * 潜った層をたどりながら、見つけたことばが全部流れる。ただの一覧ではなく、
+ * 氷の頂から底までの道のりを、自分の集めた語で読み返す形にする。
+ * 流れは requestAnimationFrame で自前に動かす。CSS の animation では
+ * 途中で速さを変えるたびに頭から流れ直してしまうため。 */
+const ENDING_THANKS = ["@dora_todo", "@kurohetsuhotsu", "@zcATHh3SdI30403"];
+let endTimer = 0, endSpeed = 1, endY = 0;
+
+function endingHTML(){
+  let found = 0, total = 0;
+  ROUND_DATA.forEach((r, i) => { total += r.answers.length; found += roundStates[i].discovered.size; });
+  const layers = STAGES.map((rounds, si) => {
+    const words = [];
+    for (const i of rounds) {
+      const r = ROUND_DATA[i], st = roundStates[i];
+      for (const a of r.answers) if (st.discovered.has(a.word)) words.push(answerDisplay(a));
+    }
+    if (!words.length) return "";
+    return `<section class="endLayer">
+      <h3>${esc(stageName(si))}<small>${esc(depthText(si))}</small></h3>
+      <p>${words.map(w => `<span>${esc(w)}</span>`).join("")}</p>
+    </section>`;
+  }).join("");
+  return `<div class="endHead">
+      <img src="img/logo-hero.png" alt="" class="endLogo">
+      <h2>${esc(t("ending_title"))}</h2>
+      <p>${esc(t("ending_lead"))}</p>
+    </div>
+    ${layers}
+    <div class="endStats">${t("ending_stats", {found: num(found), total: num(total), p: perfectCount()})}
+      <br>SCORE ${num(score)}　・　MAX COMBO ${num(maxCombo)}　・　${esc(rankName())}</div>
+    <div class="endThanks"><small>${esc(t("ending_thanks"))}</small>
+      ${ENDING_THANKS.map(h => `<span>${esc(h)}</span>`).join("")}</div>
+    <div class="endMade">Made by Jounlai Cho</div>
+    <div class="endFin">${esc(t("ending_end"))}</div>
+    <div class="endActions">
+      <button class="btn primary" id="endShare">${esc(t("share_x"))}</button>
+    </div>`;
+}
+
+function showEnding(){
+  closeModals({force: true});
+  hideBurst();
+  hideStart();
+  const roll = $("#endRoll");
+  roll.innerHTML = endingHTML();
+  $("#endSpeed").textContent = "×1";
+  $("#endClose").textContent = t("ending_close");
+  endSpeed = 1;
+  $("#ending").hidden = false;
+  const total = ROUND_DATA.reduce((n, r) => n + r.answers.length, 0);
+  $("#endShare").addEventListener("click", () =>
+    window.open(xIntent(t("share_ending", {total: num(total)})), "_blank", "noopener"));
+  // 画面の下から流し始める
+  endY = $("#ending").clientHeight;
+  roll.style.transform = `translateY(${endY}px)`;
+  sfxFanfare();
+  cancelAnimationFrame(endTimer);
+  let last = 0;
+  const step = now => {
+    if (!last) last = now;
+    const dt = Math.min(64, now - last); last = now;
+    endY -= 42 * endSpeed * dt / 1000;          // 1秒に42px。読める速さ
+    // 巻物の下端が画面の下端に来たら止める。endActions の下余白のぶん、
+    // 「おわり」と共有ボタンが画面の中ほどに残る。
+    const stop = Math.min(0, -(roll.scrollHeight - $("#ending").clientHeight));
+    if (endY < stop) endY = stop;               // 最後は止めて、押せるようにする
+    roll.style.transform = `translateY(${endY}px)`;
+    if (endY > stop && !$("#ending").hidden) endTimer = requestAnimationFrame(step);
+  };
+  if (typeof requestAnimationFrame === "function") endTimer = requestAnimationFrame(step);
+}
+function hideEnding(){
+  cancelAnimationFrame(endTimer);
+  $("#ending").hidden = true;
+  showStart();
+}
+$("#endClose").addEventListener("click", hideEnding);
+$("#endSpeed").addEventListener("click", () => {
+  endSpeed = endSpeed >= 4 ? 1 : endSpeed * 2;
+  $("#endSpeed").textContent = "×" + endSpeed;
+});
+
 /* ------------------------------------------------- 21) スタート画面 */
 /* 開いてすぐ層の一覧が出ると、何の遊びなのか、自分がどこにいるのかが
    分からず戸惑う。まず立つ場所を作り、そこから前回の続きへ入る。
@@ -2109,6 +2200,15 @@ function showStart(notice){
   ln.hidden = !ln.textContent;
   $("#sgLangSel").value = lang;
 
+  // ゲーム名。ロゴは日本語なので、外国語では読める名前を添える
+  const nm = $("#sgName");
+  nm.textContent = t("game_name");
+  nm.hidden = !nm.textContent;
+  // 全部クリアした人だけ、いつでもエンディングを見られる
+  const eb = $("#sgEndingBtn");
+  eb.hidden = !allCleared();
+  eb.textContent = t("ending_replay");
+
   const note = $("#sgNote");
   note.hidden = !notice;
   note.textContent = notice || "";
@@ -2123,6 +2223,7 @@ $("#sgStartBtn").addEventListener("click", () => { hideStart(); render(); syncHa
 // 閉じたときに戻る先が盤面になり、始めた覚えのないラウンドが出てくる。
 $("#sgListBtn").addEventListener("click", () => { viewStage = currentStage(); openRoundList(); });
 $("#sgMenuBtn").addEventListener("click", () => openModal("#menuModal"));
+$("#sgEndingBtn").addEventListener("click", showEnding);
 // ホーム（スタート画面）へ戻る道は3つ。ヘッダーのロゴ、一覧の戻り、⚙メニュー。
 // 「START」とだけ書くとそれが何なのか分からないので、行き先の名前で書く。
 // 遊んでいる最中に戻れないと、いまどこにいるのかを確かめる先が無くなる。

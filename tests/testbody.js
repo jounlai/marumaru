@@ -26,11 +26,11 @@
   check("「層をえらぶ」でラウンド一覧が開く", q("#roundModal").classList.contains("show"));
   // 一覧とメニューはスタート画面に重ねる。伏せると閉じた先が盤面になるため
   check("一覧はスタート画面に重なる", !q("#startGate").hidden);
+  // 一覧は閉じられない。閉じても直前の盤面に戻るだけで意味が無いため
   closeModals();
-  check("一覧を閉じるとスタート画面に戻る",
-    !q("#startGate").hidden && !q("#roundModal").classList.contains("show"));
+  check("一覧は閉じられない", q("#roundModal").classList.contains("show"));
+  check("一覧からホームへ戻れる", !!q("#listHomeBtn"));
   hideStart();
-  openRoundList();
   check("一覧はいまのステージの問題を出す",
     document.querySelectorAll("#roundList .roundChoice").length === STAGES[0].length,
     `${document.querySelectorAll("#roundList .roundChoice").length}/${STAGES[0].length}`);
