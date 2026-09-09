@@ -152,6 +152,7 @@ jaKids: {
   revive: "★5こ で もういちど", revive_full: "★5こ で もういちど",
   finish: "おわる", finish_arrow: "おわる",
   go_answers: "こたえを見る", go_reset: "はじめから やりなおす",
+  go_text: "でも、見つけた <b>{found}</b> こ の ことばは きえないよ。<br>★5こ で もういちど やってみよう！",
   list_remaining: "のこり {n}もん", list_allclear: "ぜんぶ クリア！",
   lock_title: "ここには まだ もぐれないよ",
   lock_note: "ひとつ うえの「{name}」を ぜんぶ クリアすると、ここまで もぐれる！<br>どんな もんだいか だけ 見てね。",

@@ -1775,14 +1775,9 @@ function gameOver(){
   // ★0 の直後に予約されるので、先にやり直してしまった場合は開かない
   if (stars > 0) return;
   const found = totalCorrectCount();
-  if (mode === "kids") {
-    $("#gameoverTitle").textContent = t("go_title");
-    $("#gameoverText").innerHTML =
-      `でも、見つけた <b>${found}</b> こ の ことばは きえないよ。<br>★5こ で もういちど やってみよう！`;
-  } else {
-    $("#gameoverTitle").textContent = "GAME OVER";
-    $("#gameoverText").innerHTML = t("go_text", {n: currentStage() + 1, found});
-  }
+  // こども版のやさしい言い方は jaKids が持つ。外国語はどちらも同じ文言
+  $("#gameoverTitle").textContent = mode === "kids" ? t("go_title") : "GAME OVER";
+  $("#gameoverText").innerHTML = t("go_text", {n: currentStage() + 1, found});
   $("#goChar").src = "img/maru-think.png";
   $("#gScore").textContent = num(score);
   $("#gCombo").textContent = num(maxCombo);
