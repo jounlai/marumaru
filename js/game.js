@@ -592,7 +592,6 @@ function buildSection(label, rows, col){
   lab.textContent = label;
   sec.appendChild(lab);
 
-  const amap = answerMap();
   rows.forEach((row, rowIdx) => {
     const rowEl = document.createElement("div");
     rowEl.className = "kanaRow";
@@ -610,18 +609,11 @@ function buildSection(label, rows, col){
       b.className = "kana";
       b.textContent = k;
       b.dataset.kana = k;
-      const invalid = isSpecial() && !DAKUTEN_BASE_KANA.has(k);
-      const word = fillWord(current(), k);
-      if (invalid) b.classList.add("invalid");
-      if (state().used.has(k)) b.classList.add("used");
-      if (state().found.has(word)) b.classList.add("correct");
-      if ((state().gaveUp || state().perfect) && amap.has(word) && !state().discovered.has(word)) b.classList.add("missedCorrect");
-      b.disabled = invalid || roundLocked() || state().used.has(k);
-      if (!b.disabled) {
-        b.addEventListener("click", () => guess(k));
-        b.addEventListener("pointerenter", () => renderPattern(k));
-        b.addEventListener("pointerleave", () => renderPattern());
-      }
+      // 押せない状態でも合図は付けておく。disabled のボタンは click を出さないので
+      // 害はなく、あとから押せるようになったときに付け直さずに済む
+      b.addEventListener("click", () => guess(k));
+      b.addEventListener("pointerenter", () => renderPattern(k));
+      b.addEventListener("pointerleave", () => renderPattern());
       rowEl.appendChild(b);
     });
     sec.appendChild(rowEl);
@@ -629,13 +621,52 @@ function buildSection(label, rows, col){
   return sec;
 }
 
+/* かなの見た目だけを直す。1手で変わるのは押したかな1つなので、
+   70個のボタンを作り直すと、モバイルではその作り直しだけで
+   30ms 近く止まってしまう（tests/tap-cost.js で計れる）。 */
+function updateGrid(){
+  const amap = answerMap(), s = state();
+  const locked = roundLocked(), special = isSpecial();
+  gridEl.querySelectorAll(".kana").forEach(b => {
+    const k = b.dataset.kana;
+    const invalid = special && !DAKUTEN_BASE_KANA.has(k);
+    const word = fillWord(current(), k);
+    const used = s.used.has(k), correct = s.found.has(word);
+    const missed = (s.gaveUp || s.perfect) && amap.has(word) && !s.discovered.has(word);
+    const off = invalid || locked || used;
+    // 1手で変わるのは押したかな1つ。残り70個は前と同じなので、
+    // 見た目が同じなら DOM には触らない
+    const sig = `${invalid}${used}${correct}${missed}${off}`;
+    if (b._sig === sig) return;
+    b._sig = sig;
+    b.classList.toggle("invalid", invalid);
+    b.classList.toggle("used", used);
+    b.classList.toggle("correct", correct);
+    b.classList.toggle("missedCorrect", missed);
+    if (b.disabled !== off) {
+      // いま押されたボタンを disabled にすると、ブラウザはその場でフォーカスを
+      // 外しにいく。この付け替えが同期で走り、モバイルでは20ms以上かかって、
+      // 押した直後に画面が固まる。次のフレームまで待たせる。
+      // 二重に数える心配は無い（guess() が used を見て弾く）。
+      if (off && document.activeElement === b) requestAnimationFrame(() => { b.disabled = true; });
+      else b.disabled = off;
+    }
+  });
+}
+
 function renderGrid(){
-  gridEl.querySelectorAll(".kanaSection").forEach(el => el.remove());
+  // 並び（清音だけか、濁音の段も出すか）が変わったときだけ組み直す
+  const kind = isSpecial() ? "special" : "normal";
   gridEl.classList.toggle("single", isSpecial());
-  const sections = isSpecial()
-    ? [buildSection("清音（後半は自動で濁音）", KANA_ROWS, 1)]
-    : [buildSection("清音", KANA_ROWS, 1), buildSection("濁音・半濁音", VOICED_ROWS, 2)];
-  sections.forEach(s => gridEl.insertBefore(s, pocketEl));
+  if (gridEl.dataset.kind !== kind || !gridEl.querySelector(".kana")) {
+    gridEl.querySelectorAll(".kanaSection").forEach(el => el.remove());
+    const sections = isSpecial()
+      ? [buildSection("清音（後半は自動で濁音）", KANA_ROWS, 1)]
+      : [buildSection("清音", KANA_ROWS, 1), buildSection("濁音・半濁音", VOICED_ROWS, 2)];
+    sections.forEach(s => gridEl.insertBefore(s, pocketEl));
+    gridEl.dataset.kind = kind;
+  }
+  updateGrid();
 }
 
 let lastFoundWord = null;
@@ -1025,8 +1056,11 @@ function sfxPerfect(){ [0, 4, 7, 12, 16, 19, 24].forEach((s, i) => tone(523.25 *
 function sfxHint(){ tone(880, {type: "sine", vol: .05, dur: .1}); tone(660, {type: "sine", vol: .05, dur: .14, at: .09}); }
 function buzz(ms){ if (soundOn && navigator.vibrate) { try { navigator.vibrate(ms); } catch (e) {} } }
 
-function floatText(text, el, cls){
-  const r = el ? el.getBoundingClientRect() : {left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0};
+const CENTER = () => ({left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0});
+// rect を渡せば位置を読み直さない。書き込みのあとに読むと、そのたびに
+// レイアウトが走り直すので、呼ぶ側でまとめて読んでおく
+function floatText(text, el, cls, rect){
+  const r = rect || (el ? el.getBoundingClientRect() : CENTER());
   const d = document.createElement("div");
   d.className = "floatText " + (cls || "");
   d.textContent = text;
@@ -1038,19 +1072,22 @@ function floatText(text, el, cls){
 /* ステージクリア用の紙吹雪。画面の上から落として、通り過ぎたら片づける */
 function confetti(count, colors, ms = 2600){
   const fx = $("#fx");
+  const frag = document.createDocumentFragment(), made = [];
   for (let i = 0; i < count; i++) {
     const p = document.createElement("i");
     p.className = "confetti";
-    p.style.left = Math.random() * 100 + "vw";
-    p.style.background = colors[i % colors.length];
-    p.style.setProperty("--dur", (1.4 + Math.random() * 1.4).toFixed(2) + "s");
-    p.style.setProperty("--delay", (Math.random() * .9).toFixed(2) + "s");
-    p.style.setProperty("--sway", (Math.random() * 120 - 60).toFixed(0) + "px");
-    p.style.setProperty("--spin", (Math.random() * 900 - 450).toFixed(0) + "deg");
-    if (i % 3 === 0) p.style.borderRadius = "50%";
-    fx.appendChild(p);
-    setTimeout(() => p.remove(), ms);
+    p.style.cssText =
+      `left:${(Math.random() * 100).toFixed(1)}vw;background:${colors[i % colors.length]};` +
+      `--dur:${(1.4 + Math.random() * 1.4).toFixed(2)}s;` +
+      `--delay:${(Math.random() * .9).toFixed(2)}s;` +
+      `--sway:${(Math.random() * 120 - 60).toFixed(0)}px;` +
+      `--spin:${(Math.random() * 900 - 450).toFixed(0)}deg` +
+      (i % 3 === 0 ? ";border-radius:50%" : "");
+    frag.appendChild(p);
+    made.push(p);
   }
+  fx.appendChild(frag);
+  setTimeout(() => { for (const p of made) p.remove(); }, ms);
 }
 
 // 「タタタ・ターン」の短いファンファーレ。和音を重ねて厚くする
@@ -1066,30 +1103,49 @@ function sfxFanfare(){
     tone(base * Math.pow(2, semi / 12), {type: "sine", vol: .045, dur: 1.1, at: .62 + i * .02}));
 }
 
-function particles(el, count, colors){
+/* 粒は10〜16個まとめて作る。1粒ずつ style を7回書いて、1粒ずつ
+   足して、1粒ずつタイマーを置くと、それだけでモバイルでは20ms かかる。
+   style は1回で書き、まとめて足して、片づけも1回で済ませる。 */
+function particles(el, count, colors, rect){
   const fx = $("#fx");
-  const r = el ? el.getBoundingClientRect() : {left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0};
+  const r = rect || (el ? el.getBoundingClientRect() : CENTER());
   const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const frag = document.createDocumentFragment(), made = [];
   for (let i = 0; i < count; i++) {
     const p = document.createElement("i");
     p.className = "particle";
     const ang = (Math.PI * 2 * i) / count + Math.random() * .5;
     const dist = 40 + Math.random() * 110;
-    p.style.left = cx + "px";
-    p.style.top = cy + "px";
-    p.style.background = colors[i % colors.length];
-    p.style.setProperty("--dx", Math.cos(ang) * dist + "px");
-    p.style.setProperty("--dy", (Math.sin(ang) * dist + 40) + "px");
-    p.style.setProperty("--rot", Math.round(Math.random() * 540 - 270) + "deg");
-    p.style.setProperty("--dur", (.7 + Math.random() * .5) + "s");
-    fx.appendChild(p);
-    setTimeout(() => p.remove(), 1300);
+    p.style.cssText =
+      `left:${cx}px;top:${cy}px;background:${colors[i % colors.length]};` +
+      `--dx:${(Math.cos(ang) * dist).toFixed(1)}px;` +
+      `--dy:${(Math.sin(ang) * dist + 40).toFixed(1)}px;` +
+      `--rot:${Math.round(Math.random() * 540 - 270)}deg;` +
+      `--dur:${(.7 + Math.random() * .5).toFixed(2)}s`;
+    frag.appendChild(p);
+    made.push(p);
   }
+  fx.appendChild(frag);
+  setTimeout(() => { for (const p of made) p.remove(); }, 1300);
 }
+/* CSS の動きを鳴らし直すための「反映」。クラスを外して付け直すだけだと
+   ブラウザが1回のまとめ処理にしてしまい、動きが再生されない。
+   offsetWidth を読めば確実に反映されるが、それはページ全体のレイアウトを
+   走らせるので、モバイルでは1回で10ms以上かかる。計算済みスタイルを
+   読むだけなら、レイアウトを起こさずに反映だけできる。 */
+function reflow(el){ if (el) getComputedStyle(el).animationName; }
+/* 動きを頭から鳴らし直す。クラスが付いていないなら、付けるだけで鳴るので
+   反映は要らない。付いているときだけ、外して反映してから付け直す。 */
+function replay(el, cls){
+  if (!el) return;
+  if (el.classList.contains(cls)) { el.classList.remove(cls); reflow(el); }
+  el.classList.add(cls);
+}
+
 function shake(){
-  appEl.classList.remove("shake"); void appEl.offsetWidth; appEl.classList.add("shake");
+  replay(appEl, "shake");
   const d = $("#damage");
-  d.classList.remove("hit"); void d.offsetWidth; d.classList.add("hit");
+  replay(d, "hit");
   setTimeout(() => appEl.classList.remove("shake"), 420);
 }
 
@@ -1118,9 +1174,10 @@ function roundActions(){
 function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, actions, tier, reach, ms = 900}){
   const box = $("#burst");
   clearTimeout(burstTimer);
+  const wasShown = box.classList.contains("show");
   const bc = $("#burstChar");
   bc.hidden = !char;
-  if (char) { bc.src = `img/maru-${char}.png`; bc.style.animation = "none"; void bc.offsetWidth; bc.style.animation = ""; }
+  if (char) { bc.src = `img/maru-${char}.png`; bc.style.animation = "none"; reflow(bc); bc.style.animation = ""; }
   $("#burstMark").textContent = mark || "";
   $("#burstWord").textContent = word || "";
   $("#burstSub").textContent = sub || "";
@@ -1133,7 +1190,7 @@ function showBurst({mark, word, sub, meaning, bonus, dim, gold, long, char, acti
   box.className = "burst" + (dim ? " dim" : "") + (gold ? " gold" : "") + (long ? " long" : "") +
     (reach ? " reach" : "") + (tier ? " c" + tier : "") + (hasActions ? " hasActions" : "");
   $("#burstInner").className = "burstInner" + (long ? " long" : "") + (hasActions ? " hold" : "");
-  void box.offsetWidth;
+  if (wasShown) reflow(box);   // 出っぱなしのときだけ、いったん反映させて鳴らし直す
   box.classList.add("show");
 
   if (!hasActions) {
@@ -1181,9 +1238,11 @@ function setChar(pose, force){
   if (!mCharEl) return;
   const aim = mCharEl.classList.contains("aim") ? " aim" : "";
   const want = "mChar is-" + pose + aim;
-  if (!force && mCharEl.className === want) return;
+  if (mCharEl.className !== want) { mCharEl.className = want; return; }
+  if (!force) return;
+  // 同じポーズを続けて出すときだけ、いったん外して鳴らし直す
   mCharEl.className = "mChar";
-  void mCharEl.offsetWidth;   // 同じポーズを続けて出しても動きが再生されるように
+  reflow(mCharEl);
   mCharEl.className = want;
 }
 /* 動いていないときの顔。終わったラウンドで「？」のままだと、
@@ -1196,8 +1255,9 @@ function restPose(){
 }
 function mascotPose(cls, ms){
   clearTimeout(mascotPoseTimer);
+  const same = cls && mRigEl.classList.contains(cls);
   mRigEl.classList.remove("cheer", "down", "spin");
-  void mRigEl.offsetWidth;
+  if (same) reflow(mRigEl);
   if (!cls) { setChar(restPose(), true); return; }
   mRigEl.classList.add(cls);
   setChar(CHAR_POSE[cls] || "idle", true);
@@ -1257,15 +1317,18 @@ function holeKanaList(kana){
     .map(ch => ch === "〇" ? voicedKana(kana) : kana);
 }
 let patternHoldToken = 0;
-function throwKana(kana, btn, ok){
+function throwKana(kana, btn, ok, rect){
   const holes = [...document.querySelectorAll("#pattern .hole")];
   if (!btn || !holes.length) return;
   const chars = holeKanaList(kana);
-  const b = btn.getBoundingClientRect();
+  const b = rect || btn.getBoundingClientRect();
   const token = ++patternHoldToken;
+  // 位置は先に全部読む。読む→足す→読む と交互にすると、そのたびに
+  // レイアウトが走り直す
+  const rects = holes.map(hole => hole.getBoundingClientRect());
 
   holes.forEach((hole, i) => {
-    const h = hole.getBoundingClientRect();
+    const h = rects[i];
     const from = {x: b.left + b.width / 2, y: b.top + b.height / 2};
     const dx = h.left + h.width / 2 - from.x;
     const dy = h.top + h.height / 2 - from.y;
@@ -1337,7 +1400,7 @@ function flashRemaining(){
   });
   document.querySelectorAll(".kana").forEach(btn => {
     if (!remaining.has(btn.dataset.kana)) return;
-    btn.classList.remove("flashLeft"); void btn.offsetWidth; btn.classList.add("flashLeft");
+    replay(btn, "flashLeft");
     setTimeout(() => btn.classList.remove("flashLeft"), 520);
   });
 }
@@ -1357,6 +1420,7 @@ function guess(kana){
   if (isSpecial() && !DAKUTEN_BASE_KANA.has(kana)) return;
   if (roundLocked() || state().used.has(kana)) return;
 
+  const btn = document.querySelector(`.kana[data-kana="${kana}"]`);
   state().used.add(kana);
   const word = fillWord(current(), kana);
   const amap = answerMap();
@@ -1376,7 +1440,7 @@ function guess(kana){
     state().discovered.add(word);
     lastFoundWord = word;
 
-    $("#pattern").classList.remove("hit"); void $("#pattern").offsetWidth; $("#pattern").classList.add("hit");
+    replay($("#pattern"), "hit");
     sfxCorrect(combo);
     buzz(18);
     flashAnswer(a, pick(GOOD_MSGS));
@@ -1419,15 +1483,17 @@ function guess(kana){
   saveProgress();
   render();
 
-  // 演出は再描画のあとに付ける（render() でボタンが作り直されるため）
-  const btn = document.querySelector(`.kana[data-kana="${kana}"]`);
-  throwKana(kana, btn, hit);
-  if (btn && hit && mode === "kids") particles(btn, 10, KIDS_COLORS);
+  /* 演出は盤面を直したあとに付ける。位置はここで一度だけ読む。
+     読むと、それまでの書き込みぶんのレイアウトがまとめて走る。1回に
+     まとめれば1回で済むので、以降は読んだ値を配って回す。 */
+  const btnRect = btn ? btn.getBoundingClientRect() : null;
+  throwKana(kana, btn, hit, btnRect);
+  if (btn && hit && mode === "kids") particles(btn, 10, KIDS_COLORS, btnRect);
   if (btn && hit) {
     btn.classList.add("pop");
     // リーチのときは点の数字を出さない。真ん中の煽りと重なって、どちらも読めなくなる
-    if (!atReach) floatText(`+${pts}${combo >= 2 ? ` ×${combo}` : ""}`, btn, isFever() ? "gold" : "");
-    particles(btn, isFever() ? 16 : 10, isFever() ? ["#7ef9d0", "#fff", "#ffd34d"] : ["#fff", "#bbb"]);
+    if (!atReach) floatText(`+${pts}${combo >= 2 ? ` ×${combo}` : ""}`, btn, isFever() ? "gold" : "", btnRect);
+    particles(btn, isFever() ? 16 : 10, isFever() ? ["#7ef9d0", "#fff", "#ffd34d"] : ["#fff", "#bbb"], btnRect);
     if (!state().perfect) {
       mascotPose("cheer", 820);
       mascotSay(combo >= 3 ? t("combo_n", {n: combo}) : pickFrom(HIT_MSGS_I18N, HIT_MSGS_I18N.ja),
@@ -1435,7 +1501,7 @@ function guess(kana){
     }
   } else if (btn) {
     btn.classList.add("shakeNo");
-    floatText("★ −1", btn, "bad");
+    floatText("★ −1", btn, "bad", btnRect);
     mascotPose("down", 1520);
     mascotSay(t(stars <= 0 ? "m_dead" : "m_miss"), "bad", 1500);
   }
@@ -1682,7 +1748,7 @@ function travelTo(from, to){
 
   el.hidden = false;
   el.classList.remove("go");
-  void el.offsetWidth;
+  reflow(el);
   el.classList.add("go");
   sfxTravel();
   // 数え下ろしは幕を出してから。隠れているうちに始めると1回で止まる
