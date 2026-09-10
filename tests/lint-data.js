@@ -65,7 +65,9 @@ for (const [label, rounds] of [["通常", ROUND_DATA], ["SPECIAL", SPECIAL_ROUND
       seen.add(a.word);
       if ([...a.word].length !== tplLen) errors.push(`${at}: 字数がテンプレート(${tplLen})と違う`);
       if (!a.meaning || !a.meaning.trim()) errors.push(`${at}: 語釈が空`);
-      else if (a.meaning.length < 6) errors.push(`${at}: 語釈が短すぎる`);
+      // 5字（「人の声や音」）はまだ語釈。文末に句点を打たなくなったぶん、
+      // 目安も1字下げてある
+      else if (a.meaning.length < 5) errors.push(`${at}: 語釈が短すぎる`);
       if (a.display !== undefined && !String(a.display).trim()) errors.push(`${at}: display が空`);
       if (/[а-яА-Я가-힣]/.test(a.meaning)) errors.push(`${at}: 語釈に別言語が混入`);
     }
