@@ -1746,26 +1746,35 @@ function travelTo(from, to){
   combo = 0;
   saveProgress();
 
+  /* もぐる時間は、落ちる深さで変える。どの層も同じ長さだと、
+     水面すぐの15mも、深海の何千mも同じ一瞬になってしまい、
+     「深くなった」という話が絵と合わなくなる。差はけた違いに開くので、
+     けた（log）で効かせて、3.2秒から4.6秒のあいだに収める。 */
+  const drop = Math.abs(stageDepth(to) - stageDepth(from));
+  const dur = Math.round(3200 + Math.min(1400, Math.log10(1 + drop) * 380));
+  el.style.setProperty("--tvDur", dur + "ms");
+  el.style.setProperty("--tvSpan", Math.round(dur * .82) + "ms");
+  el.style.setProperty("--tvNoteAt", Math.round(dur * .55) + "ms");
+
   el.hidden = false;
   el.classList.remove("go");
   reflow(el);
   el.classList.add("go");
-  sfxTravel();
+  sfxTravel(dur);
   // 数え下ろしは幕を出してから。隠れているうちに始めると1回で止まる
-  runDepthMeter(stageDepth(from), stageDepth(to));
+  runDepthMeter(stageDepth(from), stageDepth(to), Math.round(dur * .82));
   setTimeout(() => {
     el.hidden = true;
     el.classList.remove("go");
     render();
     openRoundList();
-  }, 2300);
+  }, dur);
 }
 /* 深さの数字を、出発の層から着く層まで数え下ろす。落ちている感じは
    絵だけでは弱く、数字が動くほうが「深くなった」と伝わるため。 */
-function runDepthMeter(d0, d1){
+function runDepthMeter(d0, d1, dur = 1900){
   const el = $("#tvDepth");
   if (!el) return;
-  const dur = 1900;
   const t0 = Date.now();
   const step = () => {
     const t = Math.min(1, (Date.now() - t0) / dur);
@@ -1787,12 +1796,14 @@ function sfxReach(){
     tone(1046.5 * Math.pow(2, semi / 12), {type: "sine", vol: .05, dur: .8, at: .62 + i * .04}));
 }
 
-// 沈んでいく音。音が下へ落ちて、着いたところで低く開ける
-function sfxTravel(){
+// 沈んでいく音。音が下へ落ちて、着いたところで低く開ける。
+// もぐる時間に合わせて伸び縮みさせる（着地の和音が幕と揃うように）
+function sfxTravel(ms = 2300){
+  const land = ms / 1000 - 1;
   [0, -2, -4, -5, -7].forEach((semi, i) =>
-    tone(392 * Math.pow(2, semi / 12), {type: "sine", vol: .05, dur: .22, at: i * .3}));
+    tone(392 * Math.pow(2, semi / 12), {type: "sine", vol: .05, dur: .22, at: i * land / 5}));
   [0, 3, 7].forEach((semi, i) =>
-    tone(196 * Math.pow(2, semi / 12), {type: "triangle", vol: .05, dur: 1.1, at: 1.55 + i * .03}));
+    tone(196 * Math.pow(2, semi / 12), {type: "triangle", vol: .05, dur: 1.1, at: land + i * .03}));
 }
 function stayInStage(){
   closeModals({force: true});

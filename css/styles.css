@@ -1729,19 +1729,21 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
 /* 沈むほど暗くなる。背景そのものではなく上に暗幕をかける
    （背景はグラデーションなので、色を動かしても変化が見えないため） */
 .travel::after{content:"";position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
-.travel.go::after{animation:tvDark 2.3s ease-in both}
+.travel.go::after{animation:tvDark var(--tvDur,2.3s) ease-in both}
 @keyframes tvDark{0%{opacity:0}100%{opacity:.58}}
 .tvInner{position:relative;z-index:1;width:min(560px,92vw);text-align:center}
 .tvLabel{font-size:clamp(16px,4.4vw,24px);font-weight:900;color:rgba(255,255,255,.62);margin-bottom:14px}
 .tvLabel i{font-style:normal;margin:0 12px;color:rgba(255,255,255,.45)}
 .tvLabel b{color:#bfeaff}
-.travel.go .tvLabel b{animation:tvToIn 1.9s ease-out both}
+.travel.go .tvLabel b{animation:tvToIn var(--tvSpan,1.9s) ease-out both}
 @keyframes tvToIn{
   0%,45%{opacity:.25;transform:scale(.9)}
   70%{opacity:1;transform:scale(1.15)}
   100%{opacity:1;transform:scale(1)}
 }
-.tvShaft{position:relative;height:212px;width:min(300px,78vw);margin:0 auto}
+/* 綱の長さは画面の高さに合わせる。固定の212pxだと、縦に余白が余っている
+   のに潜る距離だけが短く、すぐ着いてしまう */
+.tvShaft{position:relative;height:clamp(212px,46vh,420px);width:min(300px,78vw);margin:0 auto}
 .tvStop{position:absolute;left:50%;transform:translateX(-50%);width:170px}
 .tvStop.from{top:0}
 .tvStop.to{bottom:0}
@@ -1759,13 +1761,13 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
   position:absolute;left:50%;top:56px;bottom:56px;width:3px;margin-left:-1.5px;
   background:repeating-linear-gradient(180deg,rgba(255,255,255,.4) 0 8px,transparent 8px 16px);
 }
-.travel.go .tvLine{animation:tvRopeFill 1.9s ease-in-out both}
+.travel.go .tvLine{animation:tvRopeFill var(--tvSpan,1.9s) ease-in-out both}
 @keyframes tvRopeFill{
   0%{background:repeating-linear-gradient(180deg,rgba(255,255,255,.4) 0 8px,transparent 8px 16px)}
   100%{background:repeating-linear-gradient(180deg,var(--gold) 0 8px,transparent 8px 16px)}
 }
-.travel.go .tvStop.to b{animation:tvArrive 1.9s ease-out both}
-.travel.go .tvStop.to small{animation:tvToIn 1.9s ease-out both}
+.travel.go .tvStop.to b{animation:tvArrive var(--tvSpan,1.9s) ease-out both}
+.travel.go .tvStop.to small{animation:tvToIn var(--tvSpan,1.9s) ease-out both}
 @keyframes tvArrive{
   0%,55%{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.75);background:rgba(0,0,0,.4);transform:scale(1)}
   75%{border-color:#fff;color:#fff;background:rgba(255,255,255,.16);transform:scale(1.22)}
@@ -1785,13 +1787,15 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
 .tvBub.b1{margin-left:-30px;animation-delay:.1s}
 .tvBub.b2{margin-left:16px;width:6px;height:6px;animation-delay:.55s}
 .tvBub.b3{margin-left:-6px;width:11px;height:11px;animation-delay:.95s}
+/* もぐる時間（--tvDur）は、その層とその下の層の深さの差で決まる。
+   travelTo() が入れる。深く落ちるほど長くかかる */
 /* 頭から潜る専用の絵を、わずかに揺らしながら沈める */
 .tvChar{
   position:absolute;left:50%;top:56px;width:58px;height:auto;z-index:2;
   transform:translateX(-50%);
   filter:drop-shadow(0 3px 8px rgba(0,0,0,.8));
 }
-.travel.go .tvChar{animation:tvDive 2.3s cubic-bezier(.4,0,.5,1) both}
+.travel.go .tvChar{animation:tvDive var(--tvDur,2.3s) cubic-bezier(.4,0,.5,1) both}
 @keyframes tvDive{
   0%{top:56px;transform:translateX(-50%) rotate(-8deg)}
   20%{transform:translateX(-50%) rotate(8deg)}
@@ -1806,7 +1810,7 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
   text-shadow:0 0 22px rgba(120,200,255,.45);min-height:1.2em;
 }
 .tvNote{margin-top:10px;font-size:13px;font-weight:700;color:rgba(255,255,255,.5)}
-.travel.go .tvNote{animation:actionsIn .5s 1.3s ease-out both}
+.travel.go .tvNote{animation:actionsIn .5s var(--tvNoteAt,1.3s) ease-out both}
 .kidsMode .tvLabel{font-size:clamp(18px,5vw,26px)}
 .kidsMode .tvStop small{font-size:14px}
 .kidsMode .tvNote{font-size:14px}
