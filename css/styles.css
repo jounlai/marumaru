@@ -473,9 +473,15 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 }
 .kanaRow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;min-height:0}
 .kanaSpacer{min-height:0}
+/* 字の大きさは、画面の高さ（vh）ではなくボタンの高さから決める。
+   vh で決めていたときは、縦が足りない端末でボタンだけが縮み、字は
+   下限（こども版20px）で止まるので、かなが枠からはみ出していた。
+   cqh は行＝ボタンの高さの1%。82% なら字の枠が必ず内側に収まる。
+   下限を置いてあるのは、横向きなど盤面が潰れきった場面で字が消えないため。 */
+.kanaRow{container-type:size}
 .kana{
   height:100%;min-height:0;border:1px solid #3f3f3f;background:#000;color:#fff;border-radius:7px;
-  font-size:clamp(16px,3.1vh,26px);line-height:1;cursor:pointer;padding:0;
+  font-size:clamp(8px,82cqh,26px);line-height:1;cursor:pointer;padding:0;
   font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;
   transition:transform .09s,background .12s,color .12s,border-color .12s;
   position:relative;
@@ -492,6 +498,12 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 @keyframes kanaNo{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
 .kana.hintGlow{animation:hintGlow 1.6s ease-out 3}
 @keyframes hintGlow{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 2px var(--gold),0 0 20px rgba(255,211,77,.85)}}
+.kidsMode .kana{font-size:clamp(10px,82cqh,34px)}
+/* コンテナ単位が使えないブラウザは、これまでどおり画面の高さで決める */
+@supports not (container-type:size){
+  .kana{font-size:clamp(16px,3.1vh,26px)}
+  .kidsMode .kana{font-size:clamp(20px,4vh,34px)}
+}
 .kana.flashLeft{animation:flashLeft .5s ease-out}
 @keyframes flashLeft{
   0%,100%{background:#000;color:#fff}
@@ -1207,7 +1219,7 @@ body.fever .pattern{text-shadow:0 0 26px rgba(126,249,208,.45)}
 .kidsMode .statGrid .stat:nth-child(2){ display:none }
 
 .kidsMode .pattern{font-size:clamp(40px,10vw,84px)}
-.kidsMode .kana{font-size:clamp(20px,4vh,34px);border-radius:9px}
+.kidsMode .kana{border-radius:9px}   /* 字の大きさは かなグリッドの節で決めている */
 .kidsMode .flash .fw{font-size:22px}
 .kidsMode .flash .fm{font-size:17px;color:#e8e8e8;-webkit-line-clamp:3}
 .kidsMode .flash .rd{font-size:14px}
