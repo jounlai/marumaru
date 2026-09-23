@@ -2198,7 +2198,10 @@ document.addEventListener("keydown", e => {
  * 氷の頂から底までの道のりを、自分の集めた語で読み返す形にする。
  * 流れは requestAnimationFrame で自前に動かす。CSS の animation では
  * 途中で速さを変えるたびに頭から流れ直してしまうため。 */
-const ENDING_THANKS = ["@dora_todo", "@kurohetsuhotsu", "@zcATHh3SdI30403"];
+/* ことばを教えてくれた人。氏名は出さず、アカウント名だけを載せる。
+   載せるのは本人の許しを得てから。足した順に並べる */
+const ENDING_THANKS = ["@dora_todo", "@kurohetsuhotsu", "@zcATHh3SdI30403",
+  "@cYx_0_820", "@Strings6674"];
 let endTimer = 0, endSpeed = 1, endY = 0;
 
 function endingHTML(){
