@@ -1448,7 +1448,8 @@ const WORD_ROUNDS = [
       { word: "がんどう", display: "龕灯", meaning: "前方だけを照らす携帯用の照明。「強盗提灯（がんどうぢょうちん）」" },
       { word: "ぶんどう", display: "分度", meaning: "角度を測ること。「分度器」" },
       { word: "ごんどう", display: "ごんどう", meaning: "頭の丸い中型のクジラ。ゴンドウクジラ" },
-      { word: "くんどう", display: "訓導", meaning: "旧制の小学校の教員の呼び名" }
+      { word: "くんどう", display: "訓導", meaning: "旧制の小学校の教員の呼び名" },
+      { word: "たんどう", display: "胆道", meaning: "肝臓で作った胆汁が十二指腸へ流れる道。「胆道がん」" }
     ]
   },
   {
@@ -1481,7 +1482,8 @@ const WORD_ROUNDS = [
       { word: "たんぶ", display: "反歩", meaning: "田畑の面積の単位。一反はおよそ十アール" },
       { word: "よんぶ", display: "四部", meaning: "四つの部分。「四部作」" },
       { word: "そんぶ", display: "孫武", meaning: "『孫子』を著したとされる中国古代の兵法家" },
-      { word: "れんぶ", display: "練武/蓮霧", meaning: "武術の稽古をすること/台湾などで採れる果物。レンブ" }
+      { word: "れんぶ", display: "練武/蓮霧", meaning: "武術の稽古をすること/台湾などで採れる果物。レンブ" },
+      { word: "わんぶ", display: "腕部", meaning: "うでの部分。ロボットや義肢の造りをいうときに使う" }
     ]
   },
   {
@@ -1763,7 +1765,8 @@ const WORD_ROUNDS = [
       { word: "しんご", display: "新語", meaning: "新しく生まれたことば" },
       { word: "はんご", display: "反語", meaning: "疑問の形で逆の意味を強く表す言い方" },
       { word: "べんご", display: "弁護", meaning: "その人のために言い分を述べて守ること" },
-      { word: "めんご", display: "めんご", meaning: "「ごめん」をひっくり返した軽い謝りの俗語" }
+      { word: "めんご", display: "めんご", meaning: "「ごめん」をひっくり返した軽い謝りの俗語" },
+      { word: "らんご", display: "蘭語", meaning: "オランダ語のこと。江戸時代の「蘭学」はこれを学ぶ学問" }
     ]
   },
   {
@@ -1979,7 +1982,8 @@ const WORD_ROUNDS = [
       { word: "たけい", display: "多形", meaning: "同じものが複数の形をとること。「多形紅斑」" },
       { word: "たべい", display: "田部井", meaning: "群馬に多い姓。田部井淳子は女性で初めてエベレストに登った登山家" },
       { word: "たたい", display: "多体", meaning: "多数の物体からなること。「多体問題」など" },
-      { word: "たつい", display: "達意", meaning: "言いたいことがよく伝わること。「達意の文章」" }
+      { word: "たつい", display: "達意", meaning: "言いたいことがよく伝わること。「達意の文章」" },
+      { word: "たばい", display: "多売", meaning: "たくさん売ること。「薄利多売」の多売" }
     ]
   },
   {
