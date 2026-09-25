@@ -1637,6 +1637,23 @@ body.celebrate.strong .app{animation:celebrateFlashStrong 1.5s ease-out}
   .kidsMode .doneMsg{font-size:12px}
 }
 
+/* Xのアプリ内ブラウザは上下にバーが出るぶん、縦が 844 から 664 ほどに減る。
+   そこでも盤面の作りは変わらないので、かなのボタンだけが潰れて
+   33x25 の薄い帯になり、押す気にならなくなっていた。
+
+   横は 10列（清音5＋濁音5）で決まっていて、390px の画面では1つ33pxが
+   上限。だから縦を返すしかない。返せるのは「出ていないのに場所だけ
+   取っているもの」2つで、これで 25px が 34px になり、ほぼ正方形になる。 */
+@media(max-height:700px){
+  /* 操作バーは、出ていないあいだ場所を空けておく作り。縦が足りないときは
+     盤面のほうが大事なので、出るまで畳む（出たときに盤面が少し縮む） */
+  .doneBar{display:none}
+  .doneBar.show{display:flex}
+  /* 語釈の欄も、当たるまでは空のまま高さだけ取っている。そこも詰める */
+  .flash{height:44px}
+  .kidsMode .flash{height:48px}
+}
+
 /* Xのアプリ内ブラウザなど、縦が短いところで入り口が画面から流れ落ちていた。
    絵を縦に合わせて縮め、余白と字も詰める。 */
 .mgLogo.hero{max-height:34vh;object-fit:contain}
