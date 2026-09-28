@@ -32,16 +32,23 @@ function wav(channels, rate){
     assert.equal(await page.evaluate(() => actx === null), true, "操作前に自動再生しない");
     await page.click("#sgStartBtn");
     await page.waitForFunction(() => actx?.state === "running" && musicPlayer?.playing);
+    // BGM はゲーム中だけ鳴らす。メニューを開いているあいだは止まり、閉じると戻る
     await page.evaluate(() => openMenu());
+    assert.equal(await page.evaluate(() => musicPlayer.playing), false, "メニューを開くと止まる");
     await page.click("#soundBtn");
-    assert.deepEqual(await page.evaluate(() => [soundOn,musicOn,musicPlayer.playing]), [false,true,true]);
+    assert.deepEqual(await page.evaluate(() => [soundOn,musicOn]), [false,true], "効果音だけを消せる");
+    await page.evaluate(() => closeModals({force: true}));
+    await page.waitForFunction(() => musicPlayer.playing);
+    await page.evaluate(() => openMenu());
     await page.click("#musicBtn");
-    assert.equal(await page.evaluate(() => musicPlayer.playing), false);
+    await page.evaluate(() => closeModals({force: true}));
+    assert.equal(await page.evaluate(() => musicPlayer.playing), false, "BGMを切ると、閉じても鳴らない");
     await page.goto(url);
     await page.click("#sgStartBtn");
     assert.deepEqual(await page.evaluate(() => [soundOn,musicOn,actx]), [false,false,null]);
     await page.evaluate(() => openMenu());
     await page.click("#musicBtn");
+    await page.evaluate(() => closeModals({force: true}));
     await page.waitForFunction(() => actx?.state === "running" && musicPlayer?.playing);
     assert.equal(await page.evaluate(() => soundOn), false, "BGMだけを再生できる");
     await page.evaluate(() => {
@@ -67,6 +74,7 @@ function wav(channels, rate){
       for (let i=0;i<10;i++) { resumeAudio(); unlockAudio(); }
       return original === musicPlayer;
     }), true);
+    await page.evaluate(() => openMenu());
     await page.click("#musicBtn");
     await page.click("#soundBtn");
     assert.deepEqual(await page.evaluate(() => [soundOn,musicOn,musicPlayer.playing]), [true,false,false]);
@@ -89,12 +97,18 @@ function wav(channels, rate){
     assert.ok(arrangements[1].bpm >= arrangements[0].bpm, "深海でもテンポを落とさない");
     assert.equal(arrangements[1].sparkle,true);
     assert.equal(arrangements[2].sparkle,true);
+    // 熱（連鎖の勢い）が上がると厚くなるが、速さは変えない（画面の脈打ちと拍を合わせるため）
+    const hot = await page.evaluate(() => IcebergMusic.arrangement({mode:"adult",stage:0,heat:1}));
+    assert.equal(hot.bpm, arrangements[0].bpm, "熱でテンポを変えない");
+    assert.equal(hot.hats16, true);
+    assert.ok(hot.cutoff > arrangements[0].cutoff, "熱いほど明るい");
 
     // 小節の継ぎ目を含む実音声を描画。無音・NaN・クリッピングを検出する。
     for (const [name, scene] of [
       ["surface",{mode:"adult",stage:0}],
       ["deep",{mode:"adult",stage:20}],
-      ["kids",{mode:"kids",stage:20}]
+      ["kids",{mode:"kids",stage:20}],
+      ["hot",{mode:"adult",stage:0,heat:1}]
     ]) {
       const audio = await page.evaluate(async ({scene,preview}) => {
         const rate = 22050, bars = preview ? 16 : 4;
