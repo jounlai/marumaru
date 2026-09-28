@@ -29,8 +29,13 @@ const IcebergMusic = (() => {
   function arrangement(scene){
     const tier = Math.max(0, Math.min(3, scene.stage < 5 ? 0 : scene.stage < 10 ? 1 : scene.stage < 16 ? 2 : 3));
     const kids = scene.mode === "kids";
-    return { tier, kids, bpm: kids ? 132 : [128,130,132,134][tier],
-      cutoff: kids ? 6400 : 7000, sparkle: kids || tier >= 2 };
+    // 熱（連鎖の勢い、0〜1）が上がるほど、音が明るく厚くなる。
+    // 速さは変えない（拍がずれると、画面の脈打ちと合わなくなる）
+    const heat = Math.max(0, Math.min(1, scene.heat || 0));
+    return { tier, kids, heat, bpm: kids ? 132 : [128,130,132,134][tier],
+      cutoff: (kids ? 6400 : 7000) + heat * 3200,
+      sparkle: kids || tier >= 2 || heat > .45,
+      hats16: heat > .6 };
   }
   function graph(c){
     const filter = c.createBiquadFilter(), gain = c.createGain();
@@ -98,6 +103,10 @@ const IcebergMusic = (() => {
     for (let step = 0; step < 8; step++) {
       noiseHit(g, time + step * eighth, step % 2 ? .1 : .04,
         step % 2 ? .025 : .014, 6500, "highpass", .3);
+    }
+    // 熱いときは16分のハイハットを足して、刻みを倍にする
+    if (a.hats16) for (let step = 0; step < 8; step++) {
+      noiseHit(g, time + (step + .5) * eighth, .03, .011 + a.heat * .006, 8200, "highpass", -.3);
     }
     // ルート→オクターブ→5度。短く切って、裏拍のコードと噛み合わせる。
     [[0,0],[1.5,12],[2.5,7],[4,0],[5.5,12],[7,7]].forEach(([step,offset]) => {

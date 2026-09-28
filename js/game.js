@@ -762,6 +762,7 @@ function render(){
   $("#difficulty").textContent = difficultyLabel(roundIndex);
   renderPattern(); renderStars(); renderScore(); renderGrid();
   renderFound(); renderProgress(); renderCombo(); renderDoneBar();
+  heatSync();
   $("#hintBtn").disabled = $("#hintBtnM").disabled = roundLocked();
   $("#giveupBtn").disabled = $("#giveupBtnM").disabled = state().cleared || state().gaveUp;
   document.body.classList.toggle("isGreat", state().great && !state().perfect);
@@ -872,7 +873,7 @@ function syncMusic(){
     return;
   }
   if (!actx) return;
-  if (!musicPlayer) musicPlayer = IcebergMusic.create(actx, () => ({mode, stage: currentStage()}));
+  if (!musicPlayer) musicPlayer = IcebergMusic.create(actx, () => ({mode, stage: currentStage(), heat}));
   musicPlayer.start();
 }
 function syncAudioButtons(){
@@ -1000,11 +1001,15 @@ function sfxCorrect(n){
     tone(f * 2, {type: "sine", vol: .075, dur: .5});
     tone(f * 3, {type: "sine", vol: .03, dur: .42, at: .05});
     tone(f * 4, {type: "sine", vol: .016, dur: .3, at: .1});
+    if (heat > .5) tone(f * 5, {type: "sine", vol: .012, dur: .4, at: .15});
     return;
   }
   tone(f, {type: "triangle", vol: .07, dur: .13});
   tone(f * 2, {type: "sine", vol: .028, dur: .2, at: .02});
   if (isFever()) tone(f * 3, {type: "sine", vol: .02, dur: .26, at: .05});
+  // 熱が上がるほど、当たりの音に和音が重なっていく
+  if (heat > .35) tone(f * 1.5, {type: "sine", vol: .022, dur: .24, at: .035});
+  if (heat > .7) tone(f * 4, {type: "sine", vol: .014, dur: .34, at: .07});
 }
 function sfxWrong(){
   if (mode === "kids") {
@@ -1053,6 +1058,13 @@ function sfxPerfectFanfare(){
     tone(base * Math.pow(2, semi / 12), {type: "sine", vol: .03, dur: .5, at: .78 + i * .09}));
 }
 function sfxPerfect(){ [0, 4, 7, 12, 16, 19, 24].forEach((s, i) => tone(523.25 * Math.pow(2, s / 12), {type: "triangle", vol: .07, dur: .6, at: i * .085})); }
+// FEVER の帯が走る音。下から一気に駆け上がって、和音で開ける
+function sfxFeverRise(){
+  tone(220, {type: "sawtooth", vol: .03, dur: .5, glide: 1760});
+  tone(330, {type: "square", vol: .012, dur: .5, glide: 2640});
+  [0, 4, 7, 12].forEach((semi, i) =>
+    tone(880 * Math.pow(2, semi / 12), {type: "triangle", vol: .05, dur: .7, at: .5 + i * .02}));
+}
 function sfxHint(){ tone(880, {type: "sine", vol: .05, dur: .1}); tone(660, {type: "sine", vol: .05, dur: .14, at: .09}); }
 function buzz(ms){ if (soundOn && navigator.vibrate) { try { navigator.vibrate(ms); } catch (e) {} } }
 
@@ -1140,6 +1152,103 @@ function replay(el, cls){
   if (!el) return;
   if (el.classList.contains(cls)) { el.classList.remove(cls); reflow(el); }
   el.classList.add(cls);
+}
+
+/* ------------------------------------------------------------ 熱
+ * 勢いを 0〜1 のひとつの値にまとめ、背景・盤面・粒・音がそれを読む。
+ * 3連続・5連続で切り替わる段階の演出とは別に、こちらは地続きに濃くなる。
+ *
+ *   土台   … そのラウンドで見つけた割合。見つけるほど上がり、下がらない
+ *   上乗せ … 当てるたびに足され、手が止まると20秒ほどで抜ける。
+ *            外すと半分になるが、土台より下には落ちない
+ *
+ * 画面へは CSS 変数 --heat の1つだけで渡す。書くたびに画面全体の
+ * スタイルを計算し直し、縁や枠の大きな影も塗り直すことになるので、
+ * 書くのは「当てた・外した瞬間」と「冷めるとき1秒に1回」だけにする。
+ * 毎フレーム少しずつ書いていたときは、押したあとのフレームで長い処理が
+ * 倍に増えていた。1手ごとに光がドンと上がるほうが、手ごたえとしても強い。 */
+let heat = 0, heatBase = 0, heatSpike = 0, heatShown = -1, heatHot = false, heatTimer = 0, heatFrame = 0;
+const REDUCED = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function heatSync(){
+  const r = current(), s = state();
+  heatBase = r && s && r.answers.length ? s.discovered.size / r.answers.length * .4 : 0;
+  heatPaint();
+}
+function heatOnHit(){
+  heatSpike = Math.min(1, heatSpike + .13 + Math.min(combo, 10) * .018);
+  heatSync();
+}
+function heatOnMiss(){ heatSpike *= .5; heatPaint(); }
+function heatPaint(){
+  heat = Math.min(1, heatBase + heatSpike);
+  // 書き込みは次のフレームで。押した処理のなかで書くと、そのあとの位置の
+  // 読み取りが画面全体のスタイル計算まで巻き込み、押した瞬間が重くなる
+  if (!heatFrame && typeof requestAnimationFrame === "function")
+    heatFrame = requestAnimationFrame(heatWrite);
+  // 上乗せが残っているあいだだけ、1秒ごとに冷ます
+  if (heatSpike > 0 && !heatTimer) heatTimer = setInterval(heatCool, 1000);
+  if (heatSpike === 0 && heatTimer) { clearInterval(heatTimer); heatTimer = 0; }
+}
+function heatWrite(){
+  heatFrame = 0;
+  const q = Math.round(heat * 50) / 50;
+  if (q !== heatShown) {
+    heatShown = q;
+    const root = document.documentElement;
+    root.style.setProperty("--heat", q);
+    // 熱いあいだは、画面の縁が BGM の拍に合わせて脈打つ
+    const hot = q >= .7;
+    if (hot !== heatHot) {
+      heatHot = hot;
+      if (hot) root.style.setProperty("--beat",
+        (60 / IcebergMusic.arrangement({mode, stage: currentStage()}).bpm).toFixed(3) + "s");
+      root.classList.toggle("hot", hot);
+    }
+  }
+}
+function heatCool(){
+  heatSpike = Math.max(0, heatSpike - .045);
+  heatPaint();
+}
+
+/* 衝撃波。押したかなから輪が広がる。3連続から出る。
+   演出は #fxBack（正解の字の後ろ）に置く。前に置くと字が読めなくなる */
+function shockwave(r, big){
+  const fx = $("#fxBack");
+  if (!fx || fx.childElementCount > 40) return;
+  const d = document.createElement("i");
+  d.className = "shock" + (big ? " big" : "");
+  d.style.cssText = `left:${(r.left + r.width / 2).toFixed(1)}px;top:${(r.top + r.height / 2).toFixed(1)}px`;
+  fx.appendChild(d);
+  setTimeout(() => d.remove(), 1050);
+}
+/* かなの雨。当てたかなが上から降る。まとめて作って、まとめて片づける */
+function kanaRain(kana, n){
+  const fx = $("#fxBack");
+  if (!fx || fx.childElementCount > 40) return;
+  const frag = document.createDocumentFragment(), made = [];
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement("span");
+    s.className = "rain";
+    s.textContent = kana;
+    s.style.cssText =
+      `left:${(2 + Math.random() * 90).toFixed(1)}vw;` +
+      `--s:${(.7 + Math.random() * 1.2).toFixed(2)};` +
+      `--d:${(1.1 + Math.random() * .9).toFixed(2)}s;` +
+      `--w:${(Math.random() * .45).toFixed(2)}s;` +
+      `--r:${Math.round(Math.random() * 120 - 60)}deg`;
+    frag.appendChild(s);
+    made.push(s);
+  }
+  fx.appendChild(frag);
+  setTimeout(() => { for (const s of made) s.remove(); }, 2600);
+}
+/* FEVER に入った瞬間だけ、斜めの帯で画面を一度占拠する。
+   正解の字はそのあとに出す（重ねるとどちらも読めない） */
+function feverTakeover(){
+  replay($("#feverTake"), "go");
+  sfxFeverRise();
 }
 
 function shake(){
@@ -1452,7 +1561,9 @@ function guess(kana){
       const reach = reachGoal();
       atReach = !!reach;
       if (reach) { sfxReach(); buzz([25, 45, 25, 45, 30, 45, 110]); }
-      showBurst({
+      // FEVER に入った1手は、先に帯を通してから字を出す（重ねるとどちらも読めない）
+      const later = combo === FEVER_AT && !REDUCED;
+      const fire = () => showBurst({
         mark: reach ? t("reach_mark")
           : mode === "kids" || lang !== "ja"
             ? (combo >= 2 ? t("combo_n", {n: combo}) : t("correct"))
@@ -1465,6 +1576,8 @@ function guess(kana){
         reach: !!reach,
         long: true, ms: reach ? 1900 : 1400
       });
+      // 前の手の字がまだ残っていると帯と重なるので、先に下げておく
+      if (later) { hideBurst(); setTimeout(fire, 620); } else fire();
     }
     // クリアの上に GREAT、正解の多いラウンドだけ その上に PERFECT を置く
     if (!state().great && state().discovered.size >= greatTarget()) greatRound();
@@ -1475,6 +1588,7 @@ function guess(kana){
     stars--;
     popLostStar();
     sfxWrong(); buzz([25, 40, 25]); shake();
+    heatOnMiss();
     // こども版では、外したときに作られた文字列をそのまま出さない。
     // 収録していない語（卑猥な並びを含む）が画面に出てしまうため。
     flashMiss(word);
@@ -1499,7 +1613,21 @@ function guess(kana){
       mascotSay(combo >= 3 ? t("combo_n", {n: combo}) : pickFrom(HIT_MSGS_I18N, HIT_MSGS_I18N.ja),
         isFever() ? "gold" : "", 1100);
     }
-  } else if (btn) {
+  }
+  if (hit) {
+    heatOnHit();
+    /* 見せ場は次のフレームで出す。押した瞬間の処理を重くしないため。
+       3連続で衝撃波と雨、5連続で FEVER の帯。その先は衝撃波を大きくし、
+       雨は3手ごとにする（毎回降らせると、降っているのが当たり前になる） */
+    const c = combo;
+    if (!REDUCED && btnRect && typeof requestAnimationFrame === "function") requestAnimationFrame(() => {
+      if (c >= 3) shockwave(btnRect, c >= FEVER_AT);
+      if (c === 3) kanaRain(kana, 14);
+      else if (c === FEVER_AT) { feverTakeover(); kanaRain(kana, 20); }
+      else if (c > FEVER_AT && c % 3 === 0) kanaRain(kana, 12);
+    });
+  }
+  if (!hit && btn) {
     btn.classList.add("shakeNo");
     floatText("★ −1", btn, "bad", btnRect);
     mascotPose("down", 1520);
@@ -1835,6 +1963,7 @@ function selectRound(i){
   viewStage = currentStage();
   syncHash();
   combo = 0;
+  heatSpike = 0;     // 熱の上乗せは前のラウンドのもの。土台は render() が合わせる
   lastFoundWord = null;
   flash("info", "");
   saveProgress();
@@ -1851,6 +1980,7 @@ function selectRound(i){
 function gameOver(){
   // ★0 の直後に予約されるので、先にやり直してしまった場合は開かない
   if (stars > 0) return;
+  heatSpike = 0; heatPaint();
   const found = totalCorrectCount();
   // こども版のやさしい言い方は jaKids が持つ。外国語はどちらも同じ文言
   $("#gameoverTitle").textContent = mode === "kids" ? t("go_title") : "GAME OVER";
