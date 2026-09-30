@@ -247,6 +247,8 @@ let soundOn = true;
 let musicOn = true;
 let score = 0;
 let combo = 0;
+// 粒（js/fx.js の Sparkle）と背景の光（SeaLight）。初期化は「熱」の節の直後
+let FXB = null, FXF = null, SEA = null;
 let maxCombo = 0;
 
 const roundStates = ROUND_DATA.map(() => ({
@@ -868,6 +870,7 @@ function inGame(){
   return !document.querySelector(".modal.show");
 }
 function syncMusic(){
+  seaSync();
   if (!musicOn || !inGame() || !audioUnlocked || document.hidden || audioPageHidden) {
     if (musicPlayer) musicPlayer.stop();
     return;
@@ -1082,24 +1085,9 @@ function floatText(text, el, cls, rect){
   setTimeout(() => d.remove(), 1000);
 }
 /* ステージクリア用の紙吹雪。画面の上から落として、通り過ぎたら片づける */
-function confetti(count, colors, ms = 2600){
-  const fx = $("#fx");
-  const frag = document.createDocumentFragment(), made = [];
-  for (let i = 0; i < count; i++) {
-    const p = document.createElement("i");
-    p.className = "confetti";
-    p.style.cssText =
-      `left:${(Math.random() * 100).toFixed(1)}vw;background:${colors[i % colors.length]};` +
-      `--dur:${(1.4 + Math.random() * 1.4).toFixed(2)}s;` +
-      `--delay:${(Math.random() * .9).toFixed(2)}s;` +
-      `--sway:${(Math.random() * 120 - 60).toFixed(0)}px;` +
-      `--spin:${(Math.random() * 900 - 450).toFixed(0)}deg` +
-      (i % 3 === 0 ? ";border-radius:50%" : "");
-    frag.appendChild(p);
-    made.push(p);
-  }
-  fx.appendChild(frag);
-  setTimeout(() => { for (const p of made) p.remove(); }, ms);
+function confetti(count, colors){
+  if (!FXF) return;
+  FXF.rain(count * 1.4, {kinds: ["paper", "paper", "paper", "star"], colors});
 }
 
 // 「タタタ・ターン」の短いファンファーレ。和音を重ねて厚くする
@@ -1115,30 +1103,12 @@ function sfxFanfare(){
     tone(base * Math.pow(2, semi / 12), {type: "sine", vol: .045, dur: 1.1, at: .62 + i * .02}));
 }
 
-/* 粒は10〜16個まとめて作る。1粒ずつ style を7回書いて、1粒ずつ
-   足して、1粒ずつタイマーを置くと、それだけでモバイルでは20ms かかる。
-   style は1回で書き、まとめて足して、片づけも1回で済ませる。 */
+/* 祝いの粒。Canvas（FXF）に積むだけなので、数を増やしても押した処理は重くならない */
 function particles(el, count, colors, rect){
-  const fx = $("#fx");
+  if (!FXF) return;
   const r = rect || (el ? el.getBoundingClientRect() : CENTER());
-  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-  const frag = document.createDocumentFragment(), made = [];
-  for (let i = 0; i < count; i++) {
-    const p = document.createElement("i");
-    p.className = "particle";
-    const ang = (Math.PI * 2 * i) / count + Math.random() * .5;
-    const dist = 40 + Math.random() * 110;
-    p.style.cssText =
-      `left:${cx}px;top:${cy}px;background:${colors[i % colors.length]};` +
-      `--dx:${(Math.cos(ang) * dist).toFixed(1)}px;` +
-      `--dy:${(Math.sin(ang) * dist + 40).toFixed(1)}px;` +
-      `--rot:${Math.round(Math.random() * 540 - 270)}deg;` +
-      `--dur:${(.7 + Math.random() * .5).toFixed(2)}s`;
-    frag.appendChild(p);
-    made.push(p);
-  }
-  fx.appendChild(frag);
-  setTimeout(() => { for (const p of made) p.remove(); }, 1300);
+  FXF.burst(r.left + r.width / 2, r.top + r.height / 2, {count: count * 1.5,
+    kinds: ["paper", "paper", "star", "spark"], colors, speed: 580});
 }
 /* CSS の動きを鳴らし直すための「反映」。クラスを外して付け直すだけだと
    ブラウザが1回のまとめ処理にしてしまい、動きが再生されない。
@@ -1192,6 +1162,7 @@ function heatPaint(){
 }
 function heatWrite(){
   heatFrame = 0;
+  seaSync();
   const q = Math.round(heat * 50) / 50;
   if (q !== heatShown) {
     heatShown = q;
@@ -1212,37 +1183,67 @@ function heatCool(){
   heatPaint();
 }
 
+/* ------------------------------------------------------ 粒と背景
+ * 粒は Canvas 2枚に描く。
+ *   FXB … 正解の字より下。毎手の噴き上げ・輪・かなの雨・FEVER の花火
+ *   FXF … いちばん上。クリア・GREAT・PERFECT の紙吹雪と花火
+ * 毎手の粒を字の下に置くのは、見つけた語が粒で隠れないようにするため。 */
+if (typeof Sparkle === "function") {
+  const small = innerWidth < 600;
+  if ($("#fxBackCv")) FXB = new Sparkle($("#fxBackCv"), small ? 220 : 340);
+  if ($("#fxFrontCv")) FXF = new Sparkle($("#fxFrontCv"), small ? 280 : 420);
+  if (REDUCED) { if (FXB) FXB.scale = .15; if (FXF) FXF.scale = .15; }
+}
+if (typeof SeaLight === "function" && $("#seaBg") && !REDUCED) SEA = new SeaLight($("#seaBg"));
+
+/* 熱に合わせた粒の色。色相を 20度刻みにそろえる（形を色ごとに焼き込んで
+   取っておくので、色を細かく変えると焼き込みが増えすぎる） */
+function heatColors(){
+  if (mode === "kids") return KIDS_COLORS;
+  const h = Math.round((160 - heat * 200) / 20) * 20;
+  return [`hsl(${h} 100% 64%)`, `hsl(${h + 40} 100% 66%)`, `hsl(${h - 40} 100% 68%)`, "#ffffff"];
+}
+/* 紙・星・コインの形を先に焼いておく（熱の色は全段、20度刻み）。
+   かなは押したものしか出ないので、ここでは焼かない（かな×色で数が多すぎる） */
+function fxWarm(){
+  if (!FXB) return;
+  const cols = mode === "kids" ? KIDS_COLORS.slice() : [];
+  if (mode !== "kids") for (let h = 160; h >= -40; h -= 20)
+    cols.push(`hsl(${h} 100% 64%)`, `hsl(${h + 40} 100% 66%)`, `hsl(${h - 40} 100% 68%)`);
+  cols.push("#ffffff");
+  FXB.warm([...new Set(cols)]);
+}
+fxWarm();
+/* 背景の光。遊んでいる画面が見えているあいだだけ描く */
+function seaSync(){
+  if (!SEA) return;
+  SEA.update(heat, 160 - heat * 200, mode === "kids" ? [.07, .045, .02] : [.02, .03, .05], inGame());
+}
+/* 当てたときの噴き上げ。熱が上がるほど数が増え、星・コイン・かなが混ざる */
+function hitFountain(r, c, kana){
+  if (!FXB || !r) return;
+  const x = r.left + r.width / 2, y = r.top + r.height / 2;
+  const kinds = ["paper", "paper", "spark", "spark"];
+  if (heat > .3) kinds.push("star");
+  if (heat > .55) kinds.push("coin", "star");
+  FXB.burst(x, y, {count: 14 + heat * 34 + Math.min(c, 10) * 2, kinds, colors: heatColors(),
+    speed: 460 + heat * 280, spread: 1.4 + heat * 1.1});
+  if (heat > .7) FXB.burst(x, y, {count: 4 + c % 4, kinds: ["glyph"], glyphs: [kana],
+    colors: heatColors(), speed: 620, spread: 1.2, size: 1.1});
+}
+
 /* 衝撃波。押したかなから輪が広がる。3連続から出る。
    演出は #fxBack（正解の字の後ろ）に置く。前に置くと字が読めなくなる */
 function shockwave(r, big){
-  const fx = $("#fxBack");
-  if (!fx || fx.childElementCount > 40) return;
-  const d = document.createElement("i");
-  d.className = "shock" + (big ? " big" : "");
-  d.style.cssText = `left:${(r.left + r.width / 2).toFixed(1)}px;top:${(r.top + r.height / 2).toFixed(1)}px`;
-  fx.appendChild(d);
-  setTimeout(() => d.remove(), 1050);
+  if (!FXB) return;
+  const x = r.left + r.width / 2, y = r.top + r.height / 2, col = heatColors();
+  FXB.ring(x, y, {color: col[0], radius: big ? 260 : 160, width: big ? 9 : 6, life: big ? .7 : .55});
+  if (big) FXB.ring(x, y, {color: "#fff", radius: 150, width: 4, life: .45});
 }
-/* かなの雨。当てたかなが上から降る。まとめて作って、まとめて片づける */
+/* かなの雨。当てたかなが上から降る */
 function kanaRain(kana, n){
-  const fx = $("#fxBack");
-  if (!fx || fx.childElementCount > 40) return;
-  const frag = document.createDocumentFragment(), made = [];
-  for (let i = 0; i < n; i++) {
-    const s = document.createElement("span");
-    s.className = "rain";
-    s.textContent = kana;
-    s.style.cssText =
-      `left:${(2 + Math.random() * 90).toFixed(1)}vw;` +
-      `--s:${(.7 + Math.random() * 1.2).toFixed(2)};` +
-      `--d:${(1.1 + Math.random() * .9).toFixed(2)}s;` +
-      `--w:${(Math.random() * .45).toFixed(2)}s;` +
-      `--r:${Math.round(Math.random() * 120 - 60)}deg`;
-    frag.appendChild(s);
-    made.push(s);
-  }
-  fx.appendChild(frag);
-  setTimeout(() => { for (const s of made) s.remove(); }, 2600);
+  if (!FXB) return;
+  FXB.rain(n, {kinds: ["glyph"], glyphs: [kana], colors: heatColors()});
 }
 /* FEVER に入った瞬間だけ、斜めの帯で画面を一度占拠する。
    正解の字はそのあとに出す（重ねるとどちらも読めない） */
@@ -1602,12 +1603,11 @@ function guess(kana){
      まとめれば1回で済むので、以降は読んだ値を配って回す。 */
   const btnRect = btn ? btn.getBoundingClientRect() : null;
   throwKana(kana, btn, hit, btnRect);
-  if (btn && hit && mode === "kids") particles(btn, 10, KIDS_COLORS, btnRect);
   if (btn && hit) {
     btn.classList.add("pop");
     // リーチのときは点の数字を出さない。真ん中の煽りと重なって、どちらも読めなくなる
     if (!atReach) floatText(`+${pts}${combo >= 2 ? ` ×${combo}` : ""}`, btn, isFever() ? "gold" : "", btnRect);
-    particles(btn, isFever() ? 16 : 10, isFever() ? ["#7ef9d0", "#fff", "#ffd34d"] : ["#fff", "#bbb"], btnRect);
+    hitFountain(btnRect, combo, kana);
     if (!state().perfect) {
       mascotPose("cheer", 820);
       mascotSay(combo >= 3 ? t("combo_n", {n: combo}) : pickFrom(HIT_MSGS_I18N, HIT_MSGS_I18N.ja),
@@ -1622,9 +1622,9 @@ function guess(kana){
     const c = combo;
     if (!REDUCED && btnRect && typeof requestAnimationFrame === "function") requestAnimationFrame(() => {
       if (c >= 3) shockwave(btnRect, c >= FEVER_AT);
-      if (c === 3) kanaRain(kana, 14);
-      else if (c === FEVER_AT) { feverTakeover(); kanaRain(kana, 20); }
-      else if (c > FEVER_AT && c % 3 === 0) kanaRain(kana, 12);
+      if (c === 3) kanaRain(kana, 22);
+      else if (c === FEVER_AT) { feverTakeover(); kanaRain(kana, 34); if (FXB) FXB.fireworks(3); }
+      else if (c > FEVER_AT && c % 3 === 0) { kanaRain(kana, 18); if (FXB) FXB.fireworks(2); }
     });
   }
   if (!hit && btn) {
@@ -1662,6 +1662,7 @@ function finishRound(silent){
       sub: t("words_found", {got: s.discovered.size, total: current().answers.length}),
         bonus, dim: true, long: true, char: "pose", actions: roundActions(), ms: 1600});
       particles(null, 36, colors);
+      if (FXF) FXF.fireworks(2, {colors});
     }, 320);
   }
 }
@@ -1689,6 +1690,7 @@ function greatRound(){
       sub: t("words_found", {got: s.discovered.size, total: current().answers.length}),
       bonus, dim: true, gold: true, long: true, char: "pose", actions: roundActions(), ms: 1900});
     particles(null, 54, colors);
+    if (FXF) FXF.fireworks(4, {colors});
     setTimeout(() => particles(null, 34, colors), 360);
     setTimeout(() => particles(null, 26, colors), 720);
   }, 340);
@@ -1718,6 +1720,8 @@ function perfectRound(){
       sub: t("words_found_all", {total: current().answers.length}),
       bonus, dim: true, gold: true, long: true, char: "pose", actions: roundActions(), ms: 2200});
     particles(null, 70, colors);
+    if (FXF) { FXF.fireworks(7, {colors}); FXF.burst(innerWidth / 2, innerHeight * .55,
+      {count: 40, kinds: ["coin"], speed: 820, spread: 1.6}); }
     setTimeout(() => particles(corner(innerWidth * .2, innerHeight * .6), 40, colors), 260);
     setTimeout(() => particles(corner(innerWidth * .8, innerHeight * .6), 40, colors), 440);
     setTimeout(() => particles(null, 50, colors), 780);
@@ -1829,6 +1833,7 @@ function finishStage(si){
   confetti(110, colors, 3400);
   // 中央から一発、そのあと左右からも上げる
   particles(null, 60, colors);
+  if (FXF) FXF.fireworks(6, {colors});
   const corner = (x, y) => ({getBoundingClientRect: () => ({left: x, top: y, width: 0, height: 0})});
   setTimeout(() => particles(corner(innerWidth * .18, innerHeight * .62), 34, colors), 260);
   setTimeout(() => particles(corner(innerWidth * .82, innerHeight * .62), 34, colors), 460);
@@ -1964,6 +1969,7 @@ function selectRound(i){
   syncHash();
   combo = 0;
   heatSpike = 0;     // 熱の上乗せは前のラウンドのもの。土台は render() が合わせる
+  fxWarm();
   lastFoundWord = null;
   flash("info", "");
   saveProgress();

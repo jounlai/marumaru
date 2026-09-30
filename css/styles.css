@@ -24,8 +24,11 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%}
+/* 地の色は html に置く。body に置くと、こども版で html の地（暖色のグラデーション）と
+   背景の光（#seaBg、z-index:-1）が、body の黒い地に隠れてしまう */
+html{background:var(--bg)}
 body{
-  background:var(--bg);color:var(--fg);
+  color:var(--fg);
   font-family:"Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
   display:flex;justify-content:center;
   overflow:hidden;
@@ -720,11 +723,7 @@ h1,h2{margin:0}
 .floatText.bad{color:var(--danger)}
 @keyframes floatUp{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}25%{opacity:1;transform:translate(-50%,-90%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-230%) scale(1)}}
 
-.particle{position:absolute;width:7px;height:7px;border-radius:2px;background:#fff;animation:particleFly var(--dur,.9s) cubic-bezier(.15,.7,.3,1) both}
-@keyframes particleFly{
-  0%{opacity:1;transform:translate(0,0) rotate(0) scale(1)}
-  100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(.4)}
-}
+/* 粒は js/fx.js（Canvas）で描く */
 
 .burst{position:fixed;inset:0;display:none;place-items:center;pointer-events:none;z-index:60;padding:16px}
 .burst.show{display:grid}
@@ -894,42 +893,16 @@ html:not(.kidsMode) .kana:not(:disabled){
   drop-shadow(0 0 calc(var(--heat) * 8px) hsl(var(--hh) 100% 66% / calc(var(--heat) * .9)))
   drop-shadow(0 0 calc(var(--heat) * 30px) hsl(var(--hh) 100% 58% / calc(var(--heat) * .7)))}
 
-/* 見せ場の層。正解の字（.burst）より下に置いて、字を隠さない */
-#fxBack{position:fixed;inset:0;pointer-events:none;z-index:58;overflow:hidden}
-
-/* 衝撃波。押したかなから輪が広がる */
-.shock{
-  position:fixed;width:48vmin;height:48vmin;margin:-24vmin 0 0 -24vmin;border-radius:50%;
-  border:3px solid var(--hc);
-  box-shadow:0 0 22px hsl(var(--hh) 100% 60% / .7),inset 0 0 22px hsl(var(--hh) 100% 60% / .5);
-  pointer-events:none;opacity:0;
-  animation:shock .8s cubic-bezier(.08,.8,.24,1) both;
-}
-.shock.big{border-width:4px;animation-duration:1s}
-@keyframes shock{
-  0%{transform:scale(.06);opacity:1}
-  100%{transform:scale(2.6);opacity:0}
-}
-.shock.big{animation-name:shockBig}
-@keyframes shockBig{
-  0%{transform:scale(.06);opacity:1}
-  100%{transform:scale(4);opacity:0}
-}
-
-/* かなの雨 */
-.rain{
-  position:fixed;top:-16vh;left:0;line-height:1;pointer-events:none;
-  font-size:calc(30px * var(--s,1));font-weight:950;color:var(--hc);
-  text-shadow:0 0 10px hsl(var(--hh) 100% 60% / .9),0 2px 0 rgba(0,0,0,.4);
-  opacity:0;
-  animation:rainFall var(--d,1.4s) var(--w,0s) cubic-bezier(.45,.05,.75,.6) both;
-}
-@keyframes rainFall{
-  0%{transform:translateY(0) rotate(0);opacity:0}
-  8%{opacity:1}
-  80%{opacity:.9}
-  100%{transform:translateY(132vh) rotate(var(--r,0deg));opacity:0}
-}
+/* 粒の層（js/fx.js の Sparkle）。毎手の粒は正解の字（.burst, 60）より下、
+   祝いの粒はいちばん上に描く */
+#fxBackCv,#fxFrontCv{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#fxBackCv{z-index:58}
+#fxFrontCv{z-index:71}
+/* 背景の光（SeaLight）。すべての中身の後ろ。熱0では透明で、今までの黒い地のまま */
+#seaBg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0}
+/* 光が盤面の中まで届くよう、熱いほど盤面の地を透かす。かなのボタンの地は透かさない */
+.gridWrap{background:color-mix(in srgb,var(--panel) calc(100% - var(--heat) * 25%),transparent)}
+html.kidsMode .gridWrap{background:color-mix(in srgb,#0f0b06 calc(100% - var(--heat) * 25%),transparent)}
 
 /* FEVER の帯。斜めの光が画面を横切り、白抜きの字が叩きつけられる */
 .feverTake{
@@ -1562,15 +1535,7 @@ html.kidsMode .gridWrap{border-color:color-mix(in oklab,#3a2a12,var(--hc) calc(v
 .kidsMode .roundList{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
 
 /* ------------------------------------------------ 15) ステージクリアの祝い */
-.confetti{
-  position:fixed;top:-24px;width:10px;height:14px;z-index:72;pointer-events:none;
-  animation:confettiFall var(--dur,2s) var(--delay,0s) cubic-bezier(.25,.6,.5,1) forwards;
-}
-@keyframes confettiFall{
-  0%{opacity:0;transform:translate(0,-10vh) rotate(0)}
-  8%{opacity:1}
-  100%{opacity:.9;transform:translate(var(--sway,0),108vh) rotate(var(--spin,360deg))}
-}
+/* 紙吹雪も js/fx.js（Canvas）で描く */
 /* 画面全体をひと呼吸だけ明るくする */
 body.celebrate .app{animation:celebrateFlash 1.2s ease-out}
 @keyframes celebrateFlash{
