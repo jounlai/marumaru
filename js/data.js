@@ -1646,6 +1646,7 @@ const WORD_ROUNDS = [
       { word: "かさい", display: "火災", meaning: "火事。建物などが焼ける災害" },
       { word: "かざい", display: "家財", meaning: "家にある道具や財産" },
       { word: "かすい", display: "加水/下垂", meaning: "水を加えること/垂れ下がること。「下垂体」" },
+      { word: "かずい", display: "花蕊", meaning: "花のしべ。おしべとめしべ" },
       { word: "かせい", display: "火星/加勢/苛性", meaning: "太陽系第4惑星/力添え/強い腐食性。「苛性ソーダ」" },
       { word: "かぜい", display: "課税", meaning: "税を課すこと" },
       { word: "かたい", display: "硬い/固い/難い", meaning: "変形しにくい/しっかりしている/〜しにくい" },
